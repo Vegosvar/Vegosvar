@@ -5,7 +5,7 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang="sv"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="sv"> <!--<![endif]-->
 <head>
-  <title>Vegosvar - Kunskapskällan för vegetarianer och veganer</title>
+  <title>Vegosvar - Enkla svar på vegofrågor</title>
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -50,7 +50,7 @@
 
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700' rel='stylesheet' type='text/css'>
 
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
   <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
@@ -82,91 +82,127 @@
 
 	<nav class="navbar navbar-default navbar-static-top">
 		<div class="container">
-		    <div class="navbar-header">
-		      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-		        <span class="sr-only">Toggle navigation</span>
-		        <span class="icon-bar"></span>
-		        <span class="icon-bar"></span>
-		        <span class="icon-bar"></span>
-		      </button>
-		      <a href="/"><img src="assets/img/vegosvar.svg" class="logo"></a>
-		    </div>
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a href="/"><img src="assets/img/vegosvar.svg" class="logo"></a>
+			</div>
 
-		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-		      <ul class="nav navbar-nav navbar-right">
-		        <li><a href="/ny">Posta ett svar</a></li>
-		        <li><a href="/om">Om oss</a></li>
-		        <li><a href="https://www.facebook.com/pages/Vegosvar/338093859711748" target="_blank">Facebook</a></li>
-		      </ul>
-		    </div><!-- /.navbar-collapse -->
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="/ny">Posta ett vegosvar</a></li>
+					<li><a href="/om">Om oss</a></li>
+					<li><a href="https://www.facebook.com/pages/Vegosvar/338093859711748" target="_blank">Facebook</a></li>
+					<li><a href="/om">Logga in</a></li>
+				</ul>
+			</div>
 		</div>
 	</nav>
 
-	<div class="heroSearch">
-	<div class="container">
-		<div class="row">
-			<div class="col-sm-12 text-center">
+	<div id="heroSearch">
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-12 text-center">
 
-				<div class="intro">
-					<h1>Enkla svar på vegofrågor </h1>
-					<p class="preamble">Sökverktyget för veganer, vegetarianer och den vegointresserade</p>
+					<div class="intro">
+						<h1>Enkla svar på vegofrågor </h1>
+						<p class="preamble">Söktjänst för veganer, vegetarianer och den vegointresserade</p>
+					</div>
+
+					<div class="searchEngine input-group">
+						<input type="text" class="form-control" placeholder="Vad söker du?" name="srch-term" id="srch-term">
+						<div class="input-group-btn">
+							<button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+						</div>
+					</div>
+
+			        <p><small><strong>Förslag</strong> Veganskt godis, E-ämnen, Restauranger, Recept, B12</small></p>
+
 				</div>
-
-				<div class="searchEngine input-group">
-		            <input type="text" class="form-control" placeholder="Vad söker du?" name="srch-term" id="srch-term">
-		            <div class="input-group-btn">
-		                <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-		            </div>
-		        </div>
-
-		        <p><small><strong>Förslag</strong> Veganskt godis, E-ämnen, Restauranger, Recept, B12</small></p>
-
 			</div>
 		</div>
 	</div>
-	</div>
 
-	<div class="results">
+	<div id="results">
 		<div class="container">
 			<h2>Sökresultat</h2>
 			<div class="row">
-				<div class="col-sm-6 col-md-4 resultContainer">
+				<div class="col-sm-6 col-md-4 col-lg-3 resultContainer">
 					<div class="fetchHeight">
 						<div class="result">
-							<a href="#"><h3>Behöver jag B12?</h3></a>
-							<a href="#" class="btn btn-primary">Visa svar</a>
+							<img src="uploads/veganskt-godis.jpg">
+							<div class="content">
+								<a href="#"><h3>Lista på veganskt godis</h3></a>
+								<p>Här listar vi alla veganska godisar som finns att köpa i butik.</p>
+							</div>
+							<div class="more">
+								<span class="info"><span class="glyphicon glyphicon-list"></span> Lista</span>
+								<a href="#" class="btn btn-primary">Läs mer</a>
+							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-6 col-md-4 resultContainer">
+				<div class="col-sm-6 col-md-4 col-lg-3 resultContainer">
 					<div class="fetchHeight">
 						<div class="result">
-							<a href="#"><h3>Hur märker jag om jag har brist på B12?</h3></a>
-							<a href="#" class="btn btn-primary">Visa svar</a>
+							<img src="uploads/vegansk-choklad.jpg">
+							<div class="content">
+								<a href="#"><h3>Vegansk choklad</h3></a>
+								<p>Ett gott recept på hur du lagar din egen choklad.</p>
+							</div>
+							<div class="more">
+								<span class="info"><span class="glyphicon glyphicon-cutlery"></span> Recept</span>
+								<a href="#" class="btn btn-primary">Läs mer</a>
+							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-6 col-md-4 resultContainer">
+				<div class="col-sm-6 col-md-4 col-lg-3 resultContainer">
 					<div class="fetchHeight">
 						<div class="result">
-							<a href="#"><h3>Vilket kosttillskott ska jag köpa?</h3></a>
-							<a href="#" class="btn btn-primary">Visa svar</a>
+							<img src="uploads/gelatin.jpg">
+							<div class="content">
+								<a href="#"><h3>Vad är gelatin?</h3></a>
+								<p>Gelatin utvinns ur animaliskt protein och används bland annat som geleringsmedel i godis.</p>
+							</div>
+							<div class="more">
+								<span class="info"><span class="glyphicon glyphicon-apple"></span> Fakta</span>
+								<a href="#" class="btn btn-primary">Läs mer</a>
+							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-6 col-md-4 resultContainer">
+				<div class="col-sm-6 col-md-4 col-lg-3 resultContainer">
 					<div class="fetchHeight">
 						<div class="result">
-							<a href="#"><h3>Vart får jag b12 ifrån?</h3></a>
-							<a href="#" class="btn btn-primary">Visa svar</a>
+							<img src="uploads/kikartsmaranger.jpg">
+							<div class="content">
+								<a href="#"><h3>Kikärtsmaränger</h3></a>
+								<p>Recept på kikärtsmaränger, även kallat kikärtsfluff - en populär favorit som dök upp 2015.
+							</div>
+							<div class="more">
+								<span class="info"><span class="glyphicon glyphicon-cutlery"></span> Recept</span>
+								<a href="#" class="btn btn-primary">Läs mer</a>
+							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-6 col-md-4 resultContainer">
+				<div class="col-sm-6 col-md-4 col-lg-3 resultContainer">
 					<div class="fetchHeight">
 						<div class="result">
-							<a href="#"><h3>Finns B12 naturligt i naturen?</h3></a>
-							<a href="#" class="btn btn-primary">Visa svar</a>
+							<img src="uploads/godis.jpg">
+							<div class="content">
+								<a href="#"><h3>Vad är E120?</h3></a>
+								<p>E120 ger en röd färg och utvinns av torkade löss.</p>
+							</div>
+							<div class="more">
+								<span class="info"><span class="glyphicon glyphicon-apple"></span> Fakta</span>
+								<a href="#" class="btn btn-primary">Läs mer</a>
+							</div>
 						</div>
 					</div>
 				</div>
@@ -217,7 +253,7 @@
 
 	<div class="footer">
 		<div class="container text-center">
-			Designad med kärlek <span class="text-muted">| Kunskapskällan för vegetarianer & veganer |</span> <a href="mailto:kontakt@vegosvar.se">kontakt@vegosvar.se
+			Enkla svar på vegofrågor <a href="mailto:kontakt@vegosvar.se">kontakt@vegosvar.se
 		</div>
 	</div>
 
