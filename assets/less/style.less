@@ -3,12 +3,19 @@
 /* Utvecklat av Per Lööv, David Marby & Jeremy Gallant */
 
 
+
+// Variables
+
 @brand-color:			#00a651;
 @brand-color-secondary:	#ffd23a;
 @brand-font:			'Open Sans';
 
 @mobile:				768px;
 
+
+
+
+// Template
 
 body {
 	font-family: @brand-font;
@@ -21,6 +28,11 @@ body {
 		font-weight: 700;
 	}
 }
+
+
+
+
+// Typography
 
 a {
 	color: @brand-color;
@@ -47,50 +59,26 @@ p {
 	margin-bottom: 15px;
 }
 
+.preamble {
+	font-size: 18px;
+}
+
+
+
+// Common elements
+
 img {
 	width: 100%;
 	height: auto;
 }
+
 .well {
 	border: none;
 	box-shadow: 0 0 0 2px rgba(0,0,0,0.05);
 }
 
-
 hr {
 	margin: 30px 0;
-}
-
-.preamble {
-	font-size: 18px;
-}
-
-input:focus, textarea:focus {
-  outline: none;
-  -webkit-box-shadow: none !important;
-  -moz-box-shadow: none !important;
-  box-shadow: none !important;
-}
-
-
-::-webkit-input-placeholder { /* WebKit browsers */
-    color:    #666;
-}
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-   color:    #666;
-   opacity:  1;
-}
-::-moz-placeholder { /* Mozilla Firefox 19+ */
-   color:    #666;
-   opacity:  1;
-}
-:-ms-input-placeholder { /* Internet Explorer 10+ */
-   color:    #666;
-}
-
-
-.brandColor {
-	color: @brand-color;
 }
 
 .btn {
@@ -117,6 +105,35 @@ input:focus, textarea:focus {
 
 
 
+// Fixes
+
+input:focus, textarea:focus {
+  outline: none;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+::-webkit-input-placeholder { /* WebKit browsers */
+    color:    #666;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #666;
+   opacity:  1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #666;
+   opacity:  1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+   color:    #666;
+}
+
+
+
+
+
+// Layout
 
 .navbar {
 	margin-bottom: 0;
@@ -126,12 +143,21 @@ input:focus, textarea:focus {
 		width: 100%;
 		top: 0;
 	}
+	.navbar-toggle {
+		border: none;
+		&:hover, &:focus {
+			background: none;
+		}
+	}
 	.navbar-collapse {
 		border: none;
+		box-shadow: none;
+		@media (max-width: @mobile) {
+			background: darken(@brand-color, 5%);
+		}
 	}
 	border: none !important;
 	li {
-		background: @brand-color;
 		a {
 			color: #fff !important;
 			-webkit-transition: background 0.2s;
@@ -170,7 +196,7 @@ input:focus, textarea:focus {
 }
 
 #heroSearch {
-	background: @brand-color url(../img/search_bg.svg);
+	background: @brand-color;
 	padding: 120px 0;
 	margin-bottom: 60px;
 	color: #fff;
@@ -309,39 +335,65 @@ input:focus, textarea:focus {
 
 
 
-.common {
-	background: #EDEDED;
+#extra {
+	border-top: 2px solid rgba(0,0,0,0.05);
 	padding: 60px 0;
 	color: #0f0805;
 	h2 {
 		margin-top: 0;
 		margin-bottom: 30px;
 	}
-	a {
-		font-size: 16px;
-		display: inline-block;
-		margin-left: 5px;
-		padding: 5px 10px;
-		border: 1px solid #0f0805;
-		border-radius: 30px;
-		color: #0f0805;
-		margin-bottom: 15px;
-		-webkit-transition: background 0.2s;
-		-moz-transition: background 0.2s;
-		-o-transition: background 0.2s;
-		transition: background 0.2s;
-		&:first-child {
-			margin-left: 0;
+	.popular {
+		@media (max-width: @mobile) {
+			margin-bottom: 30px;
 		}
-		&:hover {
-			background: rgba(0,0,0,0.1);
+		a {
+			font-size: 16px;
+			display: inline-block;
+			margin-right: 10px;
+			padding: 5px 12px;
+			border-radius: 3px;
+			color: #444;
+			margin-bottom: 15px;
+			background: rgba(0,0,0,0.07);
+			-webkit-transition: background 0.2s;
+			-moz-transition: background 0.2s;
+			-o-transition: background 0.2s;
+			transition: background 0.2s;
+			&:first-child {
+				margin-left: 0;
+			}
+			&:hover {
+				background: rgba(0,0,0,0.1);
+			}
 		}
 	}
-	.glyphicon {
-		font-size: 20px;
-		top: -1px;
-		left: 5px;
-		padding-right: 5px;
+	.news {
+		.item {
+			list-style: none;
+			padding: 7px 0 10px 0;
+			padding-left: 15px;
+			border-left: 2px solid rgba(0,0,0,0.07);
+			a {
+				color: #333;
+			}
+			p {
+				margin: 0;
+			}
+			.date {
+				color: #888;
+				font-size: 11px;
+				font-style: italic;
+			}
+			&.first {
+				border-left: 2px solid #333;
+				a {
+					font-size: 18px;
+					font-weight: 700;
+					line-height: 1.2;
+				}
+			}
+		}
 	}
 }
 
@@ -393,11 +445,43 @@ input:focus, textarea:focus {
 
 
 
-
 .footer {
-	background: #090909;
-	padding: 30px 0 60px 0;
+	background: #111;
+	padding: 90px 0 90px 0;
 	color: #fff;
+	@media (max-width: @mobile) {
+		text-align: center;
+	}
+	img {
+		position: relative;
+		width: 40px;
+		margin-bottom: 20px;
+	}
+	h3 {
+		margin-top: 0;
+		display: inline-block;
+		padding-bottom: 8px;
+		margin-bottom: 15px;
+		border-bottom: 2px solid #fff;
+		@media (max-width: @mobile) {
+			margin-top: 30px;
+		}
+	}
+	p {
+		font-size: 18px;
+		font-weight: 300;
+	}
+	em {
+		font-size: 15px;
+	}
+	a {
+		color: #fff;
+		display: block;
+		padding: 2px 0;
+		&:hover {
+			opacity: 0.6;
+		}
+	}
 }
 
 
