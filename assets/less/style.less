@@ -11,7 +11,7 @@
 
 @green:					@brand-color;
 @yellow:				#ffd23a;
-@blue:					#5ea3dd;
+@blue:					#2676ba;
 @red:					#d04c4c;
 
 @mobile:				768px;
@@ -125,12 +125,22 @@ hr {
 	-moz-transition: background 0.2s;
 	-o-transition: background 0.2s;
 	transition: background 0.2s;
+	padding: 10px 17px;
+	&:active, &:focus {
+		box-shadow: none;
+	}
 	&.btn-primary {
 		background: @brand-color;
 		color: #fff;
-		padding: 10px 17px;
 		&:hover {
 			background: lighten(@brand-color, 3%);
+		}
+	}
+	&.btn-edit {
+		background: @blue;
+		color: #fff;
+		&:hover {
+			background: lighten(@blue, 3%);
 		}
 	}
 	&.btn-secondary {
@@ -141,11 +151,48 @@ hr {
 	}
 }
 
+.btn-file {
+    position: relative;
+    overflow: hidden;
+    input[type=file] {
+		position: absolute;
+		top: 0;
+		right: 0;
+		min-width: 100%;
+		min-height: 100%;
+		font-size: 100px;
+		text-align: right;
+		filter: alpha(opacity=0);
+		opacity: 0;
+		outline: none;
+		background: white;
+		cursor: inherit;
+		display: block;
+	}
+}
+
+.input-group {
+	margin-bottom: 15px;
+	.input-group-addon {
+		border: none;
+		box-shadow: none;
+		background: #888;
+		color: #fff;
+		padding: 10px 17px;
+	}
+	.form-control {
+		border: none;
+		box-shadow: none;
+		padding: 10px 17px;
+		height: auto;
+	}
+}
+
 
 
 // Fixes
 
-input:focus, textarea:focus {
+input:focus, textarea:focus, button:focus {
   outline: none;
   -webkit-box-shadow: none !important;
   -moz-box-shadow: none !important;
@@ -175,16 +222,29 @@ input:focus, textarea:focus {
 
 
 .list-group {
-	li {		
+	li {
+		img {
+			width: 50px;
+			float: left;
+			margin-right: 10px;
+			border-radius: 3px;
+		}
 		a {
 			color: #333;
+			&:hover {
+				color: #777;
+			}
+		}
+		&.heading {
+			padding-top: 15px;
+			padding-bottom: 15px;
 		}
 		&.active {
-			background: #555;
-			border-color: #555;
+			background: #333;
+			border-color: #333;
 			&:hover {
-				background: #555;
-				border-color: #555;
+				background: #333;
+				border-color: #333;
 			}
 			a {
 				color: #fff;
@@ -430,9 +490,11 @@ input:focus, textarea:focus {
 	.news {
 		.item {
 			list-style: none;
-			padding: 7px 0 10px 0;
-			padding-left: 15px;
+			padding: 7px 0 10px 15px;
 			border-left: 2px solid rgba(0,0,0,0.07);
+			@media (max-width: @mobile) {
+				padding: 12px 0 10px 15px;
+			}
 			a {
 				color: #333;
 			}
@@ -443,6 +505,10 @@ input:focus, textarea:focus {
 				color: #888;
 				font-size: 11px;
 				font-style: italic;
+				@media (max-width: @mobile) {
+					display: block;
+					margin-top: 10px;
+				}
 			}
 			&.first {
 				border-left: 2px solid #333;
@@ -459,48 +525,7 @@ input:focus, textarea:focus {
 
 
 
-#newpost {
-	margin-top: 30px;
 
-	input, textarea {
-		width: 100%;
-		margin-bottom: 15px;
-		padding: 5px 8px;
-		border-radius: 3px;
-		border: none;
-		box-shadow: 0 0 0 2px rgba(0,0,0,0.05);
-		&:focus {
-			box-shadow: 0 0 0 2px rgba(0,0,0,0.13) !important;
-		}
-		-webkit-transition: all 0.2s;
-		-moz-transition: all 0.2s;
-		-o-transition: all 0.2s;
-		transition: all 0.2s;
-
-		&.heading {
-			font-size: 25px;
-		}
-
-		&.paragraph {
-			font-size: 14px;
-			margin-bottom: 0;
-			min-height: 100px;
-		}
-
-		&.tags {
-			font-size: 14px;
-			margin-bottom: 5px;
-		}
-	}
-	.glyphicon {
-		font-size: 15px;
-	}
-	.well {
-		h3 {
-			margin-top: 0;
-		}
-	}
-}
 
 
 
