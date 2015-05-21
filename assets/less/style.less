@@ -121,9 +121,6 @@ hr {
 
 .btn {
 	border: none;
-	-webkit-transition: background 0.2s;
-	-moz-transition: background 0.2s;
-	-o-transition: background 0.2s;
 	transition: background 0.2s;
 	padding: 10px 17px;
 	.glyphicon {
@@ -204,31 +201,65 @@ textarea {
 
 // Layout
 
-
-.list-group {
-	li {
-		img {
-			border-radius: 3px;
-		}
-		a {
-			color: #333;
-			&:hover {
-				color: #777;
-			}
-		}
-		&.heading {
-			padding-top: 15px;
-			padding-bottom: 15px;
-		}
-		&.active {
-			background: #333;
-			border-color: #333;
-			&:hover {
-				background: #333;
-				border-color: #333;
+.sidebar {
+	.list-group {
+		li {
+			img {
+				border-radius: 3px;
 			}
 			a {
-				color: #fff;
+				color: #333;
+				&:hover {
+					color: #777;
+				}
+			}
+			&.heading {
+				padding-top: 15px;
+				padding-bottom: 15px;
+				.desc {
+					display: block;
+					font-size: 11px;
+					line-height: 1.4;
+					color: #999;
+				}
+			}
+			&.active {
+				background: #333;
+				border-color: #333;
+				&:hover {
+					background: #333;
+					border-color: #333;
+				}
+				a {
+					color: #fff;
+				}
+			}
+		}
+	}
+	.votes {
+		overflow: hidden;
+		.vote {
+			display: block;
+			text-align: center;
+			line-height: 50px;
+			width: 50%;
+			height: 50px;
+			color: #fff;
+			float: left;
+			transition: background 0.2s;
+			&.up {
+				background: @brand-color;
+				border-radius: 3px 0 0 3px;
+				&:hover {
+					background: darken(@brand-color, 3%);
+				}
+			}
+			&.down {
+				background: #c0c0c0;
+				border-radius: 0 3px 3px 0;
+				&:hover {
+					background: darken(#c0c0c0, 3%);
+				}
 			}
 		}
 	}
@@ -246,6 +277,7 @@ textarea {
 .navbar {
 	margin-bottom: 0;
 	background: @brand-color;
+	border: none !important;
 	@media (max-width: @mobile) {
 		position: fixed;
 		width: 100%;
@@ -264,13 +296,31 @@ textarea {
 			background: darken(@brand-color, 5%);
 		}
 	}
-	border: none !important;
+	.search {
+		margin-top: 0px;
+		margin-bottom: 0px;
+		border: none;
+		input {
+			background: rgba(255,255,255,0.1);
+			border: none;
+			box-shadow: none;
+			padding: 15px 17px;
+			height: auto;
+			color: #fff;
+			border-radius: 0;
+			transition: background 0.2s;
+			width: 285px;
+			&:focus {
+				background: rgba(255,255,255,0.15);
+			}
+			@media (max-width: @mobile) {
+				width: 100%;
+			}
+		}
+	}
 	li {
 		a {
 			color: #fff !important;
-			-webkit-transition: background 0.2s;
-			-moz-transition: background 0.2s;
-			-o-transition: background 0.2s;
 			transition: background 0.2s;
 			&:hover {
 				background-color: darken(@brand-color, 5%) !important;

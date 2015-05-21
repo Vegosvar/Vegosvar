@@ -89,9 +89,17 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a href="/"><img src="assets/img/vegosvar.svg" class="logo"></a>
+				<div class="row">
+					<div class="col-xs-5 col-sm-4">
+						<a href="/"><img src="assets/img/vegosvar.svg" class="logo"></a>
+					</div>
+					<div class="col-xs-5 col-sm-6">
+						<form class="search" role="search">
+							<input type="text" class="form-control" value="Sök fakta, restauranger & produkter..." onfocus="if (this.value=='Sök fakta, restauranger & produkter...') this.value='';" onblur="if (this.value=='') this.value='Sök fakta, restauranger & produkter...';">
+						</form>
+					</div>
+				</div>
 			</div>
-
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="/ny">Publicera</a></li>
@@ -134,7 +142,7 @@
 					<p>Är du redo att publicera lite nya sidor?</p>
 					<p><a href="#" class="btn btn-edit">Ja, publicera!</a></p><br>
 				</div>
-				<div class="col-sm-4">
+				<div class="col-sm-4 sidebar">
 					<ul class="list-group">
 						<li class="list-group-item heading">
 							<div class="row">
@@ -204,7 +212,7 @@
 					Om du vill ta bort dina sidor först rekommenderar vi att du gör det under <a href="#">Mina sidor</a>.</p> 
 					<a href="#" class="btn btn-secondary">Ta bort mitt konto</a></p><br>
 				</div>
-				<div class="col-sm-4">
+				<div class="col-sm-4 sidebar">
 					<ul class="list-group">
 						<li class="list-group-item heading">
 							<div class="row">
@@ -256,7 +264,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-4">
+				<div class="col-sm-4 sidebar">
 					<ul class="list-group">
 						<li class="list-group-item heading">
 							<div class="row">

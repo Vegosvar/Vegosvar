@@ -89,9 +89,17 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</button>
-				<a href="/"><img src="assets/img/vegosvar.svg" class="logo"></a>
+				<div class="row">
+					<div class="col-xs-5 col-sm-4">
+						<a href="/"><img src="assets/img/vegosvar.svg" class="logo"></a>
+					</div>
+					<div class="col-xs-5 col-sm-6">
+						<form class="search" role="search">
+							<input type="text" class="form-control" value="Sök fakta, restauranger & produkter..." onfocus="if (this.value=='Sök fakta, restauranger & produkter...') this.value='';" onblur="if (this.value=='') this.value='Sök fakta, restauranger & produkter...';">
+						</form>
+					</div>
+				</div>
 			</div>
-
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav navbar-right">
 					<li><a href="/ny">Publicera</a></li>
@@ -125,24 +133,26 @@
 					</ul>
 
 				</div>
-				<div class="col-sm-4">
-
+				<div class="col-sm-4 sidebar">
 					<ul class="list-group">
 						<li class="list-group-item heading">
 							<div class="row">
 								<div class="col-xs-4">
-									<img src="uploads/liseberg.jpg">
+									<a href="#"><img src="uploads/liseberg.jpg"></a>
 								</div>
 								<div class="col-xs-8">
 									<small>Publicerad av</small>
-									<h3 class="list-group-item-heading">Liseberg</h3>
-									<small><p>Liseberg är en nöjespark belägen i stadsdelen Heden i Göteborg. Parken drivs som ett aktiebolag, helägt av Göteborgs kommun.</p></small>
+									<a href="#"><h3 class="list-group-item-heading">Liseberg</h3></a>
+									<span class="desc">Liseberg är en nöjespark belägen i stadsdelen Heden i Göteborg. Parken drivs som ett aktiebolag, helägt av Göteborgs kommun.</span>
 								</div>
 							</div>
 						</li>
-						<li class="list-group-item"><a href="#">Föreslå ändringar till sidan</a></li>
-						<li class="list-group-item"><a href="#">Anmäl</a></li>
+						<li class="list-group-item"><a href="#">Föreslå ändring</a></li>
 					</ul>
+					<div class="votes">
+						<a href="#" class="vote up"><span class="glyphicon glyphicon-thumbs-up"></span> Rösta upp</a>
+						<a href="#" class="vote down"><span class="glyphicon glyphicon-thumbs-down"></span> Rösta ner</a>
+					</div>
 				</div>
 			</div>
 
