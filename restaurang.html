@@ -90,12 +90,12 @@
 					<span class="icon-bar"></span>
 				</button>
 				<div class="row">
-					<div class="col-xs-5 col-sm-4">
+					<div class="col-xs-6 col-sm-4">
 						<a href="/"><img src="assets/img/vegosvar.svg" class="logo"></a>
 					</div>
-					<div class="col-xs-5 col-sm-6">
+					<div class="col-xs-12 col-sm-6">
 						<form class="search" role="search">
-							<input type="text" class="form-control" value="Sök fakta, restauranger & produkter..." onfocus="if (this.value=='Sök fakta, restauranger & produkter...') this.value='';" onblur="if (this.value=='') this.value='Sök fakta, restauranger & produkter...';">
+							<input type="text" class="form-control" value="Sök fakta, restauranger, recept, mat..." onfocus="if (this.value=='Sök fakta, restauranger, recept, mat...') this.value='';" onblur="if (this.value=='') this.value='Sök fakta, restauranger, recept, mat...';">
 						</form>
 					</div>
 				</div>
@@ -137,10 +137,10 @@
 					<ul class="list-group">
 						<li class="list-group-item heading">
 							<div class="row">
-								<div class="col-xs-4">
-									<a href="#"><img src="uploads/liseberg.jpg"></a>
+								<div class="col-xs-4 col-sm-12 col-md-4">
+									<a href="#"><img src="uploads/liseberg.jpg" class="avatar"></a>
 								</div>
-								<div class="col-xs-8">
+								<div class="col-xs-8 col-sm-12 col-md-8">
 									<small>Publicerad av</small>
 									<a href="#"><h3 class="list-group-item-heading">Liseberg</h3></a>
 									<span class="desc">Liseberg är en nöjespark belägen i stadsdelen Heden i Göteborg. Parken drivs som ett aktiebolag, helägt av Göteborgs kommun.</span>
@@ -153,83 +153,66 @@
 						<a href="#" class="vote up"><span class="glyphicon glyphicon-thumbs-up"></span> Rösta upp</a>
 						<a href="#" class="vote down"><span class="glyphicon glyphicon-thumbs-down"></span> Rösta ner</a>
 					</div>
+					<div id="results" class="xs">
+						<h2>Relaterat</h2>
+						<div class="row">
+							<div class="col-md-12 resultContainer">
+								<div class="fetchHeight">
+									<div class="result">
+										<div class="row">
+											<div class="col-md-5">
+												<img src="uploads/veganskt-godis.jpg">
+											</div>
+											<div class="col-md-7">
+												<div class="content">
+													<strong><a href="#">Lista på veganskt godis</a></strong>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12 resultContainer">
+								<div class="fetchHeight">
+									<div class="result">
+										<div class="row">
+											<div class="col-md-5">
+												<img src="uploads/vegansk-choklad.jpg">
+											</div>
+											<div class="col-md-7">
+												<div class="content">
+													<strong><a href="#">Vegansk choklad</a></strong>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-12 resultContainer">
+								<div class="fetchHeight">
+									<div class="result">
+										<div class="row">
+											<div class="col-md-5">
+												<img src="uploads/gelatin.jpg">
+											</div>
+											<div class="col-md-7">
+												<div class="content">
+													<strong><a href="#">Vad är gelatin?</a></strong>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="well">
+						<h4>Hittar du inte det du söker efter?</h4>
+						<p>Använd sökfältet eller ställ frågan på <a href="#">Facebook</a> i gruppen för vegetarianer och veganer.</p>
+						</div>
+					</div>
 				</div>
 			</div>
 
-		</div>
-	</div>
-
-	<div id="extra">
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-6 popular">
-					<h2>Populärt just nu</h2>
-					<a href="#">B12</a>
-					<a href="#">Kändisar</a>
-					<a href="#">Mjölk</a>
-					<a href="#">Veganska chips</a>
-					<a href="#">B12</a>
-					<a href="#">Svegan</a>
-					<a href="#">Mjölk</a>
-					<a href="#">Havremjölk</a>
-					<a href="#">Astrid och aporna</a>
-					<a href="#">Svegan</a>
-					<a href="#">Anamma Schnitzel</a>
-					<a href="#">Kosmetika</a>
-					<a href="#">Egen sojamjölk</a>
-					<a href="#">Vitaminer</a>
-					<a href="#">Protein</a>
-					<a href="#">Astrid och aporna</a>
-					<a href="#">Svegan</a>
-					<a href="#">Anamma Schnitzel</a>
-					<a href="#">Kosmetika</a>
-					<a href="#">Egen sojamjölk</a>
-					<a href="#">Vitaminer</a>
-					<a href="#">Protein</a>
-					<a href="#">B12</a>
-					<a href="#">B12</a>
-				</div>
-				<div class="col-sm-6 news">
-					<h2>Nyheter</h2>
-
-					<div class="item first">
-						<div class="row">
-							<div class="col-xs-6 col-sm-3">
-								<img src="uploads/vegansk-choklad.jpg">
-							</div>
-							<div class="col-xs-12 col-sm-9">
-								<span class="date">21 februari</span>
-								<p><a href="#">Vegosvar lanserar sveriges modernaste kunskapskälla för vegetarianer & veganer</a></p>
-							</div>
-						</div>
-					</div>
-
-					<div class="item">
-						<div class="row">
-							<div class="col-xs-6 col-sm-3">
-								<img src="uploads/vegansk-choklad.jpg">
-							</div>
-							<div class="col-xs-12 col-sm-9">
-								<span class="date">21 februari</span>
-								<p><a href="#">Vegosvar lanserar sveriges modernaste kunskapskälla för vegetarianer & veganer</a></p>
-							</div>
-						</div>
-					</div>
-
-					<div class="item">
-						<div class="row">
-							<div class="col-xs-6 col-sm-3">
-								<img src="uploads/vegansk-choklad.jpg">
-							</div>
-							<div class="col-xs-12 col-sm-9">
-								<span class="date">21 februari</span>
-								<p><a href="#">Vegosvar lanserar sveriges modernaste kunskapskälla för vegetarianer & veganer</a></p>
-							</div>
-						</div>
-					</div>
-
-				</div>
-			</div>
 		</div>
 	</div>
 
@@ -256,6 +239,7 @@
 					<h3>Vegosvar</h3>
 					<a href="/varderingar">Vanliga frågor</a>
 					<a href="/varderingar">Om Vegosvar</a>
+					<a href="/annonsera">Annonsera</a>
 					<a href="#">Licens CC</a>
 				</div>
 			</div>

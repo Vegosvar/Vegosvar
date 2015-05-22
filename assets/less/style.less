@@ -14,7 +14,12 @@
 @blue:					#2676ba;
 @red:					#d04c4c;
 
-@mobile:				768px;
+@restaurant:			#ec4b6f;
+@recipe:				#f0b831;
+@product:				@blue;
+
+@xs:					768px;
+@sm:					992px;
 
 
 
@@ -24,7 +29,7 @@
 body {
 	font-family: @brand-font;
 	-webkit-font-smoothing: antialiased;
-	@media (max-width: @mobile) {
+	@media (max-width: @xs) {
 		padding-top: 50px;
 	}
 	background: #f5f5f5;
@@ -65,7 +70,7 @@ h3 {
 	font-weight: 700;
 	line-height: 1.3;
 	font-size: 18px;
-	margin-bottom: 5px;
+	margin-bottom: 10px;
 }
 
 p {
@@ -216,6 +221,9 @@ textarea {
 			&.heading {
 				padding-top: 15px;
 				padding-bottom: 15px;
+				.avatar {
+					margin-bottom: 10px;
+				}
 				.desc {
 					display: block;
 					font-size: 11px;
@@ -236,8 +244,14 @@ textarea {
 			}
 		}
 	}
+	.well {
+		.table {
+			margin-bottom: 0;
+		}
+	}
 	.votes {
 		overflow: hidden;
+		margin-bottom: 30px;
 		.vote {
 			display: block;
 			text-align: center;
@@ -248,10 +262,10 @@ textarea {
 			float: left;
 			transition: background 0.2s;
 			&.up {
-				background: @brand-color;
+				background: @blue;
 				border-radius: 3px 0 0 3px;
 				&:hover {
-					background: darken(@brand-color, 3%);
+					background: darken(@blue, 3%);
 				}
 			}
 			&.down {
@@ -278,7 +292,7 @@ textarea {
 	margin-bottom: 0;
 	background: @brand-color;
 	border: none !important;
-	@media (max-width: @mobile) {
+	@media (max-width: @xs) {
 		position: fixed;
 		width: 100%;
 		top: 0;
@@ -292,7 +306,7 @@ textarea {
 	.navbar-collapse {
 		border: none;
 		box-shadow: none;
-		@media (max-width: @mobile) {
+		@media (max-width: @xs) {
 			background: darken(@brand-color, 5%);
 		}
 	}
@@ -308,13 +322,22 @@ textarea {
 			height: auto;
 			color: #fff;
 			border-radius: 0;
-			transition: background 0.2s;
+			transition: background 0.2s, box-shadow 0.1s, padding 0.1s;
 			width: 285px;
 			&:focus {
 				background: rgba(255,255,255,0.15);
+				box-shadow: inset 0 0 0 5px @brand-color;
 			}
-			@media (max-width: @mobile) {
+			@media (max-width: @xs) {
 				width: 100%;
+				padding: 8px 17px;
+				font-size: 13px;
+				&:focus {
+					background: rgba(255,255,255,0.15);
+					padding: 12px 17px;
+					font-size: 14px;
+					box-shadow: inset 0 0 0 5px @brand-color;
+				}
 			}
 		}
 	}
@@ -329,8 +352,8 @@ textarea {
 	}
 	.logo {
 		width: 130px;
-		margin-top: 14px;
-		@media (max-width: @mobile) {
+		margin-top: 13px;
+		@media (max-width: @xs) {
 			padding-left: 15px;
 		}
 	}
@@ -359,6 +382,52 @@ textarea {
 		margin-bottom: 20px;
 		overflow: hidden;
 	}
+	.new {
+		overflow: hidden;
+		margin-bottom: 30px;
+		.newType {
+			display: block;
+			text-align: center;
+			line-height: 50px;
+			width: 100%%;
+			height: 140px;
+			color: #fff;
+			float: left;
+			background: #eee;
+			margin-bottom: 40px;
+			border-radius: 3px;
+			transition: background 0.2s;
+			.glyphicon {
+				display: block;
+				font-size: 30px;
+				margin-top: 40px;
+			}
+			&.fact {
+				background: @brand-color;
+				&:hover {
+					background: darken(@brand-color, 3%);
+				}
+			}
+			&.restaurant {
+				background: @restaurant;
+				&:hover {
+					background: darken(@restaurant, 3%);
+				}
+			}
+			&.recipe {
+				background: @recipe;
+				&:hover {
+					background: darken(@recipe, 3%);
+				}
+			}
+			&.product {
+				background: @product;
+				&:hover {
+					background: darken(@product, 3%);
+				}
+			}
+		}
+	}
 }
 
 
@@ -367,7 +436,7 @@ textarea {
 	padding: 120px 0;
 	margin-bottom: 60px;
 	color: #fff;
-	@media (max-width: @mobile) {
+	@media (max-width: @xs) {
 		padding: 60px 0;
 		margin-bottom: 0px;
 	}
@@ -379,7 +448,7 @@ textarea {
 			margin-bottom: 15px;
 			font-weight: 300;
 			color: #fff;
-			@media (max-width: @mobile) {
+			@media (max-width: @xs) {
 				font-size: 30px;
 			}
 		}
@@ -388,7 +457,7 @@ textarea {
 	.searchEngine {
 		width: 560px;
 		margin: 0 auto 15px auto;
-		@media (max-width: @mobile) {
+		@media (max-width: @xs) {
 			width: 100%;
 		}
 		input {
@@ -412,9 +481,6 @@ textarea {
 			border: none;
 			min-height: 60px;
 			color: @brand-color;
-			-webkit-transition: color 0.2s;
-			-moz-transition: color 0.2s;
-			-o-transition: color 0.2s;
 			transition: color 0.2s;
 			&:hover {
 				background: #fff;
@@ -428,20 +494,20 @@ textarea {
 #results {
 	position: relative;
 	margin-bottom: 60px;
-	@media (max-width: @mobile) {
+	@media (max-width: @xs) {
 		margin-bottom: 0px;
 		padding: 30px 0px;
 		text-align: center;
 	}
 	.fetchHeight {
-		@media (max-width: @mobile) {
+		@media (max-width: @xs) {
 			height: auto !important;
 		}
 	}
 	.resultContainer {
 		position: relative;
 		margin-bottom: 30px;
-		@media (max-width: @mobile) {
+		@media (max-width: @xs) {
 			margin-bottom: 15px;
 		}
 	}
@@ -499,6 +565,21 @@ textarea {
 			}
 		}
 	}
+	&.xs {
+		.resultContainer {
+			margin-bottom: 15px;
+			.result {
+				.content {
+					margin-left: -15px;
+					padding: 10px 10px 10px 0;
+					@media (max-width: @sm) {
+						margin-left: 0;
+						padding: 10px 10px 10px 10px;
+					}
+				}
+			}
+		}
+	}
 }
 
 
@@ -512,17 +593,17 @@ textarea {
 		margin-bottom: 30px;
 	}
 	.popular {
-		@media (max-width: @mobile) {
+		@media (max-width: @xs) {
 			margin-bottom: 30px;
 		}
 		a {
 			font-size: 16px;
 			display: inline-block;
-			margin-right: 10px;
+			margin-right: 5px;
 			padding: 5px 12px;
 			border-radius: 3px;
 			color: #444;
-			margin-bottom: 15px;
+			margin-bottom: 10px;
 			border: 1px solid rgba(0,0,0,0.05);
 			transition: background 0.2s, border 0.2s;
 			&:first-child {
@@ -539,7 +620,7 @@ textarea {
 			list-style: none;
 			padding: 7px 0 10px 15px;
 			border-left: 2px solid rgba(0,0,0,0.07);
-			@media (max-width: @mobile) {
+			@media (max-width: @xs) {
 				padding: 12px 0 10px 15px;
 			}
 			a {
@@ -552,7 +633,7 @@ textarea {
 				color: #888;
 				font-size: 11px;
 				font-style: italic;
-				@media (max-width: @mobile) {
+				@media (max-width: @xs) {
 					display: block;
 					margin-top: 10px;
 				}
@@ -580,7 +661,7 @@ textarea {
 	background: #111;
 	padding: 90px 0 90px 0;
 	color: #fff;
-	@media (max-width: @mobile) {
+	@media (max-width: @xs) {
 		text-align: center;
 	}
 	img {
@@ -594,7 +675,7 @@ textarea {
 		padding-bottom: 8px;
 		margin-bottom: 15px;
 		border-bottom: 2px solid #fff;
-		@media (max-width: @mobile) {
+		@media (max-width: @xs) {
 			margin-top: 30px;
 		}
 	}
