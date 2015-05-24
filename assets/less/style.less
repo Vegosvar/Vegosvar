@@ -13,13 +13,15 @@
 @yellow:				#ffd23a;
 @blue:					#2676ba;
 @red:					#d04c4c;
+@pink:					#ec4b6f;
 
-@restaurant:			#ec4b6f;
+@restaurant:			@pink;
 @recipe:				#f0b831;
 @product:				@blue;
 
 @xs:					768px;
 @sm:					992px;
+@md:					1170px;
 
 
 
@@ -148,6 +150,23 @@ hr {
 			background: lighten(@blue, 3%);
 		}
 	}
+	&.btn-like {
+		background: @pink;
+		color: #fff;
+		&:hover {
+			background: lighten(@pink, 3%);
+		}
+		.count {
+			display: inline-block;
+			background: #fff;
+			color: @red;
+			border-radius: 30px;
+			padding: 4px 7px;
+			line-height: 1;
+			margin-left: 5px;
+			font-size: 11px;
+		}
+	}
 	&.btn-secondary {
 		background: none;
 		color: @brand-color;
@@ -249,32 +268,25 @@ textarea {
 			margin-bottom: 0;
 		}
 	}
-	.votes {
+	.actions {
 		overflow: hidden;
-		margin-bottom: 30px;
-		.vote {
+		margin-bottom: 10px;
+		.col-lg-6:first-child {
+			padding-right: 7.5px;
+			@media (max-width: @md) {
+				padding-right: 15px;
+			}
+		}
+		.col-lg-6:last-child {
+			padding-left: 7.5px;
+			@media (max-width: @md) {
+				padding-left: 15px;
+			}
+		}
+		.btn {
 			display: block;
 			text-align: center;
-			line-height: 50px;
-			width: 50%;
-			height: 50px;
-			color: #fff;
-			float: left;
-			transition: background 0.2s;
-			&.up {
-				background: @blue;
-				border-radius: 3px 0 0 3px;
-				&:hover {
-					background: darken(@blue, 3%);
-				}
-			}
-			&.down {
-				background: #c0c0c0;
-				border-radius: 0 3px 3px 0;
-				&:hover {
-					background: darken(#c0c0c0, 3%);
-				}
-			}
+			margin-bottom: 5px;
 		}
 	}
 }
@@ -368,6 +380,7 @@ textarea {
 	margin-bottom: 60px;
 	.sources {
 		padding: 0;
+		margin-bottom: 15px;
 		li {
 			list-style: none;
 			margin-bottom: 5px;
