@@ -1,0 +1,18 @@
+<% include includes/header %>
+
+	<div class="container">
+		<div id="content">
+
+			<div class="row">
+				<div class="col-sm-8">
+					<h1>Mitt konto</h1>
+					<h2>Roligt att se dig <%= user.name.first %></h2>
+					<p>Är du redo att publicera lite nya sidor?</p>
+					<p><a href="#" class="btn btn-edit">Ja, publicera!</a></p><br>
+				</div>
+				<% include includes/sidebar %>
+			</div>
+		</div>
+	</div>
+
+<% include includes/footer %>
