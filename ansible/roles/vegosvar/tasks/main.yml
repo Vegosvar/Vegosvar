@@ -1,0 +1,72 @@
+---
+- name: Upgrade existing packages
+  apt: upgrade=full update_cache=yes
+
+- name: Create vegosvar user
+  user: name=vegosvar shell=/bin/bash createhome=yes system=yes
+
+- name: Create ssh directory
+  file: path=/home/vegosvar/.ssh state=directory owner=vegosvar group=vegosvar
+
+- name: Disable password login for ssh
+  lineinfile: dest=/etc/ssh/sshd_config state=absent regexp="^PasswordAuthentication yes"
+
+- name: Disable password login for ssh
+  lineinfile: dest=/etc/ssh/sshd_config line="PasswordAuthentication no"
+  notify:
+    - restart sshd
+
+- name: Check add-apt-repository
+  apt: pkg=python-software-properties state=latest update_cache=yes
+
+- name: Add apt key
+  apt_key: url=https://docs.mongodb.org/10gen-gpg-key.asc state=present
+
+- name: Add apt repo
+  apt_repository: repo='deb http://repo.mongodb.org/apt/ubuntu trusty/mongodb-org/3.0 multiverse'
+
+- name: Install required packages
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items:
+    - curl
+    - git
+    - vnstat
+    - htop
+    - pkg-config
+    - redis-server
+    - mongodb-org
+
+- name: Start mongodb
+  service: name=mongod state=started
+
+- name: Start redis-server
+  service: name=redis state=started
+
+- name: Add github to known_hosts file
+  shell: "su vegosvar -c 'ssh-keyscan -t rsa github.com > /home/vegosvar/.ssh/known_hosts'"
+
+- name: Install global packages
+  shell: "npm install -g forever gulp"
+
+- name: Create vegosvar directory
+  file: path=/opt/vegosvar state=directory owner=vegosvar group=vegosvar
+
+- name: Clone the repo
+  shell: "cd /opt/vegosvar && su vegosvar -c 'git clone https://github.com/Vegosvar/Vegosvar.git /opt/vegosvar'"
+
+- name: Install dependencies for vegosvar
+  shell: "su vegosvar -c 'cd /opt/vegosvar && npm install && gulp'"
+
+- name: Create vegosvar.log
+  file: path=/var/log/vegosvar.log owner=vegosvar group=vegosvar mode=0644 state=touch
+
+- name: Copy upstart job for vegosvar
+  copy: src=files/vegosvar.conf dest=/etc/init/vegosvar.conf owner=root group=root mode=0644
+  notify:
+  - reload initctl
+
+- name: Copy config
+  copy: src=../config.js dest=/opt/vegosvar/config.js owner=vegosvar group=vegosvar mode=0644
+
+- name: Start vegosvar
+  service: name=vegosvar state=started

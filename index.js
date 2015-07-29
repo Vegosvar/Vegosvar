@@ -15,6 +15,7 @@ var config = require('./config')
 var db = require('monk')(config.database.host + config.database.name)
 var users = db.get('users')
 
+// TODO Move this out using cluster to a separate file, add more files for routes etc!
 // TODO Index auth.facebook etc
 // TODO set callback URLs etc in Facebook dev console
 // TODO Update name etc every login maybe? Or allow user to change name on settings page, (or both, but user preference overrides, how will his work with multiple auth services?)
@@ -28,8 +29,6 @@ passport.use(new facebook_strategy({
   },
 
   function (access_token, refresh_token, profile, done) {
-    console.log(profile)
-
     users.findAndModify({ 
       auth: {
         facebook: profile.id
@@ -85,8 +84,9 @@ app.use(session({
 app.use(passport.initialize())
 app.use(passport.session())
 
-// TODO disable this, should be done in nginx
-app.use(express.static(__dirname + '/public'))
+if (process.env.NODE_ENV === 'development') {
+  app.use(express.static(__dirname + '/public'))
+}
 
 passport.serializeUser(function (user, done) {
   done(null, user.id)
