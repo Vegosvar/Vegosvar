@@ -25,7 +25,7 @@
   file: path=/etc/nginx/conf.d/example_ssl.conf state=absent
 
 - name: Copy nginx config
-  copy: src=files/nginx.conf dest=/etc/nginx/conf.d/vegosvar.conf
+  copy: src=nginx.conf dest=/etc/nginx/conf.d/vegosvar.conf
 
 - name: Ensure nginx is running
   service: name=nginx state=restarted

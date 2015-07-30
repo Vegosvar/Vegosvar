@@ -13,8 +13,9 @@
 
 - name: Disable password login for ssh
   lineinfile: dest=/etc/ssh/sshd_config line="PasswordAuthentication no"
-  notify:
-    - restart sshd
+
+- name: Restart sshd
+  service: name=ssh state=restarted 
 
 - name: Check add-apt-repository
   apt: pkg=python-software-properties state=latest update_cache=yes
@@ -40,7 +41,7 @@
   service: name=mongod state=started
 
 - name: Start redis-server
-  service: name=redis state=started
+  service: name=redis-server state=started
 
 - name: Add github to known_hosts file
   shell: "su vegosvar -c 'ssh-keyscan -t rsa github.com > /home/vegosvar/.ssh/known_hosts'"
@@ -70,3 +71,6 @@
 
 - name: Start vegosvar
   service: name=vegosvar state=started
+
+- name: Allow vegosvar user to restart vegosvar service
+  lineinfile: "dest=/etc/sudoers state=present line='vegosvar ALL=NOPASSWD: /usr/sbin/service vegosvar restart' validate='visudo -cf %s'"     
