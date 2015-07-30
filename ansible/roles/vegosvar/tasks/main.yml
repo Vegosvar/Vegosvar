@@ -55,19 +55,19 @@
 - name: Clone the repo
   shell: "cd /opt/vegosvar && su vegosvar -c 'git clone https://github.com/Vegosvar/Vegosvar.git /opt/vegosvar'"
 
+- name: Copy config
+  copy: src=../config.js dest=/opt/vegosvar/config.js owner=vegosvar group=vegosvar mode=0644
+
 - name: Install dependencies for vegosvar
-  shell: "su vegosvar -c 'cd /opt/vegosvar && npm install && gulp'"
+  shell: "su vegosvar -c 'cd /opt/vegosvar && npm install && gulp prod'"
 
 - name: Create vegosvar.log
   file: path=/var/log/vegosvar.log owner=vegosvar group=vegosvar mode=0644 state=touch
 
 - name: Copy upstart job for vegosvar
-  copy: src=files/vegosvar.conf dest=/etc/init/vegosvar.conf owner=root group=root mode=0644
+  copy: src=vegosvar.conf dest=/etc/init/vegosvar.conf owner=root group=root mode=0644
   notify:
   - reload initctl
-
-- name: Copy config
-  copy: src=../config.js dest=/opt/vegosvar/config.js owner=vegosvar group=vegosvar mode=0644
 
 - name: Start vegosvar
   service: name=vegosvar state=started
