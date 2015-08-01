@@ -49,8 +49,8 @@ $(window).load(function () {
   })
 })
 
-$(function() {
-  $(".searchForm").keypress(function() {
-    $("#heroSearch").addClass("contracted");
+$(function () {
+  $('.searchForm').keypress(function () {
+    $('#heroSearch').addClass('contracted')
   })
-});
+})
