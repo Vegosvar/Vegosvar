@@ -23,13 +23,14 @@ var users = db.get('users')
 // TODO Index auth.facebook etc
 // TODO set callback URLs etc in Facebook dev console
 // TODO Update name etc every login maybe? Or allow user to change name on settings page, (or both, but user preference overrides, how will his work with multiple auth services?)
-// TODO Store first-name for nicer user UX?
-// TODO get large-ish image or url http://stackoverflow.com/questions/11748941/facebook-oauth-no-picture-with-basic-permissions, see if scope down below is uneccesary!
+// TODO Set enableProof: true
+// TODO Set fallback photo to actual link
+// TODO Reauthenticate etc?
 passport.use(new facebook_strategy({
     clientID: config.facebook.app_id,
     clientSecret: config.facebook.app_secret,
     callbackURL: config.facebook.callback,
-    profileFields: ['id', 'name', 'displayName']
+    profileFields: ['id', 'name', 'displayName', 'picture.type(large)']
   },
 
   function (access_token, refresh_token, profile, done) {
@@ -38,15 +39,18 @@ passport.use(new facebook_strategy({
         facebook: profile.id
       }
     }, { 
-      $setOnInsert: { 
+      $setOnInsert: {
         auth: { 
-          facebook: profile.id, 
-        },
-        
+          facebook: profile.id
+        }
+      },
+      $set: {
         name: {
           display_name: profile.displayName,
           first: profile.name.givenName
-        }
+        },
+
+        photo: profile.photos ? profile.photos[0].value : '/unknown_user.png'
       }
     }, { 
       new: true, 
@@ -54,7 +58,8 @@ passport.use(new facebook_strategy({
     }, function (error, result) {
       done(error, {
         id: result._id,
-        display_name: result.display_name
+        display_name: result.display_name,
+        photo: result.photo
       })
     })
   }
@@ -98,7 +103,7 @@ passport.serializeUser(function (user, done) {
 
 // TODO error handling etc
 passport.deserializeUser(function (id, done) {
-  users.findById(id, ['_id', 'name'], function (error, result) {
+  users.findById(id, ['_id', 'name', 'photo'], function (error, result) {
     done(error, result)
   })
 })
@@ -127,7 +132,7 @@ app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res) 
 
 // TODO manually handle failure?
 // TODO redirect to /konto?
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { scope: ['picture.type(large)'], failureRedirect: '/login' }), function (req, res) {
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), function (req, res) {
   // TODO get the page we were on when we got sent to auth instead!
   res.redirect('/')
 })
