@@ -1,12 +1,13 @@
 <% include includes/header %>
 
   <div class="container">
-    <div id="content">
+    <article>
 
       <div class="row">
         <div class="col-sm-8">
           <h1>Inställningar</h1>
           <h2>Signatur</h2>
+          <p>Din signatur syns på sidor publicerade av dig.<br> Om du vill vara anonym väljer du detta när du postar sidan.</p>
           <div class="row">
             <div class="col-sm-7">
               <div class="input-group">
@@ -26,7 +27,7 @@
           <div class="row">
             <div class="col-sm-7">
               <div class="input-group">
-                <label>Kort beskrivning av dig, ditt företag eller din hemsida</label>
+                <br><label>Kort beskrivning av dig, ditt företag eller din hemsida</label>
                 <textarea type="text" class="form-control"></textarea>
                 <p><small>Max 50 bokstäver</small></p>
               </div>
@@ -51,6 +52,8 @@
         </div>
         <% include includes/sidebar %>
       </div>
+
+    </article>
   </div>
 
 <% include includes/footer %>

@@ -48,3 +48,9 @@ $(window).load(function () {
     })
   })
 })
+
+$(function() {
+  $(".searchForm").keypress(function() {
+    $("#heroSearch").addClass("contracted");
+  })
+});

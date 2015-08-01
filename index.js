@@ -150,7 +150,7 @@ app.get('/konto', function (req, res) {
 })
 
 app.get('/settings', function (req, res) {
-
+  res.render('settings', { user: req.user })
 })
 
 // TODO 'uncaughtException' as well? See what happens if DB goes down etc
