@@ -114,7 +114,7 @@ passport.deserializeUser(function (id, done) {
 
 // TODO make one default template instead of the same includes in every?
 app.get('/', function (req, res) {
-  res.render('index', { user: req.user })
+  res.render('index', { user: req.user, showsearch: true })
 })
 
 app.get('/login', function (req, res) {

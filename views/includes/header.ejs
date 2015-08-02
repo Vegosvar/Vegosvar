@@ -75,12 +75,14 @@
           <div class="col-xs-6 col-sm-4 center-xs">
             <a href="/"><img src="assets/images/vegosvar.svg" class="logo"></a>
           </div>
-          <div class="col-xs-12 col-sm-8">
-            <form class="search" role="search" _lpchecked="1">
-              <input type="text" class="form-control" value="Sök fakta, restauranger med mera" onfocus="if (this.value=='Sök fakta, restauranger med mera') this.value='';" onblur="if (this.value=='') this.value='Sök fakta, restauranger med mera';">
-            </form>
-          </div>
-        </div>
+					<% if (typeof showsearch === 'undefined') { %>
+						<div class="col-xs-12 col-sm-8">
+							<form class="search" role="search" _lpchecked="1">
+								<input type="text" class="form-control" value="Sök fakta, restauranger med mera" onfocus="if (this.value=='Sök fakta, restauranger med mera') this.value='';" onblur="if (this.value=='') this.value='Sök fakta, restauranger med mera';">
+							</form>
+						</div>
+					<% } %>
+				</div>
       </div>
 
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
