@@ -87,14 +87,8 @@
 
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
-          <li><a href="/new">Publicera</a></li>
+          <li><a href="/new">Skapa sida</a></li>
           <% if (typeof user !== 'undefined') { %>
-            <li class="profile picture">
-              <a href="/settings">
-                <img src="<%= user.photo %>">
-                <span class="glyphicon glyphicon-camera"></span>
-              </a>
-            </li>
             <li class="profile name dropdown">
                 <a href="/konto" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 <%= user.name.display_name %>
@@ -104,6 +98,12 @@
                 <li><a href="/pages">Mina sidor</a></li>
                 <li><a href="/logout">Logga ut</a></li>
               </ul>
+            </li>
+            <li class="profile picture">
+              <a href="/settings">
+                <img src="<%= user.photo %>">
+                <span class="glyphicon glyphicon-camera"></span>
+              </a>
             </li>
           <% } %>
           <% if (typeof user === 'undefined') { %>
