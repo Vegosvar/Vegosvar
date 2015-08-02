@@ -336,33 +336,74 @@ textarea {
 	}
 
 	li {
+		&.open > a {
+			background-color: @brand-color !important;
+		}
 		a {
 			color: #fff !important;
 			transition: background 0.2s;
 			&:hover {
 				background-color: darken(@brand-color, 5%) !important;
+				@media (max-width: @xs) {
+					background-color: darken(@brand-color, 7%) !important;
+				}
 			}
 		}
-		&.navProfile {
-			a {
-				padding: 6px 15px 6px 15px;
-			}
-			img {
-				height: 38px;
-				width: auto;
-				margin-right: 3px;
-				border-radius: 30px;
+		&.profile {
+			&.picture {
+				.glyphicon {
+					opacity: 0;
+					position: absolute;
+					color: #fff;
+					padding: 16px;
+					transition: opacity 0.3s;
+					font-size: 18px;
+				}
+				img {
+					opacity: 1;
+					height: 50px;
+					width: auto;
+					border-radius: 3px;
+					transition: opacity 0.3s;
+					@media (max-width: @xs) {
+						display: none;
+					}
+				}
+				a {
+					padding: 0;
+					background: #000;
+					&:hover {
+						background: #000 !important;
+						img {
+							opacity: 0.6;
+						}
+						.glyphicon {
+							opacity: 0.9;
+						}
+					}
+				}
 			}
 		}
-		&.dropdown:hover .dropdown-menu {
-		    display: block;
-		}
-		.dropdown-menu {
-			background: darken(@brand-color, 2%);
-			border: none;
-			box-shadow: none;
-			a {
-				padding: 10px 15px;
+		&.dropdown {
+			&:hover .dropdown-menu {
+				@media (min-width: @xs) {
+			    	display: block;
+				}
+			}
+			.dropdown-menu {
+				background: darken(@brand-color, 2%);
+				border: none;
+				box-shadow: none;
+				padding: 0;
+				li {
+					&:last-child a {
+						border-radius: 0 0 3px 3px;
+					}
+					a {
+						display: block;
+						padding: 12px 15px;
+					}
+				}
 			}
 		}
 	}
@@ -497,6 +538,9 @@ article {
 
 	&.contracted {
 		padding: 60px 0 30px 0;
+		@media (max-width: @xs) {
+			padding: 30px 0 20px 0;
+		}
 		h1 {
 			font-size: 0px !important;
 		}
@@ -526,6 +570,9 @@ article {
 
 	p {
 		margin-bottom: 0;
+		@media (max-width: @xs) {
+			font-size: 13px;
+		}
 	}
 
 	.searchEngine {
@@ -720,12 +767,28 @@ article {
 	background: @brand-color;
 	color: #fff;
 	padding: 90px 0;
+	.logo {
+		display: inline-block;
+		position: relative; 
+		width: 170px; 
+		top: -4px;
+		@media (max-width: @xs) {
+			width: 240px;
+			top: 5px;
+			left: -5px;
+		}
+	}
 	h2 {
 		margin-top: 0;
 		margin-bottom: 60px;
 	}
 	.item {
 		margin-bottom: 30px;
+		h3 {
+			@media (max-width: @sm) {
+				margin-top: 0;
+			}
+		}
 		img {
 			border-radius: 500px;
 		}
