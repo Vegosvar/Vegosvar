@@ -358,11 +358,14 @@ textarea {
 					padding: 16px;
 					transition: opacity 0.3s;
 					font-size: 18px;
+					top:0;
+					left:0;
 				}
 				img {
 					opacity: 1;
-					height: 50px;
-					width: auto;
+					height: auto;
+					width: 50px;
+					margin-top:-25%;
 					border-radius: 3px;
 					transition: opacity 0.3s;
 					@media (max-width: @xs) {
@@ -370,6 +373,9 @@ textarea {
 					}
 				}
 				a {
+					overflow:hidden;
+					width:50px;
+					height:50px;
 					padding: 0;
 					background: #000;
 					&:hover {
