@@ -75,6 +75,7 @@ app.use(cookie_parser())
 // TODO re-use db connection
 // TODO resave/saveUnitialized
 // TODO heighten cookie max time?
+// TODO set secure: true later when redirecting for https etc!
 // TODO use redis store?
 app.use(session({ 
   secret: config.session_secret,
@@ -85,7 +86,7 @@ app.use(session({
   }),
   cookie: { 
     maxAge: 60*60*1000,
-    secure: process.env.NODE_ENV === 'production'
+    secure: false
   }
 }))
 
