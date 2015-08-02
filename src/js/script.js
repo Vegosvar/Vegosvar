@@ -47,6 +47,7 @@ $(window).load(function () {
       //console.log(label)
     })
   })
+  $('[data-toggle="tooltip"]').tooltip()
 })
 
 $(function () {
