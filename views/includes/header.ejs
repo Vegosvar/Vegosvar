@@ -87,7 +87,17 @@
         <ul class="nav navbar-nav navbar-right">
           <li><a href="/new">Publicera</a></li>
           <% if (typeof user !== 'undefined') { %>
-            <li><a href="/konto">Mitt konto</a></li>
+            <li class="navProfile dropdown">
+              <a href="/konto" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <img src="<%= user.photo %>"> 
+                <%= user.name.display_name %>
+              </a>
+              <ul class="dropdown-menu">
+                <li><a href="/settings">Inställningar</a></li>
+                <li><a href="/pages">Mina sidor</a></li>
+                <li><a href="/logout">Logga ut</a></li>
+              </ul>
+            </li>
           <% } %>
           <% if (typeof user === 'undefined') { %>
             <li><a href="/login">Logga in</a></li>
