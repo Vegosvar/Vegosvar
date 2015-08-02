@@ -22,7 +22,6 @@ var users = db.get('users')
 // TODO Move this out using cluster to a separate file, add more files for routes etc!
 // TODO Index auth.facebook etc
 // TODO set callback URLs etc in Facebook dev console
-// TODO Update name etc every login maybe? Or allow user to change name on settings page, (or both, but user preference overrides, how will his work with multiple auth services?)
 // TODO Set enableProof: true
 // TODO Set fallback photo to actual link
 // TODO Reauthenticate etc?
@@ -34,17 +33,16 @@ passport.use(new facebook_strategy({
   },
 
   function (access_token, refresh_token, profile, done) {
-    users.findAndModify({ 
+    users.findAndModify({
       auth: {
         facebook: profile.id
       }
-    }, { 
+    }, {
       $setOnInsert: {
-        auth: { 
+        auth: {
           facebook: profile.id
-        }
-      },
-      $set: {
+        },
+
         name: {
           display_name: profile.displayName,
           first: profile.name.givenName
@@ -52,8 +50,8 @@ passport.use(new facebook_strategy({
 
         photo: profile.photos ? profile.photos[0].value : '/unknown_user.png'
       }
-    }, { 
-      new: true, 
+    }, {
+      new: true,
       upsert: true
     }, function (error, result) {
       done(error, {
@@ -77,14 +75,14 @@ app.use(cookie_parser())
 // TODO heighten cookie max time?
 // TODO set secure: true later when redirecting for https etc!
 // TODO use redis store?
-app.use(session({ 
+app.use(session({
   secret: config.session_secret,
   resave: false,
   saveUninitialized: false,
   store: new session_store({
     url: config.database.host + config.database.name
   }),
-  cookie: { 
+  cookie: {
     maxAge: 60*60*1000,
     secure: false
   }
@@ -118,7 +116,7 @@ app.get('/', function (req, res) {
 })
 
 app.get('/login', function (req, res) {
-  
+
   // TODO make this a middleware or something
   if (req.isAuthenticated()) {
     // TODO get latest page we were on or something instead
@@ -143,10 +141,10 @@ app.get('/logout', function (req, res) {
 })
 
 app.use(function ensure_authenticated (req, res, next) {
-  if (req.isAuthenticated()) { 
+  if (req.isAuthenticated()) {
     return next()
   }
-  
+
   res.redirect('/login')
 })
 
