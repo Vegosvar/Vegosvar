@@ -321,6 +321,12 @@ textarea {
 		width: 100%;
 		top: 0;
 	}
+	.navbar-right {
+		margin: 0;
+		@media (max-width: @xs) {
+			margin: 0 -15px;
+		}
+	}
 	.navbar-toggle {
 		border: none;
 		&:hover, &:focus {
@@ -349,9 +355,7 @@ textarea {
 				}
 			}
 		}
-		&.spacer {
-			width:30px;
-		}
+
 
 		&.dropdown {
 			a {
