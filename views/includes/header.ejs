@@ -90,10 +90,9 @@
           <li><a href="/new">Publicera</a></li>
           <% if (typeof user !== 'undefined') { %>
             <li class="profile name dropdown">
-							
-                <a href="/konto" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-	                <span class="img"><img src="<%= user.photo %>"></span>
-									<span><%= user.name.display_name %></span>
+							<a href="/konto" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+								<span class="img"><img src="<%= user.photo %>"></span>
+								<span><%= user.name.display_name %></span>
               </a>
               <ul class="dropdown-menu">
                 <li><a href="/settings">Inställningar</a></li>
