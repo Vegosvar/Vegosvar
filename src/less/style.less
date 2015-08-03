@@ -45,7 +45,7 @@ a {
 	color: @brand-color;
 	&:hover, &:active, &:focus {
 		text-decoration: none;
-		color: darken(@brand-color,5%);
+		color: darken(@brand-color, 5%);
 	}
 }
 
@@ -360,19 +360,6 @@ textarea {
 				@media (max-width: @xs) {
 					display: none;
 				}
-				.glyphicon {
-					opacity: 0;
-					position: absolute;
-					color: #fff;
-					padding: 16px;
-					transition: opacity 0.3s;
-					font-size: 18px;
-					top: 0;
-					left: 0;
-				}
-        .tooltip-inner {
-          white-space: nowrap;
-        }
 				img {
 					opacity: 1;
 					height: auto;
@@ -389,10 +376,7 @@ textarea {
 					&:hover {
 						background: #000 !important;
 						img {
-							opacity: 0.6;
-						}
-						.glyphicon {
-							opacity: 0.9;
+							opacity: 0.8;
 						}
 					}
 				}
@@ -441,7 +425,7 @@ textarea {
 				background: rgba(255,255,255,0.15);
 				box-shadow: inset 0 0 0 5px @brand-color;
 			}
-      @media (max-width: @xs) {
+			@media (max-width: @xs) {
 				width: 100%;
 				padding: 8px 17px;
 				font-size: 13px;
@@ -577,7 +561,7 @@ article {
 			color: #fff;
 			transition: font-size 0.8s;
 			@media (max-width: @xs) {
-				font-size: 27px;
+				font-size: 23px;
 				font-weight: 400;
 			}
 		}
@@ -717,56 +701,54 @@ article {
 
 
 
-#extra {
+#pages {
 	border-top: 2px solid rgba(0,0,0,0.05);
 	padding: 60px 0;
 	color: #0f0805;
 	h2 {
 		margin-top: 0;
+		margin-bottom: 15px;
+		padding-bottom: 10px;
+		display: inline-block;
+		border-bottom: 2px solid #333;
+	}
+	.pagelist {
 		margin-bottom: 30px;
-	}
-	.popular {
-		@media (max-width: @xs) {
-			margin-bottom: 30px;
+		.glyphicon {
+			position: relative;
+			top: -1px;
+			margin-right: 3px;
+			font-size: 20px;
 		}
-		a {
-			font-size: 16px;
-			display: inline-block;
-			margin-right: 5px;
-			padding: 5px 12px;
-			border-radius: 3px;
-			color: #444;
-			margin-bottom: 10px;
-			border: 1px solid rgba(0,0,0,0.05);
-			transition: background 0.2s, border 0.2s;
-			&:first-child {
-				margin-left: 0;
-			}
-			&:hover {
-				background: rgba(0,0,0,0.05);
-				border: 1px solid rgba(0,0,0,0);
-			}
-		}
-	}
-	.handpicked {
 		.item {
 			list-style: none;
-			padding: 7px 0 10px 15px;
+			padding: 10px 0 10px 0;
+			&.lg {
+				.image {
+					padding-right: 15px;
+					margin-bottom: 15px;
+				}
+			}
 			a {
 				font-size: 18px;
 				font-weight: 700;
 				line-height: 1.2;
 				color: #333;
-			}
-			@media (max-width: @xs) {
-				padding: 12px 0 10px 15px;
+				&:hover {
+					color: @brand-color;
+				}
 			}
 			p {
 				margin: 0;
 			}
+			.image {
+				padding-right: 0;
+			}
 			.date {
 				color: #888;
 				font-size: 12px;
+				display: block;
+				line-height: 1;
 				@media (max-width: @xs) {
 					display: block;
 					margin-top: 10px;
