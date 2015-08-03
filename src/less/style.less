@@ -8,10 +8,10 @@
 @yellow:				#ffd23a;
 @blue:					#2676ba;
 @red:					#d04c4c;
-@pink:					#ec4b6f;
+@pink:					#F95376;
 
-@restaurant:			@pink;
-@recipe:				#f0b831;
+@recipe:				@pink;
+@restaurant:			#FF990C;
 @product:				@blue;
 
 @xs:					768px;
@@ -350,6 +350,9 @@ textarea {
 		a {
 			color: #fff !important;
 			transition: background 0.2s;
+			@media (max-width: @xs) {
+				padding: 15px 15px;
+			}
 			&:hover {
 				background-color: darken(@brand-color, 5%) !important;
 				@media (max-width: @xs) {
@@ -491,12 +494,18 @@ article {
 			float: left;
 			background: #eee;
 			margin-bottom: 30px;
-			border-radius: 3px;
+			border-radius: 5px;
 			transition: background 0.2s;
+			&:hover {
+				.glyphicon {
+					transform: scale(1.2);
+				}
+			}
 			.glyphicon {
 				display: block;
 				font-size: 30px;
 				margin-top: 40px;
+				transition: transform 0.2s;
 			}
 			&.fact {
 				background: @brand-color;
