@@ -640,6 +640,9 @@ article {
 	.resultContainer {
 		position: relative;
 		margin-bottom: 30px;
+		@media (max-width: @xs) {
+			margin-bottom: 20px;
+		}
 	}
 	h2 {
 		margin-top: 0px;
@@ -655,20 +658,15 @@ article {
 		-moz-transition: box-shadow 0.2s;
 		-o-transition: box-shadow 0.2s;
 		transition: box-shadow 0.2s;
-		overflow: hidden;
 		img {
 			@media (max-width: @xs) {
-				width: 30%;
-				float: left;
-				padding: 0 0 0 20px;
-				margin-top: 25px;
+				display: none;
 			}
 		}
 		.content {
 			padding: 20px 20px 60px 20px;
 			@media (max-width: @xs) {
-				width: 70%;
-				float: right;
+				width: 100%;
 				padding: 25px 20px 60px 20px;
 			}
 			a {
