@@ -127,7 +127,7 @@ app.get('/login', function (req, res) {
 })
 
 app.get('/om', function(req, res) {
-  res.render('om');
+  res.render('om')
 })
 
 app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res) {})
