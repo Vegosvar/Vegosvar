@@ -115,6 +115,23 @@ app.get('/', function (req, res) {
   res.render('index', { user: req.user, showsearch: true })
 })
 
+app.get('/test', function (req, res) {
+  var testing = db.get('pages')
+  testing.insert({title: "Vad är Gelatin?", content: "Gelatin kommer från djur, fakta.", "user_id": "55bf75f666bdc5761a66885a"}, function(err, doc) {
+    if(err) throw err
+    else { 
+      res.json(doc)
+    }
+  })
+})
+
+app.get('/test/view', function (req, res) {
+  var testing = db.get('pages')
+  testing.find({}, function(err, doc) {
+    res.json(doc)
+  })
+})
+
 app.get('/logga-in', function (req, res) {
 
   // TODO make this a middleware or something
