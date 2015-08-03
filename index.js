@@ -168,6 +168,10 @@ app.get('/ny/fakta', function (req, res) {
   res.render('post', { user: req.user })
 })
 
+app.get('/annonsera', function (req, res) {
+  res.render('advertise', { user: req.user })
+})
+
 // TODO 'uncaughtException' as well? See what happens if DB goes down etc
 app.use(function error_handler (error, req, res, next) {
   // TODO better error page
