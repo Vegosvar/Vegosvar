@@ -115,7 +115,7 @@ app.get('/', function (req, res) {
   res.render('index', { user: req.user, showsearch: true })
 })
 
-app.get('/login', function (req, res) {
+app.get('/logga-in', function (req, res) {
 
   // TODO make this a middleware or something
   if (req.isAuthenticated()) {
@@ -139,7 +139,7 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRe
   res.redirect('/')
 })
 
-app.get('/logout', function (req, res) {
+app.get('/logga-ut', function (req, res) {
   req.logout()
   res.redirect('/')
 })
@@ -149,7 +149,7 @@ app.use(function ensure_authenticated (req, res, next) {
     return next()
   }
 
-  res.redirect('/login')
+  res.redirect('/logga-in')
 })
 
 app.get('/konto', function (req, res) {
