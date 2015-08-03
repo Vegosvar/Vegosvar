@@ -6,9 +6,16 @@
         </div>
         <div class="col-sm-2">
           <h3>Konto</h3>
-          <a href="/logga-in">Logga in</a>
-          <a href="/ny">Publicera</a>
-          <a href="/installningar"> Inställningar</a>
+					
+          <% if (typeof user !== 'undefined') { %>
+						<a href="/installningar">Inställningar</a>
+						<a href="/pages">Mina sidor</a>	
+						<a href="/logga-ut">Logga ut</a>
+          <% } %>
+          <% if (typeof user === 'undefined') { %>
+						<a href="/logga-in">Logga in</a>
+          <% } %>
+
         </div>
         <div class="col-sm-2">
           <h3>Socialt</h3>
