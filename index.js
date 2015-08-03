@@ -126,6 +126,10 @@ app.get('/login', function (req, res) {
   res.render('login', { })
 })
 
+app.get('/om', function(req, res) {
+  res.render('om');
+})
+
 app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res) {})
 
 // TODO manually handle failure?
