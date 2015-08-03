@@ -156,7 +156,7 @@ app.get('/konto', function (req, res) {
   res.render('konto', { user: req.user })
 })
 
-app.get('/settings', function (req, res) {
+app.get('/installningar', function (req, res) {
   res.render('settings', { user: req.user })
 })
 
