@@ -160,6 +160,10 @@ app.get('/settings', function (req, res) {
   res.render('settings', { user: req.user })
 })
 
+app.get('/ny', function (req,res) {
+  res.render('new', { user: req.user })
+})
+
 // TODO 'uncaughtException' as well? See what happens if DB goes down etc
 app.use(function error_handler (error, req, res, next) {
   // TODO better error page
