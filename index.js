@@ -165,7 +165,7 @@ app.get('/ny', function (req,res) {
 })
 
 app.get('ny/fakta', function (req, res) {
-  res.render('post', { user: req:user })
+  res.render('post', { user: req.user })
 })
 
 // TODO 'uncaughtException' as well? See what happens if DB goes down etc
