@@ -130,6 +130,10 @@ app.get('/om', function(req, res) {
   res.render('about');
 })
 
+app.get('/annonsera', function (req, res) {
+  res.render('advertise');
+})
+
 app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res) {})
 
 // TODO manually handle failure?
@@ -168,9 +172,6 @@ app.get('/ny/fakta', function (req, res) {
   res.render('post', { user: req.user })
 })
 
-app.get('/annonsera', function (req, res) {
-  res.render('advertise', { user: req.user })
-})
 
 // TODO 'uncaughtException' as well? See what happens if DB goes down etc
 app.use(function error_handler (error, req, res, next) {
