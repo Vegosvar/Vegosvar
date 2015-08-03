@@ -164,7 +164,7 @@ app.get('/ny', function (req,res) {
   res.render('new', { user: req.user })
 })
 
-app.get('ny/fakta', function (req, res) {
+app.get('/ny/fakta', function (req, res) {
   res.render('post', { user: req.user })
 })
 
