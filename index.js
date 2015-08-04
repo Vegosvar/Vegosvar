@@ -117,7 +117,7 @@ app.get('/', function (req, res) {
 
 app.get('/test', function (req, res) {
   var testing = db.get('pages')
-  testing.insert({title: "Vad är Gelatin?", content: "Gelatin kommer från djur, fakta.", "user_id": "55bf75f666bdc5761a66885a"}, function(err, doc) {
+  testing.insert({title: "Vad är Gelatin?", post:{ content: "Gelatin kommer från djur, fakta.", cover_image: "https://unsplash.it/200/300/?random", sources:{ 1:"http://google.com/", 2:"http://aekstrom.se/", 3:"http://wikipedia.com/", 4:"http://imdb.com/" }}, type: "1","user_info":{ "id": req.user._id, "name": req.user.name.display_name }}, function(err, doc) {
     if(err) throw err
     else { 
       res.json(doc)
