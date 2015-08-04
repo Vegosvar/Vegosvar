@@ -6,30 +6,85 @@
       <div class="row">
         <div class="col-sm-8">
           <h1>Mina sidor</h1>
-          <p>Sidor du är originalförfattare till listas här, men ändringar kan ha gjorts av andra efter din senaste ändring.</p>
+          
+          <div class="panel panel-default">
+            <!-- No table heading, h1 is enough? -->
+            <div class="panel-body">
+              <p>Sidor du är originalförfattare till listas här, men ändringar kan ha gjorts av andra efter din senaste ändring. Låsta sidor kräver moderering innan ändringar visas för andra användare</p>
+            </div>
+
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Namn</th>
+                  <th>Kategori</th>
+                  <th>Senast ändrad av</th>
+                  <th>Låst</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Goodstore Stockholm</th>
+                  <td><span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span></td>
+                  <td>Jeremy Lloyd Gallant</td>
+                  <td><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></td>
+                </tr>
+                <tr>
+                  <th scope="row">Goodstuff</th>
+                  <td><span class="glyphicon glyphicon-ice-lolly-tasted" aria-hidden="true"></span></td>
+                  <td>Jeremy Lloyd Gallant</td>
+                  <td style="color:#EAEAEA"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></td>
+                </tr>
+                <tr>
+                  <th scope="row">Vad är gelatin?</th>
+                  <td><span class="glyphicon glyphicon-apple" aria-hidden="true"></span></td>
+                  <td>Jeremy Lloyd Gallant</td>
+                  <td style="color:#EAEAEA"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
           <br>
-          <div class="row">
-            <div class="col-sm-6">
-              <div class="well">
-                <span class="flag flag-success">Godkänd</span>
-                <h3>Hur ser jag att bananen är mogen?</h3>
-                <a href="#" class="btn btn-edit">Redigera</a>
+          
+          <div class="panel panel-default">
+            <!-- No table heading, h1 is enough? -->
+            <div class="panel-heading">
+                <h3 class="panel-title">Dina ändringar</h3>
               </div>
+            <div class="panel-body">
+              <p>Här visas de sidor du har gjort eller föreslagit ändringar till. Även ändringar som ej ännu modererats visas här.</p>
             </div>
-            <div class="col-sm-6">
-              <div class="well">
-                <span class="flag flag-info">Granskas</span>
-                <h3>Hur ser jag att bananen är mogen?</h3>
-                <a href="#" class="btn btn-edit">Redigera</a>
-              </div>
-            </div>
-            <div class="col-sm-6">
-              <div class="well">
-                <span class="flag flag-warning">Ej godkänd</span>
-                <h3>Vilken färg har bananen?</h3>
-                <a href="#" class="btn btn-edit">Redigera</a>
-              </div>
-            </div>
+
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Namn</th>
+                  <th>Kategori</th>
+                  <th>Senast ändrad av</th>
+                  <th>Låst</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <th scope="row">Goodstore Stockholm</th>
+                  <td><span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span></td>
+                  <td>Jeremy Lloyd Gallant</td>
+                  <td><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></td>
+                </tr>
+                <tr>
+                  <th scope="row">Goodstuff</th>
+                  <td><span class="glyphicon glyphicon-ice-lolly-tasted" aria-hidden="true"></span></td>
+                  <td>Jeremy Lloyd Gallant</td>
+                  <td style="color:#EAEAEA"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></td>
+                </tr>
+                <tr>
+                  <th scope="row">Vad är gelatin?</th>
+                  <td><span class="glyphicon glyphicon-apple" aria-hidden="true"></span></td>
+                  <td>Jeremy Lloyd Gallant</td>
+                  <td style="color:#EAEAEA"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
         <% include includes/sidebar %>
