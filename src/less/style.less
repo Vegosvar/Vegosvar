@@ -667,14 +667,13 @@ article {
 				position: absolute;
 				width: 30%;
 				height: 100%;
-				float: left;
+				right: 0;
 			}
 		}
 		.content {
 			padding: 20px 20px 60px 20px;
-			@media (max-width: @xs) {
+			@media (max-width: @xs) { // TODO Make 100% wide when image is missing
 				width: 70%;
-				float: right;
 				padding: 20px 20px 0 20px;
 				margin-bottom: 15px;
 			}
@@ -704,7 +703,6 @@ article {
 			bottom: 0;
 			@media (max-width: @xs) {
 				position: relative;
-				float: right;
 				width: 70%;
 			}
 			.info {
