@@ -5,54 +5,60 @@
 
       <div class="row">
         <div class="col-sm-8">
-          <h1>Inställningar</h1>
-          <h2>Signatur</h2>
-          <p>Din signatur syns på sidor publicerade av dig.<br> Du kan välja att vara anonym när du <a href="/ny">publicerar</a> sidan.</p>
-          <div class="row">
-            <div class="col-sm-7">
-              <div class="input-group">
-                <span class="input-group-addon" id="basic-addon2">Visningsnamn</span>
-                <input type="text" class="form-control" placeholder="Per Lööv" aria-describedby="basic-addon1">
+          <section>
+            <h1>Inställningar</h1>
+            <h2>Signatur</h2>
+            <p>Din signatur syns på sidor publicerade av dig.<br> Du kan välja att vara anonym när du <a href="/ny">publicerar</a> sidan.</p>
+            <div class="row">
+              <div class="col-sm-7">
+                <div class="input-group">
+                  <span class="input-group-addon" id="basic-addon2">Visningsnamn</span>
+                  <input type="text" class="form-control" placeholder="Per Lööv" aria-describedby="basic-addon1">
+                </div>
               </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-7">
-              <div class="input-group">
-                <span class="input-group-addon" id="basic-addon1">Hemsida/Blogg</span>
-                <input type="text" class="form-control" placeholder="http://" aria-describedby="basic-addon1">
+            <div class="row">
+              <div class="col-sm-7">
+                <div class="input-group">
+                  <span class="input-group-addon" id="basic-addon1">Hemsida/Blogg</span>
+                  <input type="text" class="form-control" placeholder="http://" aria-describedby="basic-addon1">
+                </div>
               </div>
             </div>
-          </div>
-          <div class="row">
-            <div class="col-sm-7">
-              <div class="input-group">
-                <br><label>Kort beskrivning av dig, ditt företag eller din hemsida</label>
-                <textarea type="text" class="form-control"></textarea>
-                <p><small>Max 50 bokstäver</small></p>
+            <div class="row">
+              <div class="col-sm-7">
+                <div class="input-group">
+                  <br><label>Kort beskrivning av dig, ditt företag eller din hemsida</label>
+                  <textarea type="text" class="form-control"></textarea>
+                  <p><small>Max 50 bokstäver</small></p>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="input-group">
-            <span class="btn btn-edit btn-file">
-              <span class="glyphicon glyphicon-camera"></span> Välj profilbild <input type="file">
-            </span>
-            <p><small>Rekommenderad storlek <strong>200 x 200 px</strong></small></p>
-          </div>
-          <div class="row">
-            <div class="col-sm-12">
-              <p><button class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Spara inställningar</button></p>
+            <div class="input-group">
+              <span class="btn btn-edit btn-file">
+                <span class="glyphicon glyphicon-camera"></span> Välj profilbild <input type="file">
+              </span>
+              <p><small>Rekommenderad storlek <strong>200 x 200 px</strong></small></p>
             </div>
-          </div>
-          <hr>
+            <div class="row">
+              <div class="col-sm-12">
+                <p><button class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Spara</button></p>
+              </div>
+            </div>
+          </section>
+        </div>
+        <% include includes/sidebar %>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-8">
           <h3>Avsluta kontot</h3>
           <p>Dina publicerade sidor påverkas inte av att avsluta kontot. Ditt konto och dina kontaktupppgifter kommer däremot att försvinna.
           Vill ta bort dina sidor först rekommenderar vi att du gör det under <a href="/pages">Mina sidor</a>.</p> 
           <a href="#" class="btn btn-secondary">Ta bort mitt konto</a></p><br>
         </div>
-        <% include includes/sidebar %>
       </div>
-
+      
     </article>
   </div>
 
