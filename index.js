@@ -181,6 +181,10 @@ app.get('/installningar', function (req, res) {
   res.render('settings', { user: req.user })
 })
 
+app.get('/mina-sidor', function (req, res) {
+  res.render('pages', { user: req.user })
+})
+
 app.get('/ny', function (req,res) {
   res.render('new', { user: req.user })
 })
