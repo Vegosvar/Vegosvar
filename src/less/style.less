@@ -17,7 +17,7 @@
 
 @xs:					768px;
 @sm:					992px;
-@md:					1170px;
+@md:					1199px;
 
 
 
@@ -653,21 +653,26 @@ article {
 		position: relative;
 		background: #fff;
 		color: #333;
-		border-radius: 3px;
+		border-radius: 5px;
+		overflow: hidden;
 		-webkit-transition: box-shadow 0.2s;
 		-moz-transition: box-shadow 0.2s;
 		-o-transition: box-shadow 0.2s;
 		transition: box-shadow 0.2s;
 		img {
 			@media (max-width: @xs) {
-				display: none;
+				width: 20%;
+				float: left;
+				border-radius: 0 0 5px 0;
 			}
 		}
 		.content {
 			padding: 20px 20px 60px 20px;
-			@media (max-width: @xs) {
-				width: 100%;
-				padding: 25px 20px 60px 20px;
+			@media (max-width: @xs) { // TODO Make dynamic when image is missing
+				width: 80%;
+				float: right;
+				padding: 20px 20px 0 20px;
+				margin-bottom: 15px;
 			}
 			a {
 				color: #333;
@@ -685,19 +690,28 @@ article {
 				margin-top: 10px;
 				margin-bottom: 0;
 				font-size: 13px;
-				color: #777;
+				line-height: 1.5;
+				color: #444;
 			}
 		}
 		.more {	
 			position: absolute;
 			width: 100%;
 			bottom: 0;
+			@media (max-width: @xs) {
+				position: relative;
+				float: right;
+				width: 80%;
+			}
 			.info {
 				display: inline-block;
 				float: left;
 				padding: 11px 20px;
 				color: #A7A7A7;
 				font-size: 13px;
+				@media (max-width: @xs) {
+					padding: 0 20px 20px 20px;
+				}
 				&.success {
 					color: @brand-color;
 				}
@@ -710,6 +724,9 @@ article {
 				float: right;
 				padding: 10px 18px;
 				border-radius: 0;
+				@media (max-width: @xs) {
+					display: none;
+				}
 			}
 		}
 	}
@@ -797,13 +814,29 @@ article {
 	}
 	.item {
 		margin-bottom: 30px;
+		@media (max-width: @sm) {
+			text-align: center;
+		}
+		@media (max-width: @xs) {
+			text-align: left;
+		}
 		h3 {
+			margin-top: 20px;
+			@media (max-width: @md) {
+				margin-top: 0px !important;
+			}
 			@media (max-width: @sm) {
 				margin-top: 0;
 			}
 		}
 		img {
 			border-radius: 500px;
+			@media (max-width: @sm) {
+				margin-bottom: 15px;
+			}
+			@media (max-width: @xs) {
+				margin-bottom: 0;
+			}
 		}
 	}
 	.action {
