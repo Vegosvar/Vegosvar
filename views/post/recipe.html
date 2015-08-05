@@ -1,0 +1,99 @@
+<% include ../includes/header %>
+
+	<div class="container">
+		<article>
+
+			<div class="row">
+				<div class="col-sm-8">
+
+					<h1>Publicera ett nytt recept</h1>
+					<hr>
+					<div class="row">
+						<div class="col-sm-7">
+							<div class="input-group">
+								<span class="input-group-addon" id="basic-addon2">Rubrik</span>
+								<input type="text" class="form-control" aria-describedby="basic-addon1">
+							</div>
+						</div>
+					</div>
+					
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="input-group">
+								<textarea type="text" class="form-control"></textarea>
+							</div>
+						</div>
+					</div>
+
+					<h3>Ingredienser</h3>
+					<div class="row">
+						<div class="col-sm-7">
+							<div class="input-group">
+								<span class="input-group-addon" id="basic-addon1">Ingrediens</span>
+								<input type="text" class="form-control" placeholder="Sallad" aria-describedby="basic-addon1">
+							</div>
+						</div>
+					</div>
+	
+					<h3>Steg</h3>
+					<div class="row">
+						<div class="col-sm-7">
+							<div class="input-group">
+								<span class="input-group-addon" id="basic-addon1">Steg</span>
+								<input type="text" class="form-control" placeholder="Skala potatis" aria-describedby="basic-addon1">
+							</div>
+						</div>
+					</div>
+
+					<h3>Bilder</h3>
+					<div class="input-group">
+						<span class="btn btn-edit btn-file">
+							<span class="glyphicon glyphicon-camera"></span> Ladda upp utvald bild <input type="file">
+						</span>
+						<p><small>Rekommenderad storlek <strong>1200 x 630 px</strong></small></p>
+					</div>
+
+					<h3>Övrigt</h3>
+					<div class="input-group">
+						<input type="checkbox"> Jag vill inte synas som författare till sidan <span class="glyphicon glyphicon-sunglasses"></span>
+					</div>
+
+					<hr>
+
+					<div class="row">
+						<div class="col-sm-12">
+							<p><button class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Spara inställningar</button></p>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-4 sidebar">
+					<div class="well">
+					<table class="table">
+						<thead>
+							<tr>
+								<td><span class="glyphicon glyphicon-flag"></span></td><td><strong>Riktlinjer för sidor</strong></td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><small>1</small></td><td>Du måste äga rättigheterna till bilderna</td>
+							</tr>
+							<tr>
+								<td><small>2</small></td><td>Varje påstående kräver källhänvisning</td>
+							</tr>
+							<tr>
+								<td><small>3</small></td><td>Använd ett tydligt, objektivt och neutralt språk</td>
+							</tr>
+							<tr>
+								<td><small>4</small></td><td><a href="#">Din signatur</a> som författare är den enda godkända marknadsföringen på sidan</td>
+							</tr>
+						</tbody>
+					</table>
+					</div>
+				</div>
+			</div>
+
+		</article>
+	</div>
+
+<% include ../includes/footer %>

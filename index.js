@@ -65,9 +65,11 @@ passport.use(new facebook_strategy({
 
 var app = express()
 
+// TODO Replace this with streaming json parser
 app.engine('html', consolidate.ejs)
 app.set('view engine', 'html')
 app.set('views', __dirname + '/views')
+app.use(body_parser.json())
 
 app.use(cookie_parser())
 // TODO re-use db connection
@@ -190,21 +192,20 @@ app.get('/ny', function (req, res) {
 });
 
 app.get('/ny/fakta', function (req, res) {
-  res.render('post', { user: req.user, type: "fact" })
+  res.render('post/fact', { user: req.user, type: "fact" })
 })
 
 app.get('/ny/recept', function (req, res) {
-  res.render('post', { user: req.user, type: "recipe" })
+  res.render('post/recipe', { user: req.user, type: "recipe" })
 })
 
 app.get('/ny/plats', function (req, res) {
-  res.render('post', { user: req.user, type: "place" })
+  res.render('post/place', { user: req.user, type: "place" })
 })
 
 app.get('/ny/produkt', function (req, res) {
-  res.render('post', { user: req.user, type: "product" })
+  res.render('post/product', { user: req.user, type: "product" })
 })
-
 
 // TODO 'uncaughtException' as well? See what happens if DB goes down etc
 app.use(function error_handler (error, req, res, next) {

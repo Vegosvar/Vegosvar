@@ -1,4 +1,4 @@
-<% include includes/header %>
+<% include ../includes/header %>
 
 	<div class="container">
 		<article>
@@ -6,7 +6,7 @@
 			<div class="row">
 				<div class="col-sm-8">
 
-					<h1>Publicera en ny sida</h1>
+					<h1>Publicera en ny plats</h1>
 					<hr>
 					<div class="row">
 						<div class="col-sm-7">
@@ -16,36 +16,7 @@
 							</div>
 						</div>
 					</div>
-					
-					<% if(type == "recipe") { %>
-					<div class="row">
-						<div class="col-sm-12">
-							<div class="input-group">
-								<textarea type="text" class="form-control"></textarea>
-							</div>
-						</div>
-					</div>
 
-					<h3>Ingredienser</h3>
-					<div class="row">
-						<div class="col-sm-7">
-							<div class="input-group">
-								<span class="input-group-addon" id="basic-addon1">Ingrediens</span>
-								<input type="text" class="form-control" placeholder="Sallad" aria-describedby="basic-addon1">
-							</div>
-						</div>
-					</div>
-	
-					<h3>Steg</h3>
-					<div class="row">
-						<div class="col-sm-7">
-							<div class="input-group">
-								<span class="input-group-addon" id="basic-addon1">Steg</span>
-								<input type="text" class="form-control" placeholder="Skala potatis" aria-describedby="basic-addon1">
-							</div>
-						</div>
-					</div>
-					<% } else { %>
 					<h3>Beskrivning</h3>
 					<div class="row">
 						<div class="col-sm-12">
@@ -54,7 +25,6 @@
 							</div>
 						</div>
 					</div>
-					<% } %>
 
 					<h3>Källor</h3>
 					<div class="row">
@@ -117,4 +87,4 @@
 		</article>
 	</div>
 
-<% include includes/footer %>
+<% include ../includes/footer %>
