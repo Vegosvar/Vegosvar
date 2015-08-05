@@ -11,11 +11,43 @@
 					<div class="row">
 						<div class="col-sm-7">
 							<div class="input-group">
-								<span class="input-group-addo1n" id="basic-addon2">Rubrik</span>
+								<span class="input-group-addon" id="basic-addon2">Rubrik</span>
 								<input type="text" class="form-control" aria-describedby="basic-addon1">
 							</div>
 						</div>
 					</div>
+					
+					<% if(type == "recipe") { %>
+					<div class="row">
+						<div class="col-sm-7">
+							<div class="input-group">
+								<span class="input-group-addon" id="basic-addon2">Beskrivning</span>
+								<input type="text" class="form-control">
+							</div>
+						</div>
+					</div>
+
+					<h3>Ingredienser</h3>
+					<div class="row">
+						<div class="col-sm-7">
+							<div class="input-group">
+								<span class="input-group-addon" id="basic-addon1">Ingrediens</span>
+								<input type="text" class="form-control" placeholder="Sallad" aria-describedby="basic-addon1">
+							</div>
+						</div>
+					</div>
+	
+					<h3>Steg</h3>
+					<div class="row">
+						<div class="col-sm-7">
+							<div class="input-group">
+								<span class="input-group-addon" id="basic-addon1">Steg</span>
+								<input type="text" class="form-control" placeholder="Skala potatis" aria-describedby="basic-addon1">
+							</div>
+						</div>
+					</div>
+					<% } else { %>
+					<h3>Beskrivning</h3>
 					<div class="row">
 						<div class="col-sm-12">
 							<div class="input-group">
@@ -23,6 +55,7 @@
 							</div>
 						</div>
 					</div>
+					<% } %>
 
 					<h3>Källor</h3>
 					<div class="row">

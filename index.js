@@ -201,8 +201,8 @@ app.get('/ny/plats', function (req, res) {
   res.render('post', { user: req.user, type: "place" })
 })
 
-app.get('/ny/produkt', function (req,res) {
-  res.render('new', { user: req.user, type: "product" })
+app.get('/ny/produkt', function (req, res) {
+  res.render('post', { user: req.user, type: "product" })
 })
 
 
