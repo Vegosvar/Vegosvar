@@ -518,22 +518,19 @@ article {
 			background: #eee;
 			margin-bottom: 30px;
 			border-radius: 5px;
-			transition: background 0.2s;
+			transition: background 0.2s, transform 0.2s;
 			font-size: 16px;
 			@media (max-width: @xs) {
 				font-size: 14px;
 			}
 			&:hover {
-				.glyphicon {
-					transform: scale(1.2);
-				}
+				transform: scale(0.98);
 			}
 			.glyphicon {
 				display: block;
 				font-size: 30px;
 				margin-top: 50px;
 				margin-bottom: 20px;
-				transition: transform 0.2s;
 			}
 			&.fact {
 				background: @brand-color;
