@@ -55,4 +55,12 @@ $(function () {
     $('#heroSearch').addClass('contracted')
     $('html, body').animate({ scrollTop: 0 }, 'fast')
   })
+
+  $('#srch-term').on('focus', function() {
+    if (this.value=='Vad söker du?') this.value='';
+  })
+
+  $('#srch-term').on('blur', function() {
+    if (this.value=='') this.value='Vad söker du?';
+  })
 })
