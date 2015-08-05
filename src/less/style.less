@@ -504,8 +504,10 @@ article {
 	}
 	.new {
 		overflow: hidden;
-		margin-top: 30px;
 		margin-bottom: -30px;
+		@media (max-width: @xs) {
+			margin-top: 50px;
+		}
 		.category {
 			display: block;
 			text-align: center;
@@ -517,6 +519,10 @@ article {
 			margin-bottom: 30px;
 			border-radius: 5px;
 			transition: background 0.2s;
+			font-size: 16px;
+			@media (max-width: @xs) {
+				font-size: 14px;
+			}
 			&:hover {
 				.glyphicon {
 					transform: scale(1.2);
