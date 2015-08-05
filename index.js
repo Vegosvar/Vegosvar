@@ -185,12 +185,20 @@ app.get('/mina-sidor', function (req, res) {
   res.render('pages', { user: req.user })
 })
 
-app.get('/ny', function (req,res) {
-  res.render('new', { user: req.user })
+app.get('/ny/fakta', function (req, res) {
+  res.render('post', { user: req.user, type: "fact" })
 })
 
-app.get('/ny/fakta', function (req, res) {
-  res.render('post', { user: req.user })
+app.get('/ny/recept', function (req, res) {
+  res.render('post', { user: req.user, type: "recipe" })
+})
+
+app.get('/ny/plats', function (req, res) {
+  res.render('post', { user: req.user, type: "place" })
+})
+
+app.get('/ny/produkt', function (req,res) {
+  res.render('new', { user: req.user, type: "product" })
 })
 
 
