@@ -55,7 +55,7 @@ h1 {
 	color: #333;
 	font-weight: 700;
 	font-size: 35px;
-	margin-bottom: 20px;
+	margin-bottom: 15px;
 	line-height: 1.2;
 }
 
@@ -185,6 +185,17 @@ hr {
 			background: lighten(@blue, 3%);
 		}
 	}
+	&.btn-add {
+		background: @blue !important;
+		color: #fff !important;
+		margin-left: -2px;
+		.glyphicon {
+			margin: 0;
+		}
+		&:hover {
+			background: lighten(@blue, 3%) !important;
+		}
+	}
 	&.btn-like {
 		background: @pink;
 		color: #fff;
@@ -244,13 +255,14 @@ textarea {
 		box-shadow: none;
 		background: #dfdfdf;
 		color: #333;
-		padding: 10px 17px;
+		padding: 12px 17px;
 	}
 	.form-control {
 		border: none;
 		box-shadow: inset 0px 0px 0px 2px #dfdfdf;
-		padding: 10px 17px;
+		padding: 12px 17px;
 		height: auto;
+		color: #111;
 		&:focus {
 			box-shadow: inset 0px 0px 0px 2px @blue;
 		}
