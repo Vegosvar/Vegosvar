@@ -146,12 +146,20 @@ app.get('/logga-in', function (req, res) {
 })
 
 app.get('/om', function(req, res) {
-  res.render('about');
+  res.render('about', { user: req.user });
 })
 
 app.get('/annonsera', function (req, res) {
-  res.render('advertise');
+  res.render('advertise', { user: req.user });
 })
+
+app.get('/riktlinjer', function (req, res) {
+  res.render('guidelines', { user: req.user })
+});
+
+app.get('/vanliga-fragor', function (req, res) {
+  res.render('faq', { user: req.user })
+});
 
 app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res) {})
 
@@ -186,14 +194,6 @@ app.get('/installningar', function (req, res) {
 app.get('/mina-sidor', function (req, res) {
   res.render('pages', { user: req.user })
 })
-
-app.get('/riktlinjer', function (req, res) {
-  res.render('guidelines', { user: req.user })
-});
-
-app.get('/vanliga-fragor', function (req, res) {
-  res.render('faq', { user: req.user })
-});
 
 app.get('/ny', function (req, res) {
   res.render('new', { user: req.user })
