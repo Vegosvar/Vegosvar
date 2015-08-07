@@ -153,6 +153,14 @@ app.get('/annonsera', function (req, res) {
   res.render('advertise');
 })
 
+app.get('/riktlinjer', function (req, res) {
+  res.render('guidelines');
+});
+
+app.get('/vanliga-fragor', function (req, res) {
+  res.render('faq');
+});
+
 app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res) {})
 
 // TODO manually handle failure?
@@ -186,14 +194,6 @@ app.get('/installningar', function (req, res) {
 app.get('/mina-sidor', function (req, res) {
   res.render('pages', { user: req.user })
 })
-
-app.get('/riktlinjer', function (req, res) {
-  res.render('guidelines', { user: req.user })
-});
-
-app.get('/vanliga-fragor', function (req, res) {
-  res.render('faq', { user: req.user })
-});
 
 app.get('/ny', function (req, res) {
   res.render('new', { user: req.user })
