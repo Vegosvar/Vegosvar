@@ -191,6 +191,10 @@ app.get('/riktlinjer', function (req, res) {
   res.render('guidelines', { user: req.user })
 });
 
+app.get('/vanliga-fragor', function (req, res) {
+  res.render('faq', { user: req.user })
+});
+
 app.get('/ny', function (req, res) {
   res.render('new', { user: req.user })
 });
