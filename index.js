@@ -154,7 +154,7 @@ app.get('/annonsera', function (req, res) {
 })
 
 app.get('/riktlinjer', function (req, res) {
-  res.render('guidelines', { user: req.user })
+  res.render('guidelines', { user: req.user, hidelink: true })
 });
 
 app.get('/vanliga-fragor', function (req, res) {
