@@ -1,12 +1,12 @@
         <div class="col-sm-4 sidebar">
             <div class="well">
               <div class="row">
-                <div class="col-xs-4">
-                  <img src="<%= user.photo %>">
+                <div class="col-xs-4 picture">
+                  <a href="/installningar"><img src="<%= user.photo %>"></a>
                 </div>
                 <div class="col-xs-8 userDescription">
                   <h3 class="list-group-item-heading"><%= user.name.display_name %></h3>
-                  Kort beskrivning av mig
+				          <p><%= typeof user.description !== 'undefined' ? user.description : 'Beskrivning saknas' %></p>
                 </div>
               </div>
           </div>

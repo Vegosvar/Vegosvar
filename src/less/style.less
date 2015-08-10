@@ -342,6 +342,27 @@ textarea {
 	.userDescription {
 		margin-left: -15px;
 	}
+	.picture {
+		
+		img {
+			opacity: 1;
+			border-radius: 3px;
+			transition: opacity 0.3s;
+		}
+		a {
+			padding: 0;
+			border-radius: 3px;
+			display:block;
+			background: #000;
+			&:hover {
+				background: #000 !important;
+				img {
+					opacity: 0.8;
+				}
+			}
+		}
+		
+	}
 	.actions {
 		overflow: hidden;
 		margin-bottom: 10px;
