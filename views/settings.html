@@ -13,7 +13,7 @@
               <div class="col-sm-7">
                 <div class="input-group">
                   <span class="input-group-addon" id="basic-addon2">Visningsnamn</span>
-                  <input type="text" class="form-control" placeholder="Per Lööv" aria-describedby="basic-addon1">
+                  <input type="text" class="form-control" placeholder="<%= user.name.display_name %>" value="<%= user.name.display_name %>" aria-describedby="basic-addon1">
                 </div>
               </div>
             </div>
@@ -21,7 +21,7 @@
               <div class="col-sm-7">
                 <div class="input-group">
                   <span class="input-group-addon" id="basic-addon1">Hemsida/Blogg</span>
-                  <input type="text" class="form-control" placeholder="http://" aria-describedby="basic-addon1">
+                  <input type="text" class="form-control" placeholder="<%= typeof user.website !== 'undefined' ? user.website : 'http://' %>" value="<%= typeof user.website !== 'undefined' ? user.website : '' %>" aria-describedby="basic-addon1">
                 </div>
               </div>
             </div>
@@ -29,8 +29,8 @@
               <div class="col-sm-7">
                 <div class="input-group">
                   <br><label>Kort beskrivning av dig, ditt företag eller din hemsida</label>
-                  <textarea type="text" class="form-control"></textarea>
-                  <p><small>Max 50 bokstäver</small></p>
+                  <textarea type="text" class="form-control"><%= typeof user.description !== 'undefined' ? user.description : '' %></textarea>
+                  <p><small>Max 150 bokstäver</small></p>
                 </div>
               </div>
             </div>
