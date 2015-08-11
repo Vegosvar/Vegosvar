@@ -18,6 +18,7 @@ var config = require('./config')
 
 var db = require('monk')(config.database.host + config.database.name)
 var users = db.get('users')
+var urlencodedParser = body_parser.urlencoded({ extended: false })
 
 // TODO Move this out using cluster to a separate file, add more files for routes etc!
 // TODO Index auth.facebook etc
@@ -214,6 +215,48 @@ app.get('/ny/plats', function (req, res) {
 app.get('/ny/produkt', function (req, res) {
   res.render('post/product', { user: req.user, type: "product" })
 })
+
+app.post('/submit', urlencodedParser, function (req, res) {
+  var type = req.body.type
+
+    if(req.body.hidden) {
+      var hidden = true
+    } else {
+      var hidden = false
+    }
+
+  if(type == 1) {
+    var title = req.body.title
+    var content = req.body.content
+    var source = req.body.source
+
+    var query = db.get('pages')
+    query.insert({title: title, post:{ content: content, cover_image: "https://unsplash.it/200/300/?random", sources:{ 1:source }, type: type },"user_info":{ "id": req.user._id, hidden: hidden }}, function(err, doc) {
+      if(err) throw err
+    })
+
+    console.log('A new fact has been submitted with title '+title)
+    res.redirect('/ny/fakta')
+  } else if(type == 2) {
+    res.redirect('/ny')
+  } else if(type == 3) {
+    var title = req.body.title
+    var content = req.body.content //
+    var adress = req.body.adress
+    var city = req.body.city
+    var sources = req.body.sources // & Type
+    
+    var query = db.get('pages')
+    query.insert({title: title, post:{ content: content, city: city, adress: adress, opentimes:{ mon:req.body.opentimes_mon, tue:req.body.opentimes_tue, wed:req.body.opentimes_wed, thu:req.body.opentimes_thu, fri:req.body.opentimes_fri, sat:req.body.opentimes_sat, sun:req.body.opentimes_sun }, sources:{ 1:sources }, type:type },"user_info":{ "id":req.user._id, hidden: hidden }}, function(err, doc) {
+      if(err) throw err
+    })
+
+    console.log('A new place has been submitted with title '+title)
+    res.redirect('/ny/plats')
+  } else {
+    res.redirect('/ny')
+  }
+});
 
 // TODO 'uncaughtException' as well? See what happens if DB goes down etc
 app.use(function error_handler (error, req, res, next) {
