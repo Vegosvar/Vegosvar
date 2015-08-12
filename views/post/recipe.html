@@ -6,13 +6,14 @@
 			<div class="row">
 				<div class="col-sm-8">
 					<section>
-
+					<form action="/submit" method="post">
+					<input type="hidden" name="type" value="2">
 						<h1>Nytt recept</h1><br>
 						<div class="row">
 							<div class="col-sm-7">
 								<div class="input-group">
 									<span class="input-group-addon" id="basic-addon2">Rubrik</span>
-									<input type="text" class="form-control" aria-describedby="basic-addon1">
+									<input type="text" class="form-control" name="title" aria-describedby="basic-addon1">
 								</div>
 							</div>
 						</div>
@@ -21,7 +22,7 @@
 						<div class="row">
 							<div class="col-sm-12">
 								<div class="input-group">
-									<textarea type="text" class="form-control"></textarea>
+									<textarea type="text" name="content" class="form-control"></textarea>
 								</div>
 							</div>
 						</div>
@@ -30,7 +31,7 @@
 						<div class="row">
 							<div class="col-sm-7">
 								<div class="input-group">
-									<input type="text" class="form-control" placeholder="Ingrediens" aria-describedby="basic-addon1">
+									<input type="text" class="form-control" name="ingredient" placeholder="Ingrediens" aria-describedby="basic-addon1">
 									<a href="#" class="btn btn-add input-group-addon"><span class="glyphicon glyphicon-plus"></span></a>
 								</div>
 							</div>
@@ -40,7 +41,7 @@
 						<div class="row">
 							<div class="col-sm-7">
 								<div class="input-group">
-									<input type="text" class="form-control" placeholder="Steg 1" aria-describedby="basic-addon1">
+									<input type="text" class="form-control" name="step" placeholder="Steg 1" aria-describedby="basic-addon1">
 									<a href="#" class="btn btn-add input-group-addon"><span class="glyphicon glyphicon-plus"></span></a>
 								</div>
 							</div>
@@ -58,7 +59,7 @@
 						<h3>Övrigt</h3>
 						<div class="checkbox">
 							<label>
-								<input type="checkbox"> 
+								<input name="hidden" type="checkbox"> 
 								Jag vill inte synas som författare till sidan 
 								<span class="glyphicon glyphicon-sunglasses"></span>
 							</label>
@@ -71,7 +72,7 @@
 								<p><button class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Spara inställningar</button></p>
 							</div>
 						</div>
-						
+					</form>	
 					</section>
 				</div>
 				<div class="col-sm-4 sidebar">

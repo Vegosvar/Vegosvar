@@ -216,7 +216,13 @@ app.get('/ny/produkt', function (req, res) {
   res.render('post/product', { user: req.user, type: "product" })
 })
 
-app.post('/submit', urlencodedParser, function (req, res) {
+app.post('/submit', urlencodedParser, function (req, res) { // Controller for handling page inputs. 
+                                                            // ## TODO ######################################################
+                                                            // # Add error handling, check and sanitize inputs              #
+                                                            // # Improve this code and make it smaller + more simple,       #
+                                                            // # Not having to if clause every type would be nice           #
+                                                            // # Add support for multiple sources, ingredients, steps et.c. #
+                                                            // ##############################################################
   var type = req.body.type
 
     if(req.body.hidden) {
@@ -231,14 +237,25 @@ app.post('/submit', urlencodedParser, function (req, res) {
     var source = req.body.source
 
     var query = db.get('pages')
-    query.insert({title: title, post:{ content: content, cover_image: "https://unsplash.it/200/300/?random", sources:{ 1:source }, type: type },"user_info":{ "id": req.user._id, hidden: hidden }}, function(err, doc) {
+    query.insert({title: title, post:{ content: content, cover_image: "https://unsplash.it/200/300/?random", sources:{ 1:source }, type: type }, "user_info":{ "id": req.user._id, hidden: hidden }}, function(err, doc) {
       if(err) throw err
     })
 
     console.log('A new fact has been submitted with title '+title)
     res.redirect('/ny/fakta')
   } else if(type == 2) {
-    res.redirect('/ny')
+    var title = req.body.title
+    var content = req.body.content
+    var ingredient = req.body.ingredient
+    var step = req.body.step
+
+    var query = db.get('pages')
+    query.insert({title: title, post:{ content: content, ingredients:{ 1:ingredient }, steps:{ 1:step }, type:type }, "user_info":{ "id":req.user._id, hidden: hidden } }, function(err, doc) {
+      if(err) throw err
+    })
+
+    console.log('A new recipe has been submitted with title '+title)
+    res.redirect('/ny/recept')
   } else if(type == 3) {
     var title = req.body.title
     var content = req.body.content //
@@ -253,10 +270,22 @@ app.post('/submit', urlencodedParser, function (req, res) {
 
     console.log('A new place has been submitted with title '+title)
     res.redirect('/ny/plats')
+  } else if(type == 4) {
+    var title = req.body.title
+    var content = req.body.content
+    var source = req.body.source
+
+    var query = db.get('pages')
+    query.insert({title: title, post:{ content: content, sources:{ 1:source }, type:type }, "user_info":{ "id": req.user._id, hidden:hidden }}, function(err, doc) {
+      if(err) throw err
+    })
+
+    console.log('A new product has been submitted with title '+title)
+    res.redirect('/ny/produkt')
   } else {
     res.redirect('/ny')
   }
-});
+})
 
 // TODO 'uncaughtException' as well? See what happens if DB goes down etc
 app.use(function error_handler (error, req, res, next) {
