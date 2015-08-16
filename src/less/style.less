@@ -30,7 +30,7 @@ body {
 	font-size: 15px;
 	line-height: 1.55;
 	@media (max-width: @xs) {
-		padding-top: 50px;
+		padding-top: 45px;
 	}
 	background: #f5f5f5;
 	strong {
@@ -173,14 +173,20 @@ hr {
 		background: @brand-color;
 		color: #fff;
 		&:hover {
-			background: lighten(@brand-color, 3%);
+			background: darken(@brand-color, 3%);
+		}
+		&:active {
+			background: darken(@brand-color, 8%);
 		}
 	}
 	&.btn-edit {
 		background: @blue;
 		color: #fff;
 		&:hover {
-			background: lighten(@blue, 3%);
+			background: darken(@blue, 3%);
+		}
+		&:active {
+			background: darken(@blue, 8%);
 		}
 	}
 	&.btn-add {
@@ -191,14 +197,20 @@ hr {
 			margin: 0;
 		}
 		&:hover {
-			background: lighten(@blue, 3%) !important;
+			background: darken(@blue, 3%) !important;
+		}
+		&:active {
+			background: darken(@blue, 8%) !important;
 		}
 	}
 	&.btn-like {
 		background: @pink;
 		color: #fff;
 		&:hover {
-			background: lighten(@pink, 3%);
+			background: darken(@pink, 3%);
+		}
+		&:active {
+			background: darken(@pink, 8%);
 		}
 		.count {
 			display: inline-block;
@@ -242,6 +254,12 @@ hr {
 
 textarea {
 	min-height: 150px;
+}
+
+button {
+	&:active, &:focus {
+		outline: none !important;
+	}
 }
 
 
@@ -296,6 +314,16 @@ textarea {
 		border: none;
 		background: rgba(0, 0, 0, 0.05);
 	}
+}
+
+.small-xs {
+	@media (max-width: @xs) {
+		font-size: 13px;
+	}
+}
+
+input[type=checkbox], input[type=radio] {
+	margin: 6px 0 0;
 }
 
 
@@ -498,6 +526,9 @@ textarea {
 		margin-bottom: 0px;
 		border: none;
 		padding: 5px;
+		@media (max-width: @xs) {
+			padding: 0 5px 5px 5px;
+		}
 		input {
 			background: rgba(255,255,255,0.15);
 			border: none;
@@ -506,7 +537,7 @@ textarea {
 			height: auto;
 			color: #fff;
 			border-radius: 3px;
-			transition: background 0.2s, box-shadow 0.1s, padding 0.1s, font-size 0.1s;
+			transition: background 0.2s, padding 0.2s;
 			width: 285px;
 			&:focus {
 				background: rgba(255,255,255,0.2);
@@ -802,7 +833,7 @@ article {
 			.info {
 				display: inline-block;
 				float: left;
-				padding: 11px 20px;
+				padding: 10px 20px;
 				color: #A7A7A7;
 				font-size: 13px;
 				@media (max-width: @xs) {

@@ -27,50 +27,40 @@
 							</div>
 						</div>
 
+						<h3>Adress</h3>
 						<div class="row">
 							<div class="col-sm-7">
 								<div class="input-group">
 									<span class="input-group-addon" id="basic-addon2">Adress</span>
-									<input type="text" class="form-control" name="adress" aria-describedby="basic-addon1">
+									<input type="text" class="form-control" name="adress" aria-describedby="basic-addon1" placeholder="Exempelgatan 12">
 								</div>
 								<div class="input-group">
 									<span class="input-group-addon" id="basic-addon2">Stad</span>
 									<input type="text" class="form-control" name="city" aria-describedby="basic-addon1">
 								</div>
+								<div class="input-group">
+									<span class="input-group-addon" id="basic-addon2">Google Maps</span>
+									<input type="text" class="form-control" name="adress" aria-describedby="basic-addon1" placeholder="http://">
+								</div>
+								<div class="input-group">
+									<span class="input-group-addon" id="basic-addon2">Hemsida</span>
+									<input type="text" class="form-control" name="adress" aria-describedby="basic-addon1" placeholder="http://">
+								</div>
 							</div>
 						</div>
 						
-						<h3>Öppettider</h3> <!-- // TODO Det här kanske kan fixas snyggare? -->
+						<h3>Öppettider</h3>
 						<div class="row">
 							<div class="col-sm-7">
 								<div class="input-group">
-									<span class="input-group-addon" id="basic-addon2">Måndag</span>
+									<span class="input-group-addon" id="basic-addon2">Mån-Fre</span>
 									<input type="text" class="form-control" name="opentimes_mon" aria-describedby="basic-addon1" placeholder="00.00 - 00.00">
 								</div>
 								<div class="input-group">
-									<span class="input-group-addon" id="basic-addon2">Tisdag</span>
+									<span class="input-group-addon" id="basic-addon2">Lör-Sön</span>
 									<input type="text" class="form-control" name="opentimes_tue" aria-describedby="basic-addon1" placeholder="00.00 - 00.00">
 								</div>
-								<div class="input-group">
-									<span class="input-group-addon" id="basic-addon2">Onsdag</span>
-									<input type="text" class="form-control" name="opentimes_wed" aria-describedby="basic-addon1" placeholder="00.00 - 00.00">
-								</div>
-								<div class="input-group">
-									<span class="input-group-addon" id="basic-addon2">Torsdag</span>
-									<input type="text" class="form-control" name="opentimes_thu" aria-describedby="basic-addon1" placeholder="00.00 - 00.00">
-								</div>
-								<div class="input-group">
-									<span class="input-group-addon" id="basic-addon2">Fredag</span>
-									<input type="text" class="form-control" name="opentimes_fri" aria-describedby="basic-addon1" placeholder="00.00 - 00.00">
-								</div>
-								<div class="input-group">
-									<span class="input-group-addon" id="basic-addon2">Lördag</span>
-									<input type="text" class="form-control" name="opentimes_sat" aria-describedby="basic-addon1" placeholder="00.00 - 00.00">
-								</div>
-								<div class="input-group">
-									<span class="input-group-addon" id="basic-addon2">Söndag</span>
-									<input type="text" class="form-control" name="opentimes_sun" aria-describedby="basic-addon1" placeholder="00.00 - 00.00">
-								</div>
+								<p><a href="#" class="small">Övriga tider</a></p>
 							</div>
 						</div>
 
@@ -78,7 +68,8 @@
 						<div class="row">
 							<div class="col-sm-7">
 								<div class="input-group">
-									<input type="text" class="form-control" name="sources" placeholder="http://" aria-describedby="basic-addon1">
+									<span class="input-group-addon">1.</span>
+									<input type="text" class="form-control" name="source" placeholder="http://" aria-describedby="basic-addon1">
 									<a href="#" class="btn btn-add input-group-addon"><span class="glyphicon glyphicon-plus"></span></a>
 								</div>
 							</div>
@@ -96,9 +87,22 @@
 						<h3>Övrigt</h3>
 						<div class="checkbox">
 							<label>
-								<input name="hidden" type="checkbox"> 
+								<input type="checkbox" name="hidden"> 
 								Jag vill inte synas som författare till sidan 
-								<span class="glyphicon glyphicon-sunglasses"></span>
+								<a href="/vanliga-fragor" target="_blank" title="Öppna i ny flik" class="small">Läs mer</a>
+							</label>
+						</div>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" name="hidden"> 
+								Jag önskar låsa sidan från redigering 
+								<a href="/vanliga-fragor" target="_blank" title="Öppna i ny flik" class="small">Läs mer</a>
+							</label>
+						</div>
+						<div class="checkbox">
+							<label>
+								<input type="checkbox" name="hidden"> 
+								Avaktivera kommentarer
 							</label>
 						</div>
 

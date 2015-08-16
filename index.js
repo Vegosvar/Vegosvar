@@ -216,6 +216,10 @@ app.get('/ny/produkt', function (req, res) {
   res.render('post/product', { user: req.user, type: "product" })
 })
 
+app.get('/ny/publiserad', function (req, res) {
+  res.render('post/published', { user: req.user, type: "product" })
+})
+
 app.post('/submit', urlencodedParser, function (req, res) { // Controller for handling page inputs. 
                                                             // ## TODO ######################################################
                                                             // # Add error handling, check and sanitize inputs              #
