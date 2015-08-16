@@ -235,56 +235,41 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
     var title = req.body.title
     var content = req.body.content
     var source = req.body.source
-
     var query = db.get('pages')
     query.insert({title: title, post:{ content: content, cover_image: "https://unsplash.it/200/300/?random", sources:{ 1:source }, type: type }, "user_info":{ "id": req.user._id, hidden: hidden }}, function(err, doc) {
       if(err) throw err
     })
-
-    console.log('A new fact has been submitted with title '+title)
-    res.redirect('/ny/fakta')
   } else if(type == 2) {
     var title = req.body.title
     var content = req.body.content
     var ingredient = req.body.ingredient
     var step = req.body.step
-
     var query = db.get('pages')
     query.insert({title: title, post:{ content: content, ingredients:{ 1:ingredient }, steps:{ 1:step }, type:type }, "user_info":{ "id":req.user._id, hidden: hidden } }, function(err, doc) {
       if(err) throw err
     })
-
-    console.log('A new recipe has been submitted with title '+title)
-    res.redirect('/ny/recept')
   } else if(type == 3) {
     var title = req.body.title
     var content = req.body.content //
     var adress = req.body.adress
     var city = req.body.city
     var sources = req.body.sources // & Type
-    
     var query = db.get('pages')
     query.insert({title: title, post:{ content: content, city: city, adress: adress, opentimes:{ mon:req.body.opentimes_mon, tue:req.body.opentimes_tue, wed:req.body.opentimes_wed, thu:req.body.opentimes_thu, fri:req.body.opentimes_fri, sat:req.body.opentimes_sat, sun:req.body.opentimes_sun }, sources:{ 1:sources }, type:type },"user_info":{ "id":req.user._id, hidden: hidden }}, function(err, doc) {
       if(err) throw err
     })
-
-    console.log('A new place has been submitted with title '+title)
-    res.redirect('/ny/plats')
   } else if(type == 4) {
     var title = req.body.title
     var content = req.body.content
     var source = req.body.source
-
     var query = db.get('pages')
     query.insert({title: title, post:{ content: content, sources:{ 1:source }, type:type }, "user_info":{ "id": req.user._id, hidden:hidden }}, function(err, doc) {
       if(err) throw err
     })
-
-    console.log('A new product has been submitted with title '+title)
-    res.redirect('/ny/produkt')
   } else {
     res.redirect('/ny')
   }
+    res.redirect('/ny/publicerad')
 })
 
 // TODO 'uncaughtException' as well? See what happens if DB goes down etc
