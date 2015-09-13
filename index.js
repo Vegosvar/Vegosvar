@@ -131,8 +131,8 @@ app.get('/info/:postid', function (req, res) { // Route to index function?
   var post = db.get('pages')
   console.log(postid)
   post.find({ _id : postid }, function(err, result) {
-    res.render('page', { user: req.user, post: result
-     })
+    console.log(result)
+    res.render('examplepage', { user: req.user, post: result[0] })
   })
 })
 
@@ -195,6 +195,7 @@ app.get('/konto', function (req, res) {
 
 app.get('/installningar', function (req, res) {
   res.render('settings', { user: req.user })
+  console.log(req.user)
 })
 
 app.get('/mina-sidor', function (req, res) {
