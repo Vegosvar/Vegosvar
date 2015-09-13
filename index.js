@@ -163,6 +163,10 @@ app.get('/vanliga-fragor', function (req, res) {
   res.render('faq', { user: req.user })
 });
 
+app.get('/exempel', function (req, res) {
+  res.render('examplepage', { user: req.user })
+});
+
 app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res) {})
 
 // TODO manually handle failure?
