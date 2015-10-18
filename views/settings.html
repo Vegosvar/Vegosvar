@@ -9,11 +9,12 @@
             <h1>Inställningar</h1>
             <h2>Signatur</h2>
             <p>Din signatur syns på sidor publicerade av dig.<br> Du kan välja att vara anonym när du <a href="/ny">publicerar</a> sidan.</p>
+            <form method="post" id="settingsForm">
             <div class="row">
               <div class="col-sm-7">
                 <div class="input-group">
                   <span class="input-group-addon" id="basic-addon2">Visningsnamn</span>
-                  <input type="text" class="form-control" placeholder="<%= user.name.display_name %>" value="<%= user.name.display_name %>" aria-describedby="basic-addon1">
+                  <input type="text" class="form-control" name="displayName" placeholder="<%= user.name.display_name %>" value="<%= user.name.display_name %>" aria-describedby="basic-addon1">
                 </div>
               </div>
             </div>
@@ -21,7 +22,7 @@
               <div class="col-sm-7">
                 <div class="input-group">
                   <span class="input-group-addon" id="basic-addon1">Hemsida/Blogg</span>
-                  <input type="text" class="form-control" placeholder="<%= typeof user.website !== 'undefined' ? user.website : 'http://' %>" value="<%= typeof user.website !== 'undefined' ? user.website : '' %>" aria-describedby="basic-addon1">
+                  <input type="text" class="form-control" name="website" placeholder="<%= typeof user.website !== 'undefined' ? user.website : 'http://' %>" value="<%= typeof user.website !== 'undefined' ? user.website : '' %>" aria-describedby="basic-addon1">
                 </div>
               </div>
             </div>
@@ -29,7 +30,7 @@
               <div class="col-sm-7">
                 <div class="input-group">
                   <br><label>Kort beskrivning av dig, ditt företag eller din hemsida</label>
-                  <textarea type="text" class="form-control"><%= typeof user.description !== 'undefined' ? user.description : '' %></textarea>
+                  <textarea type="text" name="description" class="form-control"><%= typeof user.description !== 'undefined' ? user.description : '' %></textarea>
                   <p><small>Max 150 bokstäver</small></p>
                 </div>
               </div>
@@ -45,6 +46,7 @@
                 <p><button class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span> Spara</button></p>
               </div>
             </div>
+            </form>
           </section>
         </div>
         <% include includes/sidebar %>
@@ -61,5 +63,19 @@
       
     </article>
   </div>
+
+      <script type="text/javascript">
+      $('#settingsForm').submit(function (e) {
+        e.preventDefault()
+        
+        $.post('/installningar/submit', $('#settingsForm').serialize(), function(data) {
+          if(data == 1) {
+            alert('Inställningar sparade!')
+          } else {
+            alert('Message: '+data)
+          }
+        })
+      })
+      </script>
 
 <% include includes/footer %>

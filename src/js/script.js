@@ -1,5 +1,4 @@
 $(window).load(function () {
- 
   /* ON HOLD
     var currentTallest = 0
     var currentRowStart = 0
