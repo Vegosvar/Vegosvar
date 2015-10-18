@@ -22,7 +22,7 @@
               <div class="col-sm-7">
                 <div class="input-group">
                   <span class="input-group-addon" id="basic-addon1">Hemsida/Blogg</span>
-                  <input type="text" class="form-control" name="website" value="<%= user.name.display_name %>" aria-describedby="basic-addon1">
+                  <input type="text" class="form-control" name="website" value="<%= typeof user.info.website !== 'undefined' ? user.info.website : '' %>" aria-describedby="basic-addon1">
                 </div>
               </div>
             </div>

@@ -221,8 +221,8 @@ app.post('/installningar/submit', urlencodedParser, function (req, res) {
   users.update(
     { _id : id },
     { $set: 
-      { "name.display_name": display_name ,
-       "info.website":website ,
+      { "name.display_name": display_name,
+       "info.website":website,
        "info.description":description }
     }
   )
