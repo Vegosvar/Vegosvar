@@ -158,15 +158,15 @@ hr {
 		box-shadow: none;
 	}
 	&.btn-hero {
-		background: @brand-color;
-		color: #fff;
+		background: #fff;
+		color: @brand-color;
 		border: 1px solid #fff;
-		font-size: 20px;
-		border-radius: 5px;
+		font-size: 17px;
+		border-radius: 3px;
 		margin-bottom: 15px;
+		transition: opacity 0.15s;
 		&:hover {
-			background: #fff;
-			color: @brand-color;
+			opacity: 0.9;
 		}
 	}
 	&.btn-primary {
@@ -478,22 +478,16 @@ input[type=checkbox], input[type=radio] {
 				img {
 					opacity: 1;
 					height: auto;
-					width: 50px;
-					border-radius: 3px;
+					width: 40px;
 					transition: opacity 0.3s;
 				}
 				a {
 					overflow:hidden;
-					width:50px;
-					height:50px;
+					margin-top: 4px;
+					width: 40px;
+					height: 40px;
 					padding: 0;
-					background: #000;
-					&:hover {
-						background: #000 !important;
-						img {
-							opacity: 0.8;
-						}
-					}
+					border-radius: 100px;
 				}
 			}
 		}
@@ -662,10 +656,10 @@ article {
 
 
 #heroSearch {
-	background-color: #444;
+	background-color: @brand-color;
 	background-position: center center;
 	background-size: cover;
-	padding: 160px 0;
+	padding: 160px 0 180px 0;
 	margin-bottom: 60px;
 	color: #fff;
 	transition: padding 0.8s;
@@ -675,7 +669,7 @@ article {
 	}
 
 	&.contracted {
-		padding: 60px 0 30px 0;
+		padding: 30px 0 30px 0;
 		@media (max-width: @xs) {
 			padding: 30px 0 20px 0;
 		}
@@ -694,7 +688,7 @@ article {
 			margin-bottom: 25px;
 		}
 		h1 {
-			font-size: 52px;
+			font-size: 62px;
 			margin-bottom: 0;
 			font-weight: 300;
 			color: #fff;
@@ -757,6 +751,7 @@ article {
 		margin-bottom: 0px;
 		padding: 30px 0px;
 	}
+	/*
 	.fetchHeight {
 		@media (max-width: @xs) {
 			height: auto !important;
@@ -768,22 +763,22 @@ article {
 		@media (max-width: @xs) {
 			margin-bottom: 20px;
 		}
-	}
+	}*/
 	h2 {
 		margin-top: 0px;
 		margin-bottom: 25px;
 	}
 	.result {
-		height: 100%;
+		height: 330px;
+		margin-bottom: 30px;
 		position: relative;
 		background: #fff;
 		color: #333;
-		border-radius: 5px;
 		overflow: hidden;
-		-webkit-transition: box-shadow 0.2s;
-		-moz-transition: box-shadow 0.2s;
-		-o-transition: box-shadow 0.2s;
-		transition: box-shadow 0.2s;
+		@media (max-width: @xs) {
+			height: auto;
+		}
+
 		.image {
 			width: 100%;
 			height: 148px;
@@ -851,7 +846,7 @@ article {
 				display: inline-block;
 				float: right;
 				padding: 10px 18px;
-				border-radius: 5px 0 5px 0;
+				border-radius: 0;
 				@media (max-width: @xs) {
 					display: none;
 				}
@@ -922,9 +917,9 @@ article {
 
 
 #promotion {
-	background: @brand-color;
+	background: @blue;
 	color: #fff;
-	padding: 90px 0;
+	padding: 100px 0;
 	.logo {
 		display: inline-block;
 		position: relative; 
@@ -935,6 +930,9 @@ article {
 			top: 5px;
 			left: -5px;
 		}
+	}
+	.btn {
+		color: @blue;
 	}
 	h2 {
 		margin-top: 0;
@@ -977,7 +975,7 @@ article {
 
 .footer {
 	background: #111;
-	padding: 90px 0 90px 0;
+	padding: 100px 0;
 	color: #fff;
 	@media (max-width: @xs) {
 		text-align: center;

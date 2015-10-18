@@ -28,18 +28,16 @@
 			<h2>Senaste Inlägg <!-- <strong class="hidden-xs">godis</strong> --></h2>
 			<div class="row">
 				<% for(var i=0; i < pages.length; i++) {%>
-				<div class="col-sm-6 col-md-4 col-lg-3 resultContainer">
-					<div class="fetchHeight">
-						<div class="result">
-							<div class="image" style="background-image: url(http://holdr.me/image/?w=263&h=148&random=<%= pages[i]._id %>)"></div>
-							<div class="content">
-								<a href="#"><h3><%= pages[i].title %></h3></a>
-								<p>Vegansk butik på Hornsgatan 176 i Stockholm.</p>
-							</div>
-							<div class="more">
-								<span class="info">Öppet 17.00 - 19.00</span>
-								<a href="#" class="btn btn-primary">Läs mer</a>
-							</div>
+				<div class="col-sm-6 col-md-4 col-lg-3">
+					<div class="result">
+						<div class="image" style="background-image: url(http://holdr.me/image/?w=263&h=148&random=<%= pages[i]._id %>)"></div>
+						<div class="content">
+							<a href="#"><h3><%= pages[i].title %></h3></a>
+							<p>Vegansk butik på Hornsgatan 176 i Stockholm.</p>
+						</div>
+						<div class="more">
+							<span class="info">Öppet 17.00 - 19.00</span>
+							<a href="#" class="btn btn-primary">Läs mer</a>
 						</div>
 					</div>
 				</div>
