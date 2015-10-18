@@ -25,14 +25,15 @@
 
 	<div id="results">
 		<div class="container">
-			<h2>Sökresultat <strong class="hidden-xs">godis</strong></h2>
+			<h2>Senaste Inlägg <!-- <strong class="hidden-xs">godis</strong> --></h2>
 			<div class="row">
+				<% for(var i=0; i < pages.length; i++) {%>
 				<div class="col-sm-6 col-md-4 col-lg-3 resultContainer">
 					<div class="fetchHeight">
 						<div class="result">
-							<div class="image" style="background-image: url(https://unsplash.it/263/148/?random=1)"></div>
+							<div class="image" style="background-image: url(http://holdr.me/image/?w=263&h=148&random=<%= pages[i]._id %>)"></div>
 							<div class="content">
-								<a href="#"><h3>Goodstore Stockholm</h3></a>
+								<a href="#"><h3><%= pages[i].title %></h3></a>
 								<p>Vegansk butik på Hornsgatan 176 i Stockholm.</p>
 							</div>
 							<div class="more">
@@ -42,66 +43,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-6 col-md-4 col-lg-3 resultContainer">
-					<div class="fetchHeight">
-						<div class="result">
-							<div class="image" style="background-image: url(https://unsplash.it/263/148/?random=2)"></div>
-							<div class="content">
-								<a href="#"><h3>Goodstuff</h3></a>
-								<p>Sura och söta godisar från Goodstuff</p>
-							</div>
-							<div class="more">
-								<span class="info success">Veganskt</span>
-								<a href="#" class="btn btn-primary">Läs mer</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-4 col-lg-3 resultContainer">
-					<div class="fetchHeight">
-						<div class="result">
-							<div class="image" style="background-image: url(https://unsplash.it/263/148/?random=3)"></div>
-							<div class="content">
-								<a href="#"><h3>Vad är gelatin?</h3></a>
-								<p>Gelatin utvinns ur animaliskt protein och används bland annat som geleringsmedel i godis.</p>
-							</div>
-							<div class="more">
-								<span class="info warning">Animaliskt</span>
-								<a href="#" class="btn btn-primary">Läs mer</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-4 col-lg-3 resultContainer">
-					<div class="fetchHeight">
-						<div class="result">
-							<div class="image" style="background-image: url(https://unsplash.it/263/148/?random=4)"></div>
-							<div class="content">
-								<a href="#"><h3>Kikärtsmaränger</h3></a>
-								<p>Recept på kikärtsmaränger, även kallat kikärtsfluff - en populär favorit som dök upp 2015. </p>
-							</div>
-							<div class="more">
-								<span class="info success">Veganskt</span>
-								<a href="#" class="btn btn-primary">Läs mer</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-6 col-md-4 col-lg-3 resultContainer">
-					<div class="fetchHeight">
-						<div class="result">
-							<div class="image" style="background-image: url(https://unsplash.it/263/148/?random=5)"></div>
-							<div class="content">
-								<a href="#"><h3>E120</h3></a>
-								<p>E120 (Karminsyra) förekommer naturligt i vissa arter av sköldlöss och ger färgämnet Karmin dess röda färg.</p>
-							</div>
-							<div class="more">
-								<span class="info warning">Animaliskt</span>
-								<a href="#" class="btn btn-primary">Läs mer</a>
-							</div>
-						</div>
-					</div>
-				</div>
+				<% } %>
 			</div>
 			<h4>Hittade du inte det du sökte efter?</h4>
 			<p><a href="#" class="btn btn-secondary">Ställ frågan i Facebookgruppen</a></p>

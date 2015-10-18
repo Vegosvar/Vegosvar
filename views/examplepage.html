@@ -31,11 +31,11 @@
             <li class="list-group-item heading">
               <div class="row">
                 <div class="col-xs-4 col-sm-12 col-md-4">
-                  <a href="#"><img src="uploads/liseberg.jpg" class="avatar"></a>
+                  <a href="#"><img src="<%= user_info.photo %>" class="avatar"></a>
                 </div>
                 <div class="col-xs-8 col-sm-12 col-md-8">
                   <small>Publicerat av</small>
-                  <a href="#"><h3 class="list-group-item-heading">Liseberg</h3></a>
+                  <a href="#"><h3 class="list-group-item-heading"><%= user_info.name.display_name %></h3></a>
                   <span class="desc">Liseberg är en nöjespark belägen i stadsdelen Heden i Göteborg. Parken drivs som ett aktiebolag, helägt av Göteborgs kommun.</span>
                 </div>
               </div>
