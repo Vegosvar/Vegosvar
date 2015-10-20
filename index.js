@@ -104,7 +104,7 @@ passport.serializeUser(function (user, done) {
 
 // TODO error handling etc
 passport.deserializeUser(function (id, done) {
-  users.findById(id, ['_id', 'name', 'photo'], function (error, result) {
+  users.findById(id, ['_id', 'name', 'photo', 'info'], function (error, result) {
     done(error, result)
   })
 })
@@ -133,6 +133,18 @@ app.get('/test/users', function (req, res) {
   users.find({}, function(err, doc) {
     res.json(doc)
   })
+})
+
+app.get('/test/add', function (req, res) {
+  var id = req.user._id
+  var users = db.get('users')
+  users.update(
+    { _id : id },
+    { $set: 
+      { "testing.field": "teest" }
+    }
+  )
+  res.send('done')
 })
 
 app.get('/info/:postid', function (req, res) { // Route to index function?
@@ -226,10 +238,15 @@ app.post('/installningar/submit', urlencodedParser, function (req, res) {
        "info.description":description }
     }
   )
+  res.send('1')
 })
 
 app.get('/mina-sidor', function (req, res) {
-  res.render('pages', { user: req.user })
+  var pages = db.get('pages')
+  var userid = req.user.id
+  pages.find({id:userid}, function(err, doc) {
+    res.render('pages', { user: req.user, pages:doc })
+  })
 })
 
 app.get('/ny', function (req, res) {

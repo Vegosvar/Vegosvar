@@ -22,7 +22,7 @@
               <div class="col-sm-7">
                 <div class="input-group">
                   <span class="input-group-addon" id="basic-addon1">Hemsida/Blogg</span>
-                  <input type="text" class="form-control" name="website" value="<%= typeof user.info.description !== 'undefined' ? user.info.description : '' %>" aria-describedby="basic-addon1">
+                  <input type="text" class="form-control" name="website" value="<% if (typeof user.info !== 'undefined') { if(typeof user.info.website !== 'undefined') { %><%= user.info.website %><% } } %>" aria-describedby="basic-addon1">
                 </div>
               </div>
             </div>
@@ -30,7 +30,7 @@
               <div class="col-sm-7">
                 <div class="input-group">
                   <br><label>Kort beskrivning av dig, ditt företag eller din hemsida</label>
-                  <textarea type="text" name="description" class="form-control"><%= typeof user.description !== 'undefined' ? user.description : '' %></textarea>
+                  <textarea type="text" name="description" class="form-control"><% if (typeof user.info !== 'undefined') { if(typeof user.info.description !== 'undefined') { %><%= user.info.description %><% } } %></textarea>
                   <p><small>Max 150 bokstäver</small></p>
                 </div>
               </div>

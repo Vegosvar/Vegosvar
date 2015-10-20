@@ -6,7 +6,11 @@
                 </div>
                 <div class="col-xs-8 userDescription">
                   <h3 class="list-group-item-heading"><%= user.name.display_name %></h3>
-				          <p><%= typeof user.description !== 'undefined' ? user.description : 'Beskrivning saknas' %></p>
+				          <p><% if(typeof user.info !== 'undefined') { %>
+                    <%= typeof user.info.description !== 'undefined' ? user.info.description: 'Beskrivning saknas' %></p>
+                  <% } else { %>
+                    Beskrivning saknas
+                  <% } %> 
                 </div>
               </div>
           </div>
