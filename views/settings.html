@@ -4,19 +4,14 @@
 
     <article>
 
-    <div class="alert alert-success">
+    <div id="alert-success" class="alert alert-success hidden">
       <span class="glyphicon glyphicon-ok"></span> 
       <strong>Sparat</strong>
     </div>
 
-    <div class="alert alert-warning">
+    <div id="alert-warning" class="alert alert-warning hidden">
       <span class="glyphicon glyphicon-remove"></span> 
-      <strong>Något blev fel</strong>
-    </div>
-
-    <div class="alert alert-info">
-      <span class="glyphicon glyphicon-info-sign"></span> 
-      <strong>En vänlig information</strong> <a href="#">Ok, jag förstår</a>
+      <strong>Något blev fel, dina ändringar är inte sparade</strong>
     </div>
 
       <div class="row">
@@ -86,9 +81,17 @@
         
         $.post('/installningar/submit', $('#settingsForm').serialize(), function(data) {
           if(data == 1) {
-            alert('Inställningar sparade!')
+            $('#alert-success').css({ 'display':'none' }).removeClass('hidden')
+            $('#alert-success').slideDown('fast')
+            setTimeout(function() {
+              $('#alert-success').slideUp('fast')
+            }, 6000)
           } else {
-            alert('Message: '+data)
+            $('#alert-warning').css({ 'display':'none' }).removeClass('hidden')
+            $('#alert-warning').slideDown('fast')
+            setTimeout(function() {
+              $('#alert-warning').slideUp('fast')
+            }, 6000)
           }
         })
       })
