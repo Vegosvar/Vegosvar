@@ -117,9 +117,21 @@ passport.deserializeUser(function (id, done) {
 // TODO make one default template instead of the same includes in every?
 app.get('/', function (req, res) {
   var pagesdb = db.get('pages')
-  pagesdb.find({}, function(err, doc) {
-    res.render('index', { user: req.user, pages: doc, showsearch: true })
-  })
+  if(typeof req.query.s !== 'undefined') {
+    var query = {
+      title: {
+        $regex: req.query.s,
+        $options: 'i' //i: ignore case, m: multiline, etc
+      }
+    }
+    pagesdb.find(query, {}, function(err, doc) {
+      res.render('index', { user: req.user, pages: doc, showsearch: true })
+    })
+  } else {
+    pagesdb.find({}, function(err, doc) {
+      res.render('index', { user: req.user, pages: doc, showsearch: false })
+    })
+  }
 })
 
 app.get('/test/view', function (req, res) {
@@ -133,13 +145,6 @@ app.get('/test/users', function (req, res) {
   var users = db.get('users')
   users.find({}, function(err, doc) {
     res.json(doc)
-  })
-})
-
-app.get('/test/remove', function (req, res) {
-  var pages = db.get('pages')
-  pages.remove({ }, function (err, doc) {
-    res.send('done!')
   })
 })
 
