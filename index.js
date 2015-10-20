@@ -136,13 +136,6 @@ app.get('/test/users', function (req, res) {
   })
 })
 
-app.get('/test/remove', function (req, res) {
-  var pages = db.get('pages')
-  pages.remove({ }, function(err, doc) {
-    res.send('done')
-  })
-})
-
 app.get('/test/add', function (req, res) {
   var id = req.user._id
   var users = db.get('users')
