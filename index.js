@@ -11,6 +11,7 @@ var session_store = require('connect-mongo')(session)
 var cookie_parser = require('cookie-parser')
 var body_parser = require('body-parser')
 var consolidate = require('consolidate')
+var getSlug = require('speakingurl')
 
 var util = require('util')
 
@@ -132,6 +133,13 @@ app.get('/test/users', function (req, res) {
   var users = db.get('users')
   users.find({}, function(err, doc) {
     res.json(doc)
+  })
+})
+
+app.get('/test/remove', function (req, res) {
+  var pages = db.get('pages')
+  pages.remove({ }, function(err, doc) {
+    res.send('done')
   })
 })
 
@@ -288,12 +296,19 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       var hidden = false
     }
 
+    var niceurl = getSlug(req.body.title, {
+      // URL Settings
+      separator: '-',
+      maintainCase: false,
+      symbols: false
+    })
+
   if(type == 1) {
     var title = req.body.title
     var content = req.body.content
     var source = req.body.source
     var query = db.get('pages')
-    query.insert({title: title, post:{ content: content, cover_image: "https://unsplash.it/200/300/?random", sources:{ 1:source }, type: type }, "user_info":{ "id": req.user._id, hidden: hidden }}, function(err, doc) {
+    query.insert({title: title, url:niceurl, post:{ content: content, cover_image: "https://unsplash.it/200/300/?random", sources:{ 1:source }, type: type }, "user_info":{ "id": req.user._id, hidden: hidden }}, function(err, doc) {
       if(err) throw err
     })
   } else if(type == 2) {
@@ -302,7 +317,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
     var ingredient = req.body.ingredient
     var step = req.body.step
     var query = db.get('pages')
-    query.insert({title: title, post:{ content: content, ingredients:{ 1:ingredient }, steps:{ 1:step }, type:type }, "user_info":{ "id":req.user._id, hidden: hidden } }, function(err, doc) {
+    query.insert({title: title, url:niceurl, post:{ content: content, ingredients:{ 1:ingredient }, steps:{ 1:step }, type:type }, "user_info":{ "id":req.user._id, hidden: hidden } }, function(err, doc) {
       if(err) throw err
     })
   } else if(type == 3) {
@@ -312,7 +327,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
     var city = req.body.city
     var sources = req.body.sources // & Type
     var query = db.get('pages')
-    query.insert({title: title, post:{ content: content, city: city, adress: adress, opentimes:{ mon:req.body.opentimes_mon, tue:req.body.opentimes_tue, wed:req.body.opentimes_wed, thu:req.body.opentimes_thu, fri:req.body.opentimes_fri, sat:req.body.opentimes_sat, sun:req.body.opentimes_sun }, sources:{ 1:sources }, type:type },"user_info":{ "id":req.user._id, hidden: hidden }}, function(err, doc) {
+    query.insert({title: title, url:niceurl, post:{ content: content, city: city, adress: adress, opentimes:{ mon:req.body.opentimes_mon, tue:req.body.opentimes_tue, wed:req.body.opentimes_wed, thu:req.body.opentimes_thu, fri:req.body.opentimes_fri, sat:req.body.opentimes_sat, sun:req.body.opentimes_sun }, sources:{ 1:sources }, type:type },"user_info":{ "id":req.user._id, hidden: hidden }}, function(err, doc) {
       if(err) throw err
     })
   } else if(type == 4) {
@@ -320,7 +335,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
     var content = req.body.content
     var source = req.body.source
     var query = db.get('pages')
-    query.insert({title: title, post:{ content: content, sources:{ 1:source }, type:type }, "user_info":{ "id": req.user._id, hidden:hidden }}, function(err, doc) {
+    query.insert({title: title, url:niceurl, post:{ content: content, sources:{ 1:source }, type:type }, "user_info":{ "id": req.user._id, hidden:hidden }}, function(err, doc) {
       if(err) throw err
     })
   } else {

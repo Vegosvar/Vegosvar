@@ -13,7 +13,8 @@
     "express-session": "^1.11.2",
     "monk": "^1.0.1",
     "passport": "^0.2.2",
-    "passport-facebook": "^2.0.0"
+    "passport-facebook": "^2.0.0",
+    "speakingurl": "^7.0.0"
   },
   "devDependencies": {
     "del": "^1.2.0",
