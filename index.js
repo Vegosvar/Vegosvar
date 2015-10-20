@@ -143,7 +143,7 @@ app.get('/sida/:url', function (req, res) { // Route to index function?
   post.find({ url : url }, function(err, result) {
     console.log(result)
     users.find({ _id : result[0].user_info.id }, function(err, user_info) {
-      res.render('examplepage', { user: req.user, post: result[0], user_info: user_info[0] })
+      res.render('page', { user: req.user, post: result[0], user_info: user_info[0] })
     })
   })
 })
