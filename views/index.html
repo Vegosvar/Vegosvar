@@ -16,7 +16,8 @@
 						</div>
 					</div>
 
-			        <p>Sök fakta, livsmedel, recept & restauranger i din stad</p>
+			        <p class="hidden-xs">Sök efter fakta, livsmedel, recept, restauranger & butiker</p>
+			        <p class="visible-xs">Fakta, livsmedel, recept & restauranger</p>
 
 				</div>
 			</div>
@@ -37,7 +38,7 @@
 						<div class="image" style="background-image: url(http://holdr.me/image/?w=263&h=148&random=<%= pages[i]._id %>)"></div>
 						<div class="content">
 							<a href="/<%= pages[i].url %>"><h3><%= pages[i].title %></h3></a>
-							<p>Vegansk butik på Hornsgatan 176 i Stockholm.</p>
+							<p><%= pages[i].post.content %></p>
 						</div>
 						<div class="more">
 							<span class="info">Öppet 17.00 - 19.00</span>

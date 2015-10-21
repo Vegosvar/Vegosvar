@@ -1,18 +1,18 @@
         <div class="col-sm-4 sidebar">
-            <div class="well">
-              <div class="row">
-                <div class="col-xs-4 picture">
-                  <a href="/installningar"><img src="<%= user.photo %>"></a>
-                </div>
-                <div class="col-xs-8 userDescription">
-                  <h3 class="list-group-item-heading"><%= user.name.display_name %></h3>
-                  <a href="<%= user.info.website %>"><%= user.info.website %></a></p>
-				          <p><% if(typeof user.info !== 'undefined') { %>
-                    <%= typeof user.info.description !== 'undefined' ? user.info.description: 'Beskrivning saknas' %></p>
-                  <% } else { %>
-                    Beskrivning saknas
-                  <% } %> 
-                </div>
+          <div class="card profile">
+            <div class="row">
+              <div class="col-xs-4 col-sm-12 col-md-4 avatar">
+                <a href="/installningar"><img src="<%= user.photo %>"></a>
               </div>
+
+              <div class="col-xs-8 col-sm-12 col-md-8 info">
+                <a href="<%= user.info.website %>" target="_blank" title="<%= user.info.website %>"><h3><%= user.name.display_name %></h3></a>
+			          <span class="description"><% if(typeof user.info !== 'undefined') { %>
+                  <%= typeof user.info.description !== 'undefined' ? user.info.description: 'Beskrivning saknas' %></p>
+                <% } else { %>
+                  Beskrivning saknas
+                <% } %> 
+              </div>
+            </div>
           </div>
         </div>
