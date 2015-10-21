@@ -311,7 +311,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
     res.redirect('/ny/publicerad/?newpost='+niceurl)
 })
 
-app.get('/:url', function (req, res) {
+app.get('/:url', function (req, res) { // test
   var url = req.params.url       
   var post = db.get('pages')
   post.find({ url : url }, function(err, result) {
