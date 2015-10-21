@@ -42,7 +42,7 @@ $(function () {
       $.get('/ajax/search/?s=' + $('.searchForm').val(), function (data) {
         console.log(data)
 
-        $('#textReceiver').html('Sökresultat för ' + data)
+        $('#textReceiver').html('Sökresultat för <strong>' + data + '</strong>')
       })
     }
   }
