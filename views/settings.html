@@ -17,12 +17,10 @@
       <div class="row">
         <div class="col-sm-8">
           <section>
-            <h1>Inställningar</h1>
-            <h2>Signatur</h2>
-            <p>Din signatur syns på sidor publicerade av dig.<br> Du kan välja att vara anonym när du <a href="/ny">publicerar</a> sidan.</p>
+            <h1>Inställningar</h1><br>
             <form method="post" id="settingsForm">
             <div class="row">
-              <div class="col-sm-8">
+              <div class="col-sm-6">
                 <div class="input-group">
                   <span class="input-group-addon" id="basic-addon2">Visningsnamn</span>
                   <input type="text" class="form-control" name="displayName" placeholder="<%= user.name.display_name %>" value="<%= user.name.display_name %>" aria-describedby="basic-addon1">
@@ -30,7 +28,7 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-sm-8">
+              <div class="col-sm-6">
                 <div class="input-group">
                   <span class="input-group-addon" id="basic-addon1">Hemsida</span>
                   <input type="text" class="form-control" placeholder="http://" name="website" value="<% if (typeof user.info !== 'undefined') { if(typeof user.info.website !== 'undefined') { %><%= user.info.website %><% } } %>" aria-describedby="basic-addon1">
@@ -38,9 +36,9 @@
               </div>
             </div>
             <div class="row">
-              <div class="col-sm-8">
+              <div class="col-sm-12">
                 <div class="input-group">
-                  <br><label for="description">Beskrivning av dig, ditt företag eller din hemsida</label>
+                  <br><label for="description">Beskrivning av dig, ert företag eller er hemsida</label>
                   <textarea type="text" id="description" name="description" class="form-control"><% if (typeof user.info !== 'undefined') { if(typeof user.info.description !== 'undefined') { %><%= user.info.description %><% } } %></textarea>
                   <p><small>Max 150 bokstäver</small></p>
                 </div>
