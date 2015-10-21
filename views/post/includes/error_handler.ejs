@@ -1,0 +1,58 @@
+<script>
+// TODO: Make this function fire on form submit and submit the form in this function instead
+$(function () {
+	$('#header-input').keyup(function (e) {
+		e.preventDefault()
+		var badnames = [
+			'vanliga frågor',
+			'om vegosvar',
+			'press och riktlinjer',
+			'press & riktlinjer',
+			'licens',
+			'installningar',
+			'logga in',
+			'mina sidor',
+			'logga ut',
+			'annonsera',
+			'konto',
+			'submit',
+			'ny'
+		]
+		var value = $('#header-input').val().toLowerCase()
+		if(inArray(value, badnames)) {
+			$('#alert-info').css({ 'display':'none' }).removeClass('hidden')
+            $('#alert-info').slideDown('fast')
+            $('#alertButton-action--close').click(function () {
+            	$('#alert-info').slideUp('fast')
+            })
+		} else {
+			if(value.length == 0) {
+				if(!$('#warning-info').hasClass('hidden')) {
+					if(autoclose) { clearTimeout(autoclose) }
+					$('#warning-info').slideUp(200)
+            		setTimeout(function() { $('#warning-info').addClass('hidden') }, 210)
+				}
+			} else if(value.length < 3) {
+				if($('#warning-info').hasClass('hidden')) {
+					$('#warning-info').css({ 'display':'none' }).removeClass('hidden')
+            		$('#warning-info').slideDown(200)
+
+            		autoclose = setTimeout(function() {
+            			$('#warning-info').slideUp(200)
+            			setTimeout(function() { $('#warning-info').addClass('hidden') }, 210)
+            		}, 10000)
+            	}
+			 } else {
+				if(!$('#warning-info').hasClass('hidden')) {
+					$('#warning-info').slideUp(200)
+            		setTimeout(function() { $('#warning-info').addClass('hidden') }, 210)
+				}
+			}
+		}
+	})
+})
+
+function inArray(value, array) {
+	return array.indexOf(value) > -1;
+}
+</script>

@@ -2,18 +2,18 @@
 
 	<div class="container">
 		<article>
-
+			<% include includes/errors.ejs %>
 			<div class="row">
 				<div class="col-sm-8">
 					<section>
 					<form action="/submit" method="post">
-					<input type="hidden" name="type" value="4">
-						<h1>Ny produktsida</h1><br>
+					<input type="hidden" name="type" value="3">
+						<h1>Ny restaurang eller butik</h1><br>
 						<div class="row">
 							<div class="col-sm-7">
 								<div class="input-group">
 									<span class="input-group-addon" id="basic-addon2">Rubrik</span>
-									<input type="text" class="form-control" name="title" aria-describedby="basic-addon1">
+									<input type="text" class="form-control" id="header-input" name="title" aria-describedby="basic-addon1">
 								</div>
 							</div>
 						</div>
@@ -24,6 +24,43 @@
 								<div class="input-group">
 									<textarea type="text" name="content" class="form-control"></textarea>
 								</div>
+							</div>
+						</div>
+
+						<h3>Adress</h3>
+						<div class="row">
+							<div class="col-sm-7">
+								<div class="input-group">
+									<span class="input-group-addon" id="basic-addon2">Adress</span>
+									<input type="text" class="form-control" name="adress" aria-describedby="basic-addon1" placeholder="Exempelgatan 12">
+								</div>
+								<div class="input-group">
+									<span class="input-group-addon" id="basic-addon2">Stad</span>
+									<input type="text" class="form-control" name="city" aria-describedby="basic-addon1">
+								</div>
+								<div class="input-group">
+									<span class="input-group-addon" id="basic-addon2">Google Maps</span>
+									<input type="text" class="form-control" name="adress" aria-describedby="basic-addon1" placeholder="http://">
+								</div>
+								<div class="input-group">
+									<span class="input-group-addon" id="basic-addon2">Hemsida</span>
+									<input type="text" class="form-control" name="adress" aria-describedby="basic-addon1" placeholder="http://">
+								</div>
+							</div>
+						</div>
+						
+						<h3>Öppettider</h3>
+						<div class="row">
+							<div class="col-sm-7">
+								<div class="input-group">
+									<span class="input-group-addon" id="basic-addon2">Mån-Fre</span>
+									<input type="text" class="form-control" name="opentimes_mon" aria-describedby="basic-addon1" placeholder="00.00 - 00.00">
+								</div>
+								<div class="input-group">
+									<span class="input-group-addon" id="basic-addon2">Lör-Sön</span>
+									<input type="text" class="form-control" name="opentimes_tue" aria-describedby="basic-addon1" placeholder="00.00 - 00.00">
+								</div>
+								<p><a href="#" class="small">Övriga tider</a></p>
 							</div>
 						</div>
 
@@ -49,11 +86,11 @@
 
 						<h3>Övrigt</h3>
 						<div class="checkbox">
-						<label>
-							<input type="checkbox" name="hidden"> 
-							Jag vill inte synas som författare till sidan 
-							<a href="/vanliga-fragor" target="_blank" title="Öppna i ny flik" class="small">Läs mer</a>
-						</label>
+							<label>
+								<input type="checkbox" name="hidden"> 
+								Jag vill inte synas som författare till sidan 
+								<a href="/vanliga-fragor" target="_blank" title="Öppna i ny flik" class="small">Läs mer</a>
+							</label>
 						</div>
 						<div class="checkbox">
 							<label>
