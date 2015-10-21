@@ -190,7 +190,17 @@ app.get('/logga-ut', function (req, res) {
 })
 
 app.get('/ajax/search', function (req, res) {
-  res.send(req.query.s)
+  var pagesdb = db.get('pages')
+  var query = {
+    title: {
+      $regex: req.query.s,
+      $options: 'i' //i: ignore case, m: multiline, etc
+    }
+  }
+    
+  pagesdb.find(query, {}, function(err, doc) {
+    res.json(doc)
+  })
 })
 
 app.use(function ensure_authenticated (req, res, next) {
