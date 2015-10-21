@@ -245,7 +245,7 @@ app.get('/ny/publicerad', function (req, res) {
 })
 
 app.get('/ny/:type', function (req, res) {
-  res.render('post/'+req.params.type, { type: req.params.type })
+  res.render('post/'+req.params.type, { user: req.user, type: req.params.type })
 })
 
 app.post('/submit', urlencodedParser, function (req, res) { // Controller for handling page inputs. 
@@ -314,10 +314,14 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
 app.get('/:url', function (req, res) { // test
   var url = req.params.url       
   var post = db.get('pages')
-  post.find({ url : url }, function(err, result) {
-    users.find({ _id : result[0].user_info.id }, function(err, user_info) {
-      res.render('page', { user: req.user, post: result[0], user_info: user_info[0] })
+  post.count({ url: url }, function (err, count) {
+  if(count > 0) {
+    post.find({ url : url }, function (err, result) {
+      users.find({ _id : result[0].user_info.id }, function(err, user_info) {
+        res.render('page', { user: req.user, post: result[0], user_info: user_info[0] })
+      })
     })
+  }
   })
 })
 
