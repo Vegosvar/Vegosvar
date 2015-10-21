@@ -41,6 +41,8 @@ $(function () {
     if ($('.searchForm').val().length > 2) {
       $.get('/ajax/search/?s=' + $('.searchForm').val(), function (data) {
         console.log(data)
+
+        $('#textReceiver').html('Sökresultat för ' + data)
       })
     }
   }
