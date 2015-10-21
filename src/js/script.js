@@ -32,7 +32,7 @@ $(function () {
   var typingTimer
   $('.searchForm').on('keyup', function () {
     clearTimeout(typingTimer)
-    typingTimer = setTimeout(doTrigger, 200)
+    typingTimer = setTimeout(doTrigger, 150)
   })
   $('.searchForm').on('keydown', function () {
     clearTimeout(typingTimer)
