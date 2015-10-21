@@ -105,6 +105,19 @@ img {
 	height: auto;
 }
 
+.text-overflow {
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	overflow: hidden;
+	width: 400px;
+	white-space: nowrap;
+	overflow: hidden;
+	display: block;
+	@media (max-width: @xs) {
+		width: 200px;
+	}
+}
+
 .alert {
 	color: #fff;
 	font-size: 17px;
@@ -361,67 +374,32 @@ input[type=checkbox], input[type=radio] {
 // Layout
 
 .sidebar {
-	.list-group {
-		li {
-			img {
-				border-radius: 3px;
+	.card {
+		padding: 15px;
+		background: #fff;
+		margin-bottom: 15px;
+		border-radius: 3px;
+		.avatar {
+
+		}
+		.info {
+			padding-left: 0;
+			small {
+				color: #999;
+			}
+			h3 {
+				margin-top: 0;
+				margin-bottom: 5px;
 			}
 			a {
-				color: #333;
-				&:hover {
-					color: #777;
-				}
+				color: #111;
 			}
-			&.heading {
-				padding-top: 15px;
-				padding-bottom: 15px;
-				border: none;
-				.avatar {
-					margin-bottom: 10px;
-				}
-				.desc {
-					display: block;
-					font-size: 11px;
-					line-height: 1.4;
-					color: #999;
-				}
-			}
-			&.active {
-				background: #333;
-				border-color: #333;
-				&:hover {
-					background: #333;
-					border-color: #333;
-				}
-				a {
-					color: #fff;
-				}
+			.description {
+				font-size: 13px;
+				line-height: 1.4;
+				display: block;
 			}
 		}
-	}
-	.userDescription {
-		margin-left: -15px;
-	}
-	.picture {
-		
-		img {
-			opacity: 1;
-			border-radius: 3px;
-			transition: opacity 0.3s;
-		}
-		a {
-			padding: 0;
-			border-radius: 3px;
-			display:block;
-			background: #000;
-			&:hover {
-				background: #000 !important;
-				img {
-					opacity: 0.8;
-				}
-			}
-		}
-		
 	}
 	.actions {
 		overflow: hidden;
@@ -604,19 +582,23 @@ article {
 	}
 	.sources {
 		padding: 0;
-		margin-bottom: 15px;
 		li {
 			list-style: none;
 			margin-bottom: 5px;
+			.text-overflow;
 			a {
 				padding-left: 5px;
 			}
 		}
 	}
 	.headerImage {
-		border-radius: 3px;
+		display: block;
+		position: relative;
+		border-radius: 3px 3px 0 0;
 		background: #fff;
-		margin-top: -30px;
+		margin-top: -50px;
+		margin-left: -30px;
+		margin-right: -30px;
 		margin-bottom: 30px;
 		overflow: hidden;
 	}
@@ -777,19 +759,6 @@ article {
 		margin-bottom: 0px;
 		padding: 30px 0px;
 	}
-	/*
-	.fetchHeight {
-		@media (max-width: @xs) {
-			height: auto !important;
-		}
-	}
-	.resultContainer {
-		position: relative;
-		margin-bottom: 30px;
-		@media (max-width: @xs) {
-			margin-bottom: 20px;
-		}
-	}*/
 	h2 {
 		margin-top: 0px;
 		margin-bottom: 25px;

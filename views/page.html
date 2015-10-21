@@ -8,39 +8,43 @@
 
           <section>
             <div class="headerImage">
-              <img src="uploads/green-room.jpg" alt="Green room">
+              <img src="http://holdr.me/image/?w=1200&h=630&random=1">
             </div>
             <h1><%= post.title %></h1>
-            <h2>Vegansk restaurang</h2>
             <p><%= post.post.content %></p>
-            <h3>Adress</h3>
-            <p>Örgrytevägen 5, 402 22 Göteborg</p>
-            <p><a href="http://liseberg.se/sv/hem/mat/restauranger/The-Green-Room/" target="_blank" class="btn btn-primary">Hemsida</a> 
-            <a href="http://liseberg.se/sv/hem/mat/restauranger/The-Green-Room/" target="_blank" class="btn btn-primary">Se karta</a></p>
             <hr>
             <h3>Källor</h3>
             <ul class="sources">
               <li><small>1. <a href="http://liseberg.se/sv/hem/mat/restauranger/The-Green-Room/vegetarisk-meny/">http://liseberg.se/sv/hem/mat/restauranger/The-Green-Room/vegetarisk-meny</a></small></li>
-              <li><small>2.<a href="http://vegoriket.se/2014/04/helvegetarisk-restaurang-oppnar-pa-liseberg/">http://vegoriket.se/2014/04/helvegetarisk-restaurang-oppnar-pa-liseberg</a></small></li>
+              <li><small>2. <a href="http://vegoriket.se/2014/04/helvegetarisk-restaurang-oppnar-pa-liseberg/">http://vegoriket.se/2014/04/helvegetarisk-restaurang-oppnar-pa-liseberg</a></small></li>
             </ul>      
         </section>
 
         </div>
+
+
         <div class="col-sm-4 sidebar">
-          <ul class="list-group">
-            <li class="list-group-item heading">
-              <div class="row">
-                <div class="col-xs-4 col-sm-12 col-md-4">
-                  <a href="#"><img src="<%= user_info.photo %>" class="avatar"></a>
-                </div>
-                <div class="col-xs-8 col-sm-12 col-md-8">
-                  <small>Publicerat av</small>
-                  <a href="#"><h3 class="list-group-item-heading"><%= user_info.name.display_name %></h3></a>
-                  <span class="desc"><% if (typeof user_info.info !== 'undefined') { if(typeof user_info.info.description !== 'undefined') { %><%= user_info.info.description %><% } } %></span>
-                </div>
+
+          <div class="card profile">
+            <div class="row">
+
+              <div class="col-xs-4 col-sm-12 col-md-4 avatar">
+                <a href="#"><img src="<%= user_info.photo %>" class="avatar"></a>
               </div>
-            </li>
-          </ul>
+
+              <div class="col-xs-8 col-sm-12 col-md-8 info">
+                <small>Publicerat av</small>
+                <a href="<%= user_info.info.website %>" title="<%= user_info.info.website %>" target="_blank"><h3><%= user_info.name.display_name %></h3></a>
+                <span class="description">
+                  <% if (typeof user_info.info !== 'undefined') { if(typeof user_info.info.description !== 'undefined') { %>
+                  <%= user_info.info.description %><% } } %>
+                </span>
+              </div>
+
+            </div>
+          </div>
+
+
           <div class="actions">
             <div class="row">
               <div class="col-lg-6">
@@ -51,61 +55,10 @@
               </div>
             </div>
           </div>
-          <div id="results" class="xs">
-            <h3>Relaterat</h3>
-            <div class="row">
-              <div class="col-md-12 resultContainer">
-                <div class="fetchHeight">
-                  <div class="result">
-                    <div class="row">
-                      <div class="col-md-5">
-                        <img src="uploads/veganskt-godis.jpg">
-                      </div>
-                      <div class="col-md-7">
-                        <div class="content">
-                          <strong><a href="#">Lista på veganskt godis</a></strong>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-12 resultContainer">
-                <div class="fetchHeight">
-                  <div class="result">
-                    <div class="row">
-                      <div class="col-md-5">
-                        <img src="uploads/vegansk-choklad.jpg">
-                      </div>
-                      <div class="col-md-7">
-                        <div class="content">
-                          <strong><a href="#">Vegansk choklad</a></strong>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="col-md-12 resultContainer">
-                <div class="fetchHeight">
-                  <div class="result">
-                    <div class="row">
-                      <div class="col-md-5">
-                        <img src="uploads/gelatin.jpg">
-                      </div>
-                      <div class="col-md-7">
-                        <div class="content">
-                          <strong><a href="#">Vad är gelatin?</a></strong>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+
         </div>
       </div>
+
 
     </article>
   </div>

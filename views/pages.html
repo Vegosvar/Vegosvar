@@ -19,7 +19,6 @@
                 <thead>
                   <tr>
                     <th>Sida</th>
-                    <th>Typ</th>
                     <th>Senast ändrad av</th>
                   </tr>
                 </thead>
@@ -30,22 +29,7 @@
                       <a href="#"><%= pages[i].title %></a>
                       <span style="font-size:0.8em;color:#B2B2B2" data-toggle="tooltip" title="Låst" data-placement="right"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>
                     </th>
-
-                    <td>
-                      <% if(pages[i].post.type == 1) { %>
-                        <a href="#" data-toggle="tooltip" title="Fakta" data-placement="right">
-                        <span class="label label-success"><span class="glyphicon glyphicon-apple" aria-hidden="true"></span></span></a>
-                      <% } else if(pages[i].post.type == 2) { %>
-                        <a href="#" data-toggle="tooltip" title="Recept" data-placement="right">
-                        <span class="label label-warning"><span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span></span></a>
-                      <% } else if(pages[i].post.type == 3) { %>
-                        <a href="#" data-toggle="tooltip" title="Restaurang/Butik" data-placement="right">
-                        <span class="label label-warning"><span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span></span></a>
-                      <% } else if(pages[i].post.type == 4) { %>
-                        <a href="#" data-toggle="tooltip" title="Produkt" data-placement="right">
-                        <span class="label label-primary"><span class="glyphicon glyphicon-ice-lolly-tasted" aria-hidden="true"></span></span></a>
-                      <% } %>
-                    </td>
+                    
                     <td><%= pages[i].user_info.id %></td>
                   </tr>
                   <% } %>
