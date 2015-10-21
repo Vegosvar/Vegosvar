@@ -2,7 +2,7 @@
 
 	<div class="container">
 		<article>
-
+			<% include includes/errors.ejs %>
 			<div class="row">
 				<div class="col-sm-8">
 					<section>
@@ -13,7 +13,7 @@
 						<div class="col-sm-7">
 							<div class="input-group">
 								<span class="input-group-addon" id="basic-addon2">Rubrik</span>
-								<input type="text" class="form-control" name="title" aria-describedby="basic-addon1">
+								<input type="text" class="form-control" id="header-input" name="title" aria-describedby="basic-addon1">
 							</div>
 						</div>
 					</div>
@@ -73,5 +73,5 @@
 
 		</article>
 	</div>
-
+<% include includes/error_handler.ejs %>
 <% include ../includes/footer %>
