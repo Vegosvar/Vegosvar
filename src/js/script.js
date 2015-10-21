@@ -63,4 +63,20 @@ $(function () {
       $('html, body').animate({ scrollTop: 0 }, 'fast')
     }
   })
+
+  var typingTimer
+  $('.searchForm').on('keyup', function () {
+    clearTimeout(typingTimer)
+    typingTimer = setTimeout(doTrigger, 550)
+  })
+  $('.searchForm').on('keydown', function () {
+    clearTimeout(typingTimer)
+  })
+  function doTrigger() {
+    if ($('.searchForm').val().length > 2) {
+      $.get('/ajax/search/?s=' + $('.searchForm').val(), function (data) {
+        console.log(data)
+      })
+    }
+  }
 })

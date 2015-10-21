@@ -189,6 +189,10 @@ app.get('/logga-ut', function (req, res) {
   res.redirect('/')
 })
 
+app.get('/ajax/search', function (req, res) {
+  res.send(req.query.s)
+})
+
 app.use(function ensure_authenticated (req, res, next) {
   if (req.isAuthenticated()) {
     return next()
@@ -311,17 +315,17 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
     res.redirect('/ny/publicerad/?newpost='+niceurl)
 })
 
-app.get('/:url', function (req, res) { // test
+app.get('/:url', function (req, res) {
   var url = req.params.url       
   var post = db.get('pages')
   post.count({ url: url }, function (err, count) {
-  if(count > 0) {
-    post.find({ url : url }, function (err, result) {
-      users.find({ _id : result[0].user_info.id }, function(err, user_info) {
-        res.render('page', { user: req.user, post: result[0], user_info: user_info[0] })
+    if(count > 0) {
+      post.find({ url : url }, function (err, result) {
+        users.find({ _id : result[0].user_info.id }, function(err, user_info) {
+          res.render('page', { user: req.user, post: result[0], user_info: user_info[0] })
+        })
       })
-    })
-  }
+    }
   })
 })
 
