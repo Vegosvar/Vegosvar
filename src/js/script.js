@@ -55,7 +55,9 @@ $(function () {
           }
           $('#searchResult').html('<h2 style="display:none;" id="textReceiver">Sökresultat för <strong>' + $('.searchForm').val() + '</strong></h2>')
           $('#textReceiver').slideDown('fast')
+          $('#results').show()
           $('#searchResult').append('<div style="display:none;" id="searchResultsContainer"></div>')
+
           $('#searchResultsContainer').fadeIn('fast')
           for (var i = 0, result = data; i < result.length; i++) {
             var id = result[i]._id
@@ -66,7 +68,7 @@ $(function () {
             content += '<a href="/' + result[i].url + '"><h3>' + result[i].title + '</h3></a>'
             content += '<p>' + result[i].post.content + '</p></div>'
             content += '<div class="more">'
-            content += '<span class="info">Öppet 17.00 - 19.00</span>'
+            content += '<span class="info">Status</span>'
             content += '<a href="/' + result[i].url + '" class="btn btn-primary">Läs mer</a></div></div></div>'
             $('#searchResultsContainer').append(content)
             $('#searchResult-' + id).fadeIn('fast')

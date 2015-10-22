@@ -8,8 +8,6 @@
 					<div class="intro">
 						<h1>Enkla svar på vegofrågor</h1>
 					</div>
-					
-					<div id="searchEngine-noResults" style="display:none;"><h4>Inga sökresultat hittades :(</h4></div>
 
 					<div class="searchEngine input-group">
 						<input type="text" class="form-control searchForm" name="srch-term" id="srch-term" placeholder="Vad söker du?" autocomplete="off" autofocus="autofocus">
@@ -28,33 +26,10 @@
 
 	<div id="results">
 		<div class="container">
+			<div id="searchEngine-noResults" style="display:none;"><h2>Inga sökresultat hittades</h2></div>
 			<div class="row">
 				<div id="searchResult"></div>
 			</div>
-			<% if (showsearch == true) { %>
-			<h2>Sökresultat</h2>
-			<% } else { %>
-			<h2>Utvalda sidor</h2>
-			<% } %>
-			<div class="row">
-				<% for(var i=0; i < pages.length; i++) {%>
-				<div class="col-sm-6 col-md-4 col-lg-3">
-					<div class="result">
-						<div class="image" style="background-image: url(http://holdr.me/image/?w=263&h=148&random=<%= pages[i]._id %>)"></div>
-						<div class="content">
-							<a href="/<%= pages[i].url %>"><h3><%= pages[i].title %></h3></a>
-							<p><%= pages[i].post.content %></p>
-						</div>
-						<div class="more">
-							<span class="info">Öppet 17.00 - 19.00</span>
-							<a href="/<%= pages[i].url %>" class="btn btn-primary">Läs mer</a>
-						</div>
-					</div>
-				</div>
-				<% } %>
-			</div>
-			<h4>Hittade du inte det du sökte efter?</h4>
-			<p><a href="#" class="btn btn-primary">Ställ frågan i Facebookgruppen</a></p>
 		</div>
 	</div>
 
