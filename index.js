@@ -134,22 +134,6 @@ app.get('/', function (req, res) {
   }
 })
 
-app.get('/:url', function (req, res, next) {
-  var url = req.params.url       
-  var post = db.get('pages')
-  post.count({ url: url }, function (err, count) {
-    if(count > 0) {
-      post.find({ url : url }, function (err, result) {
-        users.find({ _id : result[0].user_info.id }, function(err, user_info) {
-          res.render('page', { user: req.user, post: result[0], user_info: user_info[0] })
-        })
-      })
-    } else {
-      return next()
-    }
-  })
-})
-
 app.get('/test/view', function (req, res) {
   var testing = db.get('pages')
   testing.find({}, function(err, doc) {
@@ -216,6 +200,22 @@ app.get('/ajax/search', function (req, res) {
     
   pagesdb.find(query, {}, function(err, doc) {
     res.json(doc)
+  })
+})
+
+app.get('/:url', function (req, res, next) {
+  var url = req.params.url       
+  var post = db.get('pages')
+  post.count({ url: url }, function (err, count) {
+    if(count > 0) {
+      post.find({ url : url }, function (err, result) {
+        users.find({ _id : result[0].user_info.id }, function(err, user_info) {
+          res.render('page', { user: req.user, post: result[0], user_info: user_info[0] })
+        })
+      })
+    } else {
+      return next()
+    }
   })
 })
 
