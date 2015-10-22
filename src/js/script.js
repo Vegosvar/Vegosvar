@@ -78,7 +78,7 @@ $(function () {
           $('#searchForm-btn-default').html('<i class="glyphicon glyphicon-search"></i>')
           $('#searchEngine-noResults').show()
           $('#results').show()
-          $('#searchFor').hide()
+          $('#searchFor').html('')
           $('#searchResultsContainer').show()
         }
       })
