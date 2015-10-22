@@ -754,6 +754,15 @@ article {
 				background: #fff;
 				color: lighten(#333, 30%);
 			}
+			@keyframes loading {
+				0% { transform: rotate(-360deg); }
+				100% { transform: rotate(360deg); }
+			}
+			.loading {
+				width: 28px;
+				height: 28px;
+				animation: loading 2.5s infinite linear;
+			}
 		}
 	}
 }

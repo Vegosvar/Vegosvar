@@ -32,7 +32,7 @@ $(function () {
     } else {
       $('#heroSearch').addClass('contracted')
       $('html, body').animate({ scrollTop: 0 }, 'fast')
-      $('#searchForm-btn-default').html('spin')
+      $('#searchForm-btn-default').html('<img src="/assets/images/loading.svg" class="loading">')
     }
   })
 
