@@ -89,20 +89,16 @@
         <ul class="nav navbar-nav navbar-right">
           <li><a href="/ny">Skapa sida</a></li>
           <% if (typeof user !== 'undefined') { %>
-            <li class="profile name dropdown">
+            <li class="profile dropdown">
                 <a href="/konto" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 <%= user.name.display_name %>
+                <img src="<%= user.photo %>">
               </a>
               <ul class="dropdown-menu">
                 <li><a href="/installningar">Inställningar</a></li>
                 <li><a href="/mina-sidor">Mina sidor</a></li>
                 <li><a href="/logga-ut">Logga ut</a></li>
               </ul>
-            </li>
-            <li class="profile picture">
-              <a href="/installningar">
-                <img src="<%= user.photo %>">
-              </a>
             </li>
           <% } %>
           <% if (typeof user === 'undefined') { %>
