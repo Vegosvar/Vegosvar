@@ -51,14 +51,13 @@ $(function () {
       $.getJSON('/ajax/search/?s=' + $('.searchForm').val(), function (data) {
         if (data[0] !== undefined) {
           if ($('#searchEngine-noResults').css('display') === 'block') {
-            $('#searchEngine-noResults').slideUp('fast')
+            $('#searchEngine-noResults').show()
           }
-          $('#searchResult').html('<h2 style="display:none;" id="textReceiver">Sökresultat för <strong>' + $('.searchForm').val() + '</strong></h2>')
-          $('#textReceiver').slideDown('fast')
+          $('#searchFor').html('<h2 id="searchFor">Sökresultat för <strong>' + $('.searchForm').val() + '</strong></h2>')
           $('#results').show()
-          $('#searchResult').append('<div style="display:none;" id="searchResultsContainer"></div>')
+          $('#searchResult').append('<div id="searchResultsContainer"></div>')
 
-          $('#searchResultsContainer').fadeIn('fast')
+          $('#searchResultsContainer').show('fast')
           for (var i = 0, result = data; i < result.length; i++) {
             var id = result[i]._id
             var content = '<div class="col-sm-6 col-md-4 col-lg-3" id="searchResult-' + id + '">'
@@ -71,14 +70,15 @@ $(function () {
             content += '<span class="info">Status</span>'
             content += '<a href="/' + result[i].url + '" class="btn btn-primary">Läs mer</a></div></div></div>'
             $('#searchResultsContainer').append(content)
-            $('#searchResult-' + id).fadeIn('fast')
+            $('#searchResult-' + id).show()
             $('#searchForm-btn-default').html('<i class="glyphicon glyphicon-search"></i>')
           }
         } else { // No results
           $('#searchForm-btn-default').html('<i class="glyphicon glyphicon-search"></i>')
-          $('#searchEngine-noResults').slideDown('fast')
-          $('#textReceiver').slideUp('fast')
-          $('#searchResultsContainer').slideUp('fast')
+          $('#searchEngine-noResults').hide()
+          $('#results').hide()
+          $('#searchFor').show()
+          $('#searchResultsContainer').show()
         }
       })
     }
