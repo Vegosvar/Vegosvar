@@ -20,12 +20,19 @@ $(window).load(function () {
 $(function () {
   $('.searchForm').keyup(function () {
     if ($('.searchForm').val() === '') {
+      $('#searchForm-btn-default').html('<i class="glyphicon glyphicon-search"></i>')
+      $('#textReceiver').slideUp(600)
+      $('#searchResultsContainer').slideUp(600)
+      if ($('#searchEngine-noResults').css('display') === 'block') {
+        $('#searchEngine-noResults').slideUp('fast')
+      }
       if ($('#heroSearch').hasClass('contracted')) {
         $('#heroSearch').removeClass('contracted')
       }
     } else {
       $('#heroSearch').addClass('contracted')
       $('html, body').animate({ scrollTop: 0 }, 'fast')
+      $('#searchForm-btn-default').html('spin')
     }
   })
 
@@ -34,29 +41,42 @@ $(function () {
     clearTimeout(typingTimer)
     typingTimer = setTimeout(doTrigger, 150)
   })
+
   $('.searchForm').on('keydown', function () {
     clearTimeout(typingTimer)
   })
+
   function doTrigger() {
     if ($('.searchForm').val().length > 2) {
       $.getJSON('/ajax/search/?s=' + $('.searchForm').val(), function (data) {
-        $('#searchResult').html('<h2 style="display:none;" id="textReceiver">Sökresultat för <strong>' + $('.searchForm').val() + '</strong></h2>')
-        $('#textReceiver').slideDown('fast')
-        $('#searchResult').append('<div style="display:none;" id="searchResultsContainer"></div>')
-        $('#searchResultsContainer').fadeIn('fast')
-        for (var i = 0, result = data; i < result.length; i++) {
-          var id = result[i]._id
-          var content = '<div class="col-sm-6 col-md-4 col-lg-3" id="searchResult-' + id + '">'
-          content += '<div class="result">'
-          content += '<div class="image" style="background-image: url(http://holdr.me/image/?w=263&h=148&random=' + id + ')"></div>'
-          content += '<div class="content">'
-          content += '<a href="/' + result[i].url + '"><h3>' + result[i].title + '</h3></a>'
-          content += '<p>' + result[i].post.content + '</p></div>'
-          content += '<div class="more">'
-          content += '<span class="info">Öppet 17.00 - 19.00</span>'
-          content += '<a href="/' + result[i].url + '" class="btn btn-primary">Läs mer</a></div></div></div>'
-          $('#searchResultsContainer').append(content)
-          $('#searchResult-' + id).fadeIn('fast')
+        if (data[0] !== undefined) {
+          if ($('#searchEngine-noResults').css('display') === 'block') {
+            $('#searchEngine-noResults').slideUp('fast')
+          }
+          $('#searchResult').html('<h2 style="display:none;" id="textReceiver">Sökresultat för <strong>' + $('.searchForm').val() + '</strong></h2>')
+          $('#textReceiver').slideDown('fast')
+          $('#searchResult').append('<div style="display:none;" id="searchResultsContainer"></div>')
+          $('#searchResultsContainer').fadeIn('fast')
+          for (var i = 0, result = data; i < result.length; i++) {
+            var id = result[i]._id
+            var content = '<div class="col-sm-6 col-md-4 col-lg-3" id="searchResult-' + id + '">'
+            content += '<div class="result">'
+            content += '<div class="image" style="background-image: url(http://holdr.me/image/?w=263&h=148&random=' + id + ')"></div>'
+            content += '<div class="content">'
+            content += '<a href="/' + result[i].url + '"><h3>' + result[i].title + '</h3></a>'
+            content += '<p>' + result[i].post.content + '</p></div>'
+            content += '<div class="more">'
+            content += '<span class="info">Öppet 17.00 - 19.00</span>'
+            content += '<a href="/' + result[i].url + '" class="btn btn-primary">Läs mer</a></div></div></div>'
+            $('#searchResultsContainer').append(content)
+            $('#searchResult-' + id).fadeIn('fast')
+            $('#searchForm-btn-default').html('<i class="glyphicon glyphicon-search"></i>')
+          }
+        } else { // No results
+          $('#searchForm-btn-default').html('<i class="glyphicon glyphicon-search"></i>')
+          $('#searchEngine-noResults').slideDown('fast')
+          $('#textReceiver').slideUp('fast')
+          $('#searchResultsContainer').slideUp('fast')
         }
       })
     }
