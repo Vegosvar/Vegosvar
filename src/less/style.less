@@ -119,7 +119,6 @@ img {
 }
 
 .alert {
-	color: #fff;
 	font-size: 17px;
 	padding: 20px 30px;
 	border-radius: 5px;
@@ -128,13 +127,13 @@ img {
 		margin-right: 5px;
 	}
 	&.alert-success {
-		background: @green;
+		color: @green;
 	}
 	&.alert-warning {
-		background: @orange;
+		color: @orange;
 	}
 	&.alert-info {
-		background: @blue;
+		color: @blue;
 	}
 	a {
 		display: inline-block;
@@ -516,6 +515,12 @@ input[type=checkbox], input[type=radio] {
 					a {
 						display: block;
 						padding: 12px 15px;
+						&:focus {
+							background: none;
+						}
+						span {
+							margin-right: 7px;
+						}
 					}
 				}
 			}
