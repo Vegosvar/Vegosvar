@@ -51,15 +51,15 @@
             <div class="row">
 
               <div class="col-xs-4 col-sm-12 col-md-4 avatar">
-                <a href="#"><img src="<%= user_info.photo %>" class="avatar"></a>
+                <a href="#"><img src="<%= user.photo %>" class="avatar"></a>
               </div>
 
               <div class="col-xs-8 col-sm-12 col-md-8 info">
                 <small>Publicerat av</small>
-                <a href="<%= user_info.info.website %>" title="<%= user_info.info.website %>" target="_blank"><h3><%= user_info.name.display_name %></h3></a>
+                <a href="<%= user.info.website %>" title="<%= user.info.website %>" target="_blank"><h3><%= user.name.display_name %></h3></a>
                 <span class="description">
-                  <% if (typeof user_info.info !== 'undefined') { if(typeof user_info.info.description !== 'undefined') { %>
-                  <%= user_info.info.description %><% } } %>
+                  <% if (typeof user.info !== 'undefined') { if(typeof user.info.description !== 'undefined') { %>
+                  <%= user.info.description %><% } } %>
                 </span>
               </div>
 
