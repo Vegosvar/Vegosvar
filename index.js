@@ -176,6 +176,10 @@ app.get('/riktlinjer', function (req, res) {
   res.render('guidelines', { user: req.user, hidelink: true })
 });
 
+app.get('/villkor', function (req, res) {
+  res.render('terms-of-use', { user: req.user, hidelink: true })
+});
+
 app.get('/vanliga-fragor', function (req, res) {
   res.render('faq', { user: req.user })
 });

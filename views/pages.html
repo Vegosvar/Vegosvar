@@ -16,21 +16,12 @@
               </div>
 
               <table class="table small-xs">
-                <thead>
-                  <tr>
-                    <th>Sida</th>
-                    <th>Senast ändrad av</th>
-                  </tr>
-                </thead>
                 <tbody>
                   <% for(var i=0; i < pages.length; i++) {%>
                   <tr>
-                    <th scope="row"> 
+                    <td> 
                       <a href="#"><%= pages[i].title %></a>
-                      <span style="font-size:0.8em;color:#B2B2B2" data-toggle="tooltip" title="Låst" data-placement="right"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>
-                    </th>
-                    
-                    <td><%= pages[i].user_info.id %></td>
+                    </td>
                   </tr>
                   <% } %>
                 </tbody>
@@ -51,42 +42,19 @@
                 <thead>
                   <tr>
                     <th>Sida</th>
-                    <th>Typ</th>
                     <th>Senast ändrad av</th>
                   </tr>
                 </thead>
                 <tbody>
+                  <% for(var i=0; i < pages.length; i++) {%>
                   <tr>
-                    <th scope="row"> 
-                      <a href="#">Goodstore Stockholm</a>
-                      <span style="font-size:0.8em;color:#ccc" data-toggle="tooltip" title="Låst" data-placement="right"><span class="glyphicon glyphicon-lock" aria-hidden="true"></span></span>
-                    </th>
-                    <td>
-                      <a href="#" data-toggle="tooltip" title="Restaurang/Butik" data-placement="right">
-                      <span class="label label-warning"><span class="glyphicon glyphicon-cutlery" aria-hidden="true"></span></span></a>
+                    <td> 
+                      <a href="#"><%= pages[i].title %></a>
                     </td>
-                    <td>Jeremy Lloyd Gallant</td>
+                    
+                    <td><%= pages[i].user_info.id %></td>
                   </tr>
-
-                  <tr>
-                    <th scope="row"><a href="#">Goodstuff</a></th>
-                    <td>
-                      <a href="#" data-toggle="tooltip" title="Produkt" data-placement="right">
-                        <span class="label label-primary"><span class="glyphicon glyphicon-ice-lolly-tasted" aria-hidden="true"></span></span>
-                      </a>
-                    </td>
-                    <td>Jeremy Lloyd Gallant</td>
-                  </tr>
-
-                  <tr>
-                    <th scope="row"><a href="#">Vad är gelatin?</a></th>
-                    <td>
-                      <a href="#" data-toggle="tooltip" title="Fakta" data-placement="right"><span class="label label-success">
-                        <span class="glyphicon glyphicon-apple" aria-hidden="true"></span></span>
-                      </a>
-                    </td>
-                    <td>Jeremy Lloyd Gallant</td>
-                  </tr>
+                  <% } %>
                 </tbody>
               </table>
             </div>
