@@ -91,11 +91,33 @@
 
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
+
+          <li class="dropdown">
+              <a href="/konto" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              Restauranger
+              <span class="glyphicon glyphicon-triangle-bottom"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="?s=stockholm+restaurang">Stockholm</a></li>
+              <li><a href="?s=göteborg+restaurang">Göteborg</a></li>
+              <li><a href="?s=malmö+restaurang">Malmö</a></li>
+              <li><a href="?s=uppsala+restaurang">Uppsala</a></li>
+              <li><a href="?s=västerås+restaurang">Västerås</a></li>
+              <li><a href="?s=örebro+restaurang">Örebro</a></li>
+              <li><a href="?s=linköping+restaurang">Linköping</a></li>
+            </ul>
+          </li>
+
           <li><a href="/ny">Skapa sida</a></li>
+
           <% if (typeof user !== 'undefined') { %>
             <li class="profile dropdown">
                 <a href="/konto" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                <%= user.name.display_name %>
+                <span class="hidden-xs"><%= user.name.display_name %></span>
+                <span class="visible-xs">
+                  Mitt konto
+                  <span class="glyphicon glyphicon-triangle-bottom"></span>
+                </span>
                 <img src="<%= user.photo %>">
               </a>
               <ul class="dropdown-menu">
@@ -105,6 +127,7 @@
               </ul>
             </li>
           <% } %>
+
           <% if (typeof user === 'undefined') { %>
             <li><a href="/logga-in">Logga in</a></li>
           <% } %>

@@ -460,8 +460,14 @@ input[type=checkbox], input[type=radio] {
 	}
 	.navbar-toggle {
 		border: none;
+		transition: transform 0.15s;
+		margin: 0;
+		padding: 17px;
 		&:hover, &:focus {
 			background: none;
+		}
+		&:active {
+			transform: scale(0.9);
 		}
 	}
 	.navbar-collapse {
@@ -473,20 +479,32 @@ input[type=checkbox], input[type=radio] {
 	}
 
 	li {
+		@media (max-width: @xs) {
+			background: #222;
+		}
 		&.open > a {
 			background-color: @brand-color !important;
+			@media (max-width: @xs) {
+				background: #111 !important;
+			}
 		}
 		a {
 			color: #fff !important;
 			transition: background 0.2s;
-			@media (max-width: @xs) {
-				padding: 15px 15px;
-			}
 			&:hover {
 				background-color: darken(@brand-color, 5%) !important;
-				@media (max-width: @xs) {
-					background-color: darken(@brand-color, 7%) !important;
+			}
+			@media (max-width: @xs) {
+				background: none;
+				padding: 20px 15px;;
+				font-size: 16px;
+				&:hover, &:focus {
+					background: none !important;
 				}
+			}
+			.glyphicon {
+				font-size: 11px;
+				padding: 0 3px;
 			}
 		}
 		&.profile {
@@ -498,6 +516,9 @@ input[type=checkbox], input[type=radio] {
 				margin-bottom: -10px;
 				margin-left: 5px;
 				border-radius: 100%;
+				@media (max-width: @xs) {
+					display: none;
+				}
 			}
 		}
 		&.dropdown {
@@ -513,14 +534,24 @@ input[type=checkbox], input[type=radio] {
 				box-shadow: none;
 				padding: 0;
 				li {
+					@media (max-width: @xs) {
+						background: #333;
+					}
 					&:last-child a {
 						border-radius: 0 0 3px 3px;
+						@media (max-width: @xs) {
+							border-radius: 0;
+						}
 					}
 					a {
 						display: block;
 						padding: 12px 15px;
 						&:focus {
 							background: none;
+						}
+						@media (max-width: @xs) {
+							background: #333;
+							font-size: 15px;
 						}
 						span {
 							margin-right: 7px;
