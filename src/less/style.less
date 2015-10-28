@@ -196,6 +196,10 @@ hr {
 	}
 	.glyphicon {
 		margin-right: 5px;
+		&.right {
+			margin-right: 0;
+			margin-left: 5px;
+		}
 	}
 	&:active, &:focus {
 		box-shadow: none;
@@ -656,9 +660,17 @@ article {
 			border-radius: 3px;
 			transition: background 0.2s, transform 0.2s;
 			font-size: 18px;
-			.glyphicon {
+			.cat {
+				position: relative;
+				top: 1px;
 				font-size: 18px;
 				margin-right: 10px;
+			}
+			.chevron {
+				position: relative;
+				top: 2px;
+				font-size: 20px;
+				float: right;
 			}
 			&:active {
 				transform: scale(0.97);
@@ -992,6 +1004,12 @@ article {
 		color: @blue;
 	}
 	h2 {
+		margin-top: 0;
+		margin-bottom: 15px;
+		font-size: 30px;
+	}
+	h4 {
+		display: inline-block;
 		margin-top: 0;
 		margin-bottom: 60px;
 	}
