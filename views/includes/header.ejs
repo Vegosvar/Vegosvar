@@ -66,18 +66,12 @@
 
 <body>
 
-  <nav class="navbar navbar-default navbar-static-top">
+  <nav id="top" class="navbar navbar-default navbar-static-top">
     <div class="container">
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-          <span class="sr-only">Meny</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
         <div class="row">
-          <div class="col-xs-6 col-sm-4 center-xs">
-            <a href="/"><img src="/assets/images/vegosvar.svg" class="logo"></a>
+          <div class="col-xs-12 col-sm-4 center-xs logo">
+            <a href="/"><img src="/assets/images/vegosvar.svg"></a>
           </div>
 					<% if (typeof showsearch === 'undefined') { %>
 						<div class="col-xs-12 col-sm-8">
@@ -92,7 +86,7 @@
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav navbar-right">
 
-          <li class="dropdown">
+          <li class="dropdown hidden-sm">
               <a href="/konto" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
               Restauranger
               <span class="glyphicon glyphicon-triangle-bottom"></span>
@@ -134,4 +128,51 @@
         </ul>
       </div>
     </div>
+  </nav>
+
+  <nav id="bottom">
+    <ul>
+
+      <li>
+        <a class="toggle-dropdown"><span class="glyphicon glyphicon-map-marker"></span>Restauranger</a>
+        <ul class="dropdown">
+          <li><a href="/?s=stockholm+restaurang">Stockholm</a></li>
+          <li><a href="/?s=göteborg+restaurang">Göteborg</a></li>
+          <li><a href="/?s=malmö+restaurang">Malmö</a></li>
+          <li><a href="/?s=uppsala+restaurang">Uppsala</a></li>
+          <li><a href="/?s=västerås+restaurang">Västerås</a></li>
+          <li><a href="/?s=örebro+restaurang">Örebro</a></li>
+          <li><a href="/?s=linköping+restaurang">Linköping</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a class="toggle-dropdown"><span class="glyphicon glyphicon-ice-lolly-tasted"></span>Produkter</a>
+        <ul class="dropdown">
+          <li><a href="/?s=öl">Öl</a></li>
+          <li><a href="/?s=vin">Vin</a></li>
+          <li><a href="/?s=cider">Cider</a></li>
+          <li><a href="/?s=chips">Chips</a></li>
+          <li><a href="/?s=godis">Godis</a></li>
+        </ul>
+      </li>
+      
+      <li><a href="/ny"><span class="glyphicon glyphicon-star"></span>Skapa sida</a></li>
+
+      <% if (typeof user === 'undefined') { %>
+        <li><a href="/logga-in"><span class="glyphicon glyphicon-user"></span>Logga in</a></li>
+      <% } %>
+
+      <% if (typeof user !== 'undefined') { %>
+        <li>
+          <a class="toggle-dropdown"><span class="glyphicon glyphicon-user"></span>Konto</a>
+          <ul class="dropdown">
+            <li><a href="/installningar"><span class="glyphicon glyphicon-cog"></span> Inställningar</a></li>
+            <li><a href="/mina-sidor"><span class="glyphicon glyphicon-file"></span> Mina sidor</a></li>
+            <li><a href="/logga-ut"><span class="glyphicon glyphicon-chevron-right"></span> Logga ut</a></li>
+          </ul>
+        </li>
+      <% } %>
+
+    </ul>
   </nav>

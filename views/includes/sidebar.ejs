@@ -1,12 +1,12 @@
-        <div class="col-sm-4 sidebar">
+        <div class="col-sm-8 col-md-4 sidebar">
           <h2>Signatur</h2>
           <div class="card profile">
             <div class="row">
-              <div class="col-xs-4 col-sm-12 col-md-4 avatar">
+              <div class="col-xs-4 col-sm-3 col-md-4 avatar">
                 <a href="/installningar"><img src="<%= user.photo %>"></a>
               </div>
 
-              <div class="col-xs-8 col-sm-12 col-md-8 info">
+              <div class="col-xs-8 col-sm-9 col-md-8 info">
                 <a href="<%= user.info.website %>" target="_blank" title="<%= user.info.website %>"><h3><%= user.name.display_name %></h3></a>
 			          <span class="description"><% if(typeof user.info !== 'undefined') { %>
                   <%= typeof user.info.description !== 'undefined' ? user.info.description: 'Beskrivning saknas' %></p>

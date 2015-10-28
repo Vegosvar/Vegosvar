@@ -381,6 +381,7 @@ input[type=checkbox], input[type=radio] {
 // Layout
 
 .sidebar {
+	margin-bottom: 60px;
 	h2, h3 {
 		margin-top: 0;
 	}
@@ -447,160 +448,192 @@ input[type=checkbox], input[type=radio] {
 	}
 }
 
-.navbar {
-	margin-bottom: 0;
-	background: @brand-color;
-	border: none !important;
-	@media (max-width: @xs) {
-		position: fixed;
-		width: 100%;
-		top: 0;
-	}
-	.navbar-right {
-		margin: 0;
+nav {
+	&#top {
+		margin-bottom: 0;
+		background: @brand-color;
+		border: none !important;
 		@media (max-width: @xs) {
-			margin: 0 -15px;
+			position: fixed;
+			width: 100%;
+			top: 0;
 		}
-	}
-	.navbar-toggle {
-		border: none;
-		transition: transform 0.15s;
-		margin: 0;
-		padding: 17px;
-		&:hover, &:focus {
-			background: none;
+		.navbar-right {
+			margin: 0;
 		}
-		&:active {
-			transform: scale(0.9);
-		}
-	}
-	.navbar-collapse {
-		border: none;
-		box-shadow: none;
-		@media (max-width: @xs) {
-			background: darken(@brand-color, 5%);
-		}
-	}
-
-	li {
-		@media (max-width: @xs) {
-			background: #222;
-		}
-		&.open > a {
-			background-color: @brand-color !important;
-			@media (max-width: @xs) {
-				background: #111 !important;
-			}
-		}
-		a {
-			color: #fff !important;
-			transition: background 0.2s;
-			&:hover {
-				background-color: darken(@brand-color, 5%) !important;
-			}
-			@media (max-width: @xs) {
+		.navbar-toggle {
+			border: none;
+			transition: transform 0.15s;
+			margin: 0;
+			padding: 17px;
+			&:hover, &:focus {
 				background: none;
-				padding: 20px 15px;;
-				font-size: 16px;
-				&:hover, &:focus {
-					background: none !important;
-				}
 			}
-			.glyphicon {
-				font-size: 11px;
-				padding: 0 3px;
+			&:active {
+				transform: scale(0.9);
 			}
 		}
-		&.profile {
-			img {
-				position: relative;
-				width: 30px;
-				height: auto;
-				margin-top: -15px;
-				margin-bottom: -10px;
-				margin-left: 5px;
-				border-radius: 100%;
-				@media (max-width: @xs) {
-					display: none;
-				}
-			}
-		}
-		&.dropdown {
-			&:hover .dropdown-menu {
-				@media (min-width: @xs) {
-			    	display: block;
-				}
-			}
-			.dropdown-menu {
-				background: darken(@brand-color, 2%);
-				border: none;
-				width:100%;
-				box-shadow: none;
-				padding: 0;
-				li {
-					@media (max-width: @xs) {
-						background: #333;
-					}
-					&:last-child a {
-						border-radius: 0 0 3px 3px;
-						@media (max-width: @xs) {
-							border-radius: 0;
-						}
-					}
-					a {
-						display: block;
-						padding: 12px 15px;
-						&:focus {
-							background: none;
-						}
-						@media (max-width: @xs) {
-							background: #333;
-							font-size: 15px;
-						}
-						span {
-							margin-right: 7px;
-						}
-					}
-				}
-			}
-		}
-	}
-
-	.search {
-		margin-top: 0px;
-		margin-bottom: 0px;
-		border: none;
-		padding: 5px;
-		@media (max-width: @xs) {
-			padding: 0 5px 5px 5px;
-		}
-		input {
-			background: #fff;
+		.navbar-collapse {
 			border: none;
 			box-shadow: none;
-			padding: 9px 17px 10px 17px;
-			height: auto;
-			color: #333;
-			border-radius: 3px;
-			transition: background 0.2s, padding 0.2s;
-			width: 285px;
-			@media (max-width: @xs) {
-				width: 100%;
-				padding: 8px 17px;
-				font-size: 13px;
+		}
+
+		li {
+			&.open > a {
+				background-color: @brand-color !important;
+			}
+			a {
+				color: #fff !important;
+				transition: background 0.2s;
+				&:hover {
+					background-color: darken(@brand-color, 5%) !important;
+				}
+				.glyphicon {
+					font-size: 11px;
+					padding: 0 3px;
+				}
+			}
+			&.profile {
+				img {
+					position: relative;
+					width: 30px;
+					height: auto;
+					margin-top: -15px;
+					margin-bottom: -10px;
+					margin-left: 5px;
+					border-radius: 100%;
+				}
+			}
+			&.dropdown {
+				.dropdown-menu {
+					background: darken(@brand-color, 2%);
+					border: none;
+					width:100%;
+					box-shadow: none;
+					padding: 0;
+					li {
+						&:last-child a {
+							border-radius: 0 0 3px 3px;
+						}
+						a {
+							display: block;
+							padding: 12px 15px;
+							&:focus {
+								background: none;
+							}
+							span {
+								margin-right: 7px;
+							}
+						}
+					}
+				}
 			}
 		}
-	}
-	.logo {
-		width: 130px;
-		margin-top: 13px;
-		@media (max-width: @xs) {
-			padding-left: 15px;
-			width: 140px;
+
+		.search {
+			margin-top: 0px;
+			margin-bottom: 0px;
+			border: none;
+			padding: 5px;
+			@media (max-width: @xs) {
+				padding: 0 5px 5px 5px;
+			}
+			input {
+				background: #fff;
+				border: none;
+				box-shadow: none;
+				padding: 9px 17px 10px 17px;
+				height: auto;
+				color: #333;
+				border-radius: 3px;
+				transition: background 0.2s, padding 0.2s;
+				width: 285px;
+				@media (max-width: @xs) {
+					width: 100%;
+					padding: 8px 17px;
+					font-size: 13px;
+				}
+			}
+		}
+		.logo {
+			@media (max-width: @xs) {
+				text-align: center;
+			}
+			img {
+				width: 130px;
+				margin-top: 13px;
+				@media (max-width: @xs) {
+					margin-bottom: 15px;
+					width: 130px;
+				}
+			}
+		}
+		.icon-bar {
+			background: #fff !important;
 		}
 	}
-	.icon-bar {
-		background: #fff !important;
+	
+	&#bottom {
+		display: none;
+		@media (max-width: @xs) {
+			display: block;
+			position: fixed;
+			bottom: 0;
+			width: 100%;
+			z-index: 3;
+			box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.2);
+			ul {
+				padding: 0;
+				overflow: hidden;
+				margin-bottom: 0;
+				li {
+					list-style: none;
+					float: left;
+					width: 25%;
+					text-align: center;
+					z-index: 1;
+					background: #eee;
+					a {
+						display: block;
+						padding: 10px 0 7px 0;
+						color: #888;
+						font-size: 11px;
+						&:hover {
+							color: #777;
+						}
+						.glyphicon {
+							display: block;
+							font-size: 20px;
+							margin-bottom: 3px;
+						}
+					}
+					ul {
+						position: fixed;
+						top: 50px;
+						bottom: 0;
+						left: 0;
+						width: 100%;
+						background: #fff;
+						z-index: -1;
+						display: none;
+						overflow: scroll;
+						li {
+							width: 100%;
+							background: #fff;
+							a {
+								font-size: 20px;
+								padding: 15px 0;
+								color: #555;
+								border-bottom: 1px solid #eee;
+							}
+						}
+						&.active {
+							display: block;
+						}
+					}
+				}
+			}
+		}
 	}
 }
 
