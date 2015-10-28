@@ -1,0 +1,6 @@
+language: node_js
+node_js:
+- 0.12.7
+before_install:
+- openssl aes-256-cbc -d -K $encrypted_key -in travis_deploy/deploy_key.enc -out travis_deploy/deploy_key
+script: ./travis_deploy/deploy.sh 
