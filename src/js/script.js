@@ -14,10 +14,22 @@ $(window).load(function () {
       //console.log(label)
     })
   })
+
   $('[data-toggle="tooltip"]').tooltip()
 })
 
 $(function () {
+  $('a').click(function (event) { // Load links in-app
+    event.preventDefault()
+    window.location = $(this).attr('href')
+  })
+
+  $('.toggle-dropdown').on('click', function () {
+    $('ul.active').removeClass('active') // Reset active class
+    var parent = $(this).parent() // Select parent of clicked element
+    parent.children('ul').addClass('active') // Set class 'active' to parent's child
+  })
+
   $('.searchForm').keyup(function () {
     if ($('.searchForm').val() === '') {
       $('#searchForm-btn-default').html('<i class="glyphicon glyphicon-search"></i>')
