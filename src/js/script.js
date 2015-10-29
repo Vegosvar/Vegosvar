@@ -27,9 +27,9 @@ $(function () {
   })
 
   $('.toggle-dropdown').on('click', function () {
-    $('ul.active').removeClass('active') // Reset active class
+    $('li.active').removeClass('active') // Reset active class
     var parent = $(this).parent() // Select parent of clicked element
-    parent.children('ul').addClass('active') // Set class 'active' to parent's child
+    parent.children('li').addClass('active') // Set class 'active' to parent's child
   })
 
   $('.searchForm').keyup(function () {
