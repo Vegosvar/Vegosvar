@@ -607,6 +607,14 @@ nav {
 							margin-bottom: 3px;
 						}
 					}
+					&.active {
+						> a {
+							color: @brand-color;
+						}
+						ul {
+							display: block;
+						}
+					}
 					ul {
 						position: fixed;
 						top: 50px;
@@ -626,9 +634,6 @@ nav {
 								color: #555;
 								border-bottom: 1px solid #eee;
 							}
-						}
-						&.active {
-							display: block;
 						}
 					}
 				}
