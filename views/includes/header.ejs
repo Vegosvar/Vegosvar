@@ -27,7 +27,8 @@
   <link rel="dns-prefetch" href="//cdn.socket.io">
 
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  
+  <meta name="apple-mobile-web-app-status-bar-style" content="#00a651">
+
   <link rel="apple-touch-icon" sizes="57x57" href="/assets/images/favicon/apple-touch-icon-57x57.png">
   <link rel="apple-touch-icon" sizes="60x60" href="/assets/images/favicon/apple-touch-icon-60x60.png">
   <link rel="apple-touch-icon" sizes="72x72" href="/assets/images/favicon/apple-touch-icon-72x72.png">
@@ -85,50 +86,50 @@
 				</div>
       </div>
 
-      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <ul class="nav navbar-nav navbar-right">
+      <ul class="nav navbar-nav navbar-right hidden-xs">
 
-          <li class="dropdown hidden-sm">
+        <li class="dropdown hidden-sm">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            Restauranger
+            <span class="glyphicon glyphicon-triangle-bottom"></span>
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="/?s=stockholm+restaurang">Stockholm</a></li>
+            <li><a href="/?s=göteborg+restaurang">Göteborg</a></li>
+            <li><a href="/?s=malmö+restaurang">Malmö</a></li>
+            <li><a href="/?s=uppsala+restaurang">Uppsala</a></li>
+            <li><a href="/?s=västerås+restaurang">Västerås</a></li>
+            <li><a href="/?s=örebro+restaurang">Örebro</a></li>
+            <li><a href="/?s=linköping+restaurang">Linköping</a></li>
+          </ul>
+        </li>
+
+        <li><a href="/ny">Skapa sida</a></li>
+
+        <% if (typeof user !== 'undefined') { %>
+          <li class="profile dropdown">
               <a href="/konto" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-              Restauranger
-              <span class="glyphicon glyphicon-triangle-bottom"></span>
+              <span class="hidden-xs"><%= user.name.display_name %></span>
+              <span class="visible-xs">
+                Mitt konto
+                <span class="glyphicon glyphicon-triangle-bottom"></span>
+              </span>
+              <img src="<%= user.photo %>">
             </a>
             <ul class="dropdown-menu">
-              <li><a href="/?s=stockholm+restaurang">Stockholm</a></li>
-              <li><a href="/?s=göteborg+restaurang">Göteborg</a></li>
-              <li><a href="/?s=malmö+restaurang">Malmö</a></li>
-              <li><a href="/?s=uppsala+restaurang">Uppsala</a></li>
-              <li><a href="/?s=västerås+restaurang">Västerås</a></li>
-              <li><a href="/?s=örebro+restaurang">Örebro</a></li>
-              <li><a href="/?s=linköping+restaurang">Linköping</a></li>
+              <li><a href="/installningar"><span class="glyphicon glyphicon-cog"></span> Inställningar</a></li>
+              <li><a href="/mina-sidor"><span class="glyphicon glyphicon-file"></span> Mina sidor</a></li>
+              <li><a href="/logga-ut"><span class="glyphicon glyphicon-chevron-right"></span> Logga ut</a></li>
             </ul>
           </li>
+        <% } %>
 
-          <li><a href="/ny">Skapa sida</a></li>
+        <% if (typeof user === 'undefined') { %>
+          <li><a href="/logga-in">Logga in</a></li>
+        <% } %>
 
-          <% if (typeof user !== 'undefined') { %>
-            <li class="profile dropdown">
-                <a href="/konto" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-                <span class="hidden-xs"><%= user.name.display_name %></span>
-                <span class="visible-xs">
-                  Mitt konto
-                  <span class="glyphicon glyphicon-triangle-bottom"></span>
-                </span>
-                <img src="<%= user.photo %>">
-              </a>
-              <ul class="dropdown-menu">
-                <li><a href="/installningar"><span class="glyphicon glyphicon-cog"></span> Inställningar</a></li>
-                <li><a href="/mina-sidor"><span class="glyphicon glyphicon-file"></span> Mina sidor</a></li>
-                <li><a href="/logga-ut"><span class="glyphicon glyphicon-chevron-right"></span> Logga ut</a></li>
-              </ul>
-            </li>
-          <% } %>
+      </ul>
 
-          <% if (typeof user === 'undefined') { %>
-            <li><a href="/logga-in">Logga in</a></li>
-          <% } %>
-        </ul>
-      </div>
     </div>
   </nav>
 
