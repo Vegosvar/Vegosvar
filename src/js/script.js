@@ -21,7 +21,7 @@ $(window).load(function () {
 $(function () {
   $('a').click(function (event) { // Load links in-app
     event.preventDefault()
-    if (!$(this).attr('href') === undefined) {
+    if (!($(this).attr('href') === undefined)) {
       window.location = $(this).attr('href')
     }
   })
