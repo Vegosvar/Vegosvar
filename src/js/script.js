@@ -21,7 +21,9 @@ $(window).load(function () {
 $(function () {
   $('a').click(function (event) { // Load links in-app
     event.preventDefault()
-    window.location = $(this).attr('href')
+    if (!$(this).attr('href') === undefined) {
+      window.location = $(this).attr('href')
+    }
   })
 
   $('.toggle-dropdown').on('click', function () {
