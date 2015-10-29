@@ -245,7 +245,7 @@ app.get('/konto', function (req, res) {
 })
 
 app.get('/installningar', function (req, res) {
-  res.render('settings', { user: req.user })
+  res.render('settings', { user: req.user, loadEditorResources: true })
 })
 
 app.post('/installningar/submit', urlencodedParser, function (req, res) {

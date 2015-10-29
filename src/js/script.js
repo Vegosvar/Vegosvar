@@ -21,15 +21,19 @@ $(window).load(function () {
 $(function () {
   $('a').click(function (event) { // Load links in-app
     event.preventDefault()
-    if (!($(this).attr('href') === undefined)) {
+    if ($(this).attr('href') !== undefined) {
       window.location = $(this).attr('href')
     }
   })
 
   $('.toggle-dropdown').on('click', function () {
-    $('li.active').removeClass('active') // Reset active class
     var parent = $(this).parent() // Select parent of clicked element
-    parent.addClass('active') // Set class 'active' to parent's child
+    if (parent.hasClass('active')) {
+      parent.removeClass('active')
+    } else {
+      $('li.active').removeClass('active') // Reset active class
+      parent.addClass('active') // Set class 'active' to parent's child
+    }
   })
 
   $('.searchForm').keyup(function () {

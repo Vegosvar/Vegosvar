@@ -60,6 +60,10 @@
 
   <link rel="stylesheet" href="/assets/css/style.css">
   <script src="/assets/js/app.js"></script>
+  
+  <% if (typeof loadEditorResources !== 'undefined' && loadEditorResources === true) { %>
+    <!-- <script src="/src/editor.js"></script> -->
+  <% } %>
 
   <!-- TODO Fix this so it doesn't appear in prod! -->
   <% if (settings.env === 'development') { %>
@@ -108,7 +112,7 @@
 
         <% if (typeof user !== 'undefined') { %>
           <li class="profile dropdown">
-              <a href="/konto" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+              <a href="/installningar" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
               <span class="hidden-xs"><%= user.name.display_name %></span>
               <span class="visible-xs">
                 Mitt konto
