@@ -1,0 +1,33 @@
+{
+  "name": "Vegosvar",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Tobias Järvelöv <tobias@jarvelov.se>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/Vegosvar/Vegosvar",
+  "moduleType": [
+    "node"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "path" : {
+    "base": "public",
+    "css": "assets/css",
+    "js": "assets/js",
+  },
+  "sources" : {
+    "wysihtml5x" : [
+      "bower_components/wysihtml5x/parser_rules/advanced_and_extended.js",
+      "bower_components/wysihtml5x/dist/wysihtml5x.min.js",
+      "bower_components/wysihtml5x/dist/wysihtml5x-toolbar.min.js"
+    ]
+  }
+}
