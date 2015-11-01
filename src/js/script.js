@@ -20,14 +20,9 @@ $(window).load(function () {
 
 $(function () {
   $('a').click(function (event) { // Load links in-app
-    if (
-      ('standalone' in window.navigator) &&
-      !window.navigator.standalone
-      ) {
-      event.preventDefault()
-      if ($(this).attr('href') !== undefined) {
-        window.location = $(this).attr('href')
-      }
+    event.preventDefault()
+    if ($(this).attr('href') !== undefined) {
+      window.location = $(this).attr('href')
     }
   })
 
