@@ -121,9 +121,9 @@
               <img src="<%= user.photo %>">
             </a>
             <ul class="dropdown-menu">
-              <li><a href="/installningar"><span class="glyphicon glyphicon-cog"></span> Inställningar</a></li>
-              <li><a href="/mina-sidor"><span class="glyphicon glyphicon-file"></span> Mina sidor</a></li>
-              <li><a href="/logga-ut"><span class="glyphicon glyphicon-chevron-right"></span> Logga ut</a></li>
+              <li><a href="/installningar">Inställningar</a></li>
+              <li><a href="/mina-sidor">Mina sidor</a></li>
+              <li><a href="/logga-ut">Logga ut</a></li>
             </ul>
           </li>
         <% } %>
@@ -184,8 +184,10 @@
         <li>
           <a class="toggle-dropdown"><span class="glyphicon glyphicon-user"></span>Konto</a>
           <ul class="dropdown">
-            <li><img src="<%= user.photo %>"></li>
-            <li class="title"><%= user.name.display_name %></li>
+            <li class="title">
+              <div><img src="<%= user.photo %>"></div>
+              <%= user.name.display_name %>
+            </li>
             <li><a href="/ny">Skapa sida</a></li>
             <li><a href="/mina-sidor">Mina sidor</a></li>
             <li><a href="/installningar">Inställningar</a></li>

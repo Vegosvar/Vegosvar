@@ -1,94 +1,96 @@
 <% include ../includes/header %>
 
 	<div class="container">
-		<article>
+		<section id="main">
 			<% include includes/errors.ejs %>
 			<div class="row">
 				<div class="col-md-8">
-					<section>
-					<form action="/submit" method="post">
-					<input type="hidden" name="type" value="2">
-						<h1>Nytt recept</h1><br>
-						<div class="row">
-							<div class="col-sm-10">
-								<div class="input-group">
-									<span class="input-group-addon" id="basic-addon2">Rubrik</span>
-									<input type="text" class="form-control" id="header-input" name="title" autocomplete="off" aria-describedby="basic-addon1">
+					<article>
+						<form action="/submit" method="post">
+							<input type="hidden" name="type" value="2">
+							<h1>Nytt recept</h1><br>
+							<div class="row">
+								<div class="col-sm-10">
+									<div class="input-group">
+										<span class="input-group-addon" id="basic-addon2">Rubrik</span>
+										<input type="text" class="form-control" id="header-input" name="title" autocomplete="off" aria-describedby="basic-addon1">
+									</div>
 								</div>
 							</div>
-						</div>
-						
-						<h3>Innehåll</h3>
-						<div class="row">
-							<div class="col-sm-12">
-								<div class="input-group">
-									<textarea type="text" name="content" class="form-control"></textarea>
+							
+							<h3>Innehåll</h3>
+							<div class="row">
+								<div class="col-sm-12">
+									<div class="input-group">
+										<textarea type="text" name="content" class="form-control"></textarea>
+									</div>
 								</div>
 							</div>
-						</div>
 
-						<h3>Ingredienser</h3>
-						<div class="row">
-							<div class="col-sm-7">
-								<div class="input-group">
-									<input type="text" class="form-control" name="ingredient" placeholder="Ingrediens" aria-describedby="basic-addon1">
-									<a href="#" class="btn btn-add input-group-addon"><span class="glyphicon glyphicon-plus"></span></a>
+							<h3>Ingredienser</h3>
+							<div class="row">
+								<div class="col-sm-7">
+									<div class="input-group">
+										<input type="text" class="form-control" name="ingredient" placeholder="Ingrediens" aria-describedby="basic-addon1">
+										<a href="#" class="btn btn-add input-group-addon"><span class="glyphicon glyphicon-plus"></span></a>
+									</div>
 								</div>
 							</div>
-						</div>
-		
-						<h3>Steg</h3>
-						<div class="row">
-							<div class="col-sm-7">
-								<div class="input-group">
-									<input type="text" class="form-control" name="step" placeholder="Steg 1" aria-describedby="basic-addon1">
-									<a href="#" class="btn btn-add input-group-addon"><span class="glyphicon glyphicon-plus"></span></a>
+			
+							<h3>Steg</h3>
+							<div class="row">
+								<div class="col-sm-7">
+									<div class="input-group">
+										<input type="text" class="form-control" name="step" placeholder="Steg 1" aria-describedby="basic-addon1">
+										<a href="#" class="btn btn-add input-group-addon"><span class="glyphicon glyphicon-plus"></span></a>
+									</div>
 								</div>
 							</div>
-						</div>
 
-						<h3>Bilder</h3>
-						<div class="input-group">
-							<p><span class="btn btn-edit btn-file">
-								<span class="glyphicon glyphicon-camera"></span> Ladda upp utvald bild <input type="file">
-							</span></p>
-							<small><p>Rekommenderad storlek <strong>1200 x 630 px</strong><br>
-							Licens: CC0 <a href="#">Ändra</a></p></small>
-						</div>
-
-						<h3>Övrigt</h3>
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" name="hidden"> 
-								Jag vill inte synas som författare till sidan 
-								<a href="/vanliga-fragor" target="_blank" title="Öppna i ny flik" class="small">Läs mer</a>
-							</label>
-						</div>
-						<div class="checkbox">
-							<label>
-								<input type="checkbox" name="hidden"> 
-								Jag önskar låsa sidan från redigering 
-								<a href="/vanliga-fragor" target="_blank" title="Öppna i ny flik" class="small">Läs mer</a>
-							</label>
-						</div>
-
-						<hr>
-
-						<div class="row">
-							<div class="col-md-12">
-								<p><button class="btn btn-primary lg">Skapa sida</button><br>
-								<small>Genom att skapa en sida går du med på <a href="/villkor" target="_blank">våra villkor</a></small></p>
+							<h3>Bilder</h3>
+							<div class="input-group">
+								<p><span class="btn btn-edit btn-file">
+									<span class="glyphicon glyphicon-camera"></span> Ladda upp utvald bild <input type="file">
+								</span></p>
+								<small><p>Rekommenderad storlek <strong>1200 x 630 px</strong><br>
+								Licens: CC0 <a href="#">Ändra</a></p></small>
 							</div>
-						</div>
-					</form>	
-					</section>
+
+							<h3>Övrigt</h3>
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" name="hidden"> 
+									Jag vill inte synas som författare till sidan 
+									<a href="/vanliga-fragor" target="_blank" title="Öppna i ny flik" class="small">Läs mer</a>
+								</label>
+							</div>
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" name="hidden"> 
+									Jag önskar låsa sidan från redigering 
+									<a href="/vanliga-fragor" target="_blank" title="Öppna i ny flik" class="small">Läs mer</a>
+								</label>
+							</div>
+
+							<hr>
+
+							<div class="row">
+								<div class="col-md-12">
+									<p><button class="btn btn-primary lg">Skapa sida</button><br>
+									<small>Genom att skapa en sida går du med på <a href="/villkor" target="_blank">våra villkor</a></small></p>
+								</div>
+							</div>
+						</form>	
+					</article>
 				</div>
-				<div class="col-sm-4 sidebar">
-					<% include includes/sidebar %>
+				<div class="col-md-4">
+					<aside>
+						<% include includes/sidebar %>
+					</aside>
 				</div>
 			</div>
 
-		</article>
+		</section>
 	</div>
 
 <% include ../includes/footer %>
