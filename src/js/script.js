@@ -19,6 +19,17 @@ $(window).load(function () {
 })
 
 $(function () {
+  if (
+    ('standalone' in window.navigator) &&
+    !window.navigator.standalone
+    ) {
+    $('a').click(function (event) { // Load links in-app
+      event.preventDefault()
+      if ($(this).attr('href') !== undefined) {
+        window.location = $(this).attr('href')
+      }
+    })
+  }
 
   $('.toggle-dropdown').on('click', function () {
     var parent = $(this).parent() // Select parent of clicked element
