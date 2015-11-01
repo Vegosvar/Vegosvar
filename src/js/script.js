@@ -26,8 +26,6 @@ $(function () {
     }
   })
 
-  FastClick.attach(document.body)
-
   $('.toggle-dropdown').on('click', function () {
     var parent = $(this).parent() // Select parent of clicked element
     if (parent.hasClass('active')) {
