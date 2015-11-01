@@ -19,12 +19,6 @@ $(window).load(function () {
 })
 
 $(function () {
-  $('a').click(function (event) { // Load links in-app
-    event.preventDefault()
-    if ($(this).attr('href') !== undefined) {
-      window.location = $(this).attr('href')
-    }
-  })
 
   $('.toggle-dropdown').on('click', function () {
     var parent = $(this).parent() // Select parent of clicked element
