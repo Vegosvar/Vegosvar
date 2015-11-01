@@ -305,7 +305,14 @@ hr {
 
 input {
 	-webkit-appearance: none;
+	&[type=checkbox] {
+		-webkit-appearance: checkbox;
+	}
+	&[type=radio] {
+		-webkit-appearance: radio;
+	}
 }
+
 
 textarea {
 	min-height: 150px;
@@ -499,13 +506,14 @@ nav {
 			a {
 				color: #fff !important;
 				transition: background 0.2s;
-				text-transform: uppercase;
-				font-weight: 700;
-				font-size: 14px;
+				font-weight: 600;
+				font-size: 15px;
 				&:hover {
 					background-color: darken(@brand-color, 5%) !important;
 				}
 				.glyphicon {
+					position: relative;
+					top: 0;
 					font-size: 11px;
 					padding: 0 3px;
 				}
@@ -656,13 +664,13 @@ nav {
 								padding: 15px 0;
 								color: #fff;
 								background: darken(@brand-color, 2%);
-								border-bottom: 2px solid darken(@brand-color, 3%);
+								border-bottom: 1px solid darken(@brand-color, 4%);
 								&:hover {
 									color: #fff;
 								}
 								&:active, &:focus {
 									color: #fff;
-									background: darken(@brand-color, 3%);
+									background: darken(@brand-color, 4%);
 								}
 							}
 							img {
