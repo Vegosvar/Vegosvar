@@ -14,10 +14,28 @@ $(window).load(function () {
       //console.log(label)
     })
   })
+
   $('[data-toggle="tooltip"]').tooltip()
 })
 
 $(function () {
+  $('.open-in-app a').click(function (event) { // Load links in-app
+    event.preventDefault()
+    if ($(this).attr('href') !== undefined) {
+      window.location = $(this).attr('href')
+    }
+  })
+
+  $('.toggle-dropdown').on('click', function () {
+    var parent = $(this).parent() // Select parent of clicked element
+    if (parent.hasClass('active')) {
+      parent.removeClass('active')
+    } else {
+      $('li.active').removeClass('active') // Reset active class
+      parent.addClass('active') // Set class 'active' to parent's child
+    }
+  })
+
   $('.searchForm').keyup(function () {
     if ($('.searchForm').val() === '') {
       $('#searchForm-btn-default').html('<i class="glyphicon glyphicon-search"></i>')

@@ -27,11 +27,9 @@
 body {
 	font-family: @brand-font;
 	-webkit-font-smoothing: antialiased;
+	-webkit-appearance: none;
 	font-size: 15px;
 	line-height: 1.55;
-	@media (max-width: @xs) {
-		padding-top: 45px;
-	}
 	background: #f5f5f5;
 	strong {
 		font-weight: 700;
@@ -58,6 +56,9 @@ h1 {
 	font-size: 35px;
 	margin-bottom: 15px;
 	line-height: 1.2;
+	@media (max-width: @xs) {
+		font-size: 30px;
+	}
 }
 
 h2 {
@@ -134,6 +135,10 @@ img {
 	}
 	&.alert-info {
 		color: @blue;
+		a {
+			color: @blue;
+			border-color: @blue;
+		}
 	}
 	a {
 		display: inline-block;
@@ -298,9 +303,20 @@ hr {
 	}
 }
 
+input {
+	-webkit-appearance: none;
+	&[type=checkbox] {
+		-webkit-appearance: checkbox;
+	}
+	&[type=radio] {
+		-webkit-appearance: radio;
+	}
+}
+
 
 textarea {
 	min-height: 150px;
+	-webkit-appearance: none;
 }
 
 button {
@@ -322,12 +338,13 @@ button {
 	}
 	.form-control {
 		border: none;
-		box-shadow: inset 0px 0px 0px 2px #dfdfdf;
+		border: 2px solid #dfdfdf;
 		padding: 12px 17px;
 		height: auto;
 		color: #111;
+		box-shadow: none;
 		&:focus {
-			box-shadow: inset 0px 0px 0px 2px @blue;
+			border: 2px solid @blue;
 		}
 	}
 }
@@ -378,7 +395,8 @@ input[type=checkbox], input[type=radio] {
 }
 
 
-// Layout
+
+// Template
 
 .sidebar {
 	margin-bottom: 60px;
@@ -453,12 +471,15 @@ nav {
 		margin-bottom: 0;
 		background: @brand-color;
 		border: none !important;
+		z-index: 3;
 		@media (max-width: @xs) {
-			position: fixed;
 			width: 100%;
 			top: 0;
 		}
 		.navbar-right {
+			margin: 0;
+		}
+		.navbar-header {
 			margin: 0;
 		}
 		.navbar-toggle {
@@ -485,10 +506,14 @@ nav {
 			a {
 				color: #fff !important;
 				transition: background 0.2s;
+				font-weight: 600;
+				font-size: 15px;
 				&:hover {
 					background-color: darken(@brand-color, 5%) !important;
 				}
 				.glyphicon {
+					position: relative;
+					top: 0;
 					font-size: 11px;
 					padding: 0 3px;
 				}
@@ -505,6 +530,9 @@ nav {
 				}
 			}
 			&.dropdown {
+				&:hover .dropdown-menu {
+					display: block;
+				}
 				.dropdown-menu {
 					background: darken(@brand-color, 2%);
 					border: none;
@@ -518,6 +546,7 @@ nav {
 						a {
 							display: block;
 							padding: 12px 15px;
+							text-transform: capitalize;
 							&:focus {
 								background: none;
 							}
@@ -581,7 +610,7 @@ nav {
 			bottom: 0;
 			width: 100%;
 			z-index: 3;
-			box-shadow: 0 -1px 0 0 rgba(0, 0, 0, 0.2);
+			box-shadow: 0 -2px 0 0 rgba(0, 0, 0, 0.02);
 			ul {
 				padding: 0;
 				overflow: hidden;
@@ -592,43 +621,71 @@ nav {
 					width: 25%;
 					text-align: center;
 					z-index: 1;
-					background: #eee;
+					background: #FBFBFB;
 					a {
 						display: block;
 						padding: 10px 0 7px 0;
-						color: #888;
+						color: #666;
 						font-size: 11px;
-						&:hover {
-							color: #777;
-						}
 						.glyphicon {
 							display: block;
 							font-size: 20px;
 							margin-bottom: 3px;
 						}
+						&:active, &:focus {
+							color: #fff;
+							background: darken(@brand-color, 2%);
+						}
+					}
+					&.active {
+						background: @brand-color;
+						> a {
+							color: #fff;
+						}
+						ul {
+							display: block;
+						}
 					}
 					ul {
 						position: fixed;
-						top: 50px;
+						padding-bottom: 110px;
+						top: 0;
 						bottom: 0;
 						left: 0;
 						width: 100%;
-						background: #fff;
+						background: darken(@brand-color, 2%);
 						z-index: -1;
 						display: none;
 						overflow: scroll;
 						li {
 							width: 100%;
-							background: #fff;
 							a {
-								font-size: 20px;
+								font-size: 18px;
 								padding: 15px 0;
-								color: #555;
-								border-bottom: 1px solid #eee;
+								color: #fff;
+								background: darken(@brand-color, 2%);
+								border-bottom: 1px solid darken(@brand-color, 4%);
+								&:hover {
+									color: #fff;
+								}
+								&:active, &:focus {
+									color: #fff;
+									background: darken(@brand-color, 4%);
+								}
 							}
-						}
-						&.active {
-							display: block;
+							img {
+								width: 120px;
+								border-radius: 100%;
+								margin-bottom: 15px;
+							}
+							&.title {
+								font-size: 20px;
+								font-weight: 700;
+								padding: 30px 0 15px 0;
+								color: #fff;
+								background: @brand-color;
+								text-transform: uppercase;
+							}
 						}
 					}
 				}
@@ -639,97 +696,122 @@ nav {
 
 
 article {
-	margin: 60px 0;
-	display: block;
+	padding: 50px 30px;
+	background: #fff;
+	border-radius: 5px;
+	margin-bottom: 30px;
 	@media (max-width: @xs) {
-		margin: 70px 0;
+		padding: 50px 15px;
+		margin: 0 -15px 30px -15px;
 	}
-	section {
-		padding: 50px 30px;
-		background: #fff;
-		border-radius: 5px;
-		margin-bottom: 30px;
-		@media (max-width: @xs) {
-			padding: 50px 15px;
-			margin: -28px -15px 30px -15px;
-		}
+}
+
+aside {
+	padding: 40px 30px;
+	background: #fff;
+	border-radius: 5px;
+	margin-bottom: 30px;
+	@media (max-width: @xs) {
+		padding: 50px 15px;
+		margin: 0 -15px 30px -15px;
 	}
-	.sources {
-		padding: 0;
-		li {
-			list-style: none;
-			margin-bottom: 5px;
-			.text-overflow;
-			a {
-				padding-left: 5px;
-			}
-		}
+}
+
+aside {
+	h2 {
+		margin-top: 0;
 	}
-	.headerImage {
+}
+
+section {
+	&#main {
+		margin: 60px 0;
 		display: block;
-		position: relative;
-		border-radius: 3px 3px 0 0;
-		background: #fff;
-		margin-top: -50px;
-		margin-left: -30px;
-		margin-right: -30px;
-		margin-bottom: 30px;
-		overflow: hidden;
-	}
-	.new {
-		overflow: hidden;
-		margin-bottom: -30px;
 		@media (max-width: @xs) {
-			margin-top: 50px;
+			margin: 0 0 70px 0;
 		}
-		.category {
+		.sources {
+			padding: 0;
+			li {
+				list-style: none;
+				margin-bottom: 5px;
+				.text-overflow;
+				a {
+					padding-left: 5px;
+				}
+			}
+		}
+		.headerImage {
 			display: block;
-			width: 100%;
-			padding: 19px 25px;
-			color: #fff;
-			float: left;
-			background: #eee;
-			margin-bottom: 15px;
-			border-radius: 3px;
-			transition: background 0.2s, transform 0.2s;
-			font-size: 18px;
-			.cat {
-				position: relative;
-				top: 1px;
+			position: relative;
+			border-radius: 3px 3px 0 0;
+			background: #fff;
+			margin-top: -50px;
+			margin-left: -30px;
+			margin-right: -30px;
+			margin-bottom: 30px;
+			overflow: hidden;
+			@media (max-width: @xs) {
+				margin-left: -15px;
+				margin-right: -15px;
+				border-radius: 0;
+			}
+		}
+		.new {
+			overflow: hidden;
+			margin-bottom: -30px;
+			@media (max-width: @xs) {
+				margin-top: 50px;
+			}
+			.category {
+				display: block;
+				width: 100%;
+				padding: 19px 25px;
+				color: #fff;
+				float: left;
+				background: #eee;
+				margin-bottom: 15px;
+				border-radius: 3px;
+				transition: background 0.2s, transform 0.2s;
 				font-size: 18px;
-				margin-right: 10px;
-			}
-			.chevron {
-				position: relative;
-				top: 2px;
-				font-size: 20px;
-				float: right;
-			}
-			&:active {
-				transform: scale(0.97);
-			}
-			&.fact {
-				background: @brand-color;
-				&:hover {
-					background: darken(@brand-color, 3%);
+				.cat {
+					position: relative;
+					top: 1px;
+					font-size: 18px;
+					margin-right: 10px;
 				}
-			}
-			&.restaurant {
-				background: @restaurant;
-				&:hover {
-					background: darken(@restaurant, 3%);
+				.chevron {
+					position: relative;
+					top: 2px;
+					font-size: 20px;
+					float: right;
 				}
-			}
-			&.recipe {
-				background: @recipe;
-				&:hover {
-					background: darken(@recipe, 3%);
+				&:active {
+					transform: scale(0.97);
 				}
-			}
-			&.product {
-				background: @product;
-				&:hover {
-					background: darken(@product, 3%);
+				&.fact {
+					background: @brand-color;
+					&:hover {
+						background: darken(@brand-color, 3%);
+					}
+				}
+				&.restaurant {
+					background: @restaurant;
+					&:hover {
+						background: darken(@restaurant, 3%);
+					}
+				}
+				&.recipe {
+					background: @recipe;
+					&:hover {
+						background: darken(@recipe, 3%);
+					}
+				}
+				&.product {
+					background: @product;
+					&:hover {
+						background: darken(@product, 3%);
+					}
 				}
 			}
 		}
@@ -745,14 +827,14 @@ article {
 	color: #fff;
 	transition: padding 0.8s;
 	@media (max-width: @xs) {
-		padding: 40px 0 50px 0;
+		padding: 30px 0 50px 0;
 		margin-bottom: 0px;
 	}
 
 	&.contracted {
 		padding: 10px 0 30px 0;
 		@media (max-width: @xs) {
-			padding: 30px 0 20px 0;
+			padding: 0 0 20px 0;
 		}
 		.intro {
 			margin-bottom: 0;
@@ -883,7 +965,7 @@ article {
 		padding: 20px 20px 60px 20px;
 		@media (max-width: @xs) { // TODO Make 100% wide when image is missing
 			width: 70%;
-			padding: 20px 20px 0 20px;
+			padding: 20px 20px 0 15px;
 			margin-bottom: 15px;
 		}
 		a {
@@ -1087,6 +1169,7 @@ article {
 	color: #fff;
 	@media (max-width: @xs) {
 		text-align: center;
+		padding: 60px 0 120px 0;
 	}
 	.logo {
 		display: inline-block;

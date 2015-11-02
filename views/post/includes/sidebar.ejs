@@ -1,29 +1,28 @@
 
-					<div class="card">
-						<table class="table no-margin">
-							<thead>
+				
+					<table class="table no-margin">
+						<thead>
+							<tr>
+								<td><h2>Riktlinjer</h2></td>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Du måste äga rättigheterna till materialet</td>
+							</tr>
+							<tr>
+								<td>Kom ihåg att källhänvisa</td>
+							</tr>
+							<tr>
+								<td>Använd ett tydligt och objektivt språk</td>
+							</tr>
+							<tr>
+								<td>Bör vara relevant för vegointresserade</td>
+							</tr>
+							<% if (typeof hidelink === 'undefined') { %>
 								<tr>
-									<td><h3>Riktlinjer</h3></td>
+									<td><a href="/riktlinjer" target="_blank">Läs mer &raquo;</a></td>
 								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>Du måste äga rättigheterna till materialet</td>
-								</tr>
-								<tr>
-									<td>Kom ihåg att källhänvisa</td>
-								</tr>
-								<tr>
-									<td>Använd ett tydligt och objektivt språk</td>
-								</tr>
-								<tr>
-									<td>Bör vara relevant för vegointresserade</td>
-								</tr>
-								<% if (typeof hidelink === 'undefined') { %>
-									<tr>
-										<td><a href="/riktlinjer" target="_blank">Läs mer &raquo;</a></td>
-									</tr>
-								<% } %>
-							</tbody>
-						</table>
-					</div>
+							<% } %>
+						</tbody>
+					</table>
