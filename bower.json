@@ -21,7 +21,7 @@
   "path" : {
     "base": "public",
     "css": "assets/css",
-    "js": "assets/js",
+    "js": "assets/js"
   },
   "sources" : {
     "wysihtml5x" : [
