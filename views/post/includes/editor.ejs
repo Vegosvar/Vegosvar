@@ -40,7 +40,7 @@
                     <h4>Ange en ny källa</h4>
                     <div class="input-group">
 						<span class="input-group-addon">1.</span>
-						<input class="form-control" placeholder="http://" aria-describedby="basic-addon1" type="text">
+						<input id="insert-source-url" class="form-control" placeholder="http://" type="text">
 						<a href="#" class="btn btn-add input-group-addon"><span class="glyphicon glyphicon-plus"></span></a>
 					</div>
                     <h4>Välj befintlig källa</h4>
@@ -131,7 +131,7 @@
             </div>
         </li>
         <li>
-            <a id="insert-source-button" data-toggle="modal" data-target="#editorModalSource" class="btn btn-primary">Källa</a>
+            <a id="insert-source-button" data-toggle="modal" data-target="#editorModalSource" class="btn btn-toolbar">Källa</a>
         </li>
         <li class="hidden">
             <a class="btn btn-primary" data-toggle="modal" data-target="#editorModalImage">Bild</a>
@@ -140,6 +140,6 @@
 </div>
 <div class="col-sm-12">
     <div class="input-group">
-        <div id="editor" class="editable" style="min-height:200px"></div>
+        <div id="editor" class="editable" data-placeholder="Skriv här..." style="min-height:200px"></div>
     </div>
 </div>
