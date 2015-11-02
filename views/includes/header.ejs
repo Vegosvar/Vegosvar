@@ -74,16 +74,16 @@
   </script>
 
   <% if (typeof loadEditorResources !== 'undefined' && loadEditorResources === true) { %>
-    <!-- <script src="/src/editor.js"></script> -->
+    <script src="/src/editor.js"></script>
   <% } %>
 
-  <% if (typeof loadEditorResources !== 'undefined') { %>
+  <script>console.log(loadEditorResources)</script>
+
     <script src="/includes/js/wysihtml5x/wysihtml5x.min.js"></script>
     <script src="/includes/js/wysihtml5x/wysihtml5x-toolbar.min.js"></script>
     <script src="/includes/js/wysihtml5x/advanced_and_extended.js"></script>
     <script src="/includes/js/editor/controller.js"></script>
     <script src="/includes/js/editor/editor.js"></script>
-  <% } %>
 
   <!-- TODO Fix this so it doesn't appear in prod! -->
   <% if (settings.env === 'development') { %>

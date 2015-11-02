@@ -241,6 +241,21 @@ hr {
 			background: darken(@blue, 8%);
 		}
 	}
+	&.btn-toolbar {
+		background: #444;
+		color: #fff;
+		margin: 0;
+		margin-bottom: 15px;
+		&:hover {
+			background: #333;
+		}
+		&:active {
+			background: #222;
+		}
+		.glyphicon {
+			margin: 0;
+		}
+	}
 	&.btn-add {
 		background: @blue !important;
 		color: #fff !important;
@@ -1160,6 +1175,29 @@ section {
 	}
 }
 
+
+#toolbar {
+	margin: 0;
+	background: #666;
+	border-radius: 3px 3px 0 0;
+	overflow: hidden;
+	li {
+		margin: 0;
+		padding: 0;
+		.btn {
+			border-radius: 0;
+			margin: 0;
+		}
+	}
+}
+
+#editor {
+	border: 2px solid #eee;
+	padding: 15px;
+	&:focus {
+		outline: none !important;
+	}
+}
 
 
 

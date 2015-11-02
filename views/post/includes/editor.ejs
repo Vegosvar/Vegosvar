@@ -63,27 +63,35 @@
     <!-- Editor toolbar -->
     <ul id="toolbar" class="editor-toolbar list-inline">
         <li>
-            <a class="btn btn-primary" data-wysihtml5-command="bold">Fet</a>
+            <a class="btn btn-toolbar" data-wysihtml5-command="bold">
+                <span class="glyphicon glyphicon-bold"></span>
+            </a>
         </li>
         <li>
-            <a class="btn btn-primary" data-wysihtml5-command="italic">Kursiv</a>
+            <a class="btn btn-toolbar" data-wysihtml5-command="italic">
+                <span class="glyphicon glyphicon-italic"></span>
+            </a>
         </li>
         <li>
-            <a class="btn btn-primary" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2">Rubrik 1</a>
+            <a class="btn btn-toolbar" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2">Rubrik 1</a>
         </li>
         <li>
-            <a class="btn btn-primary" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h3">Rubrik 2</a>
+            <a class="btn btn-toolbar" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h3">Rubrik 2</a>
         </li>
         <li>
-            <a class="btn btn-primary" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h4">Rubrik 3</a>
+            <a class="btn btn-toolbar" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h4">Rubrik 3</a>
         </li>
         <!-- for desktops, use the modal to insert links -->
         <li class="visibile-md-inline-block visible-lg-inline-block">
-            <a class="btn btn-primary" id="insert-link-button" data-toggle="modal" data-target="#editorModalLink" data-active="Redigera" data-default="L&auml;nk">L&auml;nk</a>
+            <a class="btn btn-toolbar" id="insert-link-button" data-toggle="modal" data-target="#editorModalLink" data-active="Redigera" data-default="L&auml;nk">
+                <span class="glyphicon glyphicon-link"></span>
+            </a>
         </li>
         <!-- for mobile devices, fall back to default link handling -->
         <li class="visible-xs-inline-block visible-sm-inline-block">
-            <a id="insert-link-button-mobile" class="btn btn-primary insert-link-mobile" data-wysihtml5-command="createLink">Länk</a>
+            <a id="insert-link-button-mobile" class="btn btn-primary insert-link-mobile" data-wysihtml5-command="createLink">
+                <span class="glyphicon glyphicon-link"></span>
+            </a>
             <div data-wysihtml5-dialog="createLink" style="display:none">
                 <label>
                     Länk:
