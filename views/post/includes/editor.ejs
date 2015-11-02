@@ -1,0 +1,105 @@
+<div class="col-sm-12">
+    <!-- Editor modals -->
+    <div id="editorModalLink" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a type="a" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                    <h4 class="modal-title">Infoga länk</h4>
+                </div>
+                <div class="modal-body">
+                    <label>
+                        Länk:
+                        <input id="insert-link-url" type="url" class="form-control" placeholder="http://">
+                    </label>
+                    <label>
+                        Text:
+                        <input id="insert-link-text" type="text" class="form-control">
+                    </label>
+                </div>
+                <div class="modal-footer">
+                    <a id="insert-link-save" class="btn btn-primary">OK</a>
+                    <a class="btn btn-danger" data-dismiss="modal">Avbryt</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <div id="editorModalImage" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a type="a" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                    <h4 class="modal-title">Infoga bild</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div class="input-group">
+                            <label for="insert-image-url">
+                                Från länk:
+                                <input id="insert-image-url" type="url" class="form-control" placeholder="http://">
+                            </label>
+                        </div>
+                        <div class="input-group">
+                            <label for="insert-image-upload">
+                                Ladda upp:
+                                <input id="insert-image-upload" class="form-control" disabled="disabled" name="source" type="file">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a id="insert-image-save" class="btn btn-primary">OK</a>
+                    <a class="btn btn-danger" data-dismiss="modal">Avbryt</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- Editor toolbar -->
+    <ul id="toolbar" class="editor-toolbar list-inline">
+        <li>
+            <a class="btn btn-primary" data-wysihtml5-command="bold">Fet</a>
+        </li>
+        <li>
+            <a class="btn btn-primary" data-wysihtml5-command="italic">Kursiv</a>
+        </li>
+        <li>
+            <a class="btn btn-primary" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2">Rubrik 1</a>
+        </li>
+        <li>
+            <a class="btn btn-primary" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h3">Rubrik 2</a>
+        </li>
+        <li>
+            <a class="btn btn-primary" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h4">Rubrik 3</a>
+        </li>
+        <!-- for desktops, use the modal to insert links -->
+        <li class="visibile-md-inline-block visible-lg-inline-block">
+            <a class="btn btn-primary" id="insert-link-button" data-toggle="modal" data-target="#editorModalLink" data-active="Redigera" data-default="L&auml;nk">L&auml;nk</a>
+        </li>
+        <!-- for mobile devices, fall back to default link handling -->
+        <li class="visible-xs-inline-block visible-sm-inline-block">
+            <a id="insert-link-button-mobile" class="btn btn-primary insert-link-mobile" data-wysihtml5-command="createLink">Länk</a>
+            <div data-wysihtml5-dialog="createLink" style="display:none">
+                <label>
+                    Länk:
+                    <input data-wysihtml5-dialog-field="href" value="http://">
+                </label>
+                <a class="btn btn-primary insert-link-mobile" data-wysihtml5-dialog-action="save">OK</a>
+                <a class="btn btn-primary insert-link-mobile" data-wysihtml5-dialog-action="cancel">Avbryt</a>
+            </div>
+        </li>
+        <li class="hidden">
+            <a class="btn btn-primary" data-toggle="modal" data-target="#editorModalImage">Bild</a>
+        </li>
+    </ul>
+</div>
+<div class="col-sm-12">
+    <div class="input-group">
+        <div id="editor" class="editable" style="min-height:200px"></div>
+    </div>
+</div>

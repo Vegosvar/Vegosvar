@@ -18,11 +18,13 @@
 								</div>
 							</div>
 
+
 							<h3>Innehåll</h3>
 							<div class="row">
+								<% include includes/editor %>
 								<div class="col-sm-12">
 									<div class="input-group">
-										<textarea type="text" name="content" class="form-control" id="content-input"></textarea>
+										<textarea type="text" name="content" class="form-control editable-content" id="content-input"></textarea>
 									</div>
 								</div>
 							</div>
@@ -50,8 +52,8 @@
 							<h3>Övrigt</h3>
 							<div class="checkbox">
 								<label>
-									<input type="checkbox" name="hidden"> 
-									Jag vill inte synas som författare till sidan 
+									<input type="checkbox" name="hidden">
+									Jag vill inte synas som författare till sidan
 									<a href="/vanliga-fragor" target="_blank" title="Öppna i ny flik" class="small">Läs mer</a>
 								</label>
 							</div>

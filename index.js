@@ -21,6 +21,7 @@ var db = require('monk')(config.database.host + config.database.name)
 var users = db.get('users')
 var urlencodedParser = body_parser.urlencoded({ extended: false })
 
+
 // TODO Move this out using cluster to a separate file, add more files for routes etc!
 // TODO Index auth.facebook etc
 // TODO set callback URLs etc in Facebook dev console
@@ -102,6 +103,7 @@ app.use(passport.session())
 
 if (process.env.NODE_ENV === 'development') {
   app.use(express.static(__dirname + '/public'))
+  app.use('/includes', express.static(__dirname + '/includes'))
 }
 
 passport.serializeUser(function (user, done) {
@@ -210,14 +212,14 @@ app.get('/ajax/search', function (req, res) {
       $options: 'i' //i: ignore case, m: multiline, etc
     }
   }
-    
+
   pagesdb.find(query, {}, function(err, doc) {
     res.json(doc)
   })
 })
 
 app.get('/:url', function (req, res, next) {
-  var url = req.params.url       
+  var url = req.params.url
   var post = db.get('pages')
   post.count({ url: url }, function (err, count) {
     if(count > 0) {
@@ -258,7 +260,7 @@ app.post('/installningar/submit', urlencodedParser, function (req, res) {
   console.log(display_name)
   users.update(
     { _id : id },
-    { $set: 
+    { $set:
       { "name.display_name": display_name,
        "info.website":website,
        "info.description":description }
@@ -288,10 +290,10 @@ app.get('/ny/publicerad', function (req, res) {
 })
 
 app.get('/ny/:type', function (req, res) {
-  res.render('post/'+req.params.type, { user: req.user, type: req.params.type })
+  res.render('post/'+req.params.type, { user: req.user, type: req.params.type, loadEditorResources: true })
 })
 
-app.post('/submit', urlencodedParser, function (req, res) { // Controller for handling page inputs. 
+app.post('/submit', urlencodedParser, function (req, res) { // Controller for handling page inputs.
                                                             // ## TODO ######################################################
                                                             // # Add error handling, check and sanitize inputs              #
                                                             // # Improve this code and make it smaller + more simple,       #

@@ -71,9 +71,17 @@
 
   <link rel="stylesheet" href="/assets/css/style.css">
   <script src="/assets/js/app.js"></script>
-  
+
   <% if (typeof loadEditorResources !== 'undefined' && loadEditorResources === true) { %>
     <!-- <script src="/src/editor.js"></script> -->
+  <% } %>
+
+  <% if (typeof loadEditorResources !== 'undefined') { %>
+    <script src="/includes/js/wysihtml5x/wysihtml5x.min.js"></script>
+    <script src="/includes/js/wysihtml5x/wysihtml5x-toolbar.min.js"></script>
+    <script src="/includes/js/wysihtml5x/advanced_and_extended.js"></script>
+    <script src="/includes/js/editor/controller.js"></script>
+    <script src="/includes/js/editor/editor.js"></script>
   <% } %>
 
   <!-- TODO Fix this so it doesn't appear in prod! -->
@@ -105,7 +113,7 @@
 
         <li class="dropdown hidden-sm">
             <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-            <span class="glyphicon glyphicon-map-marker"></span> 
+            <span class="glyphicon glyphicon-map-marker"></span>
             Restauranger
           </a>
           <ul class="dropdown-menu">
@@ -179,6 +187,8 @@
           <li><a href="/?s=Shampoo">Shampoo</a></li>
         </ul>
       </li>
+
+      <li><a href="/ny"><span class="glyphicon glyphicon-star"></span>Skapa sida</a></li>
 
       <% if (typeof user === 'undefined') { %>
         <li>
