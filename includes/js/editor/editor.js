@@ -3,10 +3,8 @@ $(document).ready(function () {
     //Check if the cursor is within a text segment that is a link
     if ($.fn.editorController('selectionIsType', { type:'createLink' })) {
       $('#insert-link-button').addClass('wysihtml5-command-active')
-      $('#insert-link-button').html($('#insert-link-button').data('active'))
     } else {
       $('#insert-link-button').removeClass('wysihtml5-command-active')
-      $('#insert-link-button').html($('#insert-link-button').data('default'))
     }
   }
 
