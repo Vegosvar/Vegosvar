@@ -27,6 +27,35 @@
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
 
+    <div id="editorModalSource" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a type="a" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                    <h4 class="modal-title">Infoga källa</h4>
+                </div>
+                <div class="modal-body">
+                    <h4>Ange en ny källa</h4>
+                    <div class="input-group">
+						<span class="input-group-addon">1.</span>
+						<input class="form-control" placeholder="http://" aria-describedby="basic-addon1" type="text">
+						<a href="#" class="btn btn-add input-group-addon"><span class="glyphicon glyphicon-plus"></span></a>
+					</div>
+                    <h4>Välj befintlig källa</h4>
+                    <select id="insert-source-existing" class="form-control">
+                        <option value="1">Källa 1</option>
+                    </select>
+                </div>
+                <div class="modal-footer">
+                    <a id="insert-source-save" class="btn btn-primary">OK</a>
+                    <a class="btn btn-danger" data-dismiss="modal">Avbryt</a>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
     <div id="editorModalImage" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -83,13 +112,13 @@
         </li>
         <!-- for desktops, use the modal to insert links -->
         <li class="visibile-md-inline-block visible-lg-inline-block">
-            <a class="btn btn-toolbar" id="insert-link-button" data-toggle="modal" data-target="#editorModalLink" data-active="Redigera" data-default="L&auml;nk">
+            <a class="btn btn-toolbar" id="insert-link-button" data-toggle="modal" data-target="#editorModalLink">
                 <span class="glyphicon glyphicon-link"></span>
             </a>
         </li>
         <!-- for mobile devices, fall back to default link handling -->
         <li class="visible-xs-inline-block visible-sm-inline-block">
-            <a id="insert-link-button-mobile" class="btn btn-primary insert-link-mobile" data-wysihtml5-command="createLink">
+            <a id="insert-link-button-mobile" class="btn btn-toolbar" data-wysihtml5-command="createLink">
                 <span class="glyphicon glyphicon-link"></span>
             </a>
             <div data-wysihtml5-dialog="createLink" style="display:none">
@@ -97,9 +126,12 @@
                     Länk:
                     <input data-wysihtml5-dialog-field="href" value="http://">
                 </label>
-                <a class="btn btn-primary insert-link-mobile" data-wysihtml5-dialog-action="save">OK</a>
-                <a class="btn btn-primary insert-link-mobile" data-wysihtml5-dialog-action="cancel">Avbryt</a>
+                <a class="btn btn-primary" data-wysihtml5-dialog-action="save">OK</a>
+                <a class="btn btn-primary" data-wysihtml5-dialog-action="cancel">Avbryt</a>
             </div>
+        </li>
+        <li>
+            <a id="insert-source-button" data-toggle="modal" data-target="#editorModalSource" class="btn btn-primary">Källa</a>
         </li>
         <li class="hidden">
             <a class="btn btn-primary" data-toggle="modal" data-target="#editorModalImage">Bild</a>
