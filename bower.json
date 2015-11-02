@@ -18,16 +18,19 @@
     "test",
     "tests"
   ],
-  "path" : {
+  "path": {
     "base": "public",
     "css": "assets/css",
     "js": "assets/js"
   },
-  "sources" : {
-    "wysihtml5x" : [
+  "sources": {
+    "wysihtml5x": [
       "bower_components/wysihtml5x/parser_rules/advanced_and_extended.js",
       "bower_components/wysihtml5x/dist/wysihtml5x.min.js",
       "bower_components/wysihtml5x/dist/wysihtml5x-toolbar.min.js"
     ]
+  },
+  "dependencies": {
+    "fastclick": "~1.0.6"
   }
 }
