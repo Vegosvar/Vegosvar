@@ -24,7 +24,8 @@
         if(elem !== null) {
           editor = new wysihtml5.Editor(elem, {
             parserRules: wysihtml5ParserRules,
-            toolbar: document.querySelector(settings.toolbar)
+            toolbar: document.querySelector(settings.toolbar),
+            useLineBreaks: true
           })
           $.each(settings.events.handle, function (i, e) {
             editor.on(e, function () {
@@ -65,10 +66,8 @@
         break
       case 'getValue':
         return editor.composer.getValue()
-        break
       case 'selectionIsType':
         return editor.composer.commands.state(settings.type)
-        break
     }
   }
 }(jQuery))

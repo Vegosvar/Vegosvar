@@ -69,7 +69,7 @@ $(document).ready(function () {
     if (linkText.length <= 0)
       linkText = linkUrl
 
-    var html = '<a href="' + linkUrl + '">' + linkText + '</a>'
+    var html = '<a href="' + linkUrl + '" title="L&auml;nk: ' + linkText + '">' + linkText + '</a>'
 
     //Check if text has been selected previous to inserting link
     $.fn.editorController('setSelection')
@@ -88,6 +88,33 @@ $(document).ready(function () {
 
     //Hide the modal
     $('#editorModalLink').modal('hide')
+  })
+
+  //Listen for when the user inserts a source reference
+  $('#insert-source-save').on('click', function () {
+      var html;
+      var sourceUrl = $('#insert-source-url').val();
+
+      //Check if user has entered a new source
+      if(sourceUrl.length > 0) {
+          //Create a new source reference
+
+          //TODO: Code for inserting new source reference
+      } else {
+          var sourceExisting = $('#insert-source-existing').val();
+          var sourceExistingText = $("#insert-source-existing option:selected" ).text();
+          html = '<sup class="wysihtml5-uneditable-container" contenteditable="false">[' + sourceExisting + ']</sup>&nbsp;'; //blankspace needed otherwise you can't do a line break after if the line inserted to is the last line
+      }
+
+      //Insert the link
+      $.fn.editorController('insert', {
+        insert: {
+          type: 'html',
+          content: html
+        }
+      })
+
+      $('#editorModalSource').modal('hide')
   })
 
   //Listen for when the user inserts an image
@@ -114,7 +141,7 @@ $(document).ready(function () {
     toolbar: '.editor-toolbar',
     parserRules: wysihtml5ParserRules,
     events: {
-      handle: ['interaction', 'blur', 'focus', 'newword:composer'],
+      handle: ['interaction', 'change', 'blur', 'focus', 'newword:composer'],
       callback: editorCallback
     }
   })
