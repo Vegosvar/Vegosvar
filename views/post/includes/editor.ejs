@@ -37,7 +37,7 @@
                     <h4 class="modal-title">Infoga källa</h4>
                 </div>
                 <div class="modal-body">
-                    <h4>Ange en ny källa</h4>
+                    <h4>Källa</h4>
                     <div class="input-group">
 						<span class="input-group-addon">1.</span>
 						<input id="insert-source-url" class="form-control" placeholder="http://" type="text">
@@ -131,7 +131,9 @@
             </div>
         </li>
         <li>
-            <a id="insert-source-button" data-toggle="modal" data-target="#editorModalSource" class="btn btn-toolbar">Källa</a>
+            <a id="insert-source-button" data-toggle="modal" data-target="#editorModalSource" class="btn btn-toolbar">
+                <span class="glyphicon glyphicon-superscript"></span>
+            </a>
         </li>
         <li class="hidden">
             <a class="btn btn-primary" data-toggle="modal" data-target="#editorModalImage">Bild</a>
@@ -140,6 +142,6 @@
 </div>
 <div class="col-sm-12">
     <div class="input-group">
-        <div id="editor" class="editable" data-placeholder="Skriv här..." style="min-height:200px"></div>
+        <div id="editor" class="editable" style="min-height:200px"></div>
     </div>
 </div>

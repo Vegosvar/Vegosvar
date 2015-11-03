@@ -1197,9 +1197,13 @@ section {
 }
 
 #editor {
-	border: 2px solid #eee;
+	border: 2px solid #dfdfdf;
+	border-top: none;
 	padding: 15px;
+	transition: border 0.15s;
 	&:focus {
+		border: 2px solid #C8C8C8;
+		border-top: 0;
 		outline: none !important;
 	}
 }
