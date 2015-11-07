@@ -399,9 +399,6 @@ button {
 		border: none;
 		background: rgba(0, 0, 0, 0.05);
 	}
-	td, th {
-		padding: 12px 0 !important;
-	}
 }
 
 .small-xs {
@@ -734,6 +731,9 @@ aside {
 	@media (max-width: @xs) {
 		padding: 50px 15px;
 		margin: 0 -15px 30px -15px;
+	}
+	td, th {
+		padding: 12px 0 !important;
 	}
 }
 
@@ -1199,14 +1199,20 @@ section {
 #uploader {
 	border: 2px dashed #dfdfdf;
 	margin-bottom: 15px;
-	padding: 30px 15px;
+	padding: 15px 15px;
+	&:hover {
+		border: 2px dashed #C8C8C8;
+	}
 	> div {
 		min-height: auto;
 		.glyphicon {
 			display: block;
 			font-size: 40px;
 			color: #dfdfdf;
-			margin-bottom: 15px;
+			margin-bottom: 20px;
+		}
+		h2 {
+			margin-top: 0;
 		}
 		.info {
 			display: block;
