@@ -72,10 +72,14 @@
         FastClick.attach(document.body);
     });
   </script>
-
   <% if (typeof loadEditorResources !== 'undefined' && loadEditorResources === true) { %>
     <script src="/src/editor.js"></script>
   <% } %>
+  
+  <% if (typeof loadDropzoneResources !== 'undefined' && loadDropzoneResources === true) { %>
+    <link rel="stylesheet" href="/includes/css/dropzone.css">
+    <script src="/includes/js/dropzone.js"></script>
+  <% } %>
 
     <script src="/includes/js/wysihtml5x/wysihtml5x.min.js"></script>
     <script src="/includes/js/wysihtml5x/wysihtml5x-toolbar.min.js"></script>

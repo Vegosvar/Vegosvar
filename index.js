@@ -290,7 +290,7 @@ app.get('/ny/publicerad', function (req, res) {
 })
 
 app.get('/ny/:type', function (req, res) {
-  res.render('post/'+req.params.type, { user: req.user, type: req.params.type, loadEditorResources: true })
+  res.render('post/'+req.params.type, { user: req.user, type: req.params.type, loadEditorResources: true, loadDropzoneResources: true })
 })
 
 app.post('/submit', urlencodedParser, function (req, res) { // Controller for handling page inputs.

@@ -31,9 +31,7 @@
 
 							<h3>Bilder</h3>
 							<div class="input-group">
-								<p><span class="btn btn-edit btn-file">
-									<span class="glyphicon glyphicon-camera"></span> Ladda upp utvald bild <input type="file">
-								</span></p>
+								<div id="uploader" class="dropzone"></div>
 								<small><p>Rekommenderad storlek <strong>1200 x 630 px</strong><br>
 								Licens: CC0 <a href="#">Ändra</a></p></small>
 							</div>
@@ -67,5 +65,8 @@
 
 		</section>
 	</div>
+	<script type="text/javascript">
+		$("div#uploader").dropzone({ url: "#" });
+	</script>
 <% include includes/error_handler.ejs %>
 <% include ../includes/footer %>
