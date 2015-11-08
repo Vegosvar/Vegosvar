@@ -60,7 +60,7 @@
 
 							<div class="row">
 								<div class="col-sm-12">
-									<p><button class="btn btn-primary lg">Skapa sida</button><br>
+									<p><button id="btn-submit" class="btn btn-primary lg">Skapa sida</button><br>
 									<small>Genom att skapa en sida går du med på <a href="/villkor" target="_blank">våra villkor</a></small></p>
 								</div>
 							</div>
@@ -77,7 +77,14 @@
 		</section>
 	</div>
 	<script type="text/javascript">
-		$("div#uploader").dropzone({ url: "#" });
+		$("div#uploader").dropzone({ url: "/submit/file",
+		paramName: "image",
+		method: "post",
+		maxFiles: 1,
+		acceptedFiles: "image/.jpg,.JPG",
+		success: function(data) {
+			alert(data)
+	   	} });
 	</script>
 <% include includes/error_handler.ejs %>
 <% include ../includes/footer %>

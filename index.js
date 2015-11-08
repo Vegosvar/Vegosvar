@@ -12,6 +12,9 @@ var cookie_parser = require('cookie-parser')
 var body_parser = require('body-parser')
 var consolidate = require('consolidate')
 var getSlug = require('speakingurl')
+var busboy = require('connect-busboy')
+var fs = require('fs')
+var md5 = require('md5')
 
 var util = require('util')
 
@@ -78,6 +81,7 @@ app.engine('html', consolidate.ejs)
 app.set('view engine', 'html')
 app.set('views', __dirname + '/views')
 app.use(body_parser.json())
+app.use(busboy())
 
 app.use(cookie_parser())
 // TODO re-use db connection
@@ -141,18 +145,16 @@ app.get('/', function (req, res) {
   }
 })
 
-app.get('/test/view', function (req, res) {
-  var testing = db.get('pages')
-  testing.find({}, function(err, doc) {
+app.get('/handle', function (req, res) {
+  var images = db.get('images')
+  images.find({ }, function(err, doc) {
     res.json(doc)
   })
 })
 
-app.get('/test/users', function (req, res) {
-  var users = db.get('users')
-  users.find({}, function(err, doc) {
-    res.json(doc)
-  })
+app.post('/handle/post', urlencodedParser, function(req, res) {
+  console.log(req.body)
+  res.send('Done')
 })
 
 app.get('/logga-in', function (req, res) {
@@ -354,6 +356,27 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
     res.redirect('/ny')
   }
     res.redirect('/ny/publicerad/?newpost='+niceurl)
+})
+
+app.post('/submit/file', function(req, res) {
+  var fstream
+    req.pipe(req.busboy)
+    req.busboy.on('file', function (fieldname, file, filename) {
+        var images = db.get('images')
+        images.count({ }, function (err, num_rows) {
+          uHash = md5(num_rows + 1)
+          uFilename = uHash.substring(0, 11) + '.jpg'
+          images.insert({ id:num_rows + 1, filename:uFilename, active:false, deleted:false, "user_info":{ id:req.user_id } }, function(err, doc) {
+            if(err) throw err
+            fstream = fs.createWriteStream(__dirname + '/uploads/' + uFilename)
+            file.pipe(fstream)
+            fstream.on('close', function () {
+              var response = num_rows + 1
+              res.sendStatus(response)
+            })
+          })
+        })
+    })
 })
 
 // TODO 'uncaughtException' as well? See what happens if DB goes down etc
