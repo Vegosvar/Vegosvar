@@ -79,11 +79,8 @@
 			maxFiles: 1,
 			acceptedFiles: "image/.jpg,.JPG",
 			success: function(object, response) {
-				alert(response)
 				$('div#uploader').css('background-image', 'url(/uploads/' + response + ')')
-				$('div#uploader').css('background-position', 'center center')
-				$('div#uploader').css('background-size', 'cover')
-				$('div#uploader').css('height', '350px')
+				$('div#uploader').addClass('finished')
 				$('.dz-preview').hide()
 		   	} 
 	   	})
