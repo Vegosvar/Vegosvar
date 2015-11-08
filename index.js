@@ -108,6 +108,7 @@ app.use(passport.session())
 if (process.env.NODE_ENV === 'development') {
   app.use(express.static(__dirname + '/public'))
   app.use('/includes', express.static(__dirname + '/includes'))
+  app.use('/uploads', express.static(__dirname + '/uploads'))
 }
 
 passport.serializeUser(function (user, done) {
