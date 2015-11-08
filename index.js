@@ -371,8 +371,7 @@ app.post('/submit/file', function(req, res) {
             fstream = fs.createWriteStream(__dirname + '/uploads/' + uFilename)
             file.pipe(fstream)
             fstream.on('close', function () {
-              var response = num_rows + 1
-              res.sendStatus(response)
+              res.send(uFilename)
             })
           })
         })

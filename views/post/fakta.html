@@ -73,13 +73,15 @@
 	</div>
 	<script type="text/javascript">
 		$("div#uploader").dropzone({ url: "/submit/file",
-		paramName: "image",
-		method: "post",
-		maxFiles: 1,
-		acceptedFiles: "image/.jpg,.JPG",
-		success: function(data) {
-			alert(data)
-	   	} });
+			paramName: "image",
+			method: "post",
+			maxFiles: 1,
+			acceptedFiles: "image/.jpg,.JPG",
+			success: function(object, response) {
+				alert(response)
+				//$('div#uploader').css( 'background-image':'/uploads/' + response )
+		   	} 
+	   	})
 	</script>
 <% include includes/error_handler.ejs %>
 <% include ../includes/footer %>
