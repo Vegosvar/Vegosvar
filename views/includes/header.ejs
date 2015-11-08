@@ -130,7 +130,14 @@
           </ul>
         </li>
 
-        <li><a href="/ny">Skapa sida</a></li>
+        <li class="dropdown"><a href="/ny">Skapa sida</a>
+          <ul class="dropdown-menu">
+            <li><a href="/ny/fakta">Fakta</a></li>
+            <li><a href="/ny/plats">Restaurang/Butik</a></li>
+            <li><a href="/ny/recept">Recept</a></li>
+            <li><a href="/ny/produkt">Produkt</a></li>
+          </ul>
+        </li>
 
         <% if (typeof user !== 'undefined') { %>
           <li class="profile dropdown">
