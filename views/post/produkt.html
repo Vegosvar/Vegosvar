@@ -7,82 +7,169 @@
 				<div class="col-md-8">
 					<article>
 						<form action="/submit" method="post">
+
 							<input type="hidden" name="type" value="4">
-							<h1>Ny produktsida</h1><br>
-							<div class="row">
-								<div class="col-sm-10">
-									<div class="input-group">
-										<span class="input-group-addon" id="basic-addon2">Rubrik</span>
-										<input type="text" class="form-control" id="header-input" name="title" autocomplete="off" aria-describedby="basic-addon1">
-									</div>
-								</div>
+
+							<div class="input-group">
+								<div id="uploader" class="dropzone"></div>
 							</div>
 
-							<h3>Innehåll</h3>
 							<div class="row">
 								<div class="col-sm-12">
 									<div class="input-group">
-										<textarea type="text" name="content" class="form-control"></textarea>
+										<input type="text" placeholder="Rubrik" class="form-control" id="header-input" name="title" autocomplete="off" aria-describedby="basic-addon1">
 									</div>
 								</div>
 							</div>
 
-							<h3>Källor</h3>
 							<div class="row">
-								<div class="col-sm-7">
-									<div class="input-group">
-										<span class="input-group-addon">1.</span>
-										<input type="text" class="form-control" name="source" placeholder="http://" aria-describedby="basic-addon1">
-										<a href="#" class="btn btn-add input-group-addon"><span class="glyphicon glyphicon-plus"></span></a>
+								<% include includes/editor %>
+							</div>
+
+							<h2>Typ av produkt</h2>
+							<div class="radio" style="margin: 0;">
+								<label>
+									<input type="radio" name="type" id="food" value="option1" checked>
+									Annat
+								</label>
+							</div>
+							<div class="row">
+								<div class="col-xs-12 col-sm-4">
+									<h3>Livsmedel</h3>
+									<div class="radio">
+										<label>
+											<input type="radio" name="type" id="food" value="option1">
+											Vegokött
+										</label>
+									</div>
+									<div class="radio">
+										<label>
+											<input type="radio" name="type" id="food" value="option2">
+											Växtdryck / Växtgrädde
+										</label>
+									</div>
+									<div class="radio">
+										<label>
+											<input type="radio" name="type" id="food" value="option2">
+											Margarin / Ost
+										</label>
+									</div>
+									<div class="radio">
+										<label>
+											<input type="radio" name="type" id="food" value="option2">
+											Glass
+										</label>
+									</div>
+									<div class="radio">
+										<label>
+											<input type="radio" name="type" id="food" value="option3">
+											Chips
+										</label>
+									</div>
+									<div class="radio">
+										<label>
+											<input type="radio" name="type" id="food" value="option3">
+											Godis & snacks
+										</label>
+									</div>
+									<div class="radio">
+										<label>
+											<input type="radio" name="type" id="food" value="option3">
+											Dryck
+										</label>
+									</div>
+								</div>
+
+								<div class="col-xs-6 col-sm-4">
+									<h3>Kropp</h3>
+									<div class="radio">
+										<label>
+											<input type="radio" name="type" id="animalisk" value="option1">
+											Schampo
+										</label>
+									</div>
+									<div class="radio">
+										<label>
+											<input type="radio" name="type" id="ovolakto" value="option2">
+											Tandkräm
+										</label>
+									</div>
+									<div class="radio">
+										<label>
+											<input type="radio" name="type" id="vegansk" value="option3">
+											Smink
+										</label>
+									</div>
+									<div class="radio">
+										<label>
+											<input type="radio" name="type" id="vegansk" value="option3">
+											Hårvård
+										</label>
+									</div>
+								</div>
+
+								<div class="col-xs-6 col-sm-4">
+									<h3>Alkohol</h3>
+									<div class="radio">
+										<label>
+											<input type="radio" name="type" id="food" value="option3">
+											Öl
+										</label>
+									</div>
+									<div class="radio">
+										<label>
+											<input type="radio" name="type" id="food" value="option3">
+											Cider
+										</label>
+									</div>
+									<div class="radio">
+										<label>
+											<input type="radio" name="type" id="food" value="option3">
+											Vin
+										</label>
 									</div>
 								</div>
 							</div>
 
-							<h3>Bilder</h3>
-							<div class="input-group">
-								<p><span class="btn btn-edit btn-file">
-									<span class="glyphicon glyphicon-camera"></span> Ladda upp utvald bild <input type="file">
-								</span></p>
-								<small><p>Rekommenderad storlek <strong>1200 x 630 px</strong><br>
-								Licens: CC0 <a href="#">Ändra</a></p></small>
-							</div>
-
-
-							<h3>Typ av produkt</h3>
-							<div class="checkbox">
+							<h2>Innehåll</h2>
+							<div class="radio">
 								<label>
-									<input type="checkbox" name="hidden"> 
-									Animaliskt 
+									<input type="radio" name="content" id="animalisk" value="option1">
+									Animalisk
 								</label>
 							</div>
-							<div class="checkbox">
+							<div class="radio">
 								<label>
-									<input type="checkbox" name="hidden"> 
-									Lakto-ovo vegetariskt 
+									<input type="radio" name="content" id="ovolakto" value="option2">
+									Lakto-ovo vegetarisk
 								</label>
 							</div>
-							<div class="checkbox">
+							<div class="radio">
 								<label>
-									<input type="checkbox" name="hidden"> 
-									Veganskt
+									<input type="radio" name="content" id="vegansk" value="option3" checked>
+									Vegansk
 								</label>
 							</div>
 
 
-							<h3>Övrigt</h3>
+							<h2>Övrigt</h2>
 							<div class="checkbox">
 								<label>
 									<input type="checkbox" name="hidden"> 
-									Jag vill inte synas som författare till sidan 
+									Jag vill vara anonym 
 									<a href="/vanliga-fragor" target="_blank" title="Öppna i ny flik" class="small">Läs mer</a>
 								</label>
 							</div>
-							<div class="checkbox">
-								<label>
-									<input type="checkbox" name="hidden"> 
-									Jag önskar låsa sidan från redigering 
-									<a href="/vanliga-fragor" target="_blank" title="Öppna i ny flik" class="small">Läs mer</a>
-								</label>
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-5 col-md-5 col-lg-4">
+										<select class="form-control">
+											<option>CC0 / Public Domain</option>
+											<option>CC (Creative Commons)</option>
+											<option>Copyright</option>
+										</select>
+									</div>
+								</div>
 							</div>
 
 							<hr>
