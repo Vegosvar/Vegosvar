@@ -383,7 +383,7 @@ app.post('/submit/file', function(req, res) {
             var resize = image_processer.resize(uFilename, 1200, 630)
             if(resize == true) {
               fstream.on('close', function () {
-                //fs.unlink(__dirname + '/uploads/' + uFilename + '_temp.jpg')
+                fs.unlink(__dirname + '/uploads/' + uFilename + '_temp.jpg')
                 res.send(doc._id)
               })
             }
