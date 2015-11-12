@@ -378,12 +378,12 @@ app.post('/submit/file', function(req, res) {
           uFilename = uHash.substring(0, 11)
           images.insert({ id:num_rows + 1, filename: uFilename, active: false, deleted: false, "user_info":{ id: req.user._id } }, function(err, doc) {
             if(err) throw err
-            fstream = fs.createWriteStream('/uploads/' + uFilename + '_temp.jpg')
+            fstream = fs.createWriteStream(__dirname + '/uploads/' + uFilename + '_temp.jpg')
             file.pipe(fstream)
             var resize = image_processer.resize(uFilename, 1200, 630, fstream)
             if(resize == true) {
               fstream.on('close', function () {
-                fs.unlink('/uploads/' + uFilename + '_temp.jpg')
+                fs.unlink(__dirname + '/uploads/' + uFilename + '_temp.jpg')
                 res.send(doc._id)
               })
             }
