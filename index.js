@@ -333,8 +333,8 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
     var title = req.body.title
     var content = req.body.content
     var source = req.body.source
-    var cover_id = req.body.cover_image-id
-    var cover_filename = req.body.cover_image-filename
+    var cover_id = req.body.cover_image_id
+    var cover_filename = req.body.cover_image_filename
     query.insert({title: title, url:niceurl, post:{ content: content, cover: { id: cover_id, filename: cover_filename }, sources:{ 1:source }, type: type }, "user_info":{ "id": req.user._id, hidden: hidden }}, function(err, doc) {
       if(err) throw err
     })
