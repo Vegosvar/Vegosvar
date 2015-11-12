@@ -1,7 +1,7 @@
 var sharp = require('sharp')
 var fs = require('fs')
 
-exports.resize = function(filename, width, height, fstream) {
+exports.resize = function(filename, width, height) {
 	var image = sharp('uploads/' + filename + '_temp.jpg')
 	image.resize(width, height)
 
