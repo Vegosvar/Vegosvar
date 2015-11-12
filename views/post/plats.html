@@ -6,96 +6,118 @@
 			<div class="row">
 				<div class="col-md-8">
 					<article>
+						<h1>Ny restaurang eller butik</h1><br>
+
 						<form action="/submit" method="post">
+
 							<input type="hidden" name="type" value="3">
-							<h1>Ny restaurang eller butik</h1><br>
-							<div class="row">
-								<div class="col-sm-10">
-									<div class="input-group">
-										<span class="input-group-addon" id="basic-addon2">Rubrik</span>
-										<input type="text" class="form-control" id="header-input" name="title" autocomplete="off" aria-describedby="basic-addon1">
-									</div>
-								</div>
+
+							<div class="input-group">
+								<div id="uploader" class="dropzone"></div>
 							</div>
 
-							<h3>Innehåll</h3>
 							<div class="row">
 								<div class="col-sm-12">
 									<div class="input-group">
-										<textarea type="text" name="content" class="form-control"></textarea>
+										<input type="text" placeholder="Rubrik" class="form-control" id="header-input" name="title" autocomplete="off" aria-describedby="basic-addon1">
 									</div>
 								</div>
 							</div>
 
-							<h3>Adress</h3>
+							<div class="row">
+								<% include includes/editor %>
+							</div>
+
+
+							<h2>
+								<span class="glyphicon glyphicon-map-marker"></span> 
+								Hitta hit
+							</h2>
 							<div class="row">
 								<div class="col-sm-7">
 									<div class="input-group">
-										<span class="input-group-addon" id="basic-addon2">Adress</span>
+										<span class="input-group-addon" id="basic-addon2">Stad</span>
+										<input type="text" class="form-control" name="city" aria-describedby="basic-addon1" placeholder="">
+									</div>
+									<div class="input-group">
+										<span class="input-group-addon" id="basic-addon2">Gata</span>
 										<input type="text" class="form-control" name="adress" aria-describedby="basic-addon1" placeholder="Exempelgatan 12">
 									</div>
 									<div class="input-group">
-										<span class="input-group-addon" id="basic-addon2">Stad</span>
-										<input type="text" class="form-control" name="city" aria-describedby="basic-addon1">
-									</div>
-									<div class="input-group">
-										<span class="input-group-addon" id="basic-addon2">Google Maps</span>
+										<span class="input-group-addon" id="basic-addon2">Google Maps <a href="/vanliga-fragor/#googlemap" target="_blank"><span class="glyphicon glyphicon-question-sign"></a></span>
 										<input type="text" class="form-control" name="adress" aria-describedby="basic-addon1" placeholder="http://">
 									</div>
 									<div class="input-group">
 										<span class="input-group-addon" id="basic-addon2">Hemsida</span>
 										<input type="text" class="form-control" name="adress" aria-describedby="basic-addon1" placeholder="http://">
 									</div>
+									<div class="input-desc">Ingen hemsida? Länka till er Facebooksida</div>
+								</div>
+							</div>
+
+							<h2>
+								<span class="glyphicon glyphicon-phone"></span> 
+								Kontakt
+							</h2>
+							<div class="row">
+								<div class="col-sm-7">
+									<div class="input-group">
+										<span class="input-group-addon" id="basic-addon2">Telefon</span>
+										<input type="text" class="form-control" name="adress" aria-describedby="basic-addon1">
+									</div>
+									<div class="input-group">
+										<span class="input-group-addon" id="basic-addon2">Epost</span>
+										<input type="text" class="form-control" name="city" aria-describedby="basic-addon1">
+									</div>
+									<div class="input-desc">Din epost krypteras utåt på Vegosvar så att du slipper spambotar</div>
 								</div>
 							</div>
 							
-							<h3>Öppettider</h3>
-							<div class="row">
-								<div class="col-sm-7">
-									<div class="input-group">
-										<span class="input-group-addon" id="basic-addon2">Mån-Fre</span>
-										<input type="text" class="form-control" name="opentimes_mon" aria-describedby="basic-addon1" placeholder="00.00 - 00.00">
-									</div>
-									<div class="input-group">
-										<span class="input-group-addon" id="basic-addon2">Lör-Sön</span>
-										<input type="text" class="form-control" name="opentimes_tue" aria-describedby="basic-addon1" placeholder="00.00 - 00.00">
-									</div>
-									<p><a href="#" class="small">Övriga tider</a></p>
-								</div>
-							</div>
 
-							<h3>Källor</h3>
+							<h2>
+								<span class="glyphicon glyphicon-time"></span> 
+								Öppettider
+							</h2>
 							<div class="row">
 								<div class="col-sm-7">
 									<div class="input-group">
-										<span class="input-group-addon">1.</span>
-										<input type="text" class="form-control" name="source" placeholder="http://" aria-describedby="basic-addon1">
-										<a href="#" class="btn btn-add input-group-addon"><span class="glyphicon glyphicon-plus"></span></a>
+										<input type="text" class="form-control" name="opentimes_mon" aria-describedby="basic-addon1" placeholder="Vardagar 00 - 00, Helger 00-00 ">
 									</div>
 								</div>
 							</div>
 
-							<h3>Bilder</h3>
-							<div class="input-group">
-								<p><span class="btn btn-edit btn-file">
-									<span class="glyphicon glyphicon-camera"></span> Ladda upp utvald bild <input type="file">
-								</span></p>
-								<small><p>Rekommenderad storlek <strong>1200 x 630 px</strong><br>
-								Licens: CC0 <a href="#">Ändra</a></p></small>
+
+							<h2>
+								<span class="glyphicon glyphicon-cutlery"></span> 
+								Utbud
+							</h2>
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" name="hidden"> 
+									Lakto-ovo vegetariskt
+								</label>
 							</div>
+							<div class="checkbox">
+								<label>
+									<input type="checkbox" name="hidden"> 
+									Veganskt
+								</label>
+							</div>
+							<div class="row">
+								<div class="col-sm-7">
+									<div class="input-group">
+										<span class="input-group-addon" id="basic-addon2">Typ av mat</span>
+										<input type="text" class="form-control" name="adress" aria-describedby="basic-addon1" placeholder="Grill, Husmanskost, Pizza...">
+									</div>
+								</div>
+							</div>
+
 
 							<h3>Övrigt</h3>
 							<div class="checkbox">
 								<label>
 									<input type="checkbox" name="hidden"> 
 									Jag vill inte synas som författare till sidan 
-									<a href="/vanliga-fragor" target="_blank" title="Öppna i ny flik" class="small">Läs mer</a>
-								</label>
-							</div>
-							<div class="checkbox">
-								<label>
-									<input type="checkbox" name="hidden"> 
-									Jag önskar låsa sidan från redigering 
 									<a href="/vanliga-fragor" target="_blank" title="Öppna i ny flik" class="small">Läs mer</a>
 								</label>
 							</div>
