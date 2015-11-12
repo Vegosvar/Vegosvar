@@ -19,6 +19,7 @@ var md5 = require('md5')
 var util = require('util')
 
 var config = require('./config')
+var image_processer = require('./imageProcesser.js')
 
 var db = require('monk')(config.database.host + config.database.name)
 var users = db.get('users')
@@ -147,7 +148,7 @@ app.get('/', function (req, res) {
 })
 
 app.get('/handle', function (req, res) {
-  var images = db.get('images')
+  var images = db.get('pages')
   images.find({ }, function(err, doc) {
     res.json(doc)
   })
@@ -216,9 +217,18 @@ app.get('/ajax/search', function (req, res) {
     }
   }
 
-  pagesdb.find(query, {}, function(err, doc) {
+  pagesdb.find(query, {}, function (err, doc) {
     res.json(doc)
   })
+})
+
+app.get('/ajax/imageInfo', function (req, res) {
+  if(req.query.id != undefined) {
+    var imagesdb = db.get('images')
+    imagesdb.find({ _id : req.query.id }, function (err, doc) {
+      res.json(doc)
+    })
+  }
 })
 
 app.get('/:url', function (req, res, next) {
@@ -318,12 +328,14 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       symbols: false
     })
 
+  var query = db.get('pages')
   if(type == 1) {
     var title = req.body.title
     var content = req.body.content
     var source = req.body.source
-    var query = db.get('pages')
-    query.insert({title: title, url:niceurl, post:{ content: content, cover_image: "https://unsplash.it/200/300/?random", sources:{ 1:source }, type: type }, "user_info":{ "id": req.user._id, hidden: hidden }}, function(err, doc) {
+    var cover_id = req.body.cover_image-id
+    var cover_filename = req.body.cover_image-filename
+    query.insert({title: title, url:niceurl, post:{ content: content, cover: { id: cover_id, filename: cover_filename }, sources:{ 1:source }, type: type }, "user_info":{ "id": req.user._id, hidden: hidden }}, function(err, doc) {
       if(err) throw err
     })
   } else if(type == 2) {
@@ -331,7 +343,6 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
     var content = req.body.content
     var ingredient = req.body.ingredient
     var step = req.body.step
-    var query = db.get('pages')
     query.insert({title: title, url:niceurl, post:{ content: content, ingredients:{ 1:ingredient }, steps:{ 1:step }, type:type }, "user_info":{ "id":req.user._id, hidden: hidden } }, function(err, doc) {
       if(err) throw err
     })
@@ -341,7 +352,6 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
     var adress = req.body.adress
     var city = req.body.city
     var sources = req.body.sources // & Type
-    var query = db.get('pages')
     query.insert({title: title, url:niceurl, post:{ content: content, city: city, adress: adress, opentimes:{ mon:req.body.opentimes_mon, tue:req.body.opentimes_tue, wed:req.body.opentimes_wed, thu:req.body.opentimes_thu, fri:req.body.opentimes_fri, sat:req.body.opentimes_sat, sun:req.body.opentimes_sun }, sources:{ 1:sources }, type:type },"user_info":{ "id":req.user._id, hidden: hidden }}, function(err, doc) {
       if(err) throw err
     })
@@ -349,7 +359,6 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
     var title = req.body.title
     var content = req.body.content
     var source = req.body.source
-    var query = db.get('pages')
     query.insert({title: title, url:niceurl, post:{ content: content, sources:{ 1:source }, type:type }, "user_info":{ "id": req.user._id, hidden:hidden }}, function(err, doc) {
       if(err) throw err
     })
@@ -366,14 +375,18 @@ app.post('/submit/file', function(req, res) {
         var images = db.get('images')
         images.count({ }, function (err, num_rows) {
           uHash = md5(num_rows + 1)
-          uFilename = uHash.substring(0, 11) + '.jpg'
-          images.insert({ id:num_rows + 1, filename:uFilename, active:false, deleted:false, "user_info":{ id:req.user_id } }, function(err, doc) {
+          uFilename = uHash.substring(0, 11)
+          images.insert({ id:num_rows + 1, filename: uFilename, active: false, deleted: false, "user_info":{ id: req.user._id } }, function(err, doc) {
             if(err) throw err
-            fstream = fs.createWriteStream(__dirname + '/uploads/' + uFilename)
+            fstream = fs.createWriteStream('/uploads/' + uFilename + '_temp.jpg')
             file.pipe(fstream)
-            fstream.on('close', function () {
-              res.send(uFilename)
-            })
+            var resize = image_processer.resize(uFilename, 1200, 630, fstream)
+            if(resize == true) {
+              fstream.on('close', function () {
+                fs.unlink('/uploads/' + uFilename + '_temp.jpg')
+                res.send(doc._id)
+              })
+            }
           })
         })
     })
