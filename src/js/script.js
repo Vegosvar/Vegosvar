@@ -19,13 +19,16 @@ $(window).load(function () {
 })
 
 $(function () {
-  $('.open-in-app a').click(function (event) { // Load links in-app
+
+  // Open links in-app instead of new window //
+  $('.open-in-app a').click(function (event) {
     event.preventDefault()
     if ($(this).attr('href') !== undefined) {
       window.location = $(this).attr('href')
     }
   })
 
+  // Menu toggle //
   $('.toggle-dropdown').on('click', function () {
     var parent = $(this).parent() // Select parent of clicked element
     if (parent.hasClass('active')) {
@@ -36,6 +39,7 @@ $(function () {
     }
   })
 
+  // Searchform //
   $('.searchForm').keyup(function () {
     if ($('.searchForm').val() === '') {
       $('#searchForm-btn-default').html('<i class="glyphicon glyphicon-search"></i>')
@@ -64,6 +68,7 @@ $(function () {
     clearTimeout(typingTimer)
   })
 
+  // Search results //
   function doTrigger() {
     if ($('.searchForm').val().length > 2) {
       $('#searchResultsContainer').html('')
