@@ -45,11 +45,11 @@
 									</div>
 									<div class="input-group">
 										<span class="input-group-addon" id="basic-addon2">Google Maps <a href="/vanliga-fragor/#googlemap" target="_blank"><span class="glyphicon glyphicon-question-sign"></a></span>
-										<input type="text" class="form-control" name="adress" aria-describedby="basic-addon1" placeholder="http://">
+										<input type="text" class="form-control" name="googlemaps" aria-describedby="basic-addon1" placeholder="http://">
 									</div>
 									<div class="input-group">
 										<span class="input-group-addon" id="basic-addon2">Hemsida</span>
-										<input type="text" class="form-control" name="adress" aria-describedby="basic-addon1" placeholder="http://">
+										<input type="text" class="form-control" name="website" aria-describedby="basic-addon1" placeholder="http://">
 									</div>
 									<div class="input-desc">Ingen hemsida? Länka till er Facebooksida</div>
 								</div>
@@ -63,11 +63,11 @@
 								<div class="col-sm-7">
 									<div class="input-group">
 										<span class="input-group-addon" id="basic-addon2">Telefon</span>
-										<input type="text" class="form-control" name="adress" aria-describedby="basic-addon1">
+										<input type="text" class="form-control" name="phone" aria-describedby="basic-addon1">
 									</div>
 									<div class="input-group">
 										<span class="input-group-addon" id="basic-addon2">Epost</span>
-										<input type="text" class="form-control" name="city" aria-describedby="basic-addon1">
+										<input type="text" class="form-control" name="email" aria-describedby="basic-addon1">
 									</div>
 									<div class="input-desc">Din epost krypteras utåt på Vegosvar så att du slipper spambotar</div>
 								</div>
@@ -81,7 +81,7 @@
 							<div class="row">
 								<div class="col-sm-7">
 									<div class="input-group">
-										<input type="text" class="form-control" name="opentimes_mon" aria-describedby="basic-addon1" placeholder="Vardagar 00 - 00, Helger 00-00 ">
+										<input type="text" class="form-control" name="openhours" aria-describedby="basic-addon1" placeholder="Vardagar 00 - 00, Helger 00-00 ">
 									</div>
 								</div>
 							</div>
@@ -93,13 +93,13 @@
 							</h2>
 							<div class="checkbox">
 								<label>
-									<input type="checkbox" name="hidden"> 
+									<input type="checkbox" name="lacto-ovo"> 
 									Lakto-ovo vegetariskt
 								</label>
 							</div>
 							<div class="checkbox">
 								<label>
-									<input type="checkbox" name="hidden"> 
+									<input type="checkbox" name="vegan"> 
 									Veganskt
 								</label>
 							</div>
@@ -107,7 +107,7 @@
 								<div class="col-sm-7">
 									<div class="input-group">
 										<span class="input-group-addon" id="basic-addon2">Typ av mat</span>
-										<input type="text" class="form-control" name="adress" aria-describedby="basic-addon1" placeholder="Grill, Husmanskost, Pizza, Indiskt...">
+										<input type="text" class="form-control" name="food" aria-describedby="basic-addon1" placeholder="Grill, Husmanskost, Pizza, Indiskt...">
 									</div>
 								</div>
 							</div>
@@ -124,10 +124,10 @@
 							<div class="form-group">
 								<div class="row">
 									<div class="col-sm-5 col-md-5 col-lg-4">
-										<select class="form-control">
-											<option>CC0 / Public Domain</option>
-											<option>CC (Creative Commons)</option>
-											<option>Copyright</option>
+										<select class="form-control" name="licence">
+											<option value="cc0">CC0 / Public Domain</option>
+											<option value="cc">CC (Creative Commons)</option>
+											<option value="copyright">Copyright</option>
 										</select>
 									</div>
 								</div>
