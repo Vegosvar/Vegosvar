@@ -348,11 +348,19 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
     })
   } else if(type == 3) { // Plats
     var title = req.body.title
-    var content = req.body.content //
-    var adress = req.body.adress
+    var content = req.body.googlemaps 
+    var street = req.body.street
     var city = req.body.city
-    var sources = req.body.sources // & Type
-    query.insert({title: title, url:niceurl, post:{ content: content, city: city, adress: adress, opentimes:{ mon:req.body.opentimes_mon, tue:req.body.opentimes_tue, wed:req.body.opentimes_wed, thu:req.body.opentimes_thu, fri:req.body.opentimes_fri, sat:req.body.opentimes_sat, sun:req.body.opentimes_sun }, sources:{ 1:sources }, type:type },"user_info":{ "id":req.user._id, hidden: hidden }}, function(err, doc) {
+    var website = req.body.website
+    var phone = req.body.phone
+    var email = req.body.email
+    var openhours = req.body.openhours
+    var lacto_ovo = req.body.lacto_ovo
+    var vegan = req.body.vegan
+    var food = req.body.food
+    var hidden = req.body.hidden
+    var license = req.body.license
+    query.insert({title: title, url:niceurl, post:{ content: content, city: city, street: street, phone: phone, website: website, email: email, license: license, range:{ lacto_ovo: lacto_ovo, vegan: vegan }, food: food, googlemaps: googlemaps, openhours:openhours, type:type },"user_info":{ "id":req.user._id, hidden: hidden }}, function(err, doc) {
       if(err) throw err
     })
   } else if(type == 4) { // Produkt
@@ -363,10 +371,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       if(err) throw err
     })
   } else if(type == 5) {
-    var title = req.body.title
-    var content = req.body.content
-    var license = req.body.license
-    
+
   } else {
     res.redirect('/ny')
   }
