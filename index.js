@@ -329,7 +329,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
     })
 
   var query = db.get('pages')
-  if(type == 1) {
+  if(type == 1) { // Fakta
     var title = req.body.title
     var content = req.body.content
     var source = req.body.source
@@ -338,7 +338,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
     query.insert({title: title, url:niceurl, post:{ content: content, cover: { id: cover_id, filename: cover_filename }, sources:{ 1:source }, type: type }, "user_info":{ "id": req.user._id, hidden: hidden }}, function(err, doc) {
       if(err) throw err
     })
-  } else if(type == 2) {
+  } else if(type == 2) { // Recept
     var title = req.body.title
     var content = req.body.content
     var ingredient = req.body.ingredient
@@ -346,7 +346,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
     query.insert({title: title, url:niceurl, post:{ content: content, ingredients:{ 1:ingredient }, steps:{ 1:step }, type:type }, "user_info":{ "id":req.user._id, hidden: hidden } }, function(err, doc) {
       if(err) throw err
     })
-  } else if(type == 3) {
+  } else if(type == 3) { // Plats
     var title = req.body.title
     var content = req.body.content //
     var adress = req.body.adress
@@ -355,13 +355,18 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
     query.insert({title: title, url:niceurl, post:{ content: content, city: city, adress: adress, opentimes:{ mon:req.body.opentimes_mon, tue:req.body.opentimes_tue, wed:req.body.opentimes_wed, thu:req.body.opentimes_thu, fri:req.body.opentimes_fri, sat:req.body.opentimes_sat, sun:req.body.opentimes_sun }, sources:{ 1:sources }, type:type },"user_info":{ "id":req.user._id, hidden: hidden }}, function(err, doc) {
       if(err) throw err
     })
-  } else if(type == 4) {
+  } else if(type == 4) { // Produkt
     var title = req.body.title
     var content = req.body.content
     var source = req.body.source
     query.insert({title: title, url:niceurl, post:{ content: content, sources:{ 1:source }, type:type }, "user_info":{ "id": req.user._id, hidden:hidden }}, function(err, doc) {
       if(err) throw err
     })
+  } else if(type == 5) {
+    var title = req.body.title
+    var content = req.body.content
+    var license = req.body.license
+    
   } else {
     res.redirect('/ny')
   }
