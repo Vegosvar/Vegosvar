@@ -329,16 +329,16 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
     })
 
   var query = db.get('pages')
-  if(type == 1) {
+  if(type == 1) { // Fakta
     var title = req.body.title
     var content = req.body.content
     var source = req.body.source
-    var cover_id = req.body.cover_image-id
-    var cover_filename = req.body.cover_image-filename
+    var cover_id = req.body.cover_image_id
+    var cover_filename = req.body.cover_image_filename
     query.insert({title: title, url:niceurl, post:{ content: content, cover: { id: cover_id, filename: cover_filename }, sources:{ 1:source }, type: type }, "user_info":{ "id": req.user._id, hidden: hidden }}, function(err, doc) {
       if(err) throw err
     })
-  } else if(type == 2) {
+  } else if(type == 2) { // Recept
     var title = req.body.title
     var content = req.body.content
     var ingredient = req.body.ingredient
@@ -346,22 +346,32 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
     query.insert({title: title, url:niceurl, post:{ content: content, ingredients:{ 1:ingredient }, steps:{ 1:step }, type:type }, "user_info":{ "id":req.user._id, hidden: hidden } }, function(err, doc) {
       if(err) throw err
     })
-  } else if(type == 3) {
+  } else if(type == 3) { // Restaurang
     var title = req.body.title
-    var content = req.body.content //
-    var adress = req.body.adress
+    var content = req.body.googlemaps 
+    var street = req.body.street
     var city = req.body.city
-    var sources = req.body.sources // & Type
-    query.insert({title: title, url:niceurl, post:{ content: content, city: city, adress: adress, opentimes:{ mon:req.body.opentimes_mon, tue:req.body.opentimes_tue, wed:req.body.opentimes_wed, thu:req.body.opentimes_thu, fri:req.body.opentimes_fri, sat:req.body.opentimes_sat, sun:req.body.opentimes_sun }, sources:{ 1:sources }, type:type },"user_info":{ "id":req.user._id, hidden: hidden }}, function(err, doc) {
+    var website = req.body.website
+    var phone = req.body.phone
+    var email = req.body.email
+    var openhours = req.body.openhours
+    var lacto_ovo = req.body.lacto_ovo
+    var vegan = req.body.vegan
+    var food = req.body.food
+    var hidden = req.body.hidden
+    var license = req.body.license
+    query.insert({title: title, url:niceurl, post:{ content: content, city: city, street: street, phone: phone, website: website, email: email, license: license, range:{ lacto_ovo: lacto_ovo, vegan: vegan }, food: food, googlemaps: googlemaps, openhours:openhours, type:type },"user_info":{ "id":req.user._id, hidden: hidden }}, function(err, doc) {
       if(err) throw err
     })
-  } else if(type == 4) {
+  } else if(type == 4) { // Produkt
     var title = req.body.title
     var content = req.body.content
     var source = req.body.source
     query.insert({title: title, url:niceurl, post:{ content: content, sources:{ 1:source }, type:type }, "user_info":{ "id": req.user._id, hidden:hidden }}, function(err, doc) {
       if(err) throw err
     })
+  } else if(type == 5) {
+
   } else {
     res.redirect('/ny')
   }
@@ -378,12 +388,12 @@ app.post('/submit/file', function(req, res) {
           uFilename = uHash.substring(0, 11)
           images.insert({ id:num_rows + 1, filename: uFilename, active: false, deleted: false, "user_info":{ id: req.user._id } }, function(err, doc) {
             if(err) throw err
-            fstream = fs.createWriteStream('/uploads/' + uFilename + '_temp.jpg')
+            fstream = fs.createWriteStream(__dirname + '/uploads/' + uFilename + '_temp.jpg')
             file.pipe(fstream)
-            var resize = image_processer.resize(uFilename, 1200, 630, fstream)
+            var resize = image_processer.resize(uFilename, 1200, 630)
             if(resize == true) {
               fstream.on('close', function () {
-                fs.unlink('/uploads/' + uFilename + '_temp.jpg')
+                fs.unlink(__dirname + '/uploads/' + uFilename + '_temp.jpg')
                 res.send(doc._id)
               })
             }
