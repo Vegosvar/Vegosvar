@@ -370,8 +370,18 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
     query.insert({title: title, url:niceurl, post:{ content: content, sources:{ 1:source }, type:type }, "user_info":{ "id": req.user._id, hidden:hidden }}, function(err, doc) {
       if(err) throw err
     })
-  } else if(type == 5) {
-
+  } else if(type == 5) { // Butik
+    var title = req.body.title
+    var content = req.body.googlemaps 
+    var street = req.body.street
+    var city = req.body.city
+    var website = req.body.website
+    var openhours = req.body.openhours
+    var hidden = req.body.hidden
+    var license = req.body.license
+    query.insert({title: title, url:niceurl, post:{ content: content, city: city, street: street, website: website, license: license, googlemaps: googlemaps, openhours:openhours, type:type },"user_info":{ "id":req.user._id, hidden: hidden }}, function(err, doc) {
+      if(err) throw err
+    })
   } else {
     res.redirect('/ny')
   }
