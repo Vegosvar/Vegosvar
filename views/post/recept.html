@@ -25,6 +25,50 @@
 								<% include includes/editor %>
 							</div>
 
+							<h2>Typ av rätt</h2>
+							<div class="radio">
+								<label>
+									<input type="radio" name="type" value="baked"> 
+									Bakat
+								</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" name="type" value="first-course"> 
+									Förrätt
+								</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" name="type" value="main-course"> 
+									Huvudrätt
+								</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" name="type" value="dessert"> 
+									Efterätt
+								</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" name="type" value="snack"> 
+									Snacks
+								</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" name="type" value="drink"> 
+									Dryck
+								</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" name="type" value="other" checked> 
+									Annat
+								</label>
+							</div>
+
 							<h3>Övrigt</h3>
 							<div class="checkbox">
 								<label>
@@ -33,6 +77,8 @@
 									<a href="/vanliga-fragor" target="_blank" title="Öppna i ny flik" class="small">Läs mer</a>
 								</label>
 							</div>
+							
+							<h3>Licens</h3>
 							<div class="form-group">
 								<div class="row">
 									<div class="col-sm-5 col-md-5 col-lg-4">
@@ -65,7 +111,7 @@
 
 		</section>
 	</div>
-	
+
 	<script type="text/javascript">
 		$("div#uploader").dropzone({ url: "/submit/file",
 			paramName: "image",
