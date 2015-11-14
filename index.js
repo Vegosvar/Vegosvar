@@ -398,7 +398,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         hidden: hidden
       }
     }
-  } else if(type == 4) { // Produkt assÅÅÅ
+  } else if(type == 4) { // Produkt
     var data = {
       title: req.body.title,
       url: niceurl,
@@ -407,8 +407,8 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         content: req.body.content,
         license: req.body.license,
         license_holder: req.body.license_holder,
-        product_type: req.body.product_type,
         veg_type: req.body.veg_type,
+        product_type: req.body.product_type,
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
