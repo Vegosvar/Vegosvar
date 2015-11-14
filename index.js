@@ -408,11 +408,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         license: req.body.license,
         license_holder: req.body.license_holder,
         product_type: req.body.product_type,
-<<<<<<< HEAD
-        veg_type: req.body.veg_type
-=======
         veg_type: req.body.veg_type,
->>>>>>> dev
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
