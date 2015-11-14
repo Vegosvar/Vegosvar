@@ -367,7 +367,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         hidden: hidden
       }
     }
-  } else if(type == 3) { // Plats
+  } else if(type == 3) { // Restaurang
     var data = {
       title: req.body.title,
       url: niceurl,
@@ -422,8 +422,26 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         hidden: hidden
       }
     }
-  } else if(type == 5) {
-
+  } else if(type == 5) { // Butik
+    var data = {
+      title: req.body.title,
+      url: niceurl,
+      type: type,
+      post: {
+        content: req.body.content,
+        license: req.body.license,
+        license_holder: req.body.license_holder,
+        city: req.body.city,
+        street: req.body.street,
+        website: req.body.website,
+        googlemaps: req.body.googlemaps,
+        openhours: req.body.openhours,
+        cover: {
+          id: req.body.cover_image_id,
+          filename: req.body.cover_image_filename
+        }
+      }
+    }
   } else {
     res.redirect('/ny')
   }
@@ -443,12 +461,11 @@ app.post('/submit/file', function(req, res) {
           uFilename = uHash.substring(0, 11)
           images.insert({ id:num_rows + 1, filename: uFilename, active: false, deleted: false, "user_info":{ id: req.user._id } }, function(err, doc) {
             if(err) throw err
-            fstream = fs.createWriteStream(__dirname + '/uploads/' + uFilename + '_temp.jpg')
+            fstream = fs.createWriteStream(__dirname + '/uploads/' + uFilename + '_original.jpg')
             file.pipe(fstream)
             var resize = image_processer.resize(uFilename, 1200, 630)
             if(resize == true) {
               fstream.on('close', function () {
-                fs.unlink(__dirname + '/uploads/' + uFilename + '_temp.jpg')
                 res.send(doc._id)
               })
             }
