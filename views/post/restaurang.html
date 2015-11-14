@@ -36,19 +36,19 @@
 							<div class="row">
 								<div class="col-sm-7">
 									<div class="input-group">
-										<span class="input-group-addon" id="basic-addon2">Stad</span>
+										<span class="input-group-addon">Stad</span>
 										<input type="text" class="form-control" name="city" aria-describedby="basic-addon1" placeholder="">
 									</div>
 									<div class="input-group">
-										<span class="input-group-addon" id="basic-addon2">Gata</span>
+										<span class="input-group-addon">Gata</span>
 										<input type="text" class="form-control" name="street" aria-describedby="basic-addon1" placeholder="Exempelgatan 12">
 									</div>
 									<div class="input-group">
-										<span class="input-group-addon" id="basic-addon2">Google Maps <a href="/vanliga-fragor/#googlemap" target="_blank"><span class="glyphicon glyphicon-question-sign"></a></span>
+										<span class="input-group-addon">Google Maps <a href="/vanliga-fragor/#googlemap" target="_blank"><span class="glyphicon glyphicon-question-sign"></a></span>
 										<input type="text" class="form-control" name="googlemaps" aria-describedby="basic-addon1" placeholder="http://">
 									</div>
 									<div class="input-group">
-										<span class="input-group-addon" id="basic-addon2">Hemsida</span>
+										<span class="input-group-addon">Hemsida</span>
 										<input type="text" class="form-control" name="website" aria-describedby="basic-addon1" placeholder="http://">
 									</div>
 									<div class="input-desc">Ingen hemsida? Länka till er Facebooksida</div>
@@ -62,11 +62,11 @@
 							<div class="row">
 								<div class="col-sm-7">
 									<div class="input-group">
-										<span class="input-group-addon" id="basic-addon2">Telefon</span>
+										<span class="input-group-addon">Telefon</span>
 										<input type="text" class="form-control" name="phone" aria-describedby="basic-addon1">
 									</div>
 									<div class="input-group">
-										<span class="input-group-addon" id="basic-addon2">Epost</span>
+										<span class="input-group-addon">Epost</span>
 										<input type="text" class="form-control" name="email" aria-describedby="basic-addon1">
 									</div>
 									<div class="input-desc">Din epost krypteras utåt på Vegosvar så att du slipper spambotar</div>
@@ -106,7 +106,7 @@
 							<div class="row">
 								<div class="col-sm-7">
 									<div class="input-group">
-										<span class="input-group-addon" id="basic-addon2">Typ av mat</span>
+										<span class="input-group-addon">Typ av mat</span>
 										<input type="text" class="form-control" name="food" aria-describedby="basic-addon1" placeholder="Grill, Husmanskost, Pizza, Indiskt...">
 									</div>
 								</div>
@@ -121,16 +121,20 @@
 									<a href="/vanliga-fragor" target="_blank" title="Öppna i ny flik" class="small">Läs mer</a>
 								</label>
 							</div>
-							
+
 							<h3>Licens</h3>
-							<div class="form-group">
-								<div class="row">
-									<div class="col-sm-5 col-md-5 col-lg-4">
-										<select class="form-control" name="licence">
+							<div class="row">
+								<div class="col-sm-5 col-md-5">
+									<div class="form-group">
+										<select class="form-control" name="license">
 											<option value="cc0">CC0 / Public Domain</option>
 											<option value="cc">CC (Creative Commons)</option>
 											<option value="copyright">Copyright</option>
 										</select>
+									</div>
+									<div class="input-group" id="license_holder">
+										<span class="input-group-addon">Licensägare</span>
+										<input type="text" class="form-control" name="license_holder">
 									</div>
 								</div>
 							</div>
@@ -140,7 +144,8 @@
 							<div class="row">
 								<div class="col-sm-12">
 									<p><button class="btn btn-primary lg">Skapa sida</button><br>
-									<small>Genom att skapa en sida går du med på <a href="/villkor" target="_blank">våra villkor</a></small></p>
+									<small>Genom att skapa en sida går du med på 
+									<a href="/villkor" target="_blank">våra villkor</a></small></p>
 								</div>
 							</div>
 						</form>
