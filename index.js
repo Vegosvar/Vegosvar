@@ -330,51 +330,107 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
 
   var query = db.get('pages')
   if(type == 1) { // Fakta
-    var title = req.body.title
-    var content = req.body.content
-    var source = req.body.source
-    var cover_id = req.body.cover_image_id
-    var cover_filename = req.body.cover_image_filename
-    query.insert({title: title, url:niceurl, post:{ content: content, cover: { id: cover_id, filename: cover_filename }, sources:{ 1:source }, type: type }, "user_info":{ "id": req.user._id, hidden: hidden }}, function(err, doc) {
-      if(err) throw err
-    })
+    var data = {
+      title: req.body.title,
+      url: niceurl,
+      type: type,
+      post: {
+        content: req.body.content,
+        license: req.body.license,
+        cover: {
+          id: req.body.cover_image_id,
+          filename: req.body.cover_image_filename
+        },
+        sources: {
+          1: req.body.source
+        },
+      },
+      user_info: {
+        id: req.user._id,
+        hidden: hidden
+      }
+    }
   } else if(type == 2) { // Recept
-    var title = req.body.title
-    var content = req.body.content
-    var ingredient = req.body.ingredient
-    var step = req.body.step
-    query.insert({title: title, url:niceurl, post:{ content: content, ingredients:{ 1:ingredient }, steps:{ 1:step }, type:type }, "user_info":{ "id":req.user._id, hidden: hidden } }, function(err, doc) {
-      if(err) throw err
-    })
+    var data = {
+      title: req.body.title,
+      url: niceurl,
+      type: type,
+      post: {
+        content: req.body.content,
+        cover: {
+          id: req.body.cover_image_id,
+          filename: req.body.cover_image_filename
+        },
+        ingredients: {
+          1: ingredient
+        },
+        steps: {
+          1: step
+        },
+      },
+      user_info: {
+        id: req.user._id,
+        hidden: hidden
+      }
+    }
   } else if(type == 3) { // Plats
-    var title = req.body.title
-    var content = req.body.googlemaps 
-    var street = req.body.street
-    var city = req.body.city
-    var website = req.body.website
-    var phone = req.body.phone
-    var email = req.body.email
-    var openhours = req.body.openhours
-    var lacto_ovo = req.body.lacto_ovo
-    var vegan = req.body.vegan
-    var food = req.body.food
-    var hidden = req.body.hidden
-    var license = req.body.license
-    query.insert({title: title, url:niceurl, post:{ content: content, city: city, street: street, phone: phone, website: website, email: email, license: license, range:{ lacto_ovo: lacto_ovo, vegan: vegan }, food: food, googlemaps: googlemaps, openhours:openhours, type:type },"user_info":{ "id":req.user._id, hidden: hidden }}, function(err, doc) {
-      if(err) throw err
-    })
+    var data = {
+      title: req.body.title,
+      url: niceurl,
+      type: type,
+      post: {
+        content: req.body.content,
+        city: req.body.city,
+        street: req.body.street,
+        phone: req.body.phone,
+        website: req.body.website,
+        email: req.body.email,
+        license: req.body.license,
+        food: food,
+        googlemaps: req.body.googlemaps,
+        openhours: req.body.openhours,
+        cover: {
+          id: req.body.cover_image_id,
+          filename: req.body.cover_image_filename
+        },
+        range: {
+          lacto_ovo: req.body.lacto_ovo,
+          vegan: req.body.vegan
+        },
+      },
+      user_info: {
+        id: req.user._id,
+        hidden: hidden
+      }
+    }
   } else if(type == 4) { // Produkt
-    var title = req.body.title
-    var content = req.body.content
-    var source = req.body.source
-    query.insert({title: title, url:niceurl, post:{ content: content, sources:{ 1:source }, type:type }, "user_info":{ "id": req.user._id, hidden:hidden }}, function(err, doc) {
-      if(err) throw err
-    })
+    var data = {
+      title: req.body.title,
+      url: niceurl,
+      type: type,
+      post: {
+        content: req.body.content,
+        cover: {
+          id: req.body.cover_image_id,
+          filename: req.body.cover_image_filename
+        },
+        sources: {
+          1: req.body.source
+        }
+      },
+      user_info: {
+        id: req.user._id,
+        hidden: hidden
+      }
+    }
   } else if(type == 5) {
 
   } else {
     res.redirect('/ny')
   }
+    query.insert(data, function(err, doc) {
+      if(err) throw err
+    })
     res.redirect('/ny/publicerad/?newpost='+niceurl)
 })
 
