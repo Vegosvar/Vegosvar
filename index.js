@@ -309,8 +309,6 @@ app.get('/ny/:type', function (req, res) {
 app.post('/submit', urlencodedParser, function (req, res) { // Controller for handling page inputs.
                                                             // ## TODO ######################################################
                                                             // # Add error handling, check and sanitize inputs              #
-                                                            // # Improve this code and make it smaller + more simple,       #
-                                                            // # Not having to if clause every type would be nice           #
                                                             // # Add support for multiple sources, ingredients, steps et.c. #
                                                             // ##############################################################
   var type = req.body.type
@@ -330,7 +328,6 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
 
   var query = db.get('pages')
   if(type == 1) { // Fakta
-<<<<<<< HEAD
     var data = {
       title: req.body.title,
       url: niceurl,
@@ -358,16 +355,12 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       type: type,
       post: {
         content: req.body.content,
+        license: req.body.license,
+        license_holder: req.body.license_holder,
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
-        },
-        ingredients: {
-          1: ingredient
-        },
-        steps: {
-          1: step
-        },
+        }
       },
       user_info: {
         id: req.user._id,
@@ -387,6 +380,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         website: req.body.website,
         email: req.body.email,
         license: req.body.license,
+        license_holder: req.body.license_holder,
         food: food,
         googlemaps: req.body.googlemaps,
         openhours: req.body.openhours,
@@ -411,6 +405,8 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       type: type,
       post: {
         content: req.body.content,
+        license: req.body.license,
+        license_holder: req.body.license_holder,
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename

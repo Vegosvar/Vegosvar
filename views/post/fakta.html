@@ -41,14 +41,20 @@
 									<a href="/vanliga-fragor" target="_blank" title="Öppna i ny flik" class="small">Läs mer</a>
 								</label>
 							</div>
-							<div class="form-group">
-								<div class="row">
-									<div class="col-sm-5 col-md-5 col-lg-4">
-										<select class="form-control" name="licence">
+
+							<h3>Licens</h3>
+							<div class="row">
+								<div class="col-sm-5 col-md-5">
+									<div class="form-group">
+										<select class="form-control" name="license">
 											<option value="cc0">CC0 / Public Domain</option>
 											<option value="cc">CC (Creative Commons)</option>
 											<option value="copyright">Copyright</option>
 										</select>
+									</div>
+									<div class="input-group" id="license_holder">
+										<span class="input-group-addon">Licensägare</span>
+										<input type="text" class="form-control" name="license_holder">
 									</div>
 								</div>
 							</div>
@@ -73,26 +79,6 @@
 
 		</section>
 	</div>
-	<script type="text/javascript">
-		$("div#uploader").dropzone({ url: "/submit/file",
-			paramName: "image",
-			method: "post",
-			maxFiles: 1,
-			acceptedFiles: "image/.jpg,.JPG",
-			success: function(object, response) {
-				setTimeout(function () { 
-					console.log('id: ' + response)
-					$('div#uploader').addClass('finished')
-					$('.dz-preview').hide()
-					$.getJSON('/ajax/imageInfo/?id='+ response, function (data) {
-						console.log(data)
-						$('div#uploader').css('background-image', 'url("/uploads/' + data[0].filename + '.jpg")')
-						$('#upload-group').append('<input type="hidden" value="' + data[0]._id + '" name="cover_image_id" />')
-						$('#upload-group').append('<input type="hidden" value="' + data[0].filename + '" name="cover_image_filename" />')
-					})
-				}, 500)
-		   	}
-	   	})
-	</script>
+	
 <% include includes/error_handler.ejs %>
 <% include ../includes/footer %>
