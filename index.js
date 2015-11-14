@@ -463,7 +463,7 @@ app.post('/submit/file', function(req, res) {
             if(err) throw err
             fstream = fs.createWriteStream(__dirname + '/uploads/' + uFilename + '_original.jpg')
             file.pipe(fstream)
-            fstream.on('end', function() {
+            fstream.on('finish', function() {
               var resize = image_processer.resize(uFilename, 1200, 630)
               if(resize == true) {
                 fstream.on('close', function () {
