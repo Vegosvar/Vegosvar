@@ -2,7 +2,6 @@ $("div#uploader").dropzone({ url: "/submit/file",
 paramName: "image",
 method: "post",
 maxFiles: 1,
-acceptedFiles: "image/.jpg,.JPG",
 success: function(object, response) {
 	setTimeout(function () { 
 		console.log('id: ' + response)
