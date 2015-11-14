@@ -36,5 +36,7 @@
   </div>
 
 </body>
-
+  <% if (typeof loadDropzoneResources !== 'undefined' && loadDropzoneResources === true) { %>
+    <script type="text/javascript" src="/includes/js/dropzone-script.js"></script>
+  <% } %>
 </html>
