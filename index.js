@@ -330,6 +330,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
 
   var query = db.get('pages')
   if(type == 1) { // Fakta
+<<<<<<< HEAD
     var data = {
       title: req.body.title,
       url: niceurl,

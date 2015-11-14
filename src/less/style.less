@@ -12,7 +12,8 @@
 @orange:				#F69424;
 
 @recipe:				@pink;
-@restaurant:			#574173;
+@restaurant:			#694E8C;
+@store:					#FB8B11;
 @product:				@blue;
 
 @xs:					768px;
@@ -806,7 +807,7 @@ section {
 			.category {
 				display: block;
 				width: 100%;
-				padding: 19px 25px;
+				padding: 13px 20px;
 				color: #fff;
 				float: left;
 				background: #eee;
@@ -816,14 +817,14 @@ section {
 				font-size: 18px;
 				.cat {
 					position: relative;
-					top: 1px;
+					top: 2px;
 					font-size: 18px;
 					margin-right: 10px;
 				}
 				.chevron {
 					position: relative;
-					top: 2px;
-					font-size: 20px;
+					top: 6px;
+					font-size: 16px;
 					float: right;
 				}
 				&:active {
@@ -839,6 +840,12 @@ section {
 					background: @restaurant;
 					&:hover {
 						background: darken(@restaurant, 3%);
+					}
+				}
+				&.store {
+					background: @store;
+					&:hover {
+						background: darken(@store, 3%);
 					}
 				}
 				&.recipe {

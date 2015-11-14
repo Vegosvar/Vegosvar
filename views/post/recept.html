@@ -9,73 +9,46 @@
 						<form action="/submit" method="post">
 							<input type="hidden" name="type" value="2">
 							<h1>Nytt recept</h1><br>
-							<div class="row">
-								<div class="col-sm-10">
-									<div class="input-group">
-										<span class="input-group-addon" id="basic-addon2">Rubrik</span>
-										<input type="text" class="form-control" id="header-input" name="title" autocomplete="off" aria-describedby="basic-addon1">
-									</div>
-								</div>
+							<div class="input-group">
+								<div id="uploader" class="dropzone"></div>
 							</div>
-							
-							<h3>Innehåll</h3>
+
 							<div class="row">
 								<div class="col-sm-12">
 									<div class="input-group">
-										<textarea type="text" name="content" class="form-control"></textarea>
+										<input type="text" placeholder="Rubrik" class="form-control" id="header-input" name="title" autocomplete="off" aria-describedby="basic-addon1">
 									</div>
 								</div>
 							</div>
 
-							<h3>Ingredienser</h3>
 							<div class="row">
-								<div class="col-sm-7">
-									<div class="input-group">
-										<input type="text" class="form-control" name="ingredient" placeholder="Ingrediens" aria-describedby="basic-addon1">
-										<a href="#" class="btn btn-add input-group-addon"><span class="glyphicon glyphicon-plus"></span></a>
-									</div>
-								</div>
-							</div>
-			
-							<h3>Steg</h3>
-							<div class="row">
-								<div class="col-sm-7">
-									<div class="input-group">
-										<input type="text" class="form-control" name="step" placeholder="Steg 1" aria-describedby="basic-addon1">
-										<a href="#" class="btn btn-add input-group-addon"><span class="glyphicon glyphicon-plus"></span></a>
-									</div>
-								</div>
-							</div>
-
-							<h3>Bilder</h3>
-							<div class="input-group">
-								<p><span class="btn btn-edit btn-file">
-									<span class="glyphicon glyphicon-camera"></span> Ladda upp utvald bild <input type="file">
-								</span></p>
-								<small><p>Rekommenderad storlek <strong>1200 x 630 px</strong><br>
-								Licens: CC0 <a href="#">Ändra</a></p></small>
+								<% include includes/editor %>
 							</div>
 
 							<h3>Övrigt</h3>
 							<div class="checkbox">
 								<label>
 									<input type="checkbox" name="hidden"> 
-									Jag vill inte synas som författare till sidan 
+									Jag vill vara anonym 
 									<a href="/vanliga-fragor" target="_blank" title="Öppna i ny flik" class="small">Läs mer</a>
 								</label>
 							</div>
-							<div class="checkbox">
-								<label>
-									<input type="checkbox" name="hidden"> 
-									Jag önskar låsa sidan från redigering 
-									<a href="/vanliga-fragor" target="_blank" title="Öppna i ny flik" class="small">Läs mer</a>
-								</label>
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-5 col-md-5 col-lg-4">
+										<select class="form-control" name="licence">
+											<option value="cc0">CC0 / Public Domain</option>
+											<option value="cc">CC (Creative Commons)</option>
+											<option value="copyright">Copyright</option>
+										</select>
+									</div>
+								</div>
 							</div>
 
 							<hr>
 
 							<div class="row">
-								<div class="col-md-12">
+								<div class="col-sm-12">
 									<p><button class="btn btn-primary lg">Skapa sida</button><br>
 									<small>Genom att skapa en sida går du med på <a href="/villkor" target="_blank">våra villkor</a></small></p>
 								</div>
@@ -92,5 +65,26 @@
 
 		</section>
 	</div>
-
+	
+	<script type="text/javascript">
+		$("div#uploader").dropzone({ url: "/submit/file",
+			paramName: "image",
+			method: "post",
+			maxFiles: 1,
+			acceptedFiles: "image/.jpg,.JPG",
+			success: function(object, response) {
+				setTimeout(function () { 
+					console.log('id: ' + response)
+					$('div#uploader').addClass('finished')
+					$('.dz-preview').hide()
+					$.getJSON('/ajax/imageInfo/?id='+ response, function (data) {
+						console.log(data)
+						$('div#uploader').css('background-image', 'url("/uploads/' + data[0].filename + '.jpg")')
+						$('#upload-group').append('<input type="hidden" value="' + data[0]._id + '" name="cover_image-id" />')
+						$('#upload-group').append('<input type="hidden" value="' + data[0].filename + '" name="cover_image-filename" />')
+					})
+				}, 500)
+		   	}
+	   	})
+	</script>
 <% include ../includes/footer %>
