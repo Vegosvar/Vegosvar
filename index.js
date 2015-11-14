@@ -398,7 +398,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         hidden: hidden
       }
     }
-  } else if(type == 4) { // Produkt
+  } else if(type == 4) { // Produkt assÅÅÅ
     var data = {
       title: req.body.title,
       url: niceurl,
