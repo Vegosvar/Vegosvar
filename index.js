@@ -338,10 +338,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
-        },
-        sources: {
-          1: req.body.source
-        },
+        }
       },
       user_info: {
         id: req.user._id,
@@ -412,9 +409,6 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
-        },
-        sources: {
-          1: req.body.source
         }
       },
       user_info: {
