@@ -2,7 +2,7 @@
 - hosts: all
   tasks:
     - name: Update repo
-      shell: "cd /opt/vegosvar && su vegosvar -c 'cd /opt/vegosvar && git pull && npm install && gulp prod'"
+      shell: "cd /opt/vegosvar && su vegosvar -c 'cd /opt/vegosvar && git pull && gulp prod'"
 
     - name: Copy config
       copy: src=../config.js dest=/opt/vegosvar/config.js owner=vegosvar group=vegosvar mode=0644
