@@ -20,7 +20,9 @@
             <% } else if (post.type === '2') { %>
 
             <% } else if (post.type === '3') { %>
-
+              <span class="city"><%= post.post.city %></span>
+              <span class="street"><%= post.post.street %></span>
+              <a href="<%= post.post.googlemaps %>" class="btn btn-secondary">Visa karta</a>
             <% } else if (post.type === '4') { %>
 
             <% } else if (post.type === '5') { %>

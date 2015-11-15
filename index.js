@@ -381,7 +381,15 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         license_holder: req.body.license_holder,
         food: req.body.food,
         googlemaps: req.body.googlemaps,
-        openhours: req.body.openhours,
+        openhours: {
+          monday: req.body.monday,
+          tuesday: req.body.tuesday,
+          wednesday: req.body.wednesday,
+          thursday: req.body.thursday,
+          friday: req.body.friday,
+          saturday: req.body.saturday,
+          sunday: req.body.sunday
+        },
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
@@ -430,7 +438,15 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         street: req.body.street,
         website: req.body.website,
         googlemaps: req.body.googlemaps,
-        openhours: req.body.openhours,
+        openhours: {
+          monday: req.body.monday,
+          tuesday: req.body.tuesday,
+          wednesday: req.body.wednesday,
+          thursday: req.body.thursday,
+          friday: req.body.friday,
+          saturday: req.body.saturday,
+          sunday: req.body.sunday
+        },
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
