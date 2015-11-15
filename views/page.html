@@ -29,7 +29,11 @@
 
             <% if (post.type === '3') { %>
               <p><a href="<%= post.post.website %>" target="_blank"><%= post.post.website %></a></p>
-              <a href="<%= post.post.googlemaps %>" class="btn btn-primary btn-hero visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Se karta</a>
+
+              <a href="<%= post.post.googlemaps %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Google Maps</a>
+
+              <a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Apple Maps</a>
+
               <hr class="lg hidden-xs">
               <div class="row">
                 <div class="col-sm-7 text-center-xs">
@@ -78,14 +82,27 @@
                   </div>
                 </div>
                 <div class="col-sm-5 text-center hidden-xs" id="location">
-                  <p><img src="/assets/images/chef.svg" class="circle"></p>
+                  <p><img src="/assets/images/map.svg" class="circle"></p>
                   <h2><%= post.post.city %></h2>
                   <div class="street">
                     <%= post.post.street %>
                   </div>
-                  <a href="<%= post.post.googlemaps %>" class="btn btn-primary" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Se karta</a>
+                  <p><a href="<%= post.post.googlemaps %>" class="btn btn-primary" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Google Maps</a></p>
+                  <p><a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-secondary" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Apple Maps</a></p>
+                </div>
               </div>
-            <% } %>   
+            <% } %>
+
+            <hr class="lg">
+            <div id="contact">
+              <a href="tel:<%= post.post.phone %>" target="_blank">
+                <%= post.post.phone %>
+              </a> 
+              <div class="divider-vertical"></div>
+              <a href="mailto:<%= post.post.email %>" target="_blank">
+                <%= post.post.email %>
+              </a>
+            </div>
 
           </article>
 
