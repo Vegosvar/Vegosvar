@@ -335,6 +335,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       post: {
         content: req.body.content,
         license: req.body.license,
+        license_holder: req.body.license_holder,
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename

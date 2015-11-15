@@ -3,12 +3,13 @@ var fs = require('fs')
 
 exports.resize = function(filename, width, height) {
 	var image = sharp('uploads/' + filename + '_original.jpg')
-	var image_small = image
+	var imagesmall = image
 	image.resize(1920, undefined)
 	image.quality(90)
-	image.toFile('/uploads/' + filename + '._original.jpg', function (err, info) { })
-	image_small.resize(width, height)
-	image_small.quality(90)
-	image_small.toFile('uploads/' + filename + '.jpg', function (err, info) { })
+	image.toFile('/uploads/' + filename + '._default.jpg', function (err, info) { })
+	
+	imagesmall.resize(width, height)
+	imagesmall.quality(90)
+	imagesmall.toFile('uploads/' + filename + '.jpg', function (err, info) { })
 	return true
 }
