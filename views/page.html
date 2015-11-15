@@ -8,7 +8,11 @@
 
           <article>
             <div class="headerImage">
-              <img src="http://holdr.me/image/?w=1200&h=630&random=1">
+              <% if (typeof post.post.cover !== 'undefined') { %>
+              <img src="/uploads/<%= post.post.cover.filename %>.jpg" />
+              <% } else { %>
+              <h1>Ingen bild :(</h1>
+              <% } %>
             </div>
             <h1><%= post.title %></h1>
             <p><%= post.post.content %></p>
