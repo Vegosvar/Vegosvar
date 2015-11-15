@@ -7,35 +7,100 @@
         <div class="col-md-8">
 
           <article>
+
             <div class="headerImage">
               <% if (typeof post.post.cover !== 'undefined') { %>
               <img src="/uploads/<%= post.post.cover.filename %>.jpg" />
               <% } else { %>
-              <h1>Ingen bild :(</h1>
               <% } %>
+              <span class="license">
+                <%= post.post.license %> 
+                <%= post.post.license_holder %>
+              </span>
             </div>
+
             <h1><%= post.title %></h1>
-            <% if (post.type === '1') { %>
 
-            <% } else if (post.type === '2') { %>
-
-            <% } else if (post.type === '3') { %>
-              <span class="city"><%= post.post.city %></span>
-              <span class="street"><%= post.post.street %></span>
-              <a href="<%= post.post.googlemaps %>" class="btn btn-secondary">Visa karta</a>
-            <% } else if (post.type === '4') { %>
-
-            <% } else if (post.type === '5') { %>
-
+            <% if (post.type === '3') { %>
+              <div class="city"><%= post.post.city %></div>
             <% } %>
+
             <p><%= post.post.content %></p>
-            <hr>
-            <h3>Källor</h3>
-            <ul class="sources">
-              <li><small>1. <a href="http://liseberg.se/sv/hem/mat/restauranger/The-Green-Room/vegetarisk-meny/">http://liseberg.se/sv/hem/mat/restauranger/The-Green-Room/vegetarisk-meny</a></small></li>
-              <li><small>2. <a href="http://vegoriket.se/2014/04/helvegetarisk-restaurang-oppnar-pa-liseberg/">http://vegoriket.se/2014/04/helvegetarisk-restaurang-oppnar-pa-liseberg</a></small></li>
-            </ul>      
+
+            <% if (post.type === '3') { %>
+              <p><a href="<%= post.post.website %>" target="_blank"><%= post.post.website %></a></p>
+              <a href="<%= post.post.googlemaps %>" class="btn btn-primary btn-hero visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Se karta</a>
+              <hr class="lg hidden-xs">
+              <div class="row">
+                <div class="col-sm-7 text-center-xs">
+                  <div id="openhours">
+                    <h2>Öppettider</h2>
+                    <div class="row">
+                      <div class="col-xs-6">
+                        <ul class="list-group">
+                          <li class="list-group-item">
+                            <h4 class="list-group-item-heading">Måndag</h4> 
+                            <p class="list-group-item-text"><%= post.post.openhours.monday %></p>
+                          </li>
+                          <li class="list-group-item">
+                            <h4 class="list-group-item-heading">Tisdag</h4> 
+                            <p class="list-group-item-text"><%= post.post.openhours.tuesday %></p>
+                          </li>
+                          <li class="list-group-item">
+                            <h4 class="list-group-item-heading">Onsdag</h4> 
+                            <p class="list-group-item-text"><%= post.post.openhours.wednesday %></p>
+                          </li>
+                          <li class="list-group-item">
+                            <h4 class="list-group-item-heading">Torsdag</h4> 
+                            <p class="list-group-item-text"><%= post.post.openhours.thursday %></p>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="col-xs-6">
+                        <ul class="list-group">
+                          <li class="list-group-item">
+                            <h4 class="list-group-item-heading">Fredag</h4> 
+                            <p class="list-group-item-text"><%= post.post.openhours.friday %></p>
+                          </li>
+                          <li class="list-group-item">
+                            <h4 class="list-group-item-heading">Lördag</h4> 
+                            <p class="list-group-item-text"><%= post.post.openhours.saturday %></p>
+                          </li>
+                        </ul>
+                        <ul class="list-group">
+                          <li class="list-group-item">
+                            <h4 class="list-group-item-heading">Söndag</h4> 
+                            <p class="list-group-item-text"><%= post.post.openhours.sunday %></p>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-5 text-center hidden-xs" id="location">
+                  <p><img src="/assets/images/chef.svg" class="circle"></p>
+                  <h2><%= post.post.city %></h2>
+                  <div class="street">
+                    <%= post.post.street %>
+                  </div>
+                  <a href="<%= post.post.googlemaps %>" class="btn btn-primary" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Se karta</a>
+              </div>
+            <% } %>   
+
           </article>
+
+          <div class="actions">
+            <div class="row">
+              <div class="col-xs-6 col-md-12 col-lg-4">
+                <a href="#" class="btn btn-like"><span class="glyphicon glyphicon-heart-empty"></span> Gilla <span class="count">47</span></a>
+              </div>
+              <% if (typeof user !== 'undefined') { if (user.id === user_info.id) { %>
+              <div class="col-xs-6 col-md-12 col-lg-4">
+                <a href="#" class="btn btn-edit">Redigera sida</a>
+              </div>
+              <% } } %>
+            </div>
+          </div>
 
         </div>
 
@@ -61,19 +126,7 @@
             </div>
           </div>
 
-
-          <div class="actions">
-            <div class="row">
-              <div class="col-xs-6 col-md-12 col-lg-6">
-                <a href="#" class="btn btn-like"><span class="glyphicon glyphicon-heart-empty"></span> Gilla <span class="count">47</span></a>
-              </div>
-              <% if (typeof user !== 'undefined') { if (user.id === user_info.id) { %>
-              <div class="col-xs-6 col-md-12 col-lg-6">
-                <a href="#" class="btn btn-edit">Redigera sida</a>
-              </div>
-              <% } } %>
-            </div>
-          </div>
+          <h2>Relaterade sidor</h2>
 
         </div>
       </div>
