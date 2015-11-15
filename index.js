@@ -379,7 +379,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         email: req.body.email,
         license: req.body.license,
         license_holder: req.body.license_holder,
-        food: food,
+        food: req.body.food,
         googlemaps: req.body.googlemaps,
         openhours: req.body.openhours,
         cover: {
@@ -389,7 +389,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         range: {
           lacto_ovo: req.body.lacto_ovo,
           vegan: req.body.vegan
-        },
+        }
       },
       user_info: {
         id: req.user._id,

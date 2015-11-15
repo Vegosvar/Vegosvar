@@ -43,7 +43,11 @@
 				<% for(var i=0; i < pages.length; i++) {%>
 				<div class="col-sm-6 col-md-4 col-lg-3">
 					<div class="result">
-						<div class="image" style="background-image: url(http://holdr.me/image/?w=263&h=148&random=<%= pages[i]._id %>)"></div>
+						<% if (typeof pages[i].post.cover !== 'undefined') { %>
+						<div class="image" style="background-image: url(/uploads/<%= pages[i].post.cover.filename %>_thumb.jpg)"></div>
+						<% } else { %>
+						<div class="image" style="background-image: url(http://holdr.me/image/?width=345&height=181&random=<%= pages[i]._id %>"></div>
+						<% } %>
 						<div class="content">
 							<a href="/<%= pages[i].url %>"><h3><%= pages[i].title %></h3></a>
 							<p><%= pages[i].post.content %></p>

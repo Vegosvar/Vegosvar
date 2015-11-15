@@ -9,7 +9,8 @@
 						<form action="/submit" method="post">
 							<input type="hidden" name="type" value="2">
 							<h1>Nytt recept</h1><br>
-							<div class="input-group">
+
+							<div class="input-group" id="upload-group">
 								<div id="uploader" class="dropzone"></div>
 							</div>
 
@@ -23,6 +24,11 @@
 
 							<div class="row">
 								<% include includes/editor %>
+								<div class="col-sm-12 hidden">
+									<div class="input-group">
+										<textarea name="content" class="form-control editable-content" id="content-input"></textarea>
+									</div>
+								</div>
 							</div>
 
 							<h2>Typ av rätt</h2>
