@@ -154,7 +154,7 @@ app.get('/handle', function (req, res) {
   })
 })
 
-app.get('/test', function (req, res) {
+app.get('/test123', function (req, res) {
   res.send('hej!')
 })
 
