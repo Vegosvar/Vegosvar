@@ -174,10 +174,6 @@ app.get('/om', function(req, res) {
   res.render('about', { user: req.user });
 })
 
-app.get('/annonsera', function (req, res) {
-  res.render('advertise', { user: req.user });
-})
-
 app.get('/riktlinjer', function (req, res) {
   res.render('guidelines', { user: req.user, hidelink: true })
 });
