@@ -154,6 +154,10 @@ app.get('/handle', function (req, res) {
   })
 })
 
+app.get('/test', function (req, res) {
+  res.send('hej!')
+})
+
 app.post('/handle/post', urlencodedParser, function(req, res) {
   console.log(req.body)
   res.send('Done')
