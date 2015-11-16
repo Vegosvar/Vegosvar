@@ -30,9 +30,16 @@
             <% if (post.type === '3') { %>
               <p><a href="<%= post.post.website %>" target="_blank"><%= post.post.website %></a></p>
 
-              <a href="<%= post.post.googlemaps %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Google Maps</a>
+              <p>
+                <a href="<%= post.post.googlemaps %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Google Maps</a>
 
-              <a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Apple Maps</a>
+                <a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Apple Maps</a>
+
+                <a href="tel:<%= post.post.phone %>" target="_blank"  class="btn btn-secondary btn-block visible-xs">
+                  <span class="glyphicon glyphicon-phone"></span>
+                  <%= post.post.phone %>
+                </a> 
+              </p>
 
               <hr class="lg hidden-xs">
               <div class="row">
@@ -94,28 +101,52 @@
             <% } %>
 
             <hr class="lg">
+            
             <div id="contact">
-              <a href="tel:<%= post.post.phone %>" target="_blank">
+              <a href="tel:<%= post.post.phone %>" target="_blank" class="hidden-xs">
                 <%= post.post.phone %>
               </a> 
-              <div class="divider-vertical"></div>
+              <div class="divider-vertical hidden-xs"></div>
               <a href="mailto:<%= post.post.email %>" target="_blank">
+                <h2 class="visible-xs no-top">Mail</h2>
                 <%= post.post.email %>
               </a>
             </div>
 
           </article>
 
-          <div class="actions">
-            <div class="row">
-              <div class="col-xs-6 col-md-12 col-lg-4">
-                <a href="#" class="btn btn-like"><span class="glyphicon glyphicon-heart-empty"></span> Gilla <span class="count">47</span></a>
+          <div class="row">
+            <div class="col-sm-7">
+              <div class="card profile">
+                <div class="row">
+
+                  <div class="col-xs-4 col-sm-4 col-md-3 avatar">
+                    <a href="#"><img src="<%= user_info.photo %>" class="avatar circle"></a>
+                  </div>
+
+                  <div class="col-xs-8 col-sm-8 col-md-8 info">
+                    <small>Publicerat av</small>
+                    <a href="<%= user_info.info.website %>" title="<%= user_info.info.website %>" target="_blank"><h3><%= user_info.name.display_name %></h3></a>
+                    <span class="description">
+                      <% if (typeof user_info.info !== 'undefined') { if (typeof user_info.info.description !== 'undefined') { %>
+                      <%= user_info.info.description %><% } } %>
+                    </span>
+                  </div>
+
+                </div>
               </div>
-              <% if (typeof user !== 'undefined') { if (user.id === user_info.id) { %>
-              <div class="col-xs-6 col-md-12 col-lg-4">
-                <a href="#" class="btn btn-edit">Redigera sida</a>
+            </div>
+            <div class="col-sm-5 actions">
+              <div class="row">
+                <div class="col-xs-6 col-md-12">
+                  <a href="#" class="btn btn-like"><span class="glyphicon glyphicon-heart-empty"></span> Gilla <span class="count">47</span></a>
+                </div>
+                <% if (typeof user !== 'undefined') { if (user.id === user_info.id) { %>
+                <div class="col-xs-6 col-md-12">
+                  <a href="#" class="btn btn-edit">Föreslå ändring</a>
+                </div>
+                <% } } %>
               </div>
-              <% } } %>
             </div>
           </div>
 
@@ -124,25 +155,6 @@
 
         <div class="col-sm-6 col-md-4 sidebar">
 
-          <div class="card profile">
-            <div class="row">
-
-              <div class="col-xs-4 col-sm-4 col-md-4 avatar">
-                <a href="#"><img src="<%= user_info.photo %>" class="avatar"></a>
-              </div>
-
-              <div class="col-xs-8 col-sm-8 col-md-8 info">
-                <small>Publicerat av</small>
-                <a href="<%= user_info.info.website %>" title="<%= user_info.info.website %>" target="_blank"><h3><%= user_info.name.display_name %></h3></a>
-                <span class="description">
-                  <% if (typeof user_info.info !== 'undefined') { if (typeof user_info.info.description !== 'undefined') { %>
-                  <%= user_info.info.description %><% } } %>
-                </span>
-              </div>
-
-            </div>
-          </div>
-
           <h2>Relaterade sidor</h2>
 
         </div>
@@ -150,6 +162,10 @@
 
       <div class="row">
         <div class="col-md-8">
+          <% if (post.type === '3') { %>
+          <hr>
+            <h2>Recentioner</h2>
+          <% } %>
           <div id="disqus_thread"></div>
           <script>
             /**
