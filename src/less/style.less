@@ -211,7 +211,7 @@ img {
 hr {
 	margin: 30px 0;
 	&.lg {
-		margin: 40px -30px;
+		margin: 40px -20px;
 	}
 }
 
@@ -456,35 +456,36 @@ input[type=checkbox], input[type=radio] {
 	h2, h3 {
 		margin-top: 0;
 	}
-	.card {
-		padding: 15px;
-		background: #fff;
-		margin-bottom: 15px;
-		border-radius: 3px;
-		overflow: hidden;
-		.avatar {
+}
 
+.card {
+	padding: 15px;
+	background: #fff;
+	margin-bottom: 15px;
+	border-radius: 3px;
+	overflow: hidden;
+	&.profile {
+		background: none;
+	}
+	.info {
+		padding-left: 0;
+		small {
+			display: block;
+			position: relative;
+			margin-top: -4px;
+			color: #999;
 		}
-		.info {
-			padding-left: 0;
-			small {
-				display: block;
-				position: relative;
-				margin-top: -4px;
-				color: #999;
-			}
-			h3 {
-				margin-top: 0;
-				margin-bottom: 5px;
-			}
-			a {
-				color: #111;
-			}
-			.description {
-				font-size: 13px;
-				line-height: 1.4;
-				display: block;
-			}
+		h3 {
+			margin-top: 0;
+			margin-bottom: 5px;
+		}
+		a {
+			color: #111;
+		}
+		.description {
+			font-size: 13px;
+			line-height: 1.4;
+			display: block;
 		}
 	}
 }
@@ -825,7 +826,6 @@ article {
 
 .actions {
 	overflow: hidden;
-	margin-top: -15px;
 	margin-bottom: 30px;
 	.col-lg-6:first-child {
 		padding-right: 7.5px;
@@ -1377,16 +1377,10 @@ section {
 		text-align: center;
 		padding: 60px 0 120px 0;
 	}
-	.logo {
-		display: inline-block;
+	.facebook {
 		img {
-			position: relative;
-			width: 40px;
-			margin-bottom: 20px;
-			transition: transform 0.2s;
-			&:hover {
-				transform: scale(0.9);
-			}
+			width: 230px;
+			margin-bottom: 25px;
 		}
 	}
 	h3 {
