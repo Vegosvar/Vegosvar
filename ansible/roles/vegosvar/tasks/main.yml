@@ -46,9 +46,6 @@
 - name: Add github to known_hosts file
   shell: "su vegosvar -c 'ssh-keyscan -t rsa github.com > /home/vegosvar/.ssh/known_hosts'"
 
-- name: Install global packages
-  shell: "npm install -g forever gulp"
-
 - name: Create vegosvar directory
   file: path=/opt/vegosvar state=directory owner=vegosvar group=vegosvar
 
@@ -59,7 +56,7 @@
   copy: src=../config.js dest=/opt/vegosvar/config.js owner=vegosvar group=vegosvar mode=0644
 
 - name: Install dependencies for vegosvar
-  shell: "su vegosvar -c 'cd /opt/vegosvar && npm install && gulp prod'"
+  shell: "su vegosvar -c 'cd /opt/vegosvar && gulp prod'"
 
 - name: Create vegosvar.log
   file: path=/var/log/vegosvar.log owner=vegosvar group=vegosvar mode=0644 state=touch
