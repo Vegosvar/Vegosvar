@@ -15,7 +15,9 @@
               <% } %>
               <span class="license">
                 <%= post.post.license %> 
-                <%= post.post.license_holder %>
+                <a href="<%= post.post.license_holder_website %>" target="_blank">
+                  <%= post.post.license_holder %>
+                </a>
               </span>
             </div>
 

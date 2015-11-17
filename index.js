@@ -331,6 +331,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         content: req.body.content,
         license: req.body.license,
         license_holder: req.body.license_holder,
+        license_holder_link: req.body.license_holder_link,
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
@@ -350,6 +351,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         content: req.body.content,
         license: req.body.license,
         license_holder: req.body.license_holder,
+        license_holder_link: req.body.license_holder_link,
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
@@ -374,6 +376,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         email: req.body.email,
         license: req.body.license,
         license_holder: req.body.license_holder,
+        license_holder_link: req.body.license_holder_link,
         food: req.body.food,
         googlemaps: req.body.googlemaps,
         openhours: {
@@ -408,6 +411,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         content: req.body.content,
         license: req.body.license,
         license_holder: req.body.license_holder,
+        license_holder_link: req.body.license_holder_link,
         veg_type: req.body.veg_type,
         product_type: req.body.product_type,
         cover: {
@@ -429,6 +433,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         content: req.body.content,
         license: req.body.license,
         license_holder: req.body.license_holder,
+        license_holder_link: req.body.license_holder_link,
         city: req.body.city,
         street: req.body.street,
         website: req.body.website,
