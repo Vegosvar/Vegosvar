@@ -15,9 +15,11 @@
               <% } %>
               <span class="license">
                 <%= post.post.license %> 
-                <a href="<%= post.post.license_holder_website %>" target="_blank">
-                  <%= post.post.license_holder %>
-                </a>
+                <% if (typeof post.post.license_holder_website !== 'undefined' && post.post.license_holder_website !== "") { %>
+                  <a href="<%= post.post.license_holder_website %>" target="_blank">
+                    <%= post.post.license_holder %>
+                  </a>
+                <% } %>
               </span>
             </div>
 
@@ -30,7 +32,9 @@
             <p><%= post.post.content %></p>
 
             <% if (post.type === '3') { %>
-              <p><a href="<%= post.post.website %>" target="_blank"><%= post.post.website %></a></p>
+              <% if (typeof post.post.website !== 'undefined' && post.post.website !== "") { %>
+                <p><a href="<%= post.post.website %>" target="_blank"><%= post.post.website %></a></p>
+              <% } %>
 
               <p>
                 <a href="<%= post.post.googlemaps %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Öppna karta</a>
@@ -107,11 +111,13 @@
                 <a href="tel:<%= post.post.phone %>" target="_blank" class="hidden-xs">
                   <%= post.post.phone %>
                 </a> 
-                <div class="divider-vertical hidden-xs"></div>
-                <a href="mailto:<%= post.post.email %>" target="_blank">
-                  <h2 class="visible-xs no-top">Mail</h2>
-                  <%= post.post.email %>
-                </a>
+                <% if (typeof post.post.email !== 'undefined' && post.post.email !== "") { %>
+                  <div class="divider-vertical hidden-xs"></div>
+                  <a href="mailto:<%= post.post.email %>" target="_blank">
+                    <h2 class="visible-xs no-top">Mail</h2>
+                    <%= post.post.email %>
+                  </a>
+                <% } %>
               </div>
             <% } %>
 
