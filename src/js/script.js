@@ -86,7 +86,7 @@ $(function () {
             var id = result[i]._id
             var content = '<div class="col-sm-6 col-md-4 col-lg-3" id="searchResult-' + id + '">'
             content += '<div class="result">'
-            content += '<a href="/' + result[i].url + '"><div class="image" style="background-image: url(/uploads/' + result[i].cover + ')_thumb.jpg"></div></a>'
+            content += '<a href="/' + result[i].url + '"><div class="image" style="background-image: url(/uploads/' + result[i].post.cover.filename + '_thumb.jpg)"></div></a>'
             content += '<div class="content">'
             content += '<a href="/' + result[i].url + '"><h3>' + result[i].title + '</h3></a>'
             content += '<p>' + result[i].post.content + '</p></div>'

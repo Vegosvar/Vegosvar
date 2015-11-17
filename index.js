@@ -160,7 +160,6 @@ app.post('/handle/post', urlencodedParser, function(req, res) {
 })
 
 app.get('/logga-in', function (req, res) {
-
   // TODO make this a middleware or something
   if (req.isAuthenticated()) {
     // TODO get latest page we were on or something instead
@@ -176,19 +175,19 @@ app.get('/om', function(req, res) {
 
 app.get('/riktlinjer', function (req, res) {
   res.render('guidelines', { user: req.user, hidelink: true })
-});
+})
 
 app.get('/villkor', function (req, res) {
   res.render('terms-of-use', { user: req.user, hidelink: true })
-});
+})
 
 app.get('/vanliga-fragor', function (req, res) {
   res.render('faq', { user: req.user })
-});
+})
 
 app.get('/press', function (req, res) {
   res.render('press', { user: req.user })
-});
+})
 
 app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res) {})
 
