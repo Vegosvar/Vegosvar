@@ -31,13 +31,13 @@
               <p><a href="<%= post.post.website %>" target="_blank"><%= post.post.website %></a></p>
 
               <p>
-                <a href="<%= post.post.googlemaps %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Google Maps</a>
+                <a href="<%= post.post.googlemaps %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Öppna karta</a>
 
-                <a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Apple Maps</a>
+                <a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Öppna karta</a>
 
                 <a href="tel:<%= post.post.phone %>" target="_blank"  class="btn btn-secondary btn-block visible-xs">
                   <span class="glyphicon glyphicon-phone"></span>
-                  <%= post.post.phone %>
+                  <strong>Ring</strong> <%= post.post.phone %>
                 </a> 
               </p>
 
@@ -98,20 +98,20 @@
                   <p><a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-secondary" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Apple Maps</a></p>
                 </div>
               </div>
-            <% } %>
 
-            <hr class="lg">
-            
-            <div id="contact">
-              <a href="tel:<%= post.post.phone %>" target="_blank" class="hidden-xs">
-                <%= post.post.phone %>
-              </a> 
-              <div class="divider-vertical hidden-xs"></div>
-              <a href="mailto:<%= post.post.email %>" target="_blank">
-                <h2 class="visible-xs no-top">Mail</h2>
-                <%= post.post.email %>
-              </a>
-            </div>
+              <hr class="lg">
+              
+              <div id="contact">
+                <a href="tel:<%= post.post.phone %>" target="_blank" class="hidden-xs">
+                  <%= post.post.phone %>
+                </a> 
+                <div class="divider-vertical hidden-xs"></div>
+                <a href="mailto:<%= post.post.email %>" target="_blank">
+                  <h2 class="visible-xs no-top">Mail</h2>
+                  <%= post.post.email %>
+                </a>
+              </div>
+            <% } %>
 
           </article>
 
@@ -172,17 +172,7 @@
           <% } %>
           <div id="disqus_thread"></div>
           <script>
-            /**
-            *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-            *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
-            */
-            /*
-            var disqus_config = function () {
-            this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-            this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-            };
-            */
-            (function() {  // DON'T EDIT BELOW THIS LINE
+            (function() {
             var d = document, s = d.createElement('script');
 
             s.src = '//vegosvar.disqus.com/embed.js';

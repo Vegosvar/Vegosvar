@@ -138,11 +138,11 @@ app.get('/', function (req, res) {
       }
     }
     pagesdb.find(query, {}, function(err, doc) {
-      res.render('index', { user: req.user, pages: doc, showsearch: true })
+      res.render('index', { user: req.user, pages: doc, startpage: true })
     })
   } else {
     pagesdb.find({}, function(err, doc) {
-      res.render('index', { user: req.user, pages: doc, showsearch: false })
+      res.render('index', { user: req.user, pages: doc, startpage: false })
     })
   }
 })
