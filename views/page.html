@@ -19,6 +19,8 @@
                   <a href="<%= post.post.license_holder_website %>" target="_blank">
                     <%= post.post.license_holder %>
                   </a>
+                <% } else { %>
+                  <%= post.post.license_holder %>
                 <% } %>
               </span>
             </div>
@@ -37,7 +39,7 @@
               <% } %>
 
               <p>
-                <a href="<%= post.post.googlemaps %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Öppna karta</a>
+                <a href="http://maps.google.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Öppna karta</a>
 
                 <a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Öppna karta</a>
 
@@ -100,7 +102,7 @@
                   <div class="street">
                     <%= post.post.street %>
                   </div>
-                  <p><a href="<%= post.post.googlemaps %>" class="btn btn-primary" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Google Maps</a></p>
+                  <p><a href="http://maps.google.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Google Maps</a></p>
                   <p><a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-secondary" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Apple Maps</a></p>
                 </div>
               </div>

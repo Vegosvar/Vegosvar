@@ -365,8 +365,8 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         license: req.body.license,
         license_holder: req.body.license_holder,
         license_holder_link: req.body.license_holder_link,
+        veg_offer: req.body.veg_offer,
         food: req.body.food,
-        googlemaps: req.body.googlemaps,
         openhours: {
           monday: req.body.monday,
           tuesday: req.body.tuesday,
@@ -380,10 +380,6 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
         },
-        range: {
-          lacto_ovo: req.body.lacto_ovo,
-          vegan: req.body.vegan
-        }
       },
       user_info: {
         id: req.user._id,
@@ -425,7 +421,6 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         city: req.body.city,
         street: req.body.street,
         website: req.body.website,
-        googlemaps: req.body.googlemaps,
         openhours: {
           monday: req.body.monday,
           tuesday: req.body.tuesday,
