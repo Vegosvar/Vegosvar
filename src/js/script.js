@@ -20,6 +20,11 @@ $(window).load(function () {
 
 $(function () {
 
+  if ($('#srch-term').val() !== '') {
+    setSearchFormState()
+    doTrigger()
+  }
+
   // Open links in-app instead of new window //
   $('.open-in-app a').click(function (event) {
     event.preventDefault()
@@ -40,23 +45,24 @@ $(function () {
   })
 
   // Searchform //
-  $('.searchForm').keyup(function () {
+  $('.searchForm').keyup(setSearchFormState).blur(function () {
+    if (this.value === '') {
+      $('#heroSearch')
+        .removeClass('contracted')
+        .addClass('transition')
+    }
+  })
+
+  function setSearchFormState() {
     if ($('.searchForm').val() === '') {
       $('#searchForm-btn-default').html('<i class="glyphicon glyphicon-search"></i>')
-      $('#textReceiver').slideUp(600)
       $('#results').hide()
-      if ($('#searchEngine-noResults').css('display') === 'block') {
-        $('#searchEngine-noResults').slideUp('fast')
-      }
-      if ($('#heroSearch').hasClass('contracted')) {
-        $('#heroSearch').removeClass('contracted')
-      }
     } else {
       $('#heroSearch').addClass('contracted')
       $('html, body').animate({ scrollTop: 0 }, 'fast')
       $('#searchForm-btn-default').html('<img src="/assets/images/loading.svg" class="loading">')
     }
-  })
+  }
 
   var typingTimer
   $('.searchForm').on('keyup', function () {
@@ -96,6 +102,7 @@ $(function () {
             $('#searchResultsContainer').append(content)
             $('#searchResult-' + id).show()
             $('#searchForm-btn-default').html('<i class="glyphicon glyphicon-search"></i>')
+            $('#searchEngine-noResults').hide()
           }
         } else { // No results
           $('#searchForm-btn-default').html('<i class="glyphicon glyphicon-search"></i>')

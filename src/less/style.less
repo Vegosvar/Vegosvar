@@ -989,10 +989,19 @@ section {
 	background-size: cover;
 	padding: 150px 0 180px 0;
 	color: #fff;
-	transition: padding 0.8s;
 	@media (max-width: @xs) {
 		padding: 5px 0 30px 0;
 		margin-bottom: 0px;
+	}
+
+	&.transition {		
+		transition: padding 0.8s;
+		.intro {
+			transition: margin-bottom 0.8s;
+			h1 {
+				transition: font-size 0.8s, opacity 0.8s;
+			}
+		}
 	}
 
 	&.contracted {
@@ -1014,7 +1023,6 @@ section {
 
 	.intro {
 		margin-bottom: 40px;
-		transition: margin-bottom 0.8s;
 		@media (max-width: @xs) {
 			margin-bottom: 20px;
 		}
@@ -1023,7 +1031,6 @@ section {
 			margin-bottom: 0;
 			font-weight: 300;
 			color: #fff;
-			transition: font-size 0.8s, opacity 0.8s;
 			@media (max-width: @xs) {
 				font-size: 23px;
 				font-weight: 400;
