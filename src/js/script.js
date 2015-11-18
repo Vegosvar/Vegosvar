@@ -20,7 +20,7 @@ $(window).load(function () {
 
 $(function () {
 
-  if ($('#srch-term').val() !== '') {
+  if ($('#srch-term').length > 0 && $('#srch-term').val() === '') {
     setSearchFormState()
     doTrigger()
   }
