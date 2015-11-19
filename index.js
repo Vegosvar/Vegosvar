@@ -323,12 +323,17 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
 
   var query = db.get('pages')
   if(type == 1) { // Fakta
+      console.log(req.body)
     var data = {
       title: req.body.title,
       url: niceurl,
       type: type,
       post: {
         content: req.body.content,
+        sources: {
+            name: req.body.sources_name,
+            url: req.body.sources_url
+        },
         license: req.body.license,
         license_holder: req.body.license_holder,
         cover: {
