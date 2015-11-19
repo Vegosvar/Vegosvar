@@ -1,7 +1,7 @@
 <script>
 // TODO: Make this function fire on form submit and submit the form in this function instead
 $(function () {
-	$('#header-input').keyup(function (e) {
+	$('#header-input').on('blur', function (e) {
 		e.preventDefault()
 		var badnames = [
 			'vanliga frågor',
@@ -18,7 +18,7 @@ $(function () {
 			'submit',
 			'ny'
 		]
-		var value = $('#header-input').val().toLowerCase()
+		var value = $(this).val().toLowerCase()
 		if(inArray(value, badnames)) {
 			$('#alert-info').css({ 'display':'none' }).removeClass('hidden')
             $('#alert-info').slideDown('fast')
@@ -46,6 +46,9 @@ $(function () {
 				if(!$('#warning-info').hasClass('hidden')) {
 					$('#warning-info').slideUp(200)
             		setTimeout(function() { $('#warning-info').addClass('hidden') }, 210)
+				}
+				if($('#alert-info').is(':visible')) {
+				  $('#alert-info').slideUp('fast')
 				}
 			}
 		}
