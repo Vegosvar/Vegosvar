@@ -55,6 +55,7 @@
   <meta name="theme-color" content="#ffffff">
 
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,600,400,700' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Fenix' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
 
   <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
@@ -99,15 +100,19 @@
     <div class="container">
       <div class="navbar-header">
         <div class="row">
-          <div class="col-xs-12 col-sm-4 center-xs logo">
-            <a href="/"><img src="/assets/images/vegosvar.svg"></a>
-          </div>
-					<% if (typeof showsearch === 'undefined') { %>
+          <% if (typeof startpage === 'undefined') { %>
+            <div class="col-xs-12 col-sm-4 center-xs logo">
+              <a href="/"><img src="/assets/images/vegosvar.svg"></a>
+            </div>
 						<div class="col-xs-12 col-sm-8 hidden-xs">
 							<form class="search" action="/" method="get" role="search" _lpchecked="1">
 								<input type="text" name="s" class="form-control" placeholder="Sök fakta, restauranger, produkter..." autofocus="autofocus">
 							</form>
 						</div>
+          <% } else { %>
+            <div class="col-xs-12 col-sm-4 center-xs logo startpage">
+              <a href="/"><img src="/assets/images/vegosvar.svg"></a>
+            </div>
 					<% } %>
 				</div>
       </div>
@@ -201,10 +206,14 @@
 
       <% if (typeof user === 'undefined') { %>
         <li>
-          <a class="toggle-dropdown"><span class="glyphicon glyphicon-user"></span>Logga in</a>
+          <a class="toggle-dropdown"><span class="glyphicon glyphicon-user"></span>Konto</a>
           <ul class="dropdown">
-            <li class="title">Logga in</li>
-            <li><a href="/auth/facebook">Logga in säkert via Facebook</a>
+            <li class="title">
+              <div><img src="/assets/images/no-picture.svg"></div>
+              Konto
+            </li>
+            <li><a href="/auth/facebook">Logga in via Facebook</a>
+            <li class="desc"><div>Med hjälp av Facebook kan du logga in tryggt och säkert för att publicera sidor. Du kan välja att vara helt anonym.</div></li>
             </li>
           </ul>
         </li>

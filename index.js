@@ -130,21 +130,9 @@ passport.deserializeUser(function (id, done) {
 // TODO make one default template instead of the same includes in every?
 app.get('/', function (req, res) {
   var pagesdb = db.get('pages')
-  if(typeof req.query.s !== 'undefined') {
-    var query = {
-      title: {
-        $regex: req.query.s,
-        $options: 'i' //i: ignore case, m: multiline, etc
-      }
-    }
-    pagesdb.find(query, {}, function(err, doc) {
-      res.render('index', { user: req.user, pages: doc, showsearch: true })
-    })
-  } else {
     pagesdb.find({}, function(err, doc) {
-      res.render('index', { user: req.user, pages: doc, showsearch: false })
+      res.render('index', { user: req.user, pages: doc, startpage: false, searchString: req.query.s  })
     })
-  }
 })
 
 app.get('/handle', function (req, res) {
@@ -160,7 +148,6 @@ app.post('/handle/post', urlencodedParser, function(req, res) {
 })
 
 app.get('/logga-in', function (req, res) {
-
   // TODO make this a middleware or something
   if (req.isAuthenticated()) {
     // TODO get latest page we were on or something instead
@@ -171,28 +158,24 @@ app.get('/logga-in', function (req, res) {
 })
 
 app.get('/om', function(req, res) {
-  res.render('about', { user: req.user });
-})
-
-app.get('/annonsera', function (req, res) {
-  res.render('advertise', { user: req.user });
+  res.render('about', { user: req.user })
 })
 
 app.get('/riktlinjer', function (req, res) {
   res.render('guidelines', { user: req.user, hidelink: true })
-});
+})
 
 app.get('/villkor', function (req, res) {
   res.render('terms-of-use', { user: req.user, hidelink: true })
-});
+})
 
 app.get('/vanliga-fragor', function (req, res) {
   res.render('faq', { user: req.user })
-});
+})
 
 app.get('/press', function (req, res) {
   res.render('press', { user: req.user })
-});
+})
 
 app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res) {})
 
@@ -335,13 +318,12 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       post: {
         content: req.body.content,
         license: req.body.license,
+        license_holder: req.body.license_holder,
+        license_holder_link: req.body.license_holder_link,
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
-        },
-        sources: {
-          1: req.body.source
-        },
+        }
       },
       user_info: {
         id: req.user._id,
@@ -357,6 +339,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         content: req.body.content,
         license: req.body.license,
         license_holder: req.body.license_holder,
+        license_holder_link: req.body.license_holder_link,
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
@@ -367,7 +350,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         hidden: hidden
       }
     }
-  } else if(type == 3) { // Plats
+  } else if(type == 3) { // Restaurang
     var data = {
       title: req.body.title,
       url: niceurl,
@@ -381,16 +364,21 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         email: req.body.email,
         license: req.body.license,
         license_holder: req.body.license_holder,
-        food: food,
-        googlemaps: req.body.googlemaps,
-        openhours: req.body.openhours,
+        license_holder_link: req.body.license_holder_link,
+        veg_offer: req.body.veg_offer,
+        food: req.body.food,
+        openhours: {
+          monday: req.body.monday,
+          tuesday: req.body.tuesday,
+          wednesday: req.body.wednesday,
+          thursday: req.body.thursday,
+          friday: req.body.friday,
+          saturday: req.body.saturday,
+          sunday: req.body.sunday
+        },
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
-        },
-        range: {
-          lacto_ovo: req.body.lacto_ovo,
-          vegan: req.body.vegan
         },
       },
       user_info: {
@@ -407,14 +395,12 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         content: req.body.content,
         license: req.body.license,
         license_holder: req.body.license_holder,
-        product_type: req.body.product_type,
+        license_holder_link: req.body.license_holder_link,
         veg_type: req.body.veg_type,
+        product_type: req.body.product_type,
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
-        },
-        sources: {
-          1: req.body.source
         }
       },
       user_info: {
@@ -422,8 +408,34 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         hidden: hidden
       }
     }
-  } else if(type == 5) {
-
+  } else if(type == 5) { // Butik
+    var data = {
+      title: req.body.title,
+      url: niceurl,
+      type: type,
+      post: {
+        content: req.body.content,
+        license: req.body.license,
+        license_holder: req.body.license_holder,
+        license_holder_link: req.body.license_holder_link,
+        city: req.body.city,
+        street: req.body.street,
+        website: req.body.website,
+        openhours: {
+          monday: req.body.monday,
+          tuesday: req.body.tuesday,
+          wednesday: req.body.wednesday,
+          thursday: req.body.thursday,
+          friday: req.body.friday,
+          saturday: req.body.saturday,
+          sunday: req.body.sunday
+        },
+        cover: {
+          id: req.body.cover_image_id,
+          filename: req.body.cover_image_filename
+        }
+      }
+    }
   } else {
     res.redirect('/ny')
   }
@@ -443,15 +455,16 @@ app.post('/submit/file', function(req, res) {
           uFilename = uHash.substring(0, 11)
           images.insert({ id:num_rows + 1, filename: uFilename, active: false, deleted: false, "user_info":{ id: req.user._id } }, function(err, doc) {
             if(err) throw err
-            fstream = fs.createWriteStream(__dirname + '/uploads/' + uFilename + '_temp.jpg')
+            fstream = fs.createWriteStream(__dirname + '/uploads/' + uFilename + '_original.jpg')
             file.pipe(fstream)
-            var resize = image_processer.resize(uFilename, 1200, 630)
-            if(resize == true) {
-              fstream.on('close', function () {
-                fs.unlink(__dirname + '/uploads/' + uFilename + '_temp.jpg')
-                res.send(doc._id)
-              })
-            }
+            fstream.on('finish', function() {
+              var resize = image_processer.resize(uFilename, 1200, 630)
+              if(resize == true) {
+                fstream.on('close', function () {
+                  res.send(doc._id)
+                })
+              }
+            })
           })
         })
     })

@@ -12,7 +12,7 @@
 
 							<input type="hidden" name="type" value="5">
 
-							<div class="input-group">
+							<div class="input-group" id="upload-group">
 								<div id="uploader" class="dropzone"></div>
 							</div>
 
@@ -26,6 +26,11 @@
 
 							<div class="row">
 								<% include includes/editor %>
+								<div class="col-sm-12 hidden">
+									<div class="input-group">
+										<textarea name="content" class="form-control editable-content" id="content-input"></textarea>
+									</div>
+								</div>
 							</div>
 
 
@@ -41,11 +46,7 @@
 									</div>
 									<div class="input-group">
 										<span class="input-group-addon" id="basic-addon2">Gata</span>
-										<input type="text" class="form-control" name="street" aria-describedby="basic-addon1" placeholder="Exempelgatan 12">
-									</div>
-									<div class="input-group">
-										<span class="input-group-addon" id="basic-addon2">Google Maps <a href="/vanliga-fragor/#googlemap" target="_blank"><span class="glyphicon glyphicon-question-sign"></a></span>
-										<input type="text" class="form-control" name="googlemaps" aria-describedby="basic-addon1" placeholder="http://">
+										<input type="text" class="form-control" name="street" aria-describedby="basic-addon1">
 									</div>
 									<div class="input-group">
 										<span class="input-group-addon" id="basic-addon2">Hemsida</span>
@@ -61,27 +62,60 @@
 								Öppettider
 							</h2>
 							<div class="row">
-								<div class="col-sm-7">
+								<div class="col-sm-6">
 									<div class="input-group">
-										<input type="text" class="form-control" name="openhours" aria-describedby="basic-addon1" placeholder="Vardagar 00 - 00, Helger 00-00 ">
+										<span class="input-group-addon">Måndag</span>
+										<input type="text" placeholder="00:00 - 00:00" class="form-control" name="monday">
+									</div>
+									<div class="input-group">
+										<span class="input-group-addon">Tisdag</span>
+										<input type="text" placeholder="00:00 - 00:00" class="form-control" name="tuesday">
+									</div>
+									<div class="input-group">
+										<span class="input-group-addon">Onsdag</span>
+										<input type="text" placeholder="00:00 - 00:00" class="form-control" name="wednesday">
+									</div>
+									<div class="input-group">
+										<span class="input-group-addon">Tordag</span>
+										<input type="text" placeholder="00:00 - 00:00" class="form-control" name="thursday">
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="input-group">
+										<span class="input-group-addon">Fredag</span>
+										<input type="text" placeholder="00:00 - 00:00" class="form-control" name="friday">
+									</div>
+									<div class="input-group">
+										<span class="input-group-addon">Lördag</span>
+										<input type="text" placeholder="00:00 - 00:00" class="form-control" name="saturday">
+									</div>
+									<div class="input-group">
+										<span class="input-group-addon">Söndag</span>
+										<input type="text" placeholder="00:00 - 00:00" class="form-control" name="sunday">
 									</div>
 								</div>
 							</div>
-
 
 							<h3>Licens</h3>
 							<div class="row">
 								<div class="col-sm-5 col-md-5">
 									<div class="form-group">
 										<select class="form-control" name="license">
-											<option value="cc0">CC0 / Public Domain</option>
-											<option value="cc">CC (Creative Commons)</option>
-											<option value="copyright">Copyright</option>
+											<option value="CC0">CC0 / Public Domain</option>
+											<option value="CC BY 1.0">CC BY 1.0 (Creative Commons)</option>
+											<option value="CC BY 2.0">CC BY 2.0 (Creative Commons)</option>
+											<option value="CC BY 3.0">CC BY 3.0 (Creative Commons)</option>
+											<option value="CC BY 4.0">CC BY 4.0 (Creative Commons)</option>
+											<option value="Copyright">Copyright</option>
 										</select>
 									</div>
 									<div class="input-group" id="license_holder">
 										<span class="input-group-addon">Licensägare</span>
 										<input type="text" class="form-control" name="license_holder">
+									</div>
+									<div class="input-group" id="license_holder_website">
+										<span class="input-group-addon">Hemsida</span>
+										<input type="text" class="form-control" name="license_holder_link" placeholder="http://">
 									</div>
 								</div>
 							</div>

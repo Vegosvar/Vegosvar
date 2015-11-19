@@ -7,75 +7,182 @@
         <div class="col-md-8">
 
           <article>
+
             <div class="headerImage">
-              <img src="http://holdr.me/image/?w=1200&h=630&random=1">
+              <% if (typeof post.post.cover !== 'undefined') { %>
+              <img src="/uploads/<%= post.post.cover.filename %>.jpg" />
+              <% } else { %>
+              <% } %>
+              <span class="license">
+                <%= post.post.license %> 
+                <% if (typeof post.post.license_holder_website !== 'undefined' && post.post.license_holder_website !== "") { %>
+                  <a href="<%= post.post.license_holder_website %>" target="_blank">
+                    <%= post.post.license_holder %>
+                  </a>
+                <% } else { %>
+                  <%= post.post.license_holder %>
+                <% } %>
+              </span>
             </div>
+
             <h1><%= post.title %></h1>
+
+            <% if (post.type === '3') { %>
+              <div class="city"><%= post.post.city %></div>
+            <% } %>
+
             <p><%= post.post.content %></p>
-            <hr>
-            <h3>Källor</h3>
-            <ul class="sources">
-              <li><small>1. <a href="http://liseberg.se/sv/hem/mat/restauranger/The-Green-Room/vegetarisk-meny/">http://liseberg.se/sv/hem/mat/restauranger/The-Green-Room/vegetarisk-meny</a></small></li>
-              <li><small>2. <a href="http://vegoriket.se/2014/04/helvegetarisk-restaurang-oppnar-pa-liseberg/">http://vegoriket.se/2014/04/helvegetarisk-restaurang-oppnar-pa-liseberg</a></small></li>
-            </ul>      
+
+            <% if (post.type === '3') { %>
+              <% if (typeof post.post.website !== 'undefined' && post.post.website !== "") { %>
+                <p><a href="<%= post.post.website %>" target="_blank"><%= post.post.website %></a></p>
+              <% } %>
+
+              <p>
+                <a href="http://maps.google.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Öppna karta</a>
+
+                <a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Öppna karta</a>
+
+                <a href="tel:<%= post.post.phone %>" target="_blank"  class="btn btn-secondary btn-block visible-xs">
+                  <span class="glyphicon glyphicon-phone"></span>
+                  <strong>Ring</strong> <%= post.post.phone %>
+                </a> 
+              </p>
+
+              <hr class="lg hidden-xs">
+              <div class="row">
+                <div class="col-sm-7 text-center-xs">
+                  <div id="openhours">
+                    <h2>Öppettider</h2>
+                    <div class="row">
+                      <div class="col-xs-6">
+                        <ul class="list-group">
+                          <li class="list-group-item">
+                            <h4 class="list-group-item-heading">Måndag</h4> 
+                            <p class="list-group-item-text"><%= post.post.openhours.monday %></p>
+                          </li>
+                          <li class="list-group-item">
+                            <h4 class="list-group-item-heading">Tisdag</h4> 
+                            <p class="list-group-item-text"><%= post.post.openhours.tuesday %></p>
+                          </li>
+                          <li class="list-group-item">
+                            <h4 class="list-group-item-heading">Onsdag</h4> 
+                            <p class="list-group-item-text"><%= post.post.openhours.wednesday %></p>
+                          </li>
+                          <li class="list-group-item">
+                            <h4 class="list-group-item-heading">Torsdag</h4> 
+                            <p class="list-group-item-text"><%= post.post.openhours.thursday %></p>
+                          </li>
+                        </ul>
+                      </div>
+                      <div class="col-xs-6">
+                        <ul class="list-group">
+                          <li class="list-group-item">
+                            <h4 class="list-group-item-heading">Fredag</h4> 
+                            <p class="list-group-item-text"><%= post.post.openhours.friday %></p>
+                          </li>
+                          <li class="list-group-item">
+                            <h4 class="list-group-item-heading">Lördag</h4> 
+                            <p class="list-group-item-text"><%= post.post.openhours.saturday %></p>
+                          </li>
+                        </ul>
+                        <ul class="list-group">
+                          <li class="list-group-item">
+                            <h4 class="list-group-item-heading">Söndag</h4> 
+                            <p class="list-group-item-text"><%= post.post.openhours.sunday %></p>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-sm-5 text-center hidden-xs" id="location">
+                  <p><img src="/assets/images/map.svg" class="circle"></p>
+                  <h2><%= post.post.city %></h2>
+                  <div class="street">
+                    <%= post.post.street %>
+                  </div>
+                  <p><a href="http://maps.google.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Google Maps</a></p>
+                  <p><a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-secondary" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Apple Maps</a></p>
+                </div>
+              </div>
+
+              <hr class="lg">
+              
+              <div id="contact">
+                <a href="tel:<%= post.post.phone %>" target="_blank" class="hidden-xs">
+                  <%= post.post.phone %>
+                </a> 
+                <% if (typeof post.post.email !== 'undefined' && post.post.email !== "") { %>
+                  <div class="divider-vertical hidden-xs"></div>
+                  <a href="mailto:<%= post.post.email %>" target="_blank">
+                    <h2 class="visible-xs no-top">Mail</h2>
+                    <%= post.post.email %>
+                  </a>
+                <% } %>
+              </div>
+            <% } %>
+
           </article>
+
+          <div class="row">
+            <div class="col-sm-7">
+              <div class="card profile">
+                <div class="row">
+
+                  <div class="col-xs-4 col-sm-4 col-md-3 avatar">
+                    <a href="#"><img src="<%= user_info.photo %>" class="avatar circle"></a>
+                  </div>
+
+                  <div class="col-xs-8 col-sm-8 col-md-8 info">
+                    <small>Publicerat av</small>
+                      <% if (typeof user_info.info !== 'undefined' && user_info.info.website !== "") { %>
+                        <a href="<%= user_info.info.website %>" title="<%= user_info.info.website %>" target="_blank"><h3><%= user_info.name.display_name %></h3></a>
+                      <% } else { %>
+                        <h3><%= user_info.name.display_name %></h3>
+                      <% } %>
+                    <span class="description">
+                      <% if (typeof user_info.info !== 'undefined') { if (typeof user_info.info.description !== 'undefined') { %>
+                      <%= user_info.info.description %><% } } %>
+                    </span>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-5 actions">
+              <div class="row">
+                <div class="col-xs-6 col-md-12">
+                  <a href="#" class="btn btn-like"><span class="glyphicon glyphicon-heart-empty"></span> Gilla <span class="count">47</span></a>
+                </div>
+                <% if (typeof user !== 'undefined') { if (user.id === user_info.id) { %>
+                <div class="col-xs-6 col-md-12">
+                  <a href="#" class="btn btn-edit">Föreslå ändring</a>
+                </div>
+                <% } } %>
+              </div>
+            </div>
+          </div>
 
         </div>
 
 
         <div class="col-sm-6 col-md-4 sidebar">
 
-          <div class="card profile">
-            <div class="row">
-
-              <div class="col-xs-4 col-sm-4 col-md-4 avatar">
-                <a href="#"><img src="<%= user_info.photo %>" class="avatar"></a>
-              </div>
-
-              <div class="col-xs-8 col-sm-8 col-md-8 info">
-                <small>Publicerat av</small>
-                <a href="<%= user_info.info.website %>" title="<%= user_info.info.website %>" target="_blank"><h3><%= user_info.name.display_name %></h3></a>
-                <span class="description">
-                  <% if (typeof user_info.info !== 'undefined') { if (typeof user_info.info.description !== 'undefined') { %>
-                  <%= user_info.info.description %><% } } %>
-                </span>
-              </div>
-
-            </div>
-          </div>
-
-
-          <div class="actions">
-            <div class="row">
-              <div class="col-xs-6 col-md-12 col-lg-6">
-                <a href="#" class="btn btn-like"><span class="glyphicon glyphicon-heart-empty"></span> Gilla <span class="count">47</span></a>
-              </div>
-              <% if (typeof user !== 'undefined') { if (user.id === user_info.id) { %>
-              <div class="col-xs-6 col-md-12 col-lg-6">
-                <a href="#" class="btn btn-edit">Redigera sida</a>
-              </div>
-              <% } } %>
-            </div>
-          </div>
+          <h2>Relaterade sidor</h2>
 
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-8">
+          <% if (post.type === '3') { %>
+          <hr>
+            <h2>Recentioner</h2>
+          <% } %>
           <div id="disqus_thread"></div>
           <script>
-            /**
-            *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-            *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
-            */
-            /*
-            var disqus_config = function () {
-            this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-            this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-            };
-            */
-            (function() {  // DON'T EDIT BELOW THIS LINE
+            (function() {
             var d = document, s = d.createElement('script');
 
             s.src = '//vegosvar.disqus.com/embed.js';
