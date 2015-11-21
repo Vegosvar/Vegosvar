@@ -225,7 +225,11 @@ app.get('/:url', function (req, res, next) {
         })
       })
     } else {
-      return next()
+      if(err == null) {
+        err = new Error()
+        err.status = 404
+      }
+      return next(err)
     }
   })
 })
@@ -317,9 +321,13 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       type: type,
       post: {
         content: req.body.content,
+        sources: {
+            name: req.body.source_name,
+            url: req.body.source_url
+        },
         license: req.body.license,
         license_holder: req.body.license_holder,
-        license_holder_link: req.body.license_holder_link,
+        license_holder_website: req.body.license_holder_website,
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
@@ -339,7 +347,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         content: req.body.content,
         license: req.body.license,
         license_holder: req.body.license_holder,
-        license_holder_link: req.body.license_holder_link,
+        license_holder_website: req.body.license_holder_website,
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
@@ -364,7 +372,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         email: req.body.email,
         license: req.body.license,
         license_holder: req.body.license_holder,
-        license_holder_link: req.body.license_holder_link,
+        license_holder_website: req.body.license_holder_website,
         veg_offer: req.body.veg_offer,
         food: req.body.food,
         openhours: {
@@ -395,7 +403,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         content: req.body.content,
         license: req.body.license,
         license_holder: req.body.license_holder,
-        license_holder_link: req.body.license_holder_link,
+        license_holder_website: req.body.license_holder_website,
         veg_type: req.body.veg_type,
         product_type: req.body.product_type,
         cover: {
@@ -472,6 +480,10 @@ app.post('/submit/file', function(req, res) {
 
 // TODO 'uncaughtException' as well? See what happens if DB goes down etc
 app.use(function error_handler (error, req, res, next) {
+  if(error.status == 404) {
+    res.render('404', { user: req.user })
+    return
+  }
   // TODO better error page
   console.error(error.stack)
   res.status(500)
