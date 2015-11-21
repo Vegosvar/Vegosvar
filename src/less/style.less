@@ -765,10 +765,17 @@ article {
 	.content {
 		position: relative;
 		.stars {
+			display: inline-block;
 			margin-top: -5px;
-			margin-bottom: 15px;
+			margin-bottom: 20px;
 			.star {
 				font-size: 16px;
+				&:before {
+					top: auto;
+					bottom: -5px;
+					margin-left: 1px;
+					border-radius: 5px;
+				}
 			}
 			.votes {
 				top: -3px;
