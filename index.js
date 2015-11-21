@@ -327,7 +327,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         },
         license: req.body.license,
         license_holder: req.body.license_holder,
-        license_holder_link: req.body.license_holder_link,
+        license_holder_website: req.body.license_holder_website,
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
@@ -347,7 +347,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         content: req.body.content,
         license: req.body.license,
         license_holder: req.body.license_holder,
-        license_holder_link: req.body.license_holder_link,
+        license_holder_website: req.body.license_holder_website,
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
@@ -372,7 +372,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         email: req.body.email,
         license: req.body.license,
         license_holder: req.body.license_holder,
-        license_holder_link: req.body.license_holder_link,
+        license_holder_website: req.body.license_holder_website,
         veg_offer: req.body.veg_offer,
         food: req.body.food,
         openhours: {
@@ -403,7 +403,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         content: req.body.content,
         license: req.body.license,
         license_holder: req.body.license_holder,
-        license_holder_link: req.body.license_holder_link,
+        license_holder_website: req.body.license_holder_website,
         veg_type: req.body.veg_type,
         product_type: req.body.product_type,
         cover: {
