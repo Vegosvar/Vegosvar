@@ -1,6 +1,7 @@
 (function ($) {
   var editor
   var instance = {
+    element: null,
     bookmark: null,
     selection: {}
   }
@@ -22,6 +23,7 @@
       case 'init':
         elem = document.querySelector(settings.element)
         if(elem !== null) {
+          instance.element = elem;
           editor = new wysihtml5.Editor(elem, {
             parserRules: wysihtml5ParserRules,
             toolbar: document.querySelector(settings.toolbar),
@@ -41,6 +43,7 @@
         if (settings.insert.type === 'html') {
           editor.composer.commands.exec('insertHTML', settings.insert.content)
         }
+        $.fn.editorController('triggerEvent', {type:'change'})
         break
       case 'getBookmark':
         instance.bookmark = editor.composer.selection.getBookmark()
@@ -58,7 +61,7 @@
       case 'getSelection':
         return instance.selection
       case 'setSelection':
-        if(instance.selection.text.length == 0) {
+        if(instance.selection.text.length == 0 && instance.selection.node != instance.element) {
           editor.composer.selection.selectNode(instance.selection.node)
         } else {
           $.fn.editorController('setBookmark')
@@ -68,6 +71,8 @@
         return editor.composer.getValue()
       case 'selectionIsType':
         return editor.composer.commands.state(settings.type)
+      case 'triggerEvent':
+        $(editor).trigger(settings.type);
     }
   }
 }(jQuery))

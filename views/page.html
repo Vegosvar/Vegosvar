@@ -9,14 +9,13 @@
           <article>
 
             <div class="headerImage">
-              <% if (typeof post.post.cover !== 'undefined') { %>
-              <img src="/uploads/<%= post.post.cover.filename %>.jpg" />
-              <% } else { %>
+              <% if (typeof post.post.cover !== 'undefined' && post.post.cover !== "") { %>
+              <img src="/uploads/<%= post.post.cover.filename %>.jpg" alt="<%= post.title %>"/>
               <% } %>
               <span class="license">
                 <%= post.post.license %> 
                 <% if (typeof post.post.license_holder_website !== 'undefined' && post.post.license_holder_website !== "") { %>
-                  <a href="<%= post.post.license_holder_website %>" target="_blank">
+                  <a href="<%= post.post.license_holder_website %>" target="_blank"  rel="nofollow">
                     <%= post.post.license_holder %>
                   </a>
                 <% } else { %>
@@ -28,25 +27,42 @@
             <h1><%= post.title %></h1>
 
             <% if (post.type === '3') { %>
-              <div class="city"><%= post.post.city %></div>
+              <h2 class="city"><%= post.post.city %></h2>
             <% } %>
 
             <p><%= post.post.content %></p>
 
             <% if (post.type === '3') { %>
-              <% if (typeof post.post.website !== 'undefined' && post.post.website !== "") { %>
-                <p><a href="<%= post.post.website %>" target="_blank"><%= post.post.website %></a></p>
+
+              <p class="hidden-xs">
+              <% if (typeof post.post.phone !== 'undefined' && post.post.phone !== "") { %>
+                <strong>Telefon</strong> <%= post.post.phone %><br>
               <% } %>
+
+              <% if (typeof post.post.mail !== 'undefined' && post.post.mail !== "") { %>
+                <strong>Mail</strong> 
+                <a href="mailto:<%= post.post.email %>" target="_blank">
+                  <%= post.post.email %>
+                </a><br>
+              <% } %>
+
+              <% if (typeof post.post.website !== 'undefined' && post.post.website !== "") { %>
+                <a href="<%= post.post.website %>" target="_blank" rel="nofollow">
+                  <%= post.post.website %>
+                </a><br>
+              <% } %>
+              </p>
 
               <p>
                 <a href="http://maps.google.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Öppna karta</a>
 
                 <a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Öppna karta</a>
-
-                <a href="tel:<%= post.post.phone %>" target="_blank"  class="btn btn-secondary btn-block visible-xs">
-                  <span class="glyphicon glyphicon-phone"></span>
-                  <strong>Ring</strong> <%= post.post.phone %>
-                </a> 
+                <% if (typeof post.post.phone !== 'undefined' && post.post.phone !== "") { %>
+                  <a href="tel:<%= post.post.phone %>" target="_blank"  class="btn btn-secondary btn-block visible-xs">
+                    <span class="glyphicon glyphicon-phone"></span>
+                    <strong>Ring</strong> <%= post.post.phone %>
+                  </a> 
+              <% } %>
               </p>
 
               <hr class="lg hidden-xs">
@@ -107,20 +123,6 @@
                 </div>
               </div>
 
-              <hr class="lg">
-              
-              <div id="contact">
-                <a href="tel:<%= post.post.phone %>" target="_blank" class="hidden-xs">
-                  <%= post.post.phone %>
-                </a> 
-                <% if (typeof post.post.email !== 'undefined' && post.post.email !== "") { %>
-                  <div class="divider-vertical hidden-xs"></div>
-                  <a href="mailto:<%= post.post.email %>" target="_blank">
-                    <h2 class="visible-xs no-top">Mail</h2>
-                    <%= post.post.email %>
-                  </a>
-                <% } %>
-              </div>
             <% } %>
 
           </article>
@@ -129,23 +131,37 @@
             <div class="col-sm-7">
               <div class="card profile">
                 <div class="row">
+                  <% if (typeof post.user_info.hidden !== true && post.user_info.hidden == "") { %>
+                    <div class="col-xs-4 col-sm-4 col-md-3 avatar">
+                      <a href="#"><img src="<%= user_info.photo %>" class="avatar circle"></a>
+                    </div>
 
-                  <div class="col-xs-4 col-sm-4 col-md-3 avatar">
-                    <a href="#"><img src="<%= user_info.photo %>" class="avatar circle"></a>
-                  </div>
-
-                  <div class="col-xs-8 col-sm-8 col-md-8 info">
-                    <small>Publicerat av</small>
+                    <div class="col-xs-8 col-sm-8 col-md-8 info">
+                      <small>Publicerat av</small>
                       <% if (typeof user_info.info !== 'undefined' && user_info.info.website !== "") { %>
-                        <a href="<%= user_info.info.website %>" title="<%= user_info.info.website %>" target="_blank"><h3><%= user_info.name.display_name %></h3></a>
+                        <a href="<%= user_info.info.website %>" title="<%= user_info.info.website %>" target="_blank" rel="nofollow"><h3><%= user_info.name.display_name %></h3></a>
                       <% } else { %>
                         <h3><%= user_info.name.display_name %></h3>
                       <% } %>
-                    <span class="description">
-                      <% if (typeof user_info.info !== 'undefined') { if (typeof user_info.info.description !== 'undefined') { %>
-                      <%= user_info.info.description %><% } } %>
-                    </span>
-                  </div>
+                      <span class="description">
+                        <% if (typeof user_info.info !== 'undefined') { if (typeof user_info.info.description !== 'undefined') { %>
+                          <%= user_info.info.description %>
+                        <% } } %>
+                      </span>
+                    </div>
+                  <% } else { %>
+                    <div class="col-xs-4 col-sm-4 col-md-3 avatar">
+                      <a href="#"><img src="/assets/images/no-picture.svg" class="avatar circle"></a>
+                    </div>
+
+                    <div class="col-xs-8 col-sm-8 col-md-8 info">
+                      <small>Publicerat av</small>
+                      <h3>Anonym</h3>
+                      <span class="description">
+                        Författaren till artikeln har valt att vara anonym. Kanske är det Batman?
+                      </span>
+                    </div>
+                  <% } %>
 
                 </div>
               </div>

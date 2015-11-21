@@ -121,19 +121,6 @@ img {
 	height: auto;
 }
 
-.text-overflow {
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-	width: 400px;
-	white-space: nowrap;
-	overflow: hidden;
-	display: block;
-	@media (max-width: @xs) {
-		width: 200px;
-	}
-}
-
 .no-top {
 	margin-top: 0;
 }
@@ -541,6 +528,7 @@ nav {
 				transition: background 0.2s;
 				font-weight: 600;
 				font-size: 15px;
+				padding: 17px 15px;
 				transition: background 0s;
 				&:hover {
 					background-color: darken(@brand-color, 5%) !important;
@@ -598,7 +586,7 @@ nav {
 			margin-top: 0px;
 			margin-bottom: 0px;
 			border: none;
-			padding: 5px;
+			padding: 7px 5px;
 			@media (max-width: @xs) {
 				padding: 0 5px 5px 5px;
 			}
@@ -609,13 +597,16 @@ nav {
 				padding: 9px 17px 10px 17px;
 				height: auto;
 				color: #333;
-				border-radius: 3px;
+				border-radius: 2px;
 				transition: background 0.2s, padding 0.2s;
 				width: 285px;
 				@media (max-width: @xs) {
 					width: 100%;
 					padding: 8px 17px;
 					font-size: 13px;
+				}
+				@media (max-width: @md) {
+					width: 270px;
 				}
 			}
 		}
@@ -625,7 +616,7 @@ nav {
 			}
 			img {
 				width: 130px;
-				margin-top: 13px;
+				margin-top: 15px;
 				@media (max-width: @xs) {
 					margin-bottom: 15px;
 					width: 130px;
@@ -771,9 +762,9 @@ article {
 		margin: 0 -15px 30px -15px;
 	}
 	.city {
-		font-size: 25px;
+		font-size: 28px;
 		color: #888;
-		margin-top: -20px;
+		margin-top: -15px;
 		margin-bottom: 15px;
 		font-weight: 100;
 		@media (max-width: @xs) {
@@ -806,27 +797,11 @@ article {
 			font-size: 13px;
 			background: #000;
 			color: #fff;
-			opacity: 0.4;
+			opacity: 0.7;
 			border-radius: 3px 0 0 0;
-		}
-	}
-	#contact {
-		text-align: center;
-		margin-bottom: -5px;
-		a {
-			display: inline-block;
-			color: #111;
-			font-size: 20px;
-			@media (max-width: @xs) {
-				font-size: 16px;
+			a {
+				color: #fff;
 			}
-		}
-		.divider-vertical {
-			height: 35px;
-			width: 1px;
-			background: #eee;
-			margin: -11px 15px;
-			display: inline-block;
 		}
 	}
 	#openhours {
@@ -909,7 +884,6 @@ section {
 			li {
 				list-style: none;
 				margin-bottom: 5px;
-				.text-overflow;
 				a {
 					padding-left: 5px;
 				}
@@ -1152,6 +1126,14 @@ section {
 			padding: 20px 20px 0 15px;
 			margin-bottom: 15px;
 		}
+		.text-overflow {
+			height: 110px;
+			overflow: hidden;
+			@media (max-width: @xs) {
+				height: 105px;
+				margin-bottom: 40px;
+			}
+		}
 		a {
 			color: #333;
 		}
@@ -1172,9 +1154,33 @@ section {
 			color: #444;
 		}
 	}
+	.stars {
+		position: absolute;
+		bottom: 10px;
+		left: 20px;
+		&:hover .star {
+			color: #DEDEDE;
+		}
+		.star {
+			color: #EBAD2E;
+			transition: transform 0.15s, color 0.15s;
+			cursor: pointer;
+			&.empty {
+				color: #DEDEDE;
+			}
+			&:hover {
+				transform: scale(1.5);
+				color: #EC960B;
+			}
+			&:active {
+				transform: scale(1.9);
+				color: #F1AE00;
+			}
+		}
+	}
 	.more {	
 		position: absolute;
-		width: 100%;
+		right: 0;
 		bottom: 0;
 		@media (max-width: @xs) {
 			position: relative;
@@ -1351,7 +1357,7 @@ section {
 	border-radius: 3px 3px 0 0;
 	overflow: hidden;
 	@media (max-width: @xs) {
-		padding: 4px 4px 0px 4px;
+		padding: 3px 3px 0px 3px;
 	}
 	li {
 		margin: 0;
@@ -1360,8 +1366,10 @@ section {
 			border-radius: 0;
 			margin: 0;
 			@media (max-width: @xs) {
-				margin-bottom: 4px;
+				padding: 7px 9px;
+				margin-bottom: 3px;
 				border-radius: 3px;
+				font-size: 12px;
 			}
 		}
 	}
