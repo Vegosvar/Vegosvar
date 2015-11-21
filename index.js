@@ -225,11 +225,7 @@ app.get('/:url', function (req, res, next) {
         })
       })
     } else {
-      if(err == null) {
-        err = new Error()
-        err.status = 404
-      }
-      return next(err)
+      return next()
     }
   })
 })
@@ -478,12 +474,13 @@ app.post('/submit/file', function(req, res) {
     })
 })
 
+app.use(function (req, res) {
+  res.render('404', { user: req.user })
+  return
+})
+
 // TODO 'uncaughtException' as well? See what happens if DB goes down etc
 app.use(function error_handler (error, req, res, next) {
-  if(error.status == 404) {
-    res.render('404', { user: req.user })
-    return
-  }
   // TODO better error page
   console.error(error.stack)
   res.status(500)
