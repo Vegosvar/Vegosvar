@@ -161,6 +161,10 @@ app.get('/om', function(req, res) {
   res.render('about', { user: req.user })
 })
 
+app.get('/licens', function(req, res) {
+  res.render('license', { user: req.user })
+})
+
 app.get('/riktlinjer', function (req, res) {
   res.render('guidelines', { user: req.user, hidelink: true })
 })
@@ -491,7 +495,7 @@ app.use(function error_handler (error, req, res, next) {
   // TODO better error page
   console.error(error.stack)
   res.status(500)
-  res.send('Något blev fel!')
+  res.send('<h1>Något blev fel</h1><p>Servern fick slut på havremjölk.</p>')
 })
 
 app.listen(process.env.PORT || config.port, config.address)
