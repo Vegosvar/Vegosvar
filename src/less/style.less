@@ -121,19 +121,6 @@ img {
 	height: auto;
 }
 
-.text-overflow {
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-	width: 400px;
-	white-space: nowrap;
-	overflow: hidden;
-	display: block;
-	@media (max-width: @xs) {
-		width: 200px;
-	}
-}
-
 .no-top {
 	margin-top: 0;
 }
@@ -897,7 +884,6 @@ section {
 			li {
 				list-style: none;
 				margin-bottom: 5px;
-				.text-overflow;
 				a {
 					padding-left: 5px;
 				}
@@ -1140,6 +1126,14 @@ section {
 			padding: 20px 20px 0 15px;
 			margin-bottom: 15px;
 		}
+		.text-overflow {
+			height: 110px;
+			overflow: hidden;
+			@media (max-width: @xs) {
+				height: 105px;
+				margin-bottom: 40px;
+			}
+		}
 		a {
 			color: #333;
 		}
@@ -1160,9 +1154,33 @@ section {
 			color: #444;
 		}
 	}
+	.stars {
+		position: absolute;
+		bottom: 10px;
+		left: 20px;
+		&:hover .star {
+			color: #DEDEDE;
+		}
+		.star {
+			color: #EBAD2E;
+			transition: transform 0.15s, color 0.15s;
+			cursor: pointer;
+			&.empty {
+				color: #DEDEDE;
+			}
+			&:hover {
+				transform: scale(1.5);
+				color: #EC960B;
+			}
+			&:active {
+				transform: scale(1.9);
+				color: #F1AE00;
+			}
+		}
+	}
 	.more {	
 		position: absolute;
-		width: 100%;
+		right: 0;
 		bottom: 0;
 		@media (max-width: @xs) {
 			position: relative;

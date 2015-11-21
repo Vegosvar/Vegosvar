@@ -49,10 +49,19 @@
 						<% } else { %>
 						<% } %>
 						<div class="content">
-							<a href="/<%= pages[i].url %>"><h3><%= pages[i].title %></h3></a>
-							<% var content = '' + pages[i].post.content
-							var desc = content.substring(0,125) %>
-							<p><%= content %></p>
+							<div class="text-overflow">
+								<a href="/<%= pages[i].url %>"><h3><%= pages[i].title %></h3></a>
+								<% var content = '' + pages[i].post.content
+								var desc = content.substring(0,125) %>
+								<p><%= content %></p>
+							</div>
+						</div>
+						<div class="stars">
+							<span class="glyphicon glyphicon-star star"></span>
+							<span class="glyphicon glyphicon-star star"></span>
+							<span class="glyphicon glyphicon-star star"></span>
+							<span class="glyphicon glyphicon-star star"></span>
+							<span class="glyphicon glyphicon-star star empty"></span>
 						</div>
 						<div class="more">
 							<a href="/<%= pages[i].url %>" class="btn btn-primary">Läs mer</a>
