@@ -225,11 +225,7 @@ app.get('/:url', function (req, res, next) {
         })
       })
     } else {
-      if(err == null) {
-        err = new Error()
-        err.status = 404
-      }
-      return next(err)
+      return next()
     }
   })
 })
@@ -345,6 +341,10 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       type: type,
       post: {
         content: req.body.content,
+        sources: {
+            name: req.body.source_name,
+            url: req.body.source_url
+        },
         license: req.body.license,
         license_holder: req.body.license_holder,
         license_holder_website: req.body.license_holder_website,
@@ -365,6 +365,10 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       type: type,
       post: {
         content: req.body.content,
+        sources: {
+            name: req.body.source_name,
+            url: req.body.source_url
+        },
         city: req.body.city,
         street: req.body.street,
         phone: req.body.phone,
@@ -401,6 +405,10 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       type: type,
       post: {
         content: req.body.content,
+        sources: {
+            name: req.body.source_name,
+            url: req.body.source_url
+        },
         license: req.body.license,
         license_holder: req.body.license_holder,
         license_holder_website: req.body.license_holder_website,
@@ -480,14 +488,10 @@ app.post('/submit/file', function(req, res) {
 
 // TODO 'uncaughtException' as well? See what happens if DB goes down etc
 app.use(function error_handler (error, req, res, next) {
-  if(error.status == 404) {
-    res.render('404', { user: req.user })
-    return
-  }
   // TODO better error page
   console.error(error.stack)
   res.status(500)
-  res.send('An error occured!')
+  res.send('Något blev fel!')
 })
 
 app.listen(process.env.PORT || config.port, config.address)
