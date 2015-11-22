@@ -463,6 +463,10 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
         }
+      },
+      user_info: {
+        id: req.user._id,
+        hidden: hidden
       }
     }
   } else {
