@@ -326,6 +326,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
             url: typeof(req.body.source_url) === 'string' ? [req.body.source_url] : req.body.source_url,
         },
         license: req.body.license,
+        license_cc_version: req.body.license_cc_version,
         license_holder: req.body.license_holder,
         license_holder_website: req.body.license_holder_website,
         cover: {
@@ -346,10 +347,11 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       post: {
         content: req.body.content,
         sources: {
-            name: req.body.source_name,
-            url: req.body.source_url
+            name: typeof(req.body.source_name) === 'string' ? [req.body.source_name] : req.body.source_name,
+            url: typeof(req.body.source_url) === 'string' ? [req.body.source_url] : req.body.source_url,
         },
         license: req.body.license,
+        license_cc_version: req.body.license_cc_version,
         license_holder: req.body.license_holder,
         license_holder_website: req.body.license_holder_website,
         cover: {
@@ -370,8 +372,8 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       post: {
         content: req.body.content,
         sources: {
-            name: req.body.source_name,
-            url: req.body.source_url
+            name: typeof(req.body.source_name) === 'string' ? [req.body.source_name] : req.body.source_name,
+            url: typeof(req.body.source_url) === 'string' ? [req.body.source_url] : req.body.source_url,
         },
         city: req.body.city,
         street: req.body.street,
@@ -379,6 +381,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         website: req.body.website,
         email: req.body.email,
         license: req.body.license,
+        license_cc_version: req.body.license_cc_version,
         license_holder: req.body.license_holder,
         license_holder_website: req.body.license_holder_website,
         veg_offer: req.body.veg_offer,
@@ -410,10 +413,11 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       post: {
         content: req.body.content,
         sources: {
-            name: req.body.source_name,
-            url: req.body.source_url
+            name: typeof(req.body.source_name) === 'string' ? [req.body.source_name] : req.body.source_name,
+            url: typeof(req.body.source_url) === 'string' ? [req.body.source_url] : req.body.source_url,
         },
         license: req.body.license,
+        license_cc_version: req.body.license_cc_version,
         license_holder: req.body.license_holder,
         license_holder_website: req.body.license_holder_website,
         veg_type: req.body.veg_type,
@@ -435,7 +439,12 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       type: type,
       post: {
         content: req.body.content,
+        sources: {
+            name: typeof(req.body.source_name) === 'string' ? [req.body.source_name] : req.body.source_name,
+            url: typeof(req.body.source_url) === 'string' ? [req.body.source_url] : req.body.source_url,
+        },
         license: req.body.license,
+        license_cc_version: req.body.license_cc_version,
         license_holder: req.body.license_holder,
         license_holder_link: req.body.license_holder_link,
         city: req.body.city,
