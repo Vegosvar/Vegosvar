@@ -148,7 +148,7 @@
             <% } %>
 
             <div class="row">
-              <div class="col-sm-12 text-center-xs">
+              <div class="col-sm-12">
                   <% if (typeof post.post.sources !== 'undefined') { %>
                       <% if(post.post.sources.name !== null) { %>
                           <h3>Källor</h3>
@@ -156,8 +156,12 @@
                               <% for(var i=0;i<post.post.sources.name.length;i++) { %>
                                   <li id="source-<%= (i+1) %>" class="list-group-item">
                                       <span>
-                                          <a href="<%= post.post.sources.url[i] %>" target="_blank" title="<%= post.post.sources.url[i] %>" class="source-url">
-                                              <span class="source-id"><%= (i+1) %></span><span class="source-delimiter">:</span><span class="source-name"><%= post.post.sources.name[i] %></span>
+                                          <span class="source-id"><%= (i+1) %>.</span>
+                                          <a href="<%= post.post.sources.url[i] %>" 
+                                            target="_blank" 
+                                            title="<%= post.post.sources.url[i] %>" 
+                                            class="source-url">
+                                            <span class="source-name"><%= post.post.sources.name[i] %></span>
                                           </a>
                                       </span>
                                   </li>
