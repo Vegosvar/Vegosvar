@@ -1391,6 +1391,9 @@ section {
 		margin-bottom: 15px;
 		font-size: 40px;
 		font-weight: 100;
+		@media (max-width: @xs) {
+			font-size: 35px;
+		}
 	}
 	h4 {
 		display: inline-block;
@@ -1412,6 +1415,7 @@ section {
 		}
 		@media (max-width: @xs) {
 			text-align: left;
+			padding: 10px 20px;
 		}
 		h3 {
 			font-weight: 600;
@@ -1421,6 +1425,11 @@ section {
 			}
 			@media (max-width: @xs) {
 				margin-top: 15px;
+			}
+		}
+		p {
+			@media (max-width: @xs) {
+				font-size: 13px;
 			}
 		}
 		img {
