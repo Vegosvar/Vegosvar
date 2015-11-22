@@ -42,17 +42,31 @@
 				<% for(var i=0; i < pages.length; i++) {%>
 				<div class="col-sm-6 col-md-4 col-lg-3">
 					<div class="result">
-						<% if (typeof pages[i].post.cover !== 'undefined' && pages[i].post.cover.filename !== '') { %>
+						<% if (typeof pages[i].post.cover !== 'undefined' && pages[i].post.cover.filename !== null) { %>
 						<a href="/<%= pages[i].url %>">
 							<div class="image" style="background-image: url(/uploads/<%= pages[i].post.cover.filename %>_thumb.jpg)"></div>
 						</a>
 						<% } else { %>
+							<a href="/<%= pages[i].url %>">
+								<div class="image" style="background-image: url(/assets/images/placeholder-<%= pages[i].type %>.svg)"></div>
+							</a>
 						<% } %>
 						<div class="content">
 							<div class="text-overflow">
 								<a href="/<%= pages[i].url %>"><h3><%= pages[i].title %></h3></a>
 								<% var content = '' + pages[i].post.content.substring(0,115) %>
-								<p><%= content %>...</p>
+								<p>
+									<% if (typeof pages[i].type === '4' || pages[i].type === "") { %>
+										<% if (typeof pages[i].veg_type === 'animal') { %>
+											<strong class="text-danger">Animaliskt</strong> 
+										<% } else if (typeof pages[i].veg_type === 'lakto-ovo') { %>
+											<strong class="text-warning">Lakto-ovo</strong> 
+										<% } else { %>
+											<strong class="text-success">Veganskt</strong> 
+										<% } %>
+									<% } %>
+									<%= content %>...
+								</p>
 							</div>
 						</div>
 						<div class="stars">
