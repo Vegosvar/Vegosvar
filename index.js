@@ -322,8 +322,8 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       post: {
         content: req.body.content,
         sources: {
-            name: req.body.source_name,
-            url: req.body.source_url
+            name: typeof(req.body.source_name) === 'string' ? [req.body.source_name] : req.body.source_name,
+            url: typeof(req.body.source_url) === 'string' ? [req.body.source_url] : req.body.source_url,
         },
         license: req.body.license,
         license_holder: req.body.license_holder,
@@ -488,6 +488,11 @@ app.post('/submit/file', function(req, res) {
           })
         })
     })
+})
+
+app.use(function (req, res) {
+  res.render('404', { user: req.user })
+  return
 })
 
 // TODO 'uncaughtException' as well? See what happens if DB goes down etc
