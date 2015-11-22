@@ -765,10 +765,14 @@ article {
 	.content {
 		position: relative;
 		.stars {
-			margin-top: -5px;
-			margin-bottom: 15px;
+			display: inline-block;
 			.star {
 				font-size: 16px;
+				&:before {
+					top: -6px;
+					margin-left: 1px;
+					border-radius: 5px;
+				}
 			}
 			.votes {
 				top: -3px;
@@ -796,6 +800,7 @@ article {
 		margin-right: -30px;
 		margin-bottom: 30px;
 		overflow: hidden;
+		box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.03);
 		@media (max-width: @xs) {
 			margin-left: -20px;
 			margin-right: -20px;
@@ -1119,11 +1124,11 @@ section {
 			transition: opacity 0.15s, color 0.15s;
 			white-space: nowrap;
 		}
-		&:nth-child(1):before { content: 'Dåligt'; }
-		&:nth-child(2):before { content: 'Sådär'; }
-		&:nth-child(3):before { content: 'Helt ok'; }
-		&:nth-child(4):before { content: 'Bra'; }
-		&:nth-child(5):before { content: 'Superbra'; }
+		&:nth-child(1):before { content: 'Dåligt'; 	left: -3px; }
+		&:nth-child(2):before { content: 'Sådär'; 	left: -3px; }
+		&:nth-child(3):before { content: 'Helt ok'; left: -6px; }
+		&:nth-child(4):before { content: 'Bra'; } 	left: -1px;
+		&:nth-child(5):before { content: 'Superbra';left: -9px; }
 		&.empty {
 			color: #DEDEDE;
 		}
@@ -1359,11 +1364,16 @@ section {
 
 
 #promotion {
-	background: @blue;
 	color: #fff;
 	padding: 100px 0;
+	&.create {
+		background: @blue url(../images/promo_bg.svg) bottom center no-repeat;
+		.btn {
+			color: @blue;
+		}
+	}
 	@media (max-width: @xs) {
-		padding: 60px 15px;
+		padding: 60px 0 80px 0;
 	}
 	.logo {
 		display: inline-block;
@@ -1376,13 +1386,11 @@ section {
 			left: -5px;
 		}
 	}
-	.btn {
-		color: @blue;
-	}
 	h2 {
 		margin-top: 0;
 		margin-bottom: 15px;
-		font-size: 30px;
+		font-size: 40px;
+		font-weight: 100;
 	}
 	h4 {
 		display: inline-block;
@@ -1390,30 +1398,45 @@ section {
 		margin-bottom: 60px;
 	}
 	.item {
+		background: #fff;
+		color: #222;
+		border-radius: 3px;
 		margin-bottom: 30px;
+		padding: 20px 20px 20px 15px;
+		@media (max-width: @md) {
+			padding: 10px 20px 10px 15px;
+		}
 		@media (max-width: @sm) {
 			text-align: center;
+			padding: 20px;
 		}
 		@media (max-width: @xs) {
 			text-align: left;
 		}
 		h3 {
-			margin-top: 20px;
-			@media (max-width: @md) {
-				margin-top: 0px !important;
-			}
+			font-weight: 600;
+			margin-top: 17px;
 			@media (max-width: @sm) {
 				margin-top: 0;
 			}
+			@media (max-width: @xs) {
+				margin-top: 15px;
+			}
 		}
 		img {
-			border-radius: 500px;
-			background: #EFF1F4;
+			background: #fff;
+			padding: 0 0 5px 10px;
+			@media (max-width: @md) {
+				margin-top: 20px;
+				padding-left: 0;
+				margin-left: 5px;
+			}
 			@media (max-width: @sm) {
 				margin-bottom: 15px;
+				padding: 0 15px;
 			}
 			@media (max-width: @xs) {
-				margin-bottom: 0;
+				padding: 0;
 			}
 		}
 	}

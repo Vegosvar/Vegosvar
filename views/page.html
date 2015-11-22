@@ -28,32 +28,34 @@
 
               <h1><%= post.title %></h1>
 
-              <% if (post.type === '3') { %>
+              <% if (post.type === '3' || post.type === '5') { %>
                 <h2 class="city"><%= post.post.city %></h2>
               <% } %>
 
               <p><%- post.post.content %></p>
 
-              <div class="stars">
-                <div class="star">
-                  <span class="glyphicon glyphicon-star"></span>
+              <% if (post.type === '3' || post.type === '5' || post.type === '4') { %>
+                <div class="stars">
+                  <div class="star">
+                    <span class="glyphicon glyphicon-star"></span>
+                  </div>
+                  <div class="star">
+                    <span class="glyphicon glyphicon-star"></span>
+                  </div>
+                  <div class="star">
+                    <span class="glyphicon glyphicon-star"></span>
+                  </div>
+                  <div class="star">
+                    <span class="glyphicon glyphicon-star"></span>
+                  </div>
+                  <div class="star empty">
+                    <span class="glyphicon glyphicon-star"></span>
+                  </div>
+                  <span class="votes">6<span class="additional">röster</span></span>
                 </div>
-                <div class="star">
-                  <span class="glyphicon glyphicon-star"></span>
-                </div>
-                <div class="star">
-                  <span class="glyphicon glyphicon-star"></span>
-                </div>
-                <div class="star">
-                  <span class="glyphicon glyphicon-star"></span>
-                </div>
-                <div class="star empty">
-                  <span class="glyphicon glyphicon-star"></span>
-                </div>
-                <span class="votes">6<span class="additional">röster</span></span>
-              </div>
+              <% } %>
 
-              <% if (post.type === '3') { %>
+              <% if (post.type === '3' || post.type === '5') { %>
 
                 <p class="hidden-xs">
                 <% if (typeof post.post.phone !== 'undefined' && post.post.phone !== "") { %>

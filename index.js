@@ -161,6 +161,10 @@ app.get('/om', function(req, res) {
   res.render('about', { user: req.user })
 })
 
+app.get('/licens', function(req, res) {
+  res.render('license', { user: req.user })
+})
+
 app.get('/riktlinjer', function (req, res) {
   res.render('guidelines', { user: req.user, hidelink: true })
 })
@@ -341,6 +345,10 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       type: type,
       post: {
         content: req.body.content,
+        sources: {
+            name: req.body.source_name,
+            url: req.body.source_url
+        },
         license: req.body.license,
         license_holder: req.body.license_holder,
         license_holder_website: req.body.license_holder_website,
@@ -361,6 +369,10 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       type: type,
       post: {
         content: req.body.content,
+        sources: {
+            name: req.body.source_name,
+            url: req.body.source_url
+        },
         city: req.body.city,
         street: req.body.street,
         phone: req.body.phone,
@@ -397,6 +409,10 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       type: type,
       post: {
         content: req.body.content,
+        sources: {
+            name: req.body.source_name,
+            url: req.body.source_url
+        },
         license: req.body.license,
         license_holder: req.body.license_holder,
         license_holder_website: req.body.license_holder_website,
@@ -484,7 +500,7 @@ app.use(function error_handler (error, req, res, next) {
   // TODO better error page
   console.error(error.stack)
   res.status(500)
-  res.send('An error occured!')
+  res.send('<h1>Något blev fel</h1><p>Servern fick slut på havremjölk.</p>')
 })
 
 app.listen(process.env.PORT || config.port, config.address)
