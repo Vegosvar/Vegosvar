@@ -1373,7 +1373,7 @@ section {
 		}
 	}
 	@media (max-width: @xs) {
-		padding: 60px 15px;
+		padding: 60px 0 80px 0;
 	}
 	.logo {
 		display: inline-block;
@@ -1389,7 +1389,8 @@ section {
 	h2 {
 		margin-top: 0;
 		margin-bottom: 15px;
-		font-size: 30px;
+		font-size: 40px;
+		font-weight: 100;
 	}
 	h4 {
 		display: inline-block;
@@ -1397,30 +1398,45 @@ section {
 		margin-bottom: 60px;
 	}
 	.item {
+		background: #fff;
+		color: #222;
+		border-radius: 3px;
 		margin-bottom: 30px;
+		padding: 20px 20px 20px 15px;
+		@media (max-width: @md) {
+			padding: 10px 20px 10px 15px;
+		}
 		@media (max-width: @sm) {
 			text-align: center;
+			padding: 20px;
 		}
 		@media (max-width: @xs) {
 			text-align: left;
 		}
 		h3 {
-			margin-top: 20px;
-			@media (max-width: @md) {
-				margin-top: 0px !important;
-			}
+			font-weight: 600;
+			margin-top: 17px;
 			@media (max-width: @sm) {
 				margin-top: 0;
 			}
+			@media (max-width: @xs) {
+				margin-top: 15px;
+			}
 		}
 		img {
-			border-radius: 500px;
-			background: #EFF1F4;
+			background: #fff;
+			padding: 0 0 5px 10px;
+			@media (max-width: @md) {
+				margin-top: 20px;
+				padding-left: 0;
+				margin-left: 5px;
+			}
 			@media (max-width: @sm) {
 				margin-bottom: 15px;
+				padding: 0 15px;
 			}
 			@media (max-width: @xs) {
-				margin-bottom: 0;
+				padding: 0;
 			}
 		}
 	}
