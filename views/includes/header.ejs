@@ -56,11 +56,11 @@
 
   <link href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,600,400,700' rel='stylesheet' type='text/css'>
   <link href='https://fonts.googleapis.com/css?family=Fenix' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
 
   <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
 
   <link rel="stylesheet" href="/assets/css/style.css">
@@ -74,19 +74,17 @@
     });
   </script>
   <% if (typeof loadEditorResources !== 'undefined' && loadEditorResources === true) { %>
-    <script src="/src/editor.js"></script>
-  <% } %>
-  
-  <% if (typeof loadDropzoneResources !== 'undefined' && loadDropzoneResources === true) { %>
-    <link rel="stylesheet" href="/includes/css/dropzone.css">
-    <script src="/includes/js/dropzone.js"></script>
-  <% } %>
-
     <script src="/includes/js/wysihtml5x/wysihtml5x.min.js"></script>
     <script src="/includes/js/wysihtml5x/wysihtml5x-toolbar.min.js"></script>
     <script src="/includes/js/wysihtml5x/advanced_and_extended.js"></script>
     <script src="/includes/js/editor/controller.js"></script>
     <script src="/includes/js/editor/editor.js"></script>
+  <% } %>
+
+  <% if (typeof loadDropzoneResources !== 'undefined' && loadDropzoneResources === true) { %>
+    <link rel="stylesheet" href="/includes/css/dropzone.css">
+    <script src="/includes/js/dropzone.js"></script>
+  <% } %>
 
   <!-- TODO Fix this so it doesn't appear in prod! -->
   <% if (settings.env === 'development') { %>
@@ -100,20 +98,43 @@
     <div class="container">
       <div class="navbar-header">
         <div class="row">
-          <div class="col-xs-12 col-sm-4 center-xs logo">
-            <a href="/"><img src="/assets/images/vegosvar.svg"></a>
-          </div>
-					<% if (typeof showsearch === 'undefined') { %>
+          <% if (typeof startpage === 'undefined') { %>
+            <div class="col-xs-12 col-sm-4 center-xs logo">
+              <a href="/"><img src="/assets/images/vegosvar.svg"></a>
+            </div>
 						<div class="col-xs-12 col-sm-8 hidden-xs">
 							<form class="search" action="/" method="get" role="search" _lpchecked="1">
 								<input type="text" name="s" class="form-control" placeholder="Sök fakta, restauranger, produkter..." autofocus="autofocus">
 							</form>
 						</div>
+          <% } else { %>
+            <div class="col-xs-12 col-sm-4 center-xs logo startpage">
+              <a href="/"><img src="/assets/images/vegosvar.svg"></a>
+            </div>
 					<% } %>
 				</div>
       </div>
 
       <ul class="nav navbar-nav navbar-right hidden-xs">
+
+        <li class="dropdown hidden-sm">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <span class="glyphicon glyphicon-map-marker"></span>
+            Butiker
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="/?s=stockholm+butik">Stockholm</a></li>
+            <li><a href="/?s=göteborg+butik">Göteborg</a></li>
+            <li><a href="/?s=malmö+butik">Malmö</a></li>
+            <li><a href="/?s=uppsala+butik">Uppsala</a></li>
+            <li><a href="/?s=västerås+butik">Västerås</a></li>
+            <li><a href="/?s=örebro+butik">Örebro</a></li>
+            <li><a href="/?s=linköping+butik">Linköping</a></li>
+            <li><a href="/?s=butik">
+              <span class="glyphicon glyphicon-list"></span> Visa alla</a>
+            </li>
+          </ul>
+        </li>
 
         <li class="dropdown hidden-sm">
             <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -128,18 +149,13 @@
             <li><a href="/?s=västerås+restaurang">Västerås</a></li>
             <li><a href="/?s=örebro+restaurang">Örebro</a></li>
             <li><a href="/?s=linköping+restaurang">Linköping</a></li>
+            <li><a href="/?s=restaurang">
+              <span class="glyphicon glyphicon-list"></span> Visa alla</a>
+            </li>
           </ul>
         </li>
 
-        <li class="dropdown"><a href="/ny">Skapa sida</a>
-          <ul class="dropdown-menu">
-            <li><a href="/ny/fakta">Fakta</a></li>
-            <li><a href="/ny/restaurang">Restaurang</a></li>
-            <li><a href="/ny/butik">Butik</a></li>
-            <li><a href="/ny/produkt">Produkt</a></li>
-            <li><a href="/ny/recept">Recept</a></li>
-          </ul>
-        </li>
+        <li><a href="/ny">Skapa sida</a></li>
 
         <% if (typeof user !== 'undefined') { %>
           <li class="profile dropdown">
@@ -202,10 +218,14 @@
 
       <% if (typeof user === 'undefined') { %>
         <li>
-          <a class="toggle-dropdown"><span class="glyphicon glyphicon-user"></span>Logga in</a>
+          <a class="toggle-dropdown"><span class="glyphicon glyphicon-user"></span>Konto</a>
           <ul class="dropdown">
-            <li class="title">Logga in</li>
-            <li><a href="/auth/facebook">Logga in säkert via Facebook</a>
+            <li class="title">
+              <div><img src="/assets/images/no-picture.svg"></div>
+              Konto
+            </li>
+            <li><a href="/auth/facebook">Logga in via Facebook</a>
+            <li class="desc"><div>Med hjälp av Facebook kan du logga in tryggt och säkert för att publicera sidor. Du kan välja att vara helt anonym.</div></li>
             </li>
           </ul>
         </li>

@@ -130,21 +130,9 @@ passport.deserializeUser(function (id, done) {
 // TODO make one default template instead of the same includes in every?
 app.get('/', function (req, res) {
   var pagesdb = db.get('pages')
-  if(typeof req.query.s !== 'undefined') {
-    var query = {
-      title: {
-        $regex: req.query.s,
-        $options: 'i' //i: ignore case, m: multiline, etc
-      }
-    }
-    pagesdb.find(query, {}, function(err, doc) {
-      res.render('index', { user: req.user, pages: doc, showsearch: true })
-    })
-  } else {
     pagesdb.find({}, function(err, doc) {
-      res.render('index', { user: req.user, pages: doc, showsearch: false })
+      res.render('index', { user: req.user, pages: doc, startpage: false, searchString: req.query.s  })
     })
-  }
 })
 
 app.get('/handle', function (req, res) {
@@ -170,7 +158,11 @@ app.get('/logga-in', function (req, res) {
 })
 
 app.get('/om', function(req, res) {
-  res.render('about', { user: req.user });
+  res.render('about', { user: req.user })
+})
+
+app.get('/licens', function(req, res) {
+  res.render('license', { user: req.user })
 })
 
 app.get('/riktlinjer', function (req, res) {
@@ -331,11 +323,13 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       post: {
         content: req.body.content,
         sources: {
-            name: req.body.sources_name,
-            url: req.body.sources_url
+            name: typeof(req.body.source_name) === 'string' ? [req.body.source_name] : req.body.source_name,
+            url: typeof(req.body.source_url) === 'string' ? [req.body.source_url] : req.body.source_url,
         },
         license: req.body.license,
+        license_cc_version: req.body.license_cc_version,
         license_holder: req.body.license_holder,
+        license_holder_website: req.body.license_holder_website,
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
@@ -353,8 +347,14 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       type: type,
       post: {
         content: req.body.content,
+        sources: {
+            name: typeof(req.body.source_name) === 'string' ? [req.body.source_name] : req.body.source_name,
+            url: typeof(req.body.source_url) === 'string' ? [req.body.source_url] : req.body.source_url,
+        },
         license: req.body.license,
+        license_cc_version: req.body.license_cc_version,
         license_holder: req.body.license_holder,
+        license_holder_website: req.body.license_holder_website,
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
@@ -372,15 +372,21 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       type: type,
       post: {
         content: req.body.content,
+        sources: {
+            name: typeof(req.body.source_name) === 'string' ? [req.body.source_name] : req.body.source_name,
+            url: typeof(req.body.source_url) === 'string' ? [req.body.source_url] : req.body.source_url,
+        },
         city: req.body.city,
         street: req.body.street,
         phone: req.body.phone,
         website: req.body.website,
         email: req.body.email,
         license: req.body.license,
+        license_cc_version: req.body.license_cc_version,
         license_holder: req.body.license_holder,
+        license_holder_website: req.body.license_holder_website,
+        veg_offer: req.body.veg_offer,
         food: req.body.food,
-        googlemaps: req.body.googlemaps,
         openhours: {
           monday: req.body.monday,
           tuesday: req.body.tuesday,
@@ -394,10 +400,6 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
         },
-        range: {
-          lacto_ovo: req.body.lacto_ovo,
-          vegan: req.body.vegan
-        }
       },
       user_info: {
         id: req.user._id,
@@ -411,8 +413,14 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       type: type,
       post: {
         content: req.body.content,
+        sources: {
+            name: typeof(req.body.source_name) === 'string' ? [req.body.source_name] : req.body.source_name,
+            url: typeof(req.body.source_url) === 'string' ? [req.body.source_url] : req.body.source_url,
+        },
         license: req.body.license,
+        license_cc_version: req.body.license_cc_version,
         license_holder: req.body.license_holder,
+        license_holder_website: req.body.license_holder_website,
         veg_type: req.body.veg_type,
         product_type: req.body.product_type,
         cover: {
@@ -432,12 +440,17 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       type: type,
       post: {
         content: req.body.content,
+        sources: {
+            name: typeof(req.body.source_name) === 'string' ? [req.body.source_name] : req.body.source_name,
+            url: typeof(req.body.source_url) === 'string' ? [req.body.source_url] : req.body.source_url,
+        },
         license: req.body.license,
+        license_cc_version: req.body.license_cc_version,
         license_holder: req.body.license_holder,
+        license_holder_link: req.body.license_holder_link,
         city: req.body.city,
         street: req.body.street,
         website: req.body.website,
-        googlemaps: req.body.googlemaps,
         openhours: {
           monday: req.body.monday,
           tuesday: req.body.tuesday,
@@ -451,6 +464,10 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
         }
+      },
+      user_info: {
+        id: req.user._id,
+        hidden: hidden
       }
     }
   } else {
@@ -487,12 +504,17 @@ app.post('/submit/file', function(req, res) {
     })
 })
 
+app.use(function (req, res) {
+  res.render('404', { user: req.user })
+  return
+})
+
 // TODO 'uncaughtException' as well? See what happens if DB goes down etc
 app.use(function error_handler (error, req, res, next) {
   // TODO better error page
   console.error(error.stack)
   res.status(500)
-  res.send('An error occured!')
+  res.send('<h1>Något blev fel</h1><p>Servern fick slut på havremjölk.</p>')
 })
 
 app.listen(process.env.PORT || config.port, config.address)

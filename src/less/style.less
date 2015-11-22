@@ -92,6 +92,7 @@ p {
 .preamble {
 	font-size: 19px;
 	line-height: 1.5;
+	margin-bottom: 20px;
 }
 
 .list-group {
@@ -119,19 +120,6 @@ p {
 img {
 	width: 100%;
 	height: auto;
-}
-
-.text-overflow {
-	text-overflow: ellipsis;
-	white-space: nowrap;
-	overflow: hidden;
-	width: 400px;
-	white-space: nowrap;
-	overflow: hidden;
-	display: block;
-	@media (max-width: @xs) {
-		width: 200px;
-	}
 }
 
 .no-top {
@@ -464,7 +452,7 @@ input[type=checkbox], input[type=radio] {
 	margin-bottom: 15px;
 	border-radius: 3px;
 	overflow: hidden;
-	&.profile {
+	&.transparent {
 		background: none;
 	}
 	.info {
@@ -541,6 +529,7 @@ nav {
 				transition: background 0.2s;
 				font-weight: 600;
 				font-size: 15px;
+				padding: 17px 15px;
 				transition: background 0s;
 				&:hover {
 					background-color: darken(@brand-color, 5%) !important;
@@ -598,7 +587,7 @@ nav {
 			margin-top: 0px;
 			margin-bottom: 0px;
 			border: none;
-			padding: 5px;
+			padding: 7px 5px;
 			@media (max-width: @xs) {
 				padding: 0 5px 5px 5px;
 			}
@@ -609,13 +598,16 @@ nav {
 				padding: 9px 17px 10px 17px;
 				height: auto;
 				color: #333;
-				border-radius: 3px;
+				border-radius: 2px;
 				transition: background 0.2s, padding 0.2s;
 				width: 285px;
 				@media (max-width: @xs) {
 					width: 100%;
 					padding: 8px 17px;
 					font-size: 13px;
+				}
+				@media (max-width: @md) {
+					width: 270px;
 				}
 			}
 		}
@@ -625,10 +617,18 @@ nav {
 			}
 			img {
 				width: 130px;
-				margin-top: 13px;
+				margin-top: 15px;
 				@media (max-width: @xs) {
 					margin-bottom: 15px;
 					width: 130px;
+				}
+			}
+			&.startpage {
+				img {
+					@media (max-width: @xs) {
+						width: 145px;
+						margin-top: 25px;
+					}
 				}
 			}
 		}
@@ -721,6 +721,29 @@ nav {
 								background: @brand-color;
 								text-transform: uppercase;
 							}
+							&.desc {
+								padding: 0 20px;
+								background: none;
+								font-size: 13px;
+								line-height: 1.4;
+								&:before {
+									display: inline-block;
+									position: relative;
+									margin-bottom: -10px;
+									content: '';
+									width: 0; 
+									height: 0; 
+									border-left: 15px solid transparent;
+									border-right: 15px solid transparent;
+									border-bottom: 15px solid #fff;
+								}
+								div {
+									padding: 15px;
+									border-radius: 5px;
+									background: #fff;
+									color: @brand-color;
+								}
+							}
 						}
 					}
 				}
@@ -739,15 +762,32 @@ article {
 		padding: 50px 20px;
 		margin: 0 -15px 30px -15px;
 	}
+	.content {
+		position: relative;
+		.stars {
+			display: inline-block;
+			.star {
+				font-size: 16px;
+				&:before {
+					top: -6px;
+					margin-left: 1px;
+					border-radius: 5px;
+				}
+			}
+			.votes {
+				top: -3px;
+			}
+		}
+	}
 	.city {
-		font-size: 25px;
+		font-size: 26px;
 		color: #888;
-		margin-top: -20px;
+		margin-top: -12px;
 		margin-bottom: 15px;
 		font-weight: 100;
 		@media (max-width: @xs) {
 			font-size: 20px;
-			margin-bottom: 10px;
+			margin-bottom: 12px;
 		}
 	}
 	.headerImage {
@@ -760,6 +800,7 @@ article {
 		margin-right: -30px;
 		margin-bottom: 30px;
 		overflow: hidden;
+		box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.03);
 		@media (max-width: @xs) {
 			margin-left: -20px;
 			margin-right: -20px;
@@ -775,27 +816,11 @@ article {
 			font-size: 13px;
 			background: #000;
 			color: #fff;
-			opacity: 0.4;
+			opacity: 0.7;
 			border-radius: 3px 0 0 0;
-		}
-	}
-	#contact {
-		text-align: center;
-		margin-bottom: -5px;
-		a {
-			display: inline-block;
-			color: #111;
-			font-size: 20px;
-			@media (max-width: @xs) {
-				font-size: 16px;
+			a {
+				color: #fff;
 			}
-		}
-		.divider-vertical {
-			height: 35px;
-			width: 1px;
-			background: #eee;
-			margin: -11px 15px;
-			display: inline-block;
 		}
 	}
 	#openhours {
@@ -878,7 +903,6 @@ section {
 			li {
 				list-style: none;
 				margin-bottom: 5px;
-				.text-overflow;
 				a {
 					padding-left: 5px;
 				}
@@ -958,10 +982,19 @@ section {
 	background-size: cover;
 	padding: 150px 0 180px 0;
 	color: #fff;
-	transition: padding 0.8s;
 	@media (max-width: @xs) {
-		padding: 30px 0 50px 0;
+		padding: 5px 0 30px 0;
 		margin-bottom: 0px;
+	}
+
+	&.transition {		
+		transition: padding 0.8s;
+		.intro {
+			transition: margin-bottom 0.8s;
+			h1 {
+				transition: font-size 0.8s, opacity 0.8s;
+			}
+		}
 	}
 
 	&.contracted {
@@ -983,16 +1016,14 @@ section {
 
 	.intro {
 		margin-bottom: 40px;
-		transition: margin-bottom 0.8s;
 		@media (max-width: @xs) {
-			margin-bottom: 25px;
+			margin-bottom: 20px;
 		}
 		h1 {
 			font-size: 62px;
 			margin-bottom: 0;
 			font-weight: 300;
 			color: #fff;
-			transition: font-size 0.8s, opacity 0.8s;
 			@media (max-width: @xs) {
 				font-size: 23px;
 				font-weight: 400;
@@ -1021,25 +1052,33 @@ section {
 		input {
 			font-size: 18px;
 			font-weight: 400;
-			padding: 0px 25px;
+			padding: 20px 25px;
 			background: #fff;
 			border-radius: 5px 0 0 5px;
 			box-shadow: none;
 			border: none;
-			min-height: 60px;
 			color: #111;
+			@media (max-width: @xs) {
+				padding: 15px 0 15px 20px;
+				font-size: 16px;
+				max-height: 52px;
+			}
 		}
 		button {
 			font-size: 18px;
 			font-weight: 700;
-			padding: 0px 25px;
+			padding: 20px 25px;
 			background: #fff;
 			border-radius: 0 5px 5px 0;
 			box-shadow: none;
 			border: none;
-			min-height: 60px;
 			color: #333;
 			transition: color 0.2s;
+			@media (max-width: @xs) {
+				padding: 15px 15px;
+				font-size: 16px;
+				max-height: 52px;
+			}
 			&:hover {
 				background: #fff;
 				color: lighten(#333, 30%);
@@ -1052,7 +1091,84 @@ section {
 				width: 20px;
 				height: 20px;
 				animation: loading 2.5s infinite linear;
+				@media (max-width: @xs) {
+					width: 18px;
+					height: 18px;
+				}
 			}
+		}
+	}
+}
+
+
+.stars {
+	&:hover .star {
+		color: #DEDEDE;
+	}
+	.star {
+		color: #F7B21E;
+		transition: transform 0.15s, color 0.15s;
+		cursor: pointer;
+		font-size: 13px;
+		display: inline-block;
+		position: relative;
+		padding: 4px 1px;
+		&:before {
+			opacity: 0;
+			display: block;
+			position: absolute;
+			color: #888;
+			top: -7px;
+			left: 1px;
+			font-size: 8px;
+			transition: opacity 0.15s, color 0.15s;
+			white-space: nowrap;
+		}
+		&:nth-child(1):before { content: 'Dåligt'; 	left: -3px; }
+		&:nth-child(2):before { content: 'Sådär'; 	left: -3px; }
+		&:nth-child(3):before { content: 'Helt ok'; left: -6px; }
+		&:nth-child(4):before { content: 'Bra'; } 	left: -1px;
+		&:nth-child(5):before { content: 'Superbra';left: -9px; }
+		&.empty {
+			color: #DEDEDE;
+		}
+		&:hover {
+			transform: scale(1.5);
+			color: #EC960B;
+			&:before {
+				opacity: 1;
+				@media (max-width: @xs) {
+					opacity: 0;
+				}
+			}
+		}
+		&:active {
+			transform: scale(1.7);
+			color: #F1AE00;
+			&:before {
+				color: #F1AE00;
+			}
+		}
+	}
+	.votes {
+		display: inline-block;
+		position: relative;
+		margin-left: 3px;
+		font-size: 11px;
+		color: #C9C9C9;
+		border: 1px solid  #C9C9C9;
+		border-radius: 50px;
+		padding: 1px 7px 2px 7px;
+		.additional {
+			display: none;
+			@media (max-width: @xs) {
+				display: inline-block;
+				margin-left: 5px;
+			}
+		}
+		@media (max-width: @xs) {
+			border: none;
+			margin-left: 0;
 		}
 	}
 }
@@ -1096,11 +1212,19 @@ section {
 		}
 	}
 	.content {
-		padding: 20px 20px 60px 20px;
+		padding: 15px 20px 60px 20px;
 		@media (max-width: @xs) { // TODO Make 100% wide when image is missing
 			width: 70%;
 			padding: 20px 20px 0 15px;
 			margin-bottom: 15px;
+		}
+		.text-overflow {
+			height: 110px;
+			overflow: hidden;
+			@media (max-width: @xs) {
+				height: 105px;
+				margin-bottom: 40px;
+			}
 		}
 		a {
 			color: #333;
@@ -1110,21 +1234,29 @@ section {
 			margin: 0;
 			line-height: 1.3;
 			font-size: 18px;
+			margin-bottom: 7px;
 			@media (max-width: @xs) {
 				margin-top: -4px;
 			}
 		}
 		p {
-			margin-top: 10px;
 			margin-bottom: 0;
 			font-size: 13px;
 			line-height: 1.5;
 			color: #444;
 		}
 	}
+	.stars {
+		position: absolute;
+		bottom: 8px;
+		left: 20px;
+		.votes {
+			top: -1px;
+		}
+	}
 	.more {	
 		position: absolute;
-		width: 100%;
+		right: 0;
 		bottom: 0;
 		@media (max-width: @xs) {
 			position: relative;
@@ -1232,11 +1364,16 @@ section {
 
 
 #promotion {
-	background: @blue;
 	color: #fff;
 	padding: 100px 0;
+	&.create {
+		background: @blue url(../images/promo_bg.svg) bottom center no-repeat;
+		.btn {
+			color: @blue;
+		}
+	}
 	@media (max-width: @xs) {
-		padding: 60px 0;
+		padding: 60px 0 80px 0;
 	}
 	.logo {
 		display: inline-block;
@@ -1249,13 +1386,14 @@ section {
 			left: -5px;
 		}
 	}
-	.btn {
-		color: @blue;
-	}
 	h2 {
 		margin-top: 0;
 		margin-bottom: 15px;
-		font-size: 30px;
+		font-size: 40px;
+		font-weight: 100;
+		@media (max-width: @xs) {
+			font-size: 35px;
+		}
 	}
 	h4 {
 		display: inline-block;
@@ -1263,29 +1401,51 @@ section {
 		margin-bottom: 60px;
 	}
 	.item {
+		background: #fff;
+		color: #222;
+		border-radius: 3px;
 		margin-bottom: 30px;
+		padding: 20px 20px 20px 15px;
+		@media (max-width: @md) {
+			padding: 10px 20px 10px 15px;
+		}
 		@media (max-width: @sm) {
 			text-align: center;
+			padding: 20px;
 		}
 		@media (max-width: @xs) {
 			text-align: left;
+			padding: 10px 20px;
 		}
 		h3 {
-			margin-top: 20px;
-			@media (max-width: @md) {
-				margin-top: 0px !important;
-			}
+			font-weight: 600;
+			margin-top: 17px;
 			@media (max-width: @sm) {
 				margin-top: 0;
 			}
+			@media (max-width: @xs) {
+				margin-top: 15px;
+			}
+		}
+		p {
+			@media (max-width: @xs) {
+				font-size: 13px;
+			}
 		}
 		img {
-			border-radius: 500px;
+			background: #fff;
+			padding: 0 0 5px 10px;
+			@media (max-width: @md) {
+				margin-top: 20px;
+				padding-left: 0;
+				margin-left: 5px;
+			}
 			@media (max-width: @sm) {
 				margin-bottom: 15px;
+				padding: 0 15px;
 			}
 			@media (max-width: @xs) {
-				margin-bottom: 0;
+				padding: 0;
 			}
 		}
 	}
@@ -1301,7 +1461,7 @@ section {
 	border-radius: 3px 3px 0 0;
 	overflow: hidden;
 	@media (max-width: @xs) {
-		padding: 4px 4px 0px 4px;
+		padding: 3px 3px 0px 3px;
 	}
 	li {
 		margin: 0;
@@ -1310,8 +1470,10 @@ section {
 			border-radius: 0;
 			margin: 0;
 			@media (max-width: @xs) {
-				margin-bottom: 4px;
+				padding: 7px 9px;
+				margin-bottom: 3px;
 				border-radius: 3px;
+				font-size: 12px;
 			}
 		}
 	}

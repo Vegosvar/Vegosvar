@@ -44,17 +44,27 @@
 
 							<h3>Licens</h3>
 							<div class="row">
-								<div class="col-sm-5 col-md-5">
+								<div class="col-sm-6">
 									<div class="form-group">
-										<select class="form-control" name="license">
-											<option value="CC0">CC0 / Public Domain</option>
-											<option value="CC">CC (Creative Commons)</option>
+										<select class="form-control" name="license" id="license_select">
+											<option value="CC0">CC0</option>
+											<option value="CC BY">CC BY (Creative Commons)</option>
 											<option value="Copyright">Copyright</option>
 										</select>
 									</div>
-									<div class="input-group" id="license_holder">
-										<span class="input-group-addon">Licensägare</span>
-										<input type="text" class="form-control" name="license_holder">
+									<div id="license_info">
+										<div class="input-group cc-version">
+											<span class="input-group-addon">CC-version</span>
+											<input type="text" class="form-control" name="license_cc_version">
+										</div>
+										<div class="input-group license-owner">
+											<span class="input-group-addon">Licensägare</span>
+											<input type="text" class="form-control" name="license_holder">
+										</div>
+										<div class="input-group license-owner-website">
+											<span class="input-group-addon">Ägarens hemsida</span>
+											<input type="text" class="form-control" name="license_holder_website" placeholder="http://">
+										</div>
 									</div>
 								</div>
 							</div>

@@ -33,48 +33,48 @@
 								</div>
 							</div>
 
-
-							<h2>
-								<span class="glyphicon glyphicon-map-marker"></span> 
-								Hitta hit
-							</h2>
 							<div class="row">
-								<div class="col-sm-7">
-									<div class="input-group">
-										<span class="input-group-addon">Stad</span>
-										<input type="text" class="form-control" name="city" aria-describedby="basic-addon1" placeholder="">
+								<div class="col-sm-6">
+									<h2>
+										<span class="glyphicon glyphicon-map-marker"></span> 
+										Hitta hit
+									</h2>
+									<div class="row">
+										<div class="col-sm-12">
+											<div class="input-group">
+												<span class="input-group-addon">Stad</span>
+												<input type="text" class="form-control" name="city" aria-describedby="basic-addon1" placeholder="">
+											</div>
+											<div class="input-group">
+												<span class="input-group-addon">Gata</span>
+												<input type="text" class="form-control" name="street" aria-describedby="basic-addon1">
+											</div>
+											<div class="input-group">
+												<span class="input-group-addon">Hemsida</span>
+												<input type="text" class="form-control" name="website" aria-describedby="basic-addon1" placeholder="http://">
+											</div>
+										</div>
 									</div>
-									<div class="input-group">
-										<span class="input-group-addon">Gata</span>
-										<input type="text" class="form-control" name="street" aria-describedby="basic-addon1" placeholder="Exempelgatan 12">
-									</div>
-									<div class="input-group">
-										<span class="input-group-addon">Google Maps <a href="/vanliga-fragor/#googlemap" target="_blank"><span class="glyphicon glyphicon-question-sign"></a></span>
-										<input type="text" class="form-control" name="googlemaps" aria-describedby="basic-addon1" placeholder="http://">
-									</div>
-									<div class="input-group">
-										<span class="input-group-addon">Hemsida</span>
-										<input type="text" class="form-control" name="website" aria-describedby="basic-addon1" placeholder="http://">
-									</div>
-									<div class="input-desc">Ingen hemsida? Länka till er Facebooksida</div>
 								</div>
-							</div>
 
-							<h2>
-								<span class="glyphicon glyphicon-phone"></span> 
-								Kontakt
-							</h2>
-							<div class="row">
-								<div class="col-sm-7">
-									<div class="input-group">
-										<span class="input-group-addon">Telefon</span>
-										<input type="text" class="form-control" name="phone">
+								<div class="col-sm-6">
+									<h2>
+										<span class="glyphicon glyphicon-phone"></span> 
+										Kontakt
+									</h2>
+									<div class="row">
+										<div class="col-sm-12">
+											<div class="input-group">
+												<span class="input-group-addon">Telefon</span>
+												<input type="text" class="form-control" name="phone">
+											</div>
+											<div class="input-group">
+												<span class="input-group-addon">Epost</span>
+												<input type="text" class="form-control" name="email">
+											</div>
+											<div class="input-desc">Din epost krypteras så att du slipper spam</div>
+										</div>
 									</div>
-									<div class="input-group">
-										<span class="input-group-addon">Epost</span>
-										<input type="text" class="form-control" name="email">
-									</div>
-									<div class="input-desc">Din epost krypteras utåt på Vegosvar så att du slipper spambotar</div>
 								</div>
 							</div>
 							
@@ -87,33 +87,33 @@
 								<div class="col-sm-6">
 									<div class="input-group">
 										<span class="input-group-addon">Måndag</span>
-										<input type="text" placeholder="00-00" class="form-control" name="monday">
+										<input type="text" placeholder="00:00 - 00:00" class="form-control" name="monday">
 									</div>
 									<div class="input-group">
 										<span class="input-group-addon">Tisdag</span>
-										<input type="text" placeholder="00-00" class="form-control" name="tuesday">
+										<input type="text" placeholder="00:00 - 00:00" class="form-control" name="tuesday">
 									</div>
 									<div class="input-group">
 										<span class="input-group-addon">Onsdag</span>
-										<input type="text" placeholder="00-00" class="form-control" name="wednesday">
+										<input type="text" placeholder="00:00 - 00:00" class="form-control" name="wednesday">
 									</div>
 									<div class="input-group">
 										<span class="input-group-addon">Tordag</span>
-										<input type="text" placeholder="00-00" class="form-control" name="thursday">
+										<input type="text" placeholder="00:00 - 00:00" class="form-control" name="thursday">
 									</div>
 								</div>
 								<div class="col-sm-6">
 									<div class="input-group">
 										<span class="input-group-addon">Fredag</span>
-										<input type="text" placeholder="00-00" class="form-control" name="friday">
+										<input type="text" placeholder="00:00 - 00:00" class="form-control" name="friday">
 									</div>
 									<div class="input-group">
 										<span class="input-group-addon">Lördag</span>
-										<input type="text" placeholder="00-00" class="form-control" name="saturday">
+										<input type="text" placeholder="00:00 - 00:00" class="form-control" name="saturday">
 									</div>
 									<div class="input-group">
 										<span class="input-group-addon">Söndag</span>
-										<input type="text" placeholder="00-00" class="form-control" name="sunday">
+										<input type="text" placeholder="00:00 - 00:00" class="form-control" name="sunday">
 									</div>
 								</div>
 							</div>
@@ -123,16 +123,22 @@
 								<span class="glyphicon glyphicon-cutlery"></span> 
 								Utbud
 							</h2>
-							<div class="checkbox">
+							<div class="radio">
 								<label>
-									<input type="checkbox" name="lacto_ovo"> 
-									Lakto-ovo vegetariskt
+									<input type="radio" name="veg_offer" value="Veganskt går att ordna">
+									Veganskt går att ordna
 								</label>
 							</div>
-							<div class="checkbox">
+							<div class="radio">
 								<label>
-									<input type="checkbox" name="vegan"> 
-									Veganskt
+									<input type="radio" name="veg_offer" value="Veganskt finns på menyn" checked>
+									Veganskt finns på menyn
+								</label>
+							</div>
+							<div class="radio">
+								<label>
+									<input type="radio" name="veg_offer" value="Endast veganskt på menyn">
+									Endast veganskt på menyn
 								</label>
 							</div>
 							<div class="row">
@@ -156,17 +162,27 @@
 
 							<h3>Licens</h3>
 							<div class="row">
-								<div class="col-sm-5 col-md-5">
+								<div class="col-sm-6">
 									<div class="form-group">
-										<select class="form-control" name="license">
-											<option value="CC0">CC0 / Public Domain</option>
-											<option value="CC">CC (Creative Commons)</option>
+										<select class="form-control" name="license" id="license_select">
+											<option value="CC0">CC0</option>
+											<option value="CC BY">CC BY (Creative Commons)</option>
 											<option value="Copyright">Copyright</option>
 										</select>
 									</div>
-									<div class="input-group" id="license_holder">
-										<span class="input-group-addon">Licensägare</span>
-										<input type="text" class="form-control" name="license_holder">
+									<div id="license_info">
+										<div class="input-group cc-version">
+											<span class="input-group-addon">CC-version</span>
+											<input type="text" class="form-control" name="license_cc_version">
+										</div>
+										<div class="input-group license-owner">
+											<span class="input-group-addon">Licensägare</span>
+											<input type="text" class="form-control" name="license_holder">
+										</div>
+										<div class="input-group license-owner-website">
+											<span class="input-group-addon">Ägarens hemsida</span>
+											<input type="text" class="form-control" name="license_holder_website" placeholder="http://">
+										</div>
 									</div>
 								</div>
 							</div>

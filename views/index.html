@@ -1,6 +1,6 @@
 <% include includes/header %>
 
-	<div id="heroSearch">
+	<div id="heroSearch" class="<%= typeof searchString !== 'undefined' ? 'contracted':'transition' %>">
 		<div class="container">
 			<div class="row">
 				<div class="col-sm-12 text-center">
@@ -10,7 +10,7 @@
 					</div>
 
 					<div class="searchEngine input-group">
-						<input type="text" class="form-control searchForm" name="srch-term" id="srch-term" placeholder="Vad söker du?" autocomplete="off">
+						<input type="text" class="form-control searchForm" name="srch-term" id="srch-term" placeholder="Vad söker du?" autocomplete="off" value="<%= typeof searchString !== 'undefined' ? searchString:'' %>">
 						<div class="input-group-btn">
 							<button class="btn btn-default" id="searchForm-btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
 						</div>
@@ -49,10 +49,29 @@
 						<% } else { %>
 						<% } %>
 						<div class="content">
-							<a href="/<%= pages[i].url %>"><h3><%= pages[i].title %></h3></a>
-							<% var content = '' + pages[i].post.content
-							var desc = content.substring(0,125) %>
-							<p><%= content %></p>
+							<div class="text-overflow">
+								<a href="/<%= pages[i].url %>"><h3><%= pages[i].title %></h3></a>
+								<% var content = '' + pages[i].post.content.substring(0,115) %>
+								<p><%= content %>...</p>
+							</div>
+						</div>
+						<div class="stars">
+							<div class="star">
+								<span class="glyphicon glyphicon-star"></span>
+							</div>
+							<div class="star">
+								<span class="glyphicon glyphicon-star"></span>
+							</div>
+							<div class="star">
+								<span class="glyphicon glyphicon-star"></span>
+							</div>
+							<div class="star">
+								<span class="glyphicon glyphicon-star"></span>
+							</div>
+							<div class="star empty">
+								<span class="glyphicon glyphicon-star"></span>
+							</div>
+                			<span class="votes">6<span class="additional">röster</span></span>
 						</div>
 						<div class="more">
 							<a href="/<%= pages[i].url %>" class="btn btn-primary">Läs mer</a>

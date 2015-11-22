@@ -9,37 +9,85 @@
           <article>
 
             <div class="headerImage">
-              <% if (typeof post.post.cover !== 'undefined') { %>
-              <img src="/uploads/<%= post.post.cover.filename %>.jpg" />
-              <% } else { %>
+              <% if (typeof post.post.cover.filename !== 'undefined' && post.post.cover.filename !== "") { %>
+              <img src="/uploads/<%= post.post.cover.filename %>.jpg" alt="<%= post.title %>"/>
               <% } %>
               <span class="license">
-                <%= post.post.license %> 
-                <%= post.post.license_holder %>
+                <%= post.post.license %>
+                <% if (typeof post.post.license_holder_website !== 'undefined' && post.post.license_holder_website !== "") { %>
+                  <a href="<%= post.post.license_holder_website %>" target="_blank"  rel="nofollow">
+                    <%= post.post.license_holder %>
+                  </a>
+                <% } else { %>
+                  <%= post.post.license_holder %>
+                <% } %>
               </span>
             </div>
 
-            <h1><%= post.title %></h1>
+            <div class="content">
 
-            <% if (post.type === '3') { %>
-              <div class="city"><%= post.post.city %></div>
-            <% } %>
+              <h1><%= post.title %></h1>
 
-            <p><%= post.post.content %></p>
+              <% if (post.type === '3' || post.type === '5') { %>
+                <h2 class="city"><%= post.post.city %></h2>
+              <% } %>
 
-            <% if (post.type === '3') { %>
-              <p><a href="<%= post.post.website %>" target="_blank"><%= post.post.website %></a></p>
+              <p><%- post.post.content %></p>
 
-              <p>
-                <a href="<%= post.post.googlemaps %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Google Maps</a>
+              <% if (post.type === '3' || post.type === '5' || post.type === '4') { %>
+                <div class="stars">
+                  <div class="star">
+                    <span class="glyphicon glyphicon-star"></span>
+                  </div>
+                  <div class="star">
+                    <span class="glyphicon glyphicon-star"></span>
+                  </div>
+                  <div class="star">
+                    <span class="glyphicon glyphicon-star"></span>
+                  </div>
+                  <div class="star">
+                    <span class="glyphicon glyphicon-star"></span>
+                  </div>
+                  <div class="star empty">
+                    <span class="glyphicon glyphicon-star"></span>
+                  </div>
+                  <span class="votes">6<span class="additional">röster</span></span>
+                </div>
+              <% } %>
 
-                <a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Apple Maps</a>
+              <% if (post.type === '3' || post.type === '5') { %>
 
-                <a href="tel:<%= post.post.phone %>" target="_blank"  class="btn btn-secondary btn-block visible-xs">
-                  <span class="glyphicon glyphicon-phone"></span>
-                  <%= post.post.phone %>
-                </a> 
-              </p>
+                <p class="hidden-xs">
+                <% if (typeof post.post.phone !== 'undefined' && post.post.phone !== "") { %>
+                  <strong>Telefon</strong> <%= post.post.phone %><br>
+                <% } %>
+
+                <% if (typeof post.post.mail !== 'undefined' && post.post.mail !== "") { %>
+                  <strong>Mail</strong>
+                  <a href="mailto:<%= post.post.email %>" target="_blank">
+                    <%= post.post.email %>
+                  </a><br>
+                <% } %>
+
+                <% if (typeof post.post.website !== 'undefined' && post.post.website !== "") { %>
+                  <a href="<%= post.post.website %>" target="_blank" rel="nofollow">
+                    <%= post.post.website %>
+                  </a><br>
+                <% } %>
+                </p>
+
+                <p>
+                  <a href="http://maps.google.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Öppna karta</a>
+
+                  <a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Öppna karta</a>
+                  <% if (typeof post.post.phone !== 'undefined' && post.post.phone !== "") { %>
+                    <a href="tel:<%= post.post.phone %>" target="_blank"  class="btn btn-secondary btn-block visible-xs">
+                      <span class="glyphicon glyphicon-phone"></span>
+                      <strong>Ring</strong> <%= post.post.phone %>
+                    </a>
+                <% } %>
+                </p>
+              </div>
 
               <hr class="lg hidden-xs">
               <div class="row">
@@ -50,19 +98,19 @@
                       <div class="col-xs-6">
                         <ul class="list-group">
                           <li class="list-group-item">
-                            <h4 class="list-group-item-heading">Måndag</h4> 
+                            <h4 class="list-group-item-heading">Måndag</h4>
                             <p class="list-group-item-text"><%= post.post.openhours.monday %></p>
                           </li>
                           <li class="list-group-item">
-                            <h4 class="list-group-item-heading">Tisdag</h4> 
+                            <h4 class="list-group-item-heading">Tisdag</h4>
                             <p class="list-group-item-text"><%= post.post.openhours.tuesday %></p>
                           </li>
                           <li class="list-group-item">
-                            <h4 class="list-group-item-heading">Onsdag</h4> 
+                            <h4 class="list-group-item-heading">Onsdag</h4>
                             <p class="list-group-item-text"><%= post.post.openhours.wednesday %></p>
                           </li>
                           <li class="list-group-item">
-                            <h4 class="list-group-item-heading">Torsdag</h4> 
+                            <h4 class="list-group-item-heading">Torsdag</h4>
                             <p class="list-group-item-text"><%= post.post.openhours.thursday %></p>
                           </li>
                         </ul>
@@ -70,17 +118,17 @@
                       <div class="col-xs-6">
                         <ul class="list-group">
                           <li class="list-group-item">
-                            <h4 class="list-group-item-heading">Fredag</h4> 
+                            <h4 class="list-group-item-heading">Fredag</h4>
                             <p class="list-group-item-text"><%= post.post.openhours.friday %></p>
                           </li>
                           <li class="list-group-item">
-                            <h4 class="list-group-item-heading">Lördag</h4> 
+                            <h4 class="list-group-item-heading">Lördag</h4>
                             <p class="list-group-item-text"><%= post.post.openhours.saturday %></p>
                           </li>
                         </ul>
                         <ul class="list-group">
                           <li class="list-group-item">
-                            <h4 class="list-group-item-heading">Söndag</h4> 
+                            <h4 class="list-group-item-heading">Söndag</h4>
                             <p class="list-group-item-text"><%= post.post.openhours.sunday %></p>
                           </li>
                         </ul>
@@ -94,48 +142,75 @@
                   <div class="street">
                     <%= post.post.street %>
                   </div>
-                  <p><a href="<%= post.post.googlemaps %>" class="btn btn-primary" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Google Maps</a></p>
+                  <p><a href="http://maps.google.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Google Maps</a></p>
                   <p><a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-secondary" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Apple Maps</a></p>
                 </div>
               </div>
+
             <% } %>
 
-            <hr class="lg">
-            
-            <div id="contact">
-              <a href="tel:<%= post.post.phone %>" target="_blank" class="hidden-xs">
-                <%= post.post.phone %>
-              </a> 
-              <div class="divider-vertical hidden-xs"></div>
-              <a href="mailto:<%= post.post.email %>" target="_blank">
-                <h2 class="visible-xs no-top">Mail</h2>
-                <%= post.post.email %>
-              </a>
+            <div class="row">
+              <div class="col-sm-12">
+                  <% if (typeof post.post.sources !== 'undefined') { %>
+                      <% if(post.post.sources.name !== null) { %>
+                          <h3>Källor</h3>
+                          <ul id="sources-list" class="list-group">
+                              <% for(var i=0;i<post.post.sources.name.length;i++) { %>
+                                  <li id="source-<%= (i+1) %>" class="list-group-item">
+                                      <span>
+                                          <span class="source-id"><%= (i+1) %>.</span>
+                                          <a href="<%= post.post.sources.url[i] %>" 
+                                            target="_blank" 
+                                            title="<%= post.post.sources.url[i] %>" 
+                                            class="source-url">
+                                            <span class="source-name"><%= post.post.sources.name[i] %></span>
+                                          </a>
+                                      </span>
+                                  </li>
+                              <% } %>
+                          </ul>
+                      <% } %>
+                  <% } %>
+              </div>
             </div>
 
           </article>
 
           <div class="row">
             <div class="col-sm-7">
-              <div class="card profile">
+              <div class="card transparent">
                 <div class="row">
+                  <% if (typeof post.user_info.hidden !== true && post.user_info.hidden == "") { %>
+                    <div class="col-xs-4 col-sm-4 col-md-3 avatar">
+                      <a href="#"><img src="<%= user_info.photo %>" class="avatar circle"></a>
+                    </div>
 
-                  <div class="col-xs-4 col-sm-4 col-md-3 avatar">
-                    <a href="#"><img src="<%= user_info.photo %>" class="avatar circle"></a>
-                  </div>
-
-                  <div class="col-xs-8 col-sm-8 col-md-8 info">
-                    <small>Publicerat av</small>
+                    <div class="col-xs-8 col-sm-8 col-md-8 info">
+                      <small>Publicerat av</small>
                       <% if (typeof user_info.info !== 'undefined' && user_info.info.website !== "") { %>
-                        <a href="<%= user_info.info.website %>" title="<%= user_info.info.website %>" target="_blank"><h3><%= user_info.name.display_name %></h3></a>
+                        <a href="<%= user_info.info.website %>" title="<%= user_info.info.website %>" target="_blank" rel="nofollow"><h3><%= user_info.name.display_name %></h3></a>
                       <% } else { %>
                         <h3><%= user_info.name.display_name %></h3>
                       <% } %>
-                    <span class="description">
-                      <% if (typeof user_info.info !== 'undefined') { if (typeof user_info.info.description !== 'undefined') { %>
-                      <%= user_info.info.description %><% } } %>
-                    </span>
-                  </div>
+                      <span class="description">
+                        <% if (typeof user_info.info !== 'undefined') { if (typeof user_info.info.description !== 'undefined') { %>
+                          <%= user_info.info.description %>
+                        <% } } %>
+                      </span>
+                    </div>
+                  <% } else { %>
+                    <div class="col-xs-4 col-sm-4 col-md-3 avatar">
+                      <a href="#"><img src="/assets/images/no-picture.svg" class="avatar circle"></a>
+                    </div>
+
+                    <div class="col-xs-8 col-sm-8 col-md-8 info">
+                      <small>Publicerat av</small>
+                      <h3>Anonym</h3>
+                      <span class="description">
+                        Författaren till artikeln har valt att vara anonym. Kanske är det Batman?
+                      </span>
+                    </div>
+                  <% } %>
 
                 </div>
               </div>
@@ -159,7 +234,11 @@
 
         <div class="col-sm-6 col-md-4 sidebar">
 
-          <h2>Relaterade sidor</h2>
+          <div class="card">
+            <h3>Funderar du på något?</h3>
+            <p>Gå med i Sveriges största Facebookgrupp för Vegetarianer & Veganer.</p>
+            <a href="https://www.facebook.com/groups/840104332722635/?fref=ts" target="_blank" class="btn btn-secondary">Gå med i Facebookgruppen</a>
+          </div>
 
         </div>
       </div>
@@ -168,21 +247,11 @@
         <div class="col-md-8">
           <% if (post.type === '3') { %>
           <hr>
-            <h2>Recentioner</h2>
+            <h2>Recensioner</h2>
           <% } %>
           <div id="disqus_thread"></div>
           <script>
-            /**
-            *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
-            *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
-            */
-            /*
-            var disqus_config = function () {
-            this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
-            this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
-            };
-            */
-            (function() {  // DON'T EDIT BELOW THIS LINE
+            (function() {
             var d = document, s = d.createElement('script');
 
             s.src = '//vegosvar.disqus.com/embed.js';
