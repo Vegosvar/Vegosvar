@@ -9,7 +9,7 @@
           <article>
 
             <div class="headerImage">
-              <% if (typeof post.post.cover !== 'undefined' && post.post.cover !== "") { %>
+              <% if (typeof post.post.cover.filename !== 'undefined' && post.post.cover.filename !== "") { %>
               <img src="/uploads/<%= post.post.cover.filename %>.jpg" alt="<%= post.title %>"/>
               <% } %>
               <span class="license">
