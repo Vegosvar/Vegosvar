@@ -24,46 +24,68 @@
               </span>
             </div>
 
-            <h1><%= post.title %></h1>
+            <div class="content">
 
-            <% if (post.type === '3') { %>
-              <h2 class="city"><%= post.post.city %></h2>
-            <% } %>
+              <h1><%= post.title %></h1>
 
-            <p><%= post.post.content %></p>
-
-            <% if (post.type === '3') { %>
-
-              <p class="hidden-xs">
-              <% if (typeof post.post.phone !== 'undefined' && post.post.phone !== "") { %>
-                <strong>Telefon</strong> <%= post.post.phone %><br>
+              <% if (post.type === '3') { %>
+                <h2 class="city"><%= post.post.city %></h2>
               <% } %>
 
-              <% if (typeof post.post.mail !== 'undefined' && post.post.mail !== "") { %>
-                <strong>Mail</strong> 
-                <a href="mailto:<%= post.post.email %>" target="_blank">
-                  <%= post.post.email %>
-                </a><br>
-              <% } %>
+              <p><%= post.post.content %></p>
 
-              <% if (typeof post.post.website !== 'undefined' && post.post.website !== "") { %>
-                <a href="<%= post.post.website %>" target="_blank" rel="nofollow">
-                  <%= post.post.website %>
-                </a><br>
-              <% } %>
-              </p>
+              <div class="stars">
+                <div class="star">
+                  <span class="glyphicon glyphicon-star"></span>
+                </div>
+                <div class="star">
+                  <span class="glyphicon glyphicon-star"></span>
+                </div>
+                <div class="star">
+                  <span class="glyphicon glyphicon-star"></span>
+                </div>
+                <div class="star">
+                  <span class="glyphicon glyphicon-star"></span>
+                </div>
+                <div class="star empty">
+                  <span class="glyphicon glyphicon-star"></span>
+                </div>
+                <span class="votes">6<span class="additional">röster</span></span>
+              </div>
 
-              <p>
-                <a href="http://maps.google.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Öppna karta</a>
+              <% if (post.type === '3') { %>
 
-                <a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Öppna karta</a>
+                <p class="hidden-xs">
                 <% if (typeof post.post.phone !== 'undefined' && post.post.phone !== "") { %>
-                  <a href="tel:<%= post.post.phone %>" target="_blank"  class="btn btn-secondary btn-block visible-xs">
-                    <span class="glyphicon glyphicon-phone"></span>
-                    <strong>Ring</strong> <%= post.post.phone %>
-                  </a> 
-              <% } %>
-              </p>
+                  <strong>Telefon</strong> <%= post.post.phone %><br>
+                <% } %>
+
+                <% if (typeof post.post.mail !== 'undefined' && post.post.mail !== "") { %>
+                  <strong>Mail</strong> 
+                  <a href="mailto:<%= post.post.email %>" target="_blank">
+                    <%= post.post.email %>
+                  </a><br>
+                <% } %>
+
+                <% if (typeof post.post.website !== 'undefined' && post.post.website !== "") { %>
+                  <a href="<%= post.post.website %>" target="_blank" rel="nofollow">
+                    <%= post.post.website %>
+                  </a><br>
+                <% } %>
+                </p>
+
+                <p>
+                  <a href="http://maps.google.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Öppna karta</a>
+
+                  <a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Öppna karta</a>
+                  <% if (typeof post.post.phone !== 'undefined' && post.post.phone !== "") { %>
+                    <a href="tel:<%= post.post.phone %>" target="_blank"  class="btn btn-secondary btn-block visible-xs">
+                      <span class="glyphicon glyphicon-phone"></span>
+                      <strong>Ring</strong> <%= post.post.phone %>
+                    </a> 
+                <% } %>
+                </p>
+              </div>
 
               <hr class="lg hidden-xs">
               <div class="row">

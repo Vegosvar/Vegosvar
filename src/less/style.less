@@ -92,6 +92,7 @@ p {
 .preamble {
 	font-size: 19px;
 	line-height: 1.5;
+	margin-bottom: 20px;
 }
 
 .list-group {
@@ -761,15 +762,28 @@ article {
 		padding: 50px 20px;
 		margin: 0 -15px 30px -15px;
 	}
+	.content {
+		position: relative;
+		.stars {
+			margin-top: -5px;
+			margin-bottom: 15px;
+			.star {
+				font-size: 16px;
+			}
+			.votes {
+				top: -3px;
+			}
+		}
+	}
 	.city {
-		font-size: 28px;
+		font-size: 26px;
 		color: #888;
-		margin-top: -15px;
+		margin-top: -12px;
 		margin-bottom: 15px;
 		font-weight: 100;
 		@media (max-width: @xs) {
 			font-size: 20px;
-			margin-bottom: 10px;
+			margin-bottom: 12px;
 		}
 	}
 	.headerImage {
@@ -1082,6 +1096,79 @@ section {
 }
 
 
+.stars {
+	&:hover .star {
+		color: #DEDEDE;
+	}
+	.star {
+		color: #F7B21E;
+		transition: transform 0.15s, color 0.15s;
+		cursor: pointer;
+		font-size: 13px;
+		display: inline-block;
+		position: relative;
+		padding: 4px 1px;
+		&:before {
+			opacity: 0;
+			display: block;
+			position: absolute;
+			color: #888;
+			top: -7px;
+			left: 1px;
+			font-size: 8px;
+			transition: opacity 0.15s, color 0.15s;
+			white-space: nowrap;
+		}
+		&:nth-child(1):before { content: 'Dåligt'; }
+		&:nth-child(2):before { content: 'Sådär'; }
+		&:nth-child(3):before { content: 'Helt ok'; }
+		&:nth-child(4):before { content: 'Bra'; }
+		&:nth-child(5):before { content: 'Superbra'; }
+		&.empty {
+			color: #DEDEDE;
+		}
+		&:hover {
+			transform: scale(1.5);
+			color: #EC960B;
+			&:before {
+				opacity: 1;
+				@media (max-width: @xs) {
+					opacity: 0;
+				}
+			}
+		}
+		&:active {
+			transform: scale(1.7);
+			color: #F1AE00;
+			&:before {
+				color: #F1AE00;
+			}
+		}
+	}
+	.votes {
+		display: inline-block;
+		position: relative;
+		margin-left: 3px;
+		font-size: 11px;
+		color: #C9C9C9;
+		border: 1px solid  #C9C9C9;
+		border-radius: 50px;
+		padding: 1px 7px 2px 7px;
+		.additional {
+			display: none;
+			@media (max-width: @xs) {
+				display: inline-block;
+				margin-left: 5px;
+			}
+		}
+		@media (max-width: @xs) {
+			border: none;
+			margin-left: 0;
+		}
+	}
+}
+
+
 #results {
 	position: relative;
 	margin: 60px 0;
@@ -1158,53 +1245,8 @@ section {
 		position: absolute;
 		bottom: 8px;
 		left: 20px;
-		&:hover .star {
-			color: #DEDEDE;
-		}
-		.star {
-			color: #EBAD2E;
-			transition: transform 0.15s, color 0.15s;
-			cursor: pointer;
-			font-size: 13px;
-			display: inline-block;
-			position: relative;
-			padding: 4px 1px;
-			&:before {
-				opacity: 0;
-				display: block;
-				position: absolute;
-				color: #888;
-				top: -8px;
-				left: 1px;
-				font-size: 8px;
-				transition: opacity 0.15s, color 0.15s;
-				white-space: nowrap;
-			}
-			&:nth-child(1):before { content: 'Dåligt'; }
-			&:nth-child(2):before { content: 'Sådär'; }
-			&:nth-child(3):before { content: 'Helt ok'; }
-			&:nth-child(4):before { content: 'Bra'; }
-			&:nth-child(5):before { content: 'Jättebra'; }
-			&.empty {
-				color: #DEDEDE;
-			}
-			&:hover {
-				transform: scale(1.5);
-				color: #EC960B;
-				&:before {
-					opacity: 1;
-					@media (max-width: @xs) {
-						opacity: 0;
-					}
-				}
-			}
-			&:active {
-				transform: scale(1.7);
-				color: #F1AE00;
-				&:before {
-					color: #F1AE00;
-				}
-			}
+		.votes {
+			top: -1px;
 		}
 	}
 	.more {	
@@ -1366,6 +1408,7 @@ section {
 		}
 		img {
 			border-radius: 500px;
+			background: #EFF1F4;
 			@media (max-width: @sm) {
 				margin-bottom: 15px;
 			}
