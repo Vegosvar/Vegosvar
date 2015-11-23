@@ -9,7 +9,7 @@
           <article>
 
             <div class="headerImage">
-              <% if (typeof post.post.cover.filename !== 'undefined' && post.post.cover.filename !== "") { %>
+              <% if (typeof post.post.cover.filename !== 'undefined' && post.post.cover.filename !== "" && post.post.cover.filename !== null) { %>
               <img src="/uploads/<%= post.post.cover.filename %>.jpg" alt="<%= post.title %>"/>
               <% } %>
               <span class="license">
@@ -32,7 +32,18 @@
                 <h2 class="city"><%= post.post.city %></h2>
               <% } %>
 
-              <p><%- post.post.content %></p>
+              <p>
+                <% if (post.type === '4') { %>
+                    <% if (post.post.veg_type === 'animal') { %>
+                      <strong class="text-danger"><%= post.title %> är animaliskt.</strong>
+                    <% } else if (post.post.veg_type === 'lacto_ovo') { %>
+                      <strong class="text-warning"><%= post.title %> är Lakto-ovo-vegetariskt.</strong>
+                    <% } else { %>
+                      <strong class="text-success"><%= post.title %> är Veganskt.</strong>
+                    <% } %>
+                  <% } %>
+                <%- post.post.content %>
+              </p>
 
               <% if (post.type === '3' || post.type === '5' || post.type === '4' && post.post.veg_type !== 'animal') { %>
                 <div class="stars">

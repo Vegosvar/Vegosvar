@@ -531,6 +531,12 @@ nav {
 				font-size: 15px;
 				padding: 17px 15px;
 				transition: background 0s;
+				@media (max-width: @md) {
+					padding: 17px 10px;
+					> .glyphicon {
+						display: none;
+					}
+				}
 				&:hover {
 					background-color: darken(@brand-color, 5%) !important;
 				}
@@ -607,6 +613,9 @@ nav {
 					font-size: 13px;
 				}
 				@media (max-width: @md) {
+					width: 260px;
+				}
+				@media (max-width: @sm) {
 					width: 270px;
 				}
 			}
@@ -782,7 +791,7 @@ article {
 				}
 			}
 			.votes {
-				top: -3px;
+				top: -4px;
 			}
 		}
 	}
@@ -1163,7 +1172,7 @@ section {
 		margin-left: 3px;
 		font-size: 11px;
 		color: #C9C9C9;
-		border: 1px solid  #C9C9C9;
+		border: 1px solid #C9C9C9;
 		border-radius: 50px;
 		padding: 1px 7px 2px 7px;
 		.additional {
@@ -1172,10 +1181,6 @@ section {
 				display: inline-block;
 				margin-left: 5px;
 			}
-		}
-		@media (max-width: @xs) {
-			border: none;
-			margin-left: 0;
 		}
 	}
 }
@@ -1262,6 +1267,12 @@ section {
 		}
 		.votes {
 			top: -1px;
+			@media (max-width: @sm) {
+				display: none;
+			}
+			@media (max-width: @xs) {
+				display: inline-block;
+			}
 		}
 	}
 	.more {	
