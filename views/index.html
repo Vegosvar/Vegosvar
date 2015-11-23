@@ -56,13 +56,13 @@
 								<a href="/<%= pages[i].url %>"><h3><%= pages[i].title %></h3></a>
 								<% var content = '' + pages[i].post.content.substring(0,115) %>
 								<p>
-									<% if (typeof pages[i].type === '4' || pages[i].type === "") { %>
+									<% if (pages[i].type === '4' || pages[i].type === "") { %>
 										<% if (typeof pages[i].veg_type === 'animal') { %>
-											<strong class="text-danger">Animaliskt</strong> 
+											<strong class="text-danger">Animaliskt</strong>
 										<% } else if (typeof pages[i].veg_type === 'lakto-ovo') { %>
-											<strong class="text-warning">Lakto-ovo</strong> 
+											<strong class="text-warning">Lakto-ovo</strong>
 										<% } else { %>
-											<strong class="text-success">Veganskt</strong> 
+											<strong class="text-success">Veganskt</strong>
 										<% } %>
 									<% } %>
 									<%= content %>...
