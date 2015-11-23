@@ -187,7 +187,7 @@ app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res) 
 // TODO redirect to /konto?
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), function (req, res) {
   // TODO get the page we were on when we got sent to auth instead!
-  res.redirect('/')
+  res.redirect(req.session.returnTo || '/');
 })
 
 app.get('/logga-ut', function (req, res) {
@@ -238,7 +238,7 @@ app.use(function ensure_authenticated (req, res, next) {
   if (req.isAuthenticated()) {
     return next()
   }
-
+  req.session.returnTo = req.headers.referer
   res.redirect('/logga-in')
 })
 
@@ -351,7 +351,6 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
 
   var query = db.get('pages')
   if(type == 1) { // Fakta
-      console.log(req.body)
     var data = {
       title: req.body.title,
       url: niceurl,
