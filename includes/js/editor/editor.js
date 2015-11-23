@@ -26,7 +26,7 @@ $(document).ready(function () {
       case 'blur':
       case 'newword:composer':
       case 'aftercommand:composer':
-        $('.editable-content').val($.fn.editorController('getValue'))
+        $('.editable-content').text($.fn.editorController('getValue'))
         break
     }
   }
@@ -300,8 +300,10 @@ $(document).ready(function () {
     events: {
       handle: ['interaction', 'change', 'blur', 'focus', 'newword:composer'],
       callback: editorCallback
-    }
+    },
   })
+
+  $('.editable').html($('.editable-content').text())
 
   $('#insert-link-button-mobile').bind("DOMSubtreeModified", mobileInsertLinkFix)
 })

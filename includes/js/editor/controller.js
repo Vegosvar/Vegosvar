@@ -1,16 +1,27 @@
-  var editor
 (function ($) {
+  var editor
   var instance = {
     element: null,
     bookmark: null,
     selection: {}
   }
 
+  $.fn.editorParserRules = function() {
+    return $.extend(wysihtml5ParserRules.tags,
+      {
+        code: { unwrap: 1 },
+        pre: { unwrap: 1 },
+        li: { unwrap: 1 },
+        ul: { unwrap: 1 }
+      }
+    )
+  }
+
   $.fn.editorController = function (action, args) {
     var settings = $.extend({
       element: null,
       toolbar: null,
-      parserRules: null,
+      parserRules: $.fn.editorParserRules(),
       events: {
         handle: [],
         callback: function () {}
@@ -19,17 +30,18 @@
       insert: {}
     }, args)
 
-
     switch (action) {
       case 'init':
         elem = document.querySelector(settings.element)
         if(elem !== null) {
           instance.element = elem;
           editor = new wysihtml5.Editor(elem, {
-            parserRules: $.fn.editorController('parserRules'),
+            parserRules: settings.parserRules,
             toolbar: document.querySelector(settings.toolbar),
             useLineBreaks: true
           })
+
+          //Set up event listener callbacks
           $.each(settings.events.handle, function (i, e) {
             editor.on(e, function () {
               settings.events.callback.call({
@@ -46,13 +58,6 @@
         }
         $.fn.editorController('triggerEvent', {type:'change'})
         break
-      case 'parserRules':
-        return $.extend(wysihtml5ParserRules.tags,
-          {
-            code: { unwrap: 1 },
-            pre: { unwrap: 1 }
-          }
-        )
       case 'getBookmark':
         instance.bookmark = editor.composer.selection.getBookmark()
         break
@@ -69,7 +74,11 @@
       case 'getSelection':
         return instance.selection
       case 'setSelection':
-        $.fn.editorController('setBookmark')
+        if(instance.selection.text.length == 0 && instance.selection.node != instance.element) {
+          editor.composer.selection.selectNode(instance.selection.node)
+        } else {
+          $.fn.editorController('setBookmark')
+        }
         break
       case 'getValue':
         return editor.composer.getValue()
