@@ -34,18 +34,18 @@
 
               <p><%- post.post.content %></p>
 
-              <% if (post.type === '3' || post.type === '5' || post.type === '4') { %>
+              <% if (post.type === '3' || post.type === '5' || post.type === '4' && post.post.veg_type !== 'animal') { %>
                 <div class="stars">
-                  <div class="star">
+                  <div class="star empty">
                     <span class="glyphicon glyphicon-star"></span>
                   </div>
-                  <div class="star">
+                  <div class="star empty">
                     <span class="glyphicon glyphicon-star"></span>
                   </div>
-                  <div class="star">
+                  <div class="star empty">
                     <span class="glyphicon glyphicon-star"></span>
                   </div>
-                  <div class="star">
+                  <div class="star empty">
                     <span class="glyphicon glyphicon-star"></span>
                   </div>
                   <div class="star empty">
