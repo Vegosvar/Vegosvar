@@ -57,9 +57,9 @@
 								<% var content = '' + pages[i].post.content.substring(0,115) %>
 								<p>
 									<% if (pages[i].type === '4' || pages[i].type === "") { %>
-										<% if (pages[i].veg_type === 'animal') { %>
+										<% if (pages[i].post.veg_type === 'animal') { %>
 											<strong class="text-danger">Animaliskt</strong>
-										<% } else if (pages[i].veg_type === 'lakto-ovo') { %>
+										<% } else if (pages[i].post.veg_type === 'lakto-ovo') { %>
 											<strong class="text-warning">Lakto-ovo</strong>
 										<% } else { %>
 											<strong class="text-success">Veganskt</strong>
