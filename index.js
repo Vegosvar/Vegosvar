@@ -293,6 +293,42 @@ app.get('/ny/:type', function (req, res) {
   res.render('post/'+req.params.type, { user: req.user, type: req.params.type, loadEditorResources: true, loadDropzoneResources: true })
 })
 
+app.get('/redigera/:url', function (req, res, next) {
+  var pagesdb = db.get('pages')
+  pagesdb.find({url:req.params.url}, function(err, doc) {
+    if(doc !== null && doc.length > 0) {
+      var post = doc[0]
+      var type = parseInt(post.type)
+      var page = null
+        switch(type) {
+          case 1:
+            page = 'fakta'
+            break
+          case 2:
+            page = 'recept'
+            break
+          case 3:
+            page = 'produkt'
+            break
+          case 4:
+            page = 'restaurang'
+            break
+          case 5:
+            page = 'butik'
+            break
+          default:
+            return next()
+        }
+
+      if(page !== null) {
+        res.render('post/' + page, { user: req.user, post: post, loadEditorResources: true, loadDropzoneResources: true })
+      }
+    } else {
+      next()
+    }
+  })
+})
+
 app.post('/submit', urlencodedParser, function (req, res) { // Controller for handling page inputs.
                                                             // ## TODO ######################################################
                                                             // # Add error handling, check and sanitize inputs              #
