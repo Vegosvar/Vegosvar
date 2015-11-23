@@ -99,9 +99,8 @@ $(function () {
             content += ')"></div></a>'
             content += '<div class="content">'
             content += '<a href="/' + result[i].url + '"><h3>' + result[i].title + '</h3></a>'
-            content += '<p>' + result[i].post.content + '</p></div>'
+            content += '<p>' + result[i].post.content.substring(0,115) + '...</p></div>'
             content += '<div class="more">'
-            content += '<span class="info">Status</span>'
             content += '<a href="/' + result[i].url + '" class="btn btn-primary">Läs mer</a></div></div></div>'
             $('#searchResultsContainer').append(content)
             $('#searchResult-' + id).show()
