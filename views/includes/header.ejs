@@ -120,6 +120,25 @@
         <li class="dropdown hidden-sm">
             <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             <span class="glyphicon glyphicon-map-marker"></span>
+            Restauranger
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="/?s=stockholm+restaurang">Stockholm</a></li>
+            <li><a href="/?s=göteborg+restaurang">Göteborg</a></li>
+            <li><a href="/?s=malmö+restaurang">Malmö</a></li>
+            <li><a href="/?s=uppsala+restaurang">Uppsala</a></li>
+            <li><a href="/?s=västerås+restaurang">Västerås</a></li>
+            <li><a href="/?s=örebro+restaurang">Örebro</a></li>
+            <li><a href="/?s=linköping+restaurang">Linköping</a></li>
+            <li><a href="/?s=restaurang">
+              <span class="glyphicon glyphicon-list"></span> Visa alla</a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="dropdown hidden-sm">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <span class="glyphicon glyphicon-tag"></span>
             Butiker
           </a>
           <ul class="dropdown-menu">
@@ -135,21 +154,17 @@
             </li>
           </ul>
         </li>
-
+        
         <li class="dropdown hidden-sm">
             <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-            <span class="glyphicon glyphicon-map-marker"></span>
-            Restauranger
+            <span class="glyphicon glyphicon-ice-lolly-tasted"></span>
+            Produkter
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/?s=stockholm+restaurang">Stockholm</a></li>
-            <li><a href="/?s=göteborg+restaurang">Göteborg</a></li>
-            <li><a href="/?s=malmö+restaurang">Malmö</a></li>
-            <li><a href="/?s=uppsala+restaurang">Uppsala</a></li>
-            <li><a href="/?s=västerås+restaurang">Västerås</a></li>
-            <li><a href="/?s=örebro+restaurang">Örebro</a></li>
-            <li><a href="/?s=linköping+restaurang">Linköping</a></li>
-            <li><a href="/?s=restaurang">
+            <li><a href="/?s=livsmedel">Livsmedel</a></li>
+            <li><a href="/?s=kropp">Kropp</a></li>
+            <li><a href="/?s=alkohol">Dryck</a></li>
+            <li><a href="/?s=produkter">
               <span class="glyphicon glyphicon-list"></span> Visa alla</a>
             </li>
           </ul>
@@ -218,7 +233,7 @@
 
       <% if (typeof user === 'undefined') { %>
         <li>
-          <a class="toggle-dropdown"><span class="glyphicon glyphicon-user"></span>Konto</a>
+          <a class="toggle-dropdown"><span class="glyphicon glyphicon-user"></span>Logga in</a>
           <ul class="dropdown">
             <li class="title">
               <div><img src="/assets/images/no-picture.svg"></div>

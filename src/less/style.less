@@ -656,12 +656,13 @@ nav {
 					width: 25%;
 					text-align: center;
 					z-index: 1;
-					background: #FBFBFB;
+					background: #111;
 					a {
 						display: block;
 						padding: 10px 0 7px 0;
-						color: #666;
+						color: #999;
 						font-size: 11px;
+						transition: color 0.15s;
 						.glyphicon {
 							display: block;
 							font-size: 20px;
@@ -669,11 +670,11 @@ nav {
 						}
 						&:active, &:focus {
 							color: #fff;
-							background: darken(@brand-color, 2%);
 						}
 					}
 					&.active {
-						background: @brand-color;
+						background: darken(@brand-color, 2%);
+						color: #fff;
 						> a {
 							color: #fff;
 						}
@@ -766,8 +767,14 @@ article {
 		position: relative;
 		.stars {
 			display: inline-block;
+			@media (max-width: @xs) {
+				margin-bottom: 15px;
+			}
 			.star {
 				font-size: 16px;
+				@media (max-width: @xs) {
+					font-size: 20px;
+				}
 				&:before {
 					top: -6px;
 					margin-left: 1px;
@@ -1250,6 +1257,9 @@ section {
 		position: absolute;
 		bottom: 8px;
 		left: 20px;
+		@media (max-width: @xs) {
+			left: 16px;
+		}
 		.votes {
 			top: -1px;
 		}
