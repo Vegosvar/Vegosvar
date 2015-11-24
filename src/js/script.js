@@ -16,10 +16,10 @@ $(window).load(function () {
   })
 
   $('[data-toggle="tooltip"]').tooltip()
+
 })
 
 $(function () {
-
   if ($('#srch-term').length > 0 && $('#srch-term').val() === '') {
     setSearchFormState()
     doTrigger()
@@ -73,6 +73,14 @@ $(function () {
   $('.searchForm').on('keydown', function () {
     clearTimeout(typingTimer)
   })
+
+  setTimeout(function () {
+    var searchParam = window.location.search
+    if (searchParam.length > 0) { //Search query is entered in URL
+      setSearchFormState()
+      doTrigger()
+    }
+  }, 0)
 
   // Search results //
   function doTrigger() {
