@@ -186,7 +186,6 @@ app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res) 
 // TODO manually handle failure?
 // TODO redirect to /konto?
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), function (req, res) {
-  // TODO get the page we were on when we got sent to auth instead!
   res.redirect(req.session.returnTo || '/');
 })
 
@@ -235,10 +234,10 @@ app.get('/:url', function (req, res, next) {
 })
 
 app.use(function ensure_authenticated (req, res, next) {
+  req.session.returnTo = req._parsedOriginalUrl.path
   if (req.isAuthenticated()) {
     return next()
   }
-  req.session.returnTo = req.headers.referer
   res.redirect('/logga-in')
 })
 
