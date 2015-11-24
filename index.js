@@ -307,10 +307,10 @@ app.get('/redigera/:url', function (req, res, next) {
             page = 'recept'
             break
           case 3:
-            page = 'produkt'
+            page = 'restaurang'
             break
           case 4:
-            page = 'restaurang'
+            page = 'produkt'
             break
           case 5:
             page = 'butik'
@@ -360,6 +360,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
             name: typeof(req.body.source_name) === 'string' ? [req.body.source_name] : req.body.source_name,
             url: typeof(req.body.source_url) === 'string' ? [req.body.source_url] : req.body.source_url,
         },
+        type: req.body.type,
         license: req.body.license,
         license_cc_version: req.body.license_cc_version,
         license_holder: req.body.license_holder,
@@ -481,7 +482,7 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         license: req.body.license,
         license_cc_version: req.body.license_cc_version,
         license_holder: req.body.license_holder,
-        license_holder_link: req.body.license_holder_link,
+        license_holder_website: req.body.license_holder_website,
         city: req.body.city,
         street: req.body.street,
         website: req.body.website,
