@@ -6,9 +6,10 @@
 			<div class="row">
 				<div class="col-md-8">
 					<article>
+                        <h1><%= (typeof(post) !== 'undefined') ? 'Redigera: ' + post.title : 'Nytt recept' %></h1><br>
 						<form action="/submit" method="post">
+
 							<input type="hidden" name="type" value="2">
-							<h1>Nytt recept</h1><br>
 
 							<div class="input-group" id="upload-group">
 								<div id="uploader" class="dropzone"></div>
@@ -17,7 +18,7 @@
 							<div class="row">
 								<div class="col-sm-12">
 									<div class="input-group">
-										<input type="text" placeholder="Rubrik" class="form-control" id="header-input" name="title" autocomplete="off" aria-describedby="basic-addon1">
+										<input type="text" placeholder="Rubrik" class="form-control" id="header-input" name="title" autocomplete="off" aria-describedby="basic-addon1" value="<%= (typeof(post) !== 'undefined') ? post.title : '' %>">
 									</div>
 								</div>
 							</div>
@@ -26,7 +27,7 @@
 								<% include includes/editor %>
 								<div class="col-sm-12 hidden">
 									<div class="input-group">
-										<textarea name="content" class="form-control editable-content" id="content-input"></textarea>
+										<textarea name="content" class="form-control editable-content" id="content-input"><%= (typeof(post) !== 'undefined') ? post.post.content : '' %></textarea>
 									</div>
 								</div>
 							</div>
@@ -34,43 +35,43 @@
 							<h2>Typ av rätt</h2>
 							<div class="radio">
 								<label>
-									<input type="radio" name="type" value="baked"> 
+									<input type="radio" name="type" value="baked" <%= (typeof(post) !== 'undefined' && post.post.type == 'baked') ? 'checked=checked' : '' %>>
 									Bakat
 								</label>
 							</div>
 							<div class="radio">
 								<label>
-									<input type="radio" name="type" value="first-course"> 
+									<input type="radio" name="type" value="first-course" <%= (typeof(post) !== 'undefined' && post.post.type == 'first-course') ? 'checked=checked' : '' %>>
 									Förrätt
 								</label>
 							</div>
 							<div class="radio">
 								<label>
-									<input type="radio" name="type" value="main-course"> 
+									<input type="radio" name="type" value="main-course" <%= (typeof(post) !== 'undefined' && post.post.type == 'main-course') ? 'checked=checked' : '' %>>
 									Huvudrätt
 								</label>
 							</div>
 							<div class="radio">
 								<label>
-									<input type="radio" name="type" value="dessert"> 
+									<input type="radio" name="type" value="dessert" <%= (typeof(post) !== 'undefined' && post.post.type == 'dessert') ? 'checked=checked' : '' %>>
 									Efterätt
 								</label>
 							</div>
 							<div class="radio">
 								<label>
-									<input type="radio" name="type" value="snack"> 
+									<input type="radio" name="type" value="snack" <%= (typeof(post) !== 'undefined' && post.post.type == 'snack') ? 'checked=checked' : '' %>>
 									Snacks
 								</label>
 							</div>
 							<div class="radio">
 								<label>
-									<input type="radio" name="type" value="drink"> 
+									<input type="radio" name="type" value="drink" <%= (typeof(post) !== 'undefined' && post.post.type == 'drink') ? 'checked=checked' : '' %>>
 									Dryck
 								</label>
 							</div>
 							<div class="radio">
 								<label>
-									<input type="radio" name="type" value="other" checked> 
+									<input type="radio" name="type" value="other" <%= (typeof(post) !== 'undefined') ? ( (post.post.type == 'other') ? 'checked=checked' : '' ) : 'checked=checked' %>>
 									Annat
 								</label>
 							</div>
@@ -78,34 +79,34 @@
 							<h3>Övrigt</h3>
 							<div class="checkbox">
 								<label>
-									<input type="checkbox" name="hidden"> 
-									Jag vill vara anonym 
+									<input type="checkbox" name="hidden">
+									Jag vill vara anonym
 									<a href="/vanliga-fragor" target="_blank" title="Öppna i ny flik" class="small">Läs mer</a>
 								</label>
 							</div>
 
-							<h3>Licens</h3>
+                            <h3>Licens</h3>
 							<div class="row">
 								<div class="col-sm-6">
 									<div class="form-group">
 										<select class="form-control" name="license" id="license_select">
-											<option value="CC0">CC0</option>
-											<option value="CC BY">CC BY (Creative Commons)</option>
-											<option value="Copyright">Copyright</option>
+											<option value="CC0" <%= (typeof(post) !== 'undefined' && post.post.license == 'CC0') ? 'selected=selected' : '' %>>CC0</option>
+											<option value="CC BY" <%= (typeof(post) !== 'undefined' && post.post.license == 'CC BY') ? 'selected=selected' : '' %>>CC BY (Creative Commons)</option>
+											<option value="Copyright" <%= (typeof(post) !== 'undefined' && post.post.license == 'Copyright') ? 'selected=selected' : '' %>>Copyright</option>
 										</select>
 									</div>
 									<div id="license_info">
 										<div class="input-group cc-version">
 											<span class="input-group-addon">CC-version</span>
-											<input type="text" class="form-control" name="license_cc_version">
+											<input type="text" class="form-control" name="license_cc_version" value="<%= (typeof(post) !== 'undefined') ? post.post.license_cc_version : '' %>">
 										</div>
 										<div class="input-group license-owner">
 											<span class="input-group-addon">Licensägare</span>
-											<input type="text" class="form-control" name="license_holder">
+											<input type="text" class="form-control" name="license_holder" value="<%= (typeof(post) !== 'undefined') ? post.post.license_holder : '' %>">
 										</div>
 										<div class="input-group license-owner-website">
 											<span class="input-group-addon">Ägarens hemsida</span>
-											<input type="text" class="form-control" name="license_holder_website" placeholder="http://">
+											<input type="text" class="form-control" name="license_holder_website" placeholder="http://" value="<%= (typeof(post) !== 'undefined') ? post.post.license_holder_website : '' %>">
 										</div>
 									</div>
 								</div>
@@ -119,7 +120,7 @@
 									<small>Genom att skapa en sida går du med på <a href="/villkor" target="_blank">våra villkor</a></small></p>
 								</div>
 							</div>
-						</form>	
+						</form>
 					</article>
 				</div>
 				<div class="col-md-4">
