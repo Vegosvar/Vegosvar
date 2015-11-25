@@ -4,7 +4,13 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang="sv"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="sv"> <!--<![endif]-->
 <head>
-  <title>Vegosvar - Enkla svar på vegofrågor</title>
+  <title>
+    <% if(typeof(post) !== 'undefined') { %>
+      <%= post.title %> – Vegosvar
+    <% } else { %>
+      Vegosvar – Enkla svar på vegofrågor
+    <% } %>
+  </title>
 
   <meta name="robots" content="noindex,nofollow"> <!-- Remove before release -->
 
