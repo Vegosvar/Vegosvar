@@ -16,10 +16,10 @@ $(window).load(function () {
   })
 
   $('[data-toggle="tooltip"]').tooltip()
+
 })
 
 $(function () {
-
   if ($('#srch-term').length > 0 && $('#srch-term').val() === '') {
     setSearchFormState()
     doTrigger()
@@ -74,6 +74,14 @@ $(function () {
     clearTimeout(typingTimer)
   })
 
+  setTimeout(function () {
+    var searchParam = window.location.search
+    if (searchParam.length > 0) { //Search query is entered in URL
+      setSearchFormState()
+      doTrigger()
+    }
+  }, 0)
+
   // Search results //
   function doTrigger() {
     if ($('.searchForm').val().length > 2) {
@@ -83,7 +91,7 @@ $(function () {
           if ($('#searchEngine-noResults').css('display') === 'block') {
             $('#searchEngine-noResults').show()
           }
-          $('#searchFor').html('<h2 id="searchFor">Sökresultat för <strong>' + $('.searchForm').val() + '</strong></h2>')
+          $('#searchFor').html('<h2 id="searchFor">Resultat för <strong>' + $('.searchForm').val() + '</strong></h2>')
           $('#results').show()
           $('#searchResult').append('<div id="searchResultsContainer"></div>')
 
@@ -96,9 +104,9 @@ $(function () {
             content += '<a href="/' + result[i].url + '"><div class="image" style="background-image: url('
             content += (result[i].post.cover.filename !== null) ? '/uploads/' + result[i].post.cover.filename + '_thumb.jpg' : 'assets/images/placeholder-' + result[i].type + '.svg'
             content += ')"></div></a>'
-            content += '<div class="content">'
+            content += '<div class="content"><div class="text-overflow">'
             content += '<a href="/' + result[i].url + '"><h3>' + result[i].title + '</h3></a>'
-            content += '<p>' + result[i].post.content.substring(0, 115) + '...</p></div>'
+            content += '<p>' + result[i].post.content.substring(0, 115) + '...</p></div></div>'
             content += '<div class="more">'
             content += '<a href="/' + result[i].url + '" class="btn btn-primary">Läs mer</a></div></div></div>'
             $('#searchResultsContainer').append(content)

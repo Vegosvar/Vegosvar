@@ -8,16 +8,17 @@
 
               <div class="col-xs-8 col-sm-9 col-md-8 info">
                 <a href="<%= user.info.website %>" target="_blank" title="<%= user.info.website %>"><h3><%= user.name.display_name %></h3></a>
-			          <span class="description"><% if(typeof user.info !== 'undefined') { %>
-                  <%= typeof user.info.description !== 'undefined' ? user.info.description: 'Beskrivning saknas' %></p>
-                <% } else { %>
-                  Beskrivning saknas
-                <% } %> 
+  			         <p>
+                  <span class="description"><% if(typeof user.info !== 'undefined') { %>
+                    <%= typeof user.info.description !== 'undefined' ? user.info.description: 'Beskrivning saknas' %>
+                  <% } else { %>
+                    Beskrivning saknas
+                  <% } %>
+                </p>
               </div>
             </div>
           </div>
           <div class="card">
-            <a href="" class="glyphicon glyphicon-remove pull-right close"></a>
             <small><p style="margin: 0;"><strong>Tips</strong> Om du önskar vara anonym kan du välja det när du <a href="/ny">skapar en sida</a>. Din hemliga identitet är säker hos oss Batman.</p>
             </small>
           </div>
