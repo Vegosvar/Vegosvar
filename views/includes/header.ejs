@@ -16,15 +16,41 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-  <meta name="description" content="Kunskapskällan för vegetarianer och veganer. Ständigt uppdaterad med aktuella frågor och källkritiska svar.">
-  <meta name="keywords" content="vegan,vegetarian,svar">
+  <meta name="description" content="
+    <% if(typeof(post) !== 'undefined') { %>
+      <% var content = '' + post.content.substring(0,150) %>
+      <%= content %>
+    <% } else { %>
+      Sveriges modernaste plattform för vegointresserade. Sök fakta, restauranger, butiker, produkter och recept!
+    <% } %>
+  ">
+  <meta name="keywords" content="vegan,vegetarian,restauranger,produkter">
   <meta name="robots" content="all">
 
-  <meta property="og:site_name" content="Vegosvar - Kunskapskällan för vegetarianer och veganer">
-  <meta property="og:title" content="Vegosvar - Kunskapskällan för vegetarianer och veganer">
-  <meta property="og:description" content="Kunskapskällan för vegetarianer och veganer. Ständigt uppdaterad med aktuella frågor och källkritiska svar.">
+  <meta property="og:site_name" content="Vegosvar">
+  <meta property="og:title" content="
+    <% if(typeof(post) !== 'undefined') { %>
+      <%= post.title %> – Vegosvar
+    <% } else { %>
+      Vegosvar – Enkla svar på vegofrågor
+    <% } %>
+  ">
+  <meta property="og:description" content="
+    <% if(typeof(post) !== 'undefined') { %>
+      <% var content = '' + post.content.substring(0,150) %>
+      <%= content %>
+    <% } else { %>
+      Sveriges modernaste plattform för vegointresserade. Sök fakta, restauranger, butiker, produkter och recept!
+    <% } %>
+  ">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://vegosvar.se/assets/images/og.png">
+  <meta property="og:image" content="
+    <% if(typeof(post) !== 'undefined') { %>
+      https://vegosvar.se/uploads/<%= post.post.cover.filename %>.jpg
+    <% } else { %>
+      https://vegosvar.se/assets/images/og.png
+    <% } %>
+  ">
   <meta property="og:url" content="https://vegosvar.se">
 
   <link rel="dns-prefetch" href="//fonts.googleapis.com">
