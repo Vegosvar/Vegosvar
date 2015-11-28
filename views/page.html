@@ -69,6 +69,12 @@
                 </div>
               <% } %>
 
+              <% if (typeof post.post.manufacturer_website !== 'undefined' && post.post.manufacturer_website !== "") { %>
+                <p><a href="<%= post.post.manufacturer_website %>" target="_blank" rel="nofollow">
+                  <%= post.post.manufacturer_website %>
+                </a></p>
+              <% } %>
+
               <% if (post.type === '3' || post.type === '5') { %>
 
                 <p class="hidden-xs">
@@ -86,11 +92,6 @@
                 <% if (typeof post.post.website !== 'undefined' && post.post.website !== "") { %>
                   <a href="<%= post.post.website %>" target="_blank" rel="nofollow">
                     <%= post.post.website %>
-                  </a><br>
-                <% } %>
-                <% if (typeof post.post.manufacturer !== 'undefined' && post.post.manufacturer !== "") { %>
-                  <a href="<%= post.post.manufacturer %>" target="_blank" rel="nofollow">
-                    <%= post.post.manufacturer %>
                   </a><br>
                 <% } %>
                 </p>
