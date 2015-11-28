@@ -29,7 +29,10 @@
               <h1><%= post.title %></h1>
 
               <% if (post.type === '3' || post.type === '5') { %>
-                <h2 class="city"><%= post.post.city %></h2>
+                <h2 class="subtitle"><%= post.post.city %></h2>
+              <% } %>
+              <% if (post.type === '4') { %>
+                <h2 class="subtitle"><%= post.post.manufacturer %></h2>
               <% } %>
 
               <p>
@@ -83,6 +86,11 @@
                 <% if (typeof post.post.website !== 'undefined' && post.post.website !== "") { %>
                   <a href="<%= post.post.website %>" target="_blank" rel="nofollow">
                     <%= post.post.website %>
+                  </a><br>
+                <% } %>
+                <% if (typeof post.post.manufacturer !== 'undefined' && post.post.manufacturer !== "") { %>
+                  <a href="<%= post.post.manufacturer %>" target="_blank" rel="nofollow">
+                    <%= post.post.manufacturer %>
                   </a><br>
                 <% } %>
                 </p>
