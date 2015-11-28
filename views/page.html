@@ -38,11 +38,11 @@
               <p>
                 <% if (post.type === '4') { %>
                     <% if (post.post.veg_type === 'animal') { %>
-                      <strong class="text-danger"><%= post.title %> från <%= post.manufacturer %> är animaliskt.</strong>
+                      <strong class="text-danger"><%= post.title %> är animaliskt.</strong>
                     <% } else if (post.post.veg_type === 'lacto_ovo') { %>
-                      <strong class="text-warning"><%= post.title %> från <%= post.manufacturer %> är Lakto-ovo-vegetariskt.</strong>
+                      <strong class="text-warning"><%= post.title %> är Lakto-ovo-vegetariskt.</strong>
                     <% } else { %>
-                      <strong class="text-success"><%= post.title %> från <%= post.manufacturer %> är veganskt.</strong>
+                      <strong class="text-success"><%= post.title %> är Veganskt.</strong>
                     <% } %>
                   <% } %>
                 <%- post.post.content %>
