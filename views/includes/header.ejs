@@ -27,7 +27,7 @@
   <% } else {
     if (typeof post.post.content !== 'undefined' && post.post.content !== null) {
         if(post.post.content.length > 150) { var content = '' + post.post.content.substring(0, 150)
-      } else { var content = '' + post[i].post.content }
+      } else { var content = '' + post.post.content }
     } %>
   <meta property="og:title" content="<%= post.title %> – Vegosvar">
   <meta property="og:description" content="<%= content %>">
