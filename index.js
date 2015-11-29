@@ -131,7 +131,7 @@ passport.deserializeUser(function (id, done) {
 app.get('/', function (req, res) {
   var pagesdb = db.get('pages')
     pagesdb.find({}, function(err, doc) {
-      res.render('index', { user: req.user, pages: doc, startpage: false, searchString: req.query.s  })
+      res.render('index', { user: req.user, pages: doc, startpage: false, searchString: req.query.s })
     })
 })
 
@@ -242,7 +242,7 @@ app.get('/ajax/addVote', function (req, res) {
             user: { id:req.user._id } 
           }
 
-          votesdb.insert(data, function (err, doc) {
+          votesdb.insert(data, function (err) {
             if(err) throw err
           })
 
@@ -256,6 +256,38 @@ app.get('/ajax/addVote', function (req, res) {
     }
   } else {
     res.send('2') // All required variables not found in url
+  }
+})
+
+app.get('/ajax/like', function (req, res) {
+  if(req.query.id != undefined) {
+    req.session.returnTo = req._parsedOriginalUrl.path
+    if (req.isAuthenticated()) {
+      var likesdb = db.get('likes')
+      likesdb.count({ "post.id": req.query.id, "user.id": req.user._id }, function (err, count) {
+        if(count > 0) { // Already liked, remove it
+          likesdb.remove({ "post.id": req.query.id, "user.id": req.user._id }, function (err) {
+            if (err) throw err
+          })
+            res.send('Unliked')
+        } else { // First time pressing, add it
+          var data = {
+            post: { id: req.query.id },
+            user: { id: req.user._id }
+          }
+
+          likesdb.insert(data, function (err) {
+            if(err) throw err
+          })
+
+          res.send('Liked')
+        }
+      })
+    } else {
+      res.send('1') // Not logged in
+    }
+  } else {
+    res.send('2') // All variables isnt set
   }
 })
 

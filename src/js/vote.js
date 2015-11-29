@@ -16,4 +16,12 @@ $(window).load(function () {
 			})
 		}
 	})
+
+	$('.btn-like').on('click', function (e) {
+		e.preventDefault()
+		var id = $(this).attr('id')
+		$.get('/ajax/like?id=' + id, function (data) {
+			console.log(data)
+		})
+	})
 })
