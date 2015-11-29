@@ -49,24 +49,24 @@
               </p>
 
               <% if (post.type === '3' || post.type === '5' || post.type === '4' && post.post.veg_type !== 'animal') { %>
-                <div class="stars">
-                  <div class="star active">
-                    <span class="glyphicon glyphicon-star"></span>
-                  </div>
-                  <div class="star">
-                    <span class="glyphicon glyphicon-star"></span>
-                  </div>
-                  <div class="star">
-                    <span class="glyphicon glyphicon-star"></span>
-                  </div>
-                  <div class="star">
-                    <span class="glyphicon glyphicon-star"></span>
-                  </div>
-                  <div class="star">
-                    <span class="glyphicon glyphicon-star"></span>
-                  </div>
-                  <span class="votes">0<span class="additional">röster</span></span>
+              <div class="stars" id="<%= post._id %>">
+                <div class="star active" id="1">
+                  <span class="glyphicon glyphicon-star"></span>
                 </div>
+                <div class="star" id="2">
+                  <span class="glyphicon glyphicon-star"></span>
+                </div>
+                <div class="star" id="3">
+                  <span class="glyphicon glyphicon-star"></span>
+                </div>
+                <div class="star" id="4">
+                  <span class="glyphicon glyphicon-star"></span>
+                </div>
+                <div class="star" id="5">
+                  <span class="glyphicon glyphicon-star"></span>
+                </div>
+                      <span class="votes">0</span>
+              </div>
               <% } %>
 
               <% if (typeof post.post.manufacturer_website !== 'undefined' && post.post.manufacturer_website !== "") { %>
