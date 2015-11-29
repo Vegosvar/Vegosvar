@@ -76,20 +76,20 @@
 							</div>
 						</div>
 						<% if (pages[i].type !== '1' && pages[i].post.veg_type !== 'animal') { %>
-							<div class="stars">
-								<div class="star active">
+							<div class="stars" id="<%= pages[i]._id %>">
+								<div class="star active" id="1">
 									<span class="glyphicon glyphicon-star"></span>
 								</div>
-								<div class="star">
+								<div class="star" id="2">
 									<span class="glyphicon glyphicon-star"></span>
 								</div>
-								<div class="star">
+								<div class="star" id="3">
 									<span class="glyphicon glyphicon-star"></span>
 								</div>
-								<div class="star">
+								<div class="star" id="4">
 									<span class="glyphicon glyphicon-star"></span>
 								</div>
-								<div class="star">
+								<div class="star" id="5">
 									<span class="glyphicon glyphicon-star"></span>
 								</div>
 	                			<span class="votes">0</span>

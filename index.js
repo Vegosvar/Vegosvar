@@ -142,6 +142,13 @@ app.get('/handle', function (req, res) {
   })
 })
 
+app.get('/handle/votes', function (req, res) {
+  var images = db.get('votes')
+  images.find({ }, function(err, doc) {
+    res.json(doc)
+  })
+})
+
 app.post('/handle/post', urlencodedParser, function(req, res) {
   console.log(req.body)
   res.send('Done')
@@ -218,6 +225,37 @@ app.get('/ajax/imageInfo', function (req, res) {
     imagesdb.find({ _id : req.query.id }, function (err, doc) {
       res.json(doc)
     })
+  }
+})
+
+app.get('/ajax/addVote', function (req, res) {
+  if(req.query.id != undefined && req.query.content != undefined) {
+    console.log('ID: ' + req.query.id + ' Content: ' + req.query.content)
+    req.session.returnTo = req._parsedOriginalUrl.path
+    if (req.isAuthenticated()) {
+      var votesdb = db.get('votes')
+      votesdb.count({ "post.id": req.query.id, "user.id": req.user._id }, function(err, count) {
+        if(count < 1) {
+          var data = {
+            content: req.query.content,
+            post: { id:req.query.id },
+            user: { id:req.user._id } 
+          }
+
+          votesdb.insert(data, function (err, doc) {
+            if(err) throw err
+          })
+
+          res.send('0')
+        } else {
+          res.send('3') // Vote already found!
+        }
+      })
+    } else {
+      res.send('1') // Not logged in
+    }
+  } else {
+    res.send('2') // All required variables not found in url
   }
 })
 
