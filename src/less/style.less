@@ -1130,11 +1130,17 @@ section {
 
 
 .stars {
-	&:hover .star {
-		color: #DEDEDE;
+	&:hover .star.active {
+		color: #EC960B;
+		&:hover {
+			color: #EC960B;
+		}
+		&:active {
+			color: #F1AE00;
+		}
 	}
 	.star {
-		color: #F7B21E;
+		color: #DEDEDE;
 		transition: transform 0.15s, color 0.15s;
 		cursor: pointer;
 		font-size: 13px;
@@ -1157,8 +1163,8 @@ section {
 		&:nth-child(3):before { content: 'Helt ok'; left: -6px; }
 		&:nth-child(4):before { content: 'Bra'; } 	left: -1px;
 		&:nth-child(5):before { content: 'Superbra';left: -9px; }
-		&.empty {
-			color: #DEDEDE;
+		&.active {
+			color: #EC960B;
 		}
 		&:hover {
 			transform: scale(1.5);
