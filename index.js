@@ -181,6 +181,10 @@ app.get('/press', function (req, res) {
   res.render('press', { user: req.user })
 })
 
+app.get('/vote-login', function (req, res) {
+  res.render('vote-login', { user: req.user })
+})
+
 app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res) {})
 
 // TODO manually handle failure?
