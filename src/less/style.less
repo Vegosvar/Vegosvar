@@ -720,7 +720,7 @@ nav {
 								}
 							}
 							img {
-								width: 120px;
+								width: 100px;
 								border-radius: 100%;
 								margin-bottom: 15px;
 							}
@@ -793,6 +793,10 @@ article {
 			}
 			.votes {
 				top: -4px;
+				.additional {
+					display: inline-block;
+					margin-left: 3px;
+				}
 			}
 		}
 	}
@@ -1019,7 +1023,7 @@ section {
 	&.contracted {
 		padding: 10px 0 30px 0;
 		@media (max-width: @xs) {
-			padding: 0 0 20px 0;
+			padding: 0 0 0 0;
 		}
 		.intro {
 			margin-bottom: 0;
@@ -1029,6 +1033,11 @@ section {
 			h1 {
 				font-size: 0px !important;
 				opacity: 0;
+			}
+		}
+		.searchTips {
+			@media (max-width: @xs) {
+				display: none !important;
 			}
 		}
 	}
@@ -1182,7 +1191,7 @@ section {
 			display: none;
 			@media (max-width: @xs) {
 				display: inline-block;
-				margin-left: 5px;
+				margin-left: 3px;
 			}
 		}
 	}
