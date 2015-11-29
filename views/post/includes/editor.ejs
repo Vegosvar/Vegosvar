@@ -174,9 +174,8 @@
     </div>
 </div>
 <div id="sources-container" class="col-sm-12">
-    <h3>Källor</h3>
     <% if (typeof sources === 'undefined') { %>
-        <div class="alert alert-info"><span class="glyphicon glyphicon-superscript"></span>Glöm inte källhänvisa :)</div>
+        <div class="alert alert-info"><span class="glyphicon glyphicon-superscript"></span>Glöm inte att källhänvisa</div>
     <% } %>
     <ul id="sources-list" class="list-group">
         <% if (typeof sources !== 'undefined') { %>
@@ -184,10 +183,10 @@
                     <li id="source-<%= source.id %>" class="list-group-item">
                         <span>
                             <a href="<%= source.url %>" target="_blank" title="<%= source.url %>" class="source-url">
-                                <span class="source-id"><%= source.id %></span><span class="source-delimiter">:</span><span class="source-name"><%= source.name %></span>
+                                <span class="source-id"><%= source.id %></span><span class="source-delimiter">.</span> <span class="source-name"><%= source.name %></span>
                             </a>
                             <a href="#" data-source-id="<%= source.id %>" class="source-edit pull-right">
-                                <span>Redigera</span><span class="glyphicon glyphicon-edit"></span></span>
+                                <span>Redigera</span></span>
                             </a>
                         </span>
                     </li>

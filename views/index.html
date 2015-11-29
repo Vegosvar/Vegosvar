@@ -16,8 +16,8 @@
 						</div>
 					</div>
 
-			        <p class="hidden-xs">Sök fakta, restauranger, produkter, drycker, butiker & recept</p>
-			        <p class="visible-xs">Fakta, restauranger, produkter & drycker</p>
+			        <p class="searchTips hidden-xs">Sök fakta, restauranger, produkter, drycker, butiker & recept</p>
+			        <p class="searchTips visible-xs">Fakta, restauranger, produkter & drycker</p>
 				</div>
 			</div>
 		</div>
@@ -40,7 +40,7 @@
 			<h2>Populära sidor</h2>
 			<div class="row">
 				<% for(var i=0; i < pages.length; i++) {%>
-				<div class="col-sm-6 col-md-4 col-lg-3">
+				<div class="col-sm-4 col-md-4 col-lg-3">
 					<div class="result">
 						<% if (typeof pages[i].post.cover !== 'undefined' && pages[i].post.cover.filename !== null) { %>
 						<a href="/<%= pages[i].url %>">
@@ -62,10 +62,10 @@
 									}
 								} %>
 								<p>
-									<% if (pages[i].type === '4' || pages[i].type === "") { %>
-										<% if (typeof pages[i].veg_type === 'animal') { %>
+									<% if (pages[i].type === '4') { %>
+										<% if (pages[i].post.veg_type === 'animal') { %>
 											<strong class="text-danger">Animaliskt</strong>
-										<% } else if (typeof pages[i].veg_type === 'lakto-ovo') { %>
+										<% } else if (pages[i].post.veg_type === 'lacto_ovo') { %>
 											<strong class="text-warning">Lakto-ovo</strong>
 										<% } else { %>
 											<strong class="text-success">Veganskt</strong>
@@ -75,24 +75,26 @@
 								</p>
 							</div>
 						</div>
-						<div class="stars">
-							<div class="star">
-								<span class="glyphicon glyphicon-star"></span>
+						<% if (pages[i].type !== '1' && pages[i].post.veg_type !== 'animal') { %>
+							<div class="stars">
+								<div class="star empty">
+									<span class="glyphicon glyphicon-star"></span>
+								</div>
+								<div class="star empty">
+									<span class="glyphicon glyphicon-star"></span>
+								</div>
+								<div class="star empty">
+									<span class="glyphicon glyphicon-star"></span>
+								</div>
+								<div class="star empty">
+									<span class="glyphicon glyphicon-star"></span>
+								</div>
+								<div class="star empty">
+									<span class="glyphicon glyphicon-star"></span>
+								</div>
+	                			<span class="votes">0</span>
 							</div>
-							<div class="star">
-								<span class="glyphicon glyphicon-star"></span>
-							</div>
-							<div class="star">
-								<span class="glyphicon glyphicon-star"></span>
-							</div>
-							<div class="star">
-								<span class="glyphicon glyphicon-star"></span>
-							</div>
-							<div class="star empty">
-								<span class="glyphicon glyphicon-star"></span>
-							</div>
-                			<span class="votes">6<span class="additional">röster</span></span>
-						</div>
+						<% } %>
 						<div class="more">
 							<a href="/<%= pages[i].url %>" class="btn btn-primary">Läs mer</a>
 						</div>

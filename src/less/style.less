@@ -532,6 +532,12 @@ nav {
 				font-size: 15px;
 				padding: 17px 15px;
 				transition: background 0s;
+				@media (max-width: @md) {
+					padding: 17px 10px;
+					> .glyphicon {
+						display: none;
+					}
+				}
 				&:hover {
 					background-color: darken(@brand-color, 5%) !important;
 				}
@@ -608,6 +614,9 @@ nav {
 					font-size: 13px;
 				}
 				@media (max-width: @md) {
+					width: 260px;
+				}
+				@media (max-width: @sm) {
 					width: 270px;
 				}
 			}
@@ -657,12 +666,13 @@ nav {
 					width: 25%;
 					text-align: center;
 					z-index: 1;
-					background: #FBFBFB;
+					background: #111;
 					a {
 						display: block;
 						padding: 10px 0 7px 0;
-						color: #666;
+						color: #999;
 						font-size: 11px;
+						transition: color 0.15s;
 						.glyphicon {
 							display: block;
 							font-size: 20px;
@@ -670,11 +680,11 @@ nav {
 						}
 						&:active, &:focus {
 							color: #fff;
-							background: darken(@brand-color, 2%);
 						}
 					}
 					&.active {
-						background: @brand-color;
+						background: darken(@brand-color, 2%);
+						color: #fff;
 						> a {
 							color: #fff;
 						}
@@ -710,7 +720,7 @@ nav {
 								}
 							}
 							img {
-								width: 120px;
+								width: 100px;
 								border-radius: 100%;
 								margin-bottom: 15px;
 							}
@@ -767,8 +777,14 @@ article {
 		position: relative;
 		.stars {
 			display: inline-block;
+			@media (max-width: @xs) {
+				margin-bottom: 15px;
+			}
 			.star {
 				font-size: 16px;
+				@media (max-width: @xs) {
+					font-size: 20px;
+				}
 				&:before {
 					top: -6px;
 					margin-left: 1px;
@@ -776,11 +792,15 @@ article {
 				}
 			}
 			.votes {
-				top: -3px;
+				top: -4px;
+				.additional {
+					display: inline-block;
+					margin-left: 3px;
+				}
 			}
 		}
 	}
-	.city {
+	.subtitle {
 		font-size: 26px;
 		color: #888;
 		margin-top: -12px;
@@ -1003,7 +1023,7 @@ section {
 	&.contracted {
 		padding: 10px 0 30px 0;
 		@media (max-width: @xs) {
-			padding: 0 0 20px 0;
+			padding: 0 0 0 0;
 		}
 		.intro {
 			margin-bottom: 0;
@@ -1013,6 +1033,11 @@ section {
 			h1 {
 				font-size: 0px !important;
 				opacity: 0;
+			}
+		}
+		.searchTips {
+			@media (max-width: @xs) {
+				display: none !important;
 			}
 		}
 	}
@@ -1159,19 +1184,15 @@ section {
 		margin-left: 3px;
 		font-size: 11px;
 		color: #C9C9C9;
-		border: 1px solid  #C9C9C9;
+		border: 1px solid #C9C9C9;
 		border-radius: 50px;
 		padding: 1px 7px 2px 7px;
 		.additional {
 			display: none;
 			@media (max-width: @xs) {
 				display: inline-block;
-				margin-left: 5px;
+				margin-left: 3px;
 			}
-		}
-		@media (max-width: @xs) {
-			border: none;
-			margin-left: 0;
 		}
 	}
 }
@@ -1258,8 +1279,17 @@ section {
 		position: absolute;
 		bottom: 8px;
 		left: 20px;
+		@media (max-width: @xs) {
+			left: 16px;
+		}
 		.votes {
 			top: -1px;
+			@media (max-width: @sm) {
+				display: none;
+			}
+			@media (max-width: @xs) {
+				display: inline-block;
+			}
 		}
 	}
 	.more {	
@@ -1412,52 +1442,61 @@ section {
 		margin-top: 0;
 		margin-bottom: 60px;
 	}
-	.item {
-		background: #fff;
-		color: #222;
-		border-radius: 3px;
-		margin-bottom: 30px;
-		padding: 20px 20px 20px 15px;
-		@media (max-width: @md) {
-			padding: 10px 20px 10px 15px;
-		}
-		@media (max-width: @sm) {
-			text-align: center;
-			padding: 20px;
-		}
+	#items {
 		@media (max-width: @xs) {
-			text-align: left;
-			padding: 10px 20px;
+			border-radius: 4px;
+			overflow: hidden;
 		}
-		h3 {
-			font-weight: 600;
-			margin-top: 17px;
-			@media (max-width: @sm) {
-				margin-top: 0;
-			}
-			@media (max-width: @xs) {
-				margin-top: 15px;
-			}
-		}
-		p {
-			@media (max-width: @xs) {
-				font-size: 13px;
-			}
-		}
-		img {
+		.item {
 			background: #fff;
-			padding: 0 0 5px 10px;
+			color: #222;
+			border-radius: 3px;
+			margin-bottom: 30px;
+			padding: 20px 20px 20px 15px;
 			@media (max-width: @md) {
-				margin-top: 20px;
-				padding-left: 0;
-				margin-left: 5px;
+				padding: 10px 20px 10px 15px;
 			}
 			@media (max-width: @sm) {
-				margin-bottom: 15px;
-				padding: 0 15px;
+				text-align: center;
+				padding: 20px;
 			}
 			@media (max-width: @xs) {
-				padding: 0;
+				text-align: left;
+				padding: 10px 20px;
+				margin-bottom: 0;
+				border-radius: 0;
+				border-bottom: 1px solid #eee;
+			}
+			h3 {
+				font-weight: 600;
+				margin-top: 17px;
+				@media (max-width: @sm) {
+					margin-top: 0;
+				}
+				@media (max-width: @xs) {
+					margin-top: 15px;
+				}
+			}
+			p {
+				@media (max-width: @xs) {
+					font-size: 13px;
+				}
+			}
+			img {
+				background: #fff;
+				padding: 0 0 5px 10px;
+				@media (max-width: @md) {
+					margin-top: 20px;
+					padding-left: 0;
+					margin-left: 5px;
+				}
+				@media (max-width: @sm) {
+					margin-bottom: 15px;
+					padding: 0 15px;
+				}
+				@media (max-width: @xs) {
+					padding: 0;
+				}
 			}
 		}
 	}

@@ -9,7 +9,7 @@
           <article>
 
             <div class="headerImage">
-              <% if (typeof post.post.cover.filename !== 'undefined' && post.post.cover.filename !== "") { %>
+              <% if (typeof post.post.cover.filename !== 'undefined' && post.post.cover.filename !== "" && post.post.cover.filename !== null) { %>
               <img src="/uploads/<%= post.post.cover.filename %>.jpg" alt="<%= post.title %>"/>
               <% } %>
               <span class="license">
@@ -29,30 +29,50 @@
               <h1><%= post.title %></h1>
 
               <% if (post.type === '3' || post.type === '5') { %>
-                <h2 class="city"><%= post.post.city %></h2>
+                <h2 class="subtitle"><%= post.post.city %></h2>
+              <% } %>
+              <% if (post.type === '4') { %>
+                <h2 class="subtitle"><%= post.post.manufacturer %></h2>
               <% } %>
 
-              <p><%- post.post.content %></p>
+              <p>
+                <% if (post.type === '4') { %>
+                    <% if (post.post.veg_type === 'animal') { %>
+                      <strong class="text-danger"><%= post.title %> är animaliskt.</strong>
+                    <% } else if (post.post.veg_type === 'lacto_ovo') { %>
+                      <strong class="text-warning"><%= post.title %> är Lakto-ovo-vegetariskt.</strong>
+                    <% } else { %>
+                      <strong class="text-success"><%= post.title %> är Veganskt.</strong>
+                    <% } %>
+                  <% } %>
+                <%- post.post.content %>
+              </p>
 
-              <% if (post.type === '3' || post.type === '5' || post.type === '4') { %>
+              <% if (post.type === '3' || post.type === '5' || post.type === '4' && post.post.veg_type !== 'animal') { %>
                 <div class="stars">
-                  <div class="star">
-                    <span class="glyphicon glyphicon-star"></span>
-                  </div>
-                  <div class="star">
-                    <span class="glyphicon glyphicon-star"></span>
-                  </div>
-                  <div class="star">
-                    <span class="glyphicon glyphicon-star"></span>
-                  </div>
-                  <div class="star">
+                  <div class="star empty">
                     <span class="glyphicon glyphicon-star"></span>
                   </div>
                   <div class="star empty">
                     <span class="glyphicon glyphicon-star"></span>
                   </div>
-                  <span class="votes">6<span class="additional">röster</span></span>
+                  <div class="star empty">
+                    <span class="glyphicon glyphicon-star"></span>
+                  </div>
+                  <div class="star empty">
+                    <span class="glyphicon glyphicon-star"></span>
+                  </div>
+                  <div class="star empty">
+                    <span class="glyphicon glyphicon-star"></span>
+                  </div>
+                  <span class="votes">0<span class="additional">röster</span></span>
                 </div>
+              <% } %>
+
+              <% if (typeof post.post.manufacturer_website !== 'undefined' && post.post.manufacturer_website !== "") { %>
+                <p><a href="<%= post.post.manufacturer_website %>" target="_blank" rel="nofollow">
+                  <%= post.post.manufacturer_website %>
+                </a></p>
               <% } %>
 
               <% if (post.type === '3' || post.type === '5') { %>
