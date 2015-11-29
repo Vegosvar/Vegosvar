@@ -54,7 +54,13 @@
 						<div class="content">
 							<div class="text-overflow">
 								<a href="/<%= pages[i].url %>"><h3><%= pages[i].title %></h3></a>
-								<% var content = '' + pages[i].post.content.substring(0,115) %>
+								<% if (typeof pages[i].post.content !== 'undefined' && pages[i].post.content !== null) {
+									if(pages[i].post.content.length > 115) {
+										var content = '' + pages[i].post.content.substring(0,115) + '...'
+									} else {
+										var content = '' + pages[i].post.content
+									}
+								} %>
 								<p>
 									<% if (pages[i].type === '4' || pages[i].type === "") { %>
 										<% if (typeof pages[i].veg_type === 'animal') { %>
@@ -65,7 +71,7 @@
 											<strong class="text-success">Veganskt</strong>
 										<% } %>
 									<% } %>
-									<%= content %>...
+									<%= content %>
 								</p>
 							</div>
 						</div>
