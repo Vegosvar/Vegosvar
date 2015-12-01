@@ -21,32 +21,13 @@ var util = require('util')
 var config = require('./config')
 var image_processer = require('./imageProcesser.js')
 
-var db = require('monk')(config.database.host + config.database.name)
 var urlencodedParser = body_parser.urlencoded({ extended: false })
 
 var db = require('./db')
 db.connect()
 
 var ObjectID = require('mongodb').ObjectID
-/*
-//Set up db index on pages collection
-db.get('pages').ensureIndex({
-    "title": "text",
-    "post.city": "text",
-    "post.content": "text",
-    "post.food": "text",
-    "post.product_type": "text"
-}, {
-    "weights": {
-        "title": 20,
-        "post.city": 15,
-        "post.food": 10,
-        "post.product_type": 5,
-        "post.content": 3
-    },
-    "default_language": "swedish"
-})
-*/
+
 // TODO Move this out using cluster to a separate file, add more files for routes etc!
 // TODO Index auth.facebook etc
 // TODO set callback URLs etc in Facebook dev console
