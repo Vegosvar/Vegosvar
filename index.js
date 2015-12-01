@@ -22,10 +22,31 @@ var config = require('./config')
 var image_processer = require('./imageProcesser.js')
 
 var db = require('monk')(config.database.host + config.database.name)
-var users = db.get('users')
 var urlencodedParser = body_parser.urlencoded({ extended: false })
 
+var db = require('./db')
+db.connect()
 
+var ObjectID = require('mongodb').ObjectID
+/*
+//Set up db index on pages collection
+db.get('pages').ensureIndex({
+    "title": "text",
+    "post.city": "text",
+    "post.content": "text",
+    "post.food": "text",
+    "post.product_type": "text"
+}, {
+    "weights": {
+        "title": 20,
+        "post.city": 15,
+        "post.food": 10,
+        "post.product_type": 5,
+        "post.content": 3
+    },
+    "default_language": "swedish"
+})
+*/
 // TODO Move this out using cluster to a separate file, add more files for routes etc!
 // TODO Index auth.facebook etc
 // TODO set callback URLs etc in Facebook dev console
@@ -40,11 +61,17 @@ passport.use(new facebook_strategy({
   },
 
   function (access_token, refresh_token, profile, done) {
-    users.findAndModify({
+    var dbinstance = db.instance()
+    var usersdb = dbinstance.collection('users')
+    usersdb.findAndModify({
       auth: {
         facebook: profile.id
       }
-    }, {
+    },
+    [
+      ['_id','asc'] // sort order
+    ],
+    {
       $setOnInsert: {
         auth: {
           facebook: profile.id
@@ -67,9 +94,9 @@ passport.use(new facebook_strategy({
       upsert: true
     }, function (error, result) {
       done(error, {
-        id: result._id,
-        display_name: result.display_name,
-        photo: result.photo
+        id: result.value._id,
+        display_name: result.value.name.display_name,
+        photo: result.value.photo
       })
     })
   }
@@ -113,13 +140,17 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 passport.serializeUser(function (user, done) {
+  //console.log(user)
   done(null, user.id)
 })
 
 // TODO error handling etc
 passport.deserializeUser(function (id, done) {
-  users.findById(id, ['_id', 'name', 'photo', 'info'], function (error, result) {
-    done(error, result)
+  var dbinstance = db.instance()
+  var usersdb = dbinstance.collection('users')
+
+  usersdb.find({_id: new ObjectID(id)}, ['_id', 'name', 'photo', 'info']).toArray(function (error, result) {
+    done(error, result[0])
   })
 })
 
@@ -129,21 +160,24 @@ passport.deserializeUser(function (id, done) {
 
 // TODO make one default template instead of the same includes in every?
 app.get('/', function (req, res) {
-  var pagesdb = db.get('pages')
-    pagesdb.find({}, function(err, doc) {
-      res.render('index', { user: req.user, pages: doc, startpage: false, searchString: req.query.s  })
-    })
+  var dbinstance = db.instance()
+  var pagesdb = dbinstance.collection('pages')
+
+  pagesdb.find({}).toArray(function(err, doc) {
+    res.render('index', { user: req.user, pages: doc, startpage: false, searchString: req.query.s  })
+  })
 })
 
 app.get('/handle', function (req, res) {
-  var images = db.get('pages')
-  images.find({ }, function(err, doc) {
+  var dbinstance = db.instance()
+  var images = dbinstance.collection('pages')
+
+  images.find({}).toArray(function(err, doc) {
     res.json(doc)
   })
 })
 
 app.post('/handle/post', urlencodedParser, function(req, res) {
-  console.log(req.body)
   res.send('Done')
 })
 
@@ -195,22 +229,34 @@ app.get('/logga-ut', function (req, res) {
 })
 
 app.get('/ajax/search', function (req, res) {
-  var pagesdb = db.get('pages')
+  var dbinstance = db.instance()
+  var pagesdb = dbinstance.collection('pages')
+
   var query = {
-    title: {
-      $regex: req.query.s,
-      $options: 'i' //i: ignore case, m: multiline, etc
-    }
+      $text: {
+        $search: req.query.s
+      }
   }
 
-  pagesdb.find(query, {}, function (err, doc) {
+  var options = {
+      "score": {
+          $meta: "textScore",
+      }
+  }
+
+  pagesdb.find(query, options).sort({
+    "score": {
+        $meta: "textScore"
+    }
+  }).toArray(function (err, doc) {
     res.json(doc)
   })
 })
 
 app.get('/ajax/imageInfo', function (req, res) {
   if(req.query.id != undefined) {
-    var imagesdb = db.get('images')
+    var dbinstance = db.instance()
+    var imagesdb = dbinstance.collection('images')
     imagesdb.find({ _id : req.query.id }, function (err, doc) {
       res.json(doc)
     })
@@ -219,11 +265,15 @@ app.get('/ajax/imageInfo', function (req, res) {
 
 app.get('/:url', function (req, res, next) {
   var url = req.params.url
-  var post = db.get('pages')
-  post.count({ url: url }, function (err, count) {
+  var dbinstance = db.instance()
+  var pagesdb = dbinstance.collection('pages')
+
+  pagesdb.count({ url: url }, function (err, count) {
     if(count > 0) {
-      post.find({ url : url }, function (err, result) {
-        users.find({ _id : result[0].user_info.id }, function(err, user_info) {
+      pagesdb.find({ url : url }).toArray(function (err, result) {
+        var dbinstance = db.instance()
+        var usersdb = dbinstance.collection('users')
+        usersdb.find({ _id : result[0].user_info.id }).toArray(function(err, user_info) {
           res.render('page', { user: req.user, post: result[0], user_info: user_info[0] })
         })
       })
@@ -251,13 +301,14 @@ app.get('/installningar', function (req, res) {
 
 app.post('/installningar/submit', urlencodedParser, function (req, res) {
   var id = req.user._id
-  console.log(id)
   var display_name = req.body.displayName
   var website = req.body.website
   var description = req.body.description
-  var users = db.get('users')
-  console.log(display_name)
-  users.update(
+
+  var dbinstance = db.instance()
+  var usersdb = dbinstance.collection('users')
+
+  usersdb.update(
     { _id : id },
     { $set:
       { "name.display_name": display_name,
@@ -269,9 +320,11 @@ app.post('/installningar/submit', urlencodedParser, function (req, res) {
 })
 
 app.get('/mina-sidor', function (req, res) {
-  var pages = db.get('pages')
+  var dbinstance = db.instance()
+  var pagesdb = dbinstance.collection('pages')
+
   var userid = req.user.id
-  pages.find({id:userid}, function(err, doc) {
+  pagesdb.find({id:userid}).toArray(function(err, doc) {
     res.render('pages', { user: req.user, pages:doc })
   })
 })
@@ -293,8 +346,10 @@ app.get('/ny/:type', function (req, res) {
 })
 
 app.get('/redigera/:url', function (req, res, next) {
-  var pagesdb = db.get('pages')
-  pagesdb.find({url:req.params.url}, function(err, doc) {
+  var dbinstance = db.instance()
+  var pagesdb = dbinstance.collection('pages')
+
+  pagesdb.find({url:req.params.url}).toArray(function(err, doc) {
     if(doc !== null && doc.length > 0) {
       var post = doc[0]
       var type = parseInt(post.type)
@@ -348,7 +403,9 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
       symbols: false
     })
 
-  var query = db.get('pages')
+  var dbinstance = db.instance()
+  var pagesdb = dbinstance.collection('pages')
+
   if(type == 1) { // Fakta
     var data = {
       title: req.body.title,
@@ -508,21 +565,22 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
   } else {
     res.redirect('/ny')
   }
-    query.insert(data, function(err, doc) {
-      if(err) throw err
-    })
-    res.redirect('/ny/publicerad/?newpost='+niceurl)
+  pagesdb.insert(data, function(err, doc) {
+    if(err) throw err
+  })
+  res.redirect('/ny/publicerad/?newpost='+niceurl)
 })
 
 app.post('/submit/file', function(req, res) {
   var fstream
     req.pipe(req.busboy)
     req.busboy.on('file', function (fieldname, file, filename) {
-        var images = db.get('images')
-        images.count({ }, function (err, num_rows) {
+        var dbinstance = db.instance()
+        var imagesdb = dbinstance.collection('images')
+        imagesdb.count({ }, function (err, num_rows) {
           uHash = md5(num_rows + 1)
           uFilename = uHash.substring(0, 11)
-          images.insert({ id:num_rows + 1, filename: uFilename, active: false, deleted: false, "user_info":{ id: req.user._id } }, function(err, doc) {
+          imagesdb.insert({ id:num_rows + 1, filename: uFilename, active: false, deleted: false, "user_info":{ id: req.user._id } }, function(err, doc) {
             if(err) throw err
             fstream = fs.createWriteStream(__dirname + '/uploads/' + uFilename + '_original.jpg')
             file.pipe(fstream)
