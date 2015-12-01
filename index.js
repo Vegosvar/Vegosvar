@@ -496,6 +496,8 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
         license_holder_website: req.body.license_holder_website,
         veg_type: req.body.veg_type,
         product_type: req.body.product_type,
+        manufacturer: req.body.manufacturer,
+        manufacturer_website: req.body.manufacturer_website,
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename

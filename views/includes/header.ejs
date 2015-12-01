@@ -4,20 +4,37 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang="sv"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js" lang="sv"> <!--<![endif]-->
 <head>
-  <title>Vegosvar - Enkla svar på vegofrågor</title>
-
+  <% if(typeof(post) !== 'undefined') { %>
+    <title><%= post.title %> – Vegosvar</title>
+  <% } else { %>
+    <title>Vegosvar – Enkla svar på vegofrågor</title>
+  <% } %>
+ 
+  <meta name="robots" content="noindex,nofollow"> <!-- Remove before release -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-  <meta name="description" content="Kunskapskällan för vegetarianer och veganer. Ständigt uppdaterad med aktuella frågor och källkritiska svar.">
-  <meta name="keywords" content="vegan,vegetarian,svar">
+  <meta name="description" content="Sveriges modernaste plattform för vegointresserade. Sök fakta, restauranger, butiker, produkter och recept!">
+  <meta name="keywords" content="vegan,vegetarian,restauranger,produkter">
   <meta name="robots" content="all">
 
-  <meta property="og:site_name" content="Vegosvar - Kunskapskällan för vegetarianer och veganer">
-  <meta property="og:title" content="Vegosvar - Kunskapskällan för vegetarianer och veganer">
-  <meta property="og:description" content="Kunskapskällan för vegetarianer och veganer. Ständigt uppdaterad med aktuella frågor och källkritiska svar.">
+  <meta property="og:site_name" content="Vegosvar">
+  <% if(typeof(post) === 'undefined') { %>
+  <meta property="og:title" content="Vegosvar – Enkla svar på vegofrågor">
+  <meta property="og:description" content="Sveriges modernaste plattform för vegointresserade. Sök fakta, restauranger, butiker, produkter och recept!">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://vegosvar.se/assets/images/og.png">
   <meta property="og:url" content="https://vegosvar.se">
+  <% } else {
+    if (typeof post.post.content !== 'undefined' && post.post.content !== null) {
+        if(post.post.content.length > 150) { var content = '' + post.post.content.substring(0, 150)
+      } else { var content = '' + post[i].post.content }
+    } %>
+  <meta property="og:title" content="<%= post.title %> – Vegosvar">
+  <meta property="og:description" content="<%= content %>">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://vegosvar.se/uploads/<%= post.post.cover.filename %>.jpg">
+  <meta property="og:url" content="https://vegosvar.se/<%= post.url %>">
+  <% } %>
 
   <link rel="dns-prefetch" href="//fonts.googleapis.com">
   <link rel="dns-prefetch" href="//maxcdn.bootstrapcdn.com">
@@ -120,6 +137,25 @@
         <li class="dropdown hidden-sm">
             <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             <span class="glyphicon glyphicon-map-marker"></span>
+            Restauranger
+          </a>
+          <ul class="dropdown-menu">
+            <li><a href="/?s=stockholm+restaurang">Stockholm</a></li>
+            <li><a href="/?s=göteborg+restaurang">Göteborg</a></li>
+            <li><a href="/?s=malmö+restaurang">Malmö</a></li>
+            <li><a href="/?s=uppsala+restaurang">Uppsala</a></li>
+            <li><a href="/?s=västerås+restaurang">Västerås</a></li>
+            <li><a href="/?s=örebro+restaurang">Örebro</a></li>
+            <li><a href="/?s=linköping+restaurang">Linköping</a></li>
+            <li><a href="/?s=restaurang">
+              <span class="glyphicon glyphicon-list"></span> Visa alla</a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="dropdown hidden-sm">
+            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <span class="glyphicon glyphicon-tag"></span>
             Butiker
           </a>
           <ul class="dropdown-menu">
@@ -135,21 +171,17 @@
             </li>
           </ul>
         </li>
-
+        
         <li class="dropdown hidden-sm">
             <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-            <span class="glyphicon glyphicon-map-marker"></span>
-            Restauranger
+            <span class="glyphicon glyphicon-ice-lolly-tasted"></span>
+            Produkter
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/?s=stockholm+restaurang">Stockholm</a></li>
-            <li><a href="/?s=göteborg+restaurang">Göteborg</a></li>
-            <li><a href="/?s=malmö+restaurang">Malmö</a></li>
-            <li><a href="/?s=uppsala+restaurang">Uppsala</a></li>
-            <li><a href="/?s=västerås+restaurang">Västerås</a></li>
-            <li><a href="/?s=örebro+restaurang">Örebro</a></li>
-            <li><a href="/?s=linköping+restaurang">Linköping</a></li>
-            <li><a href="/?s=restaurang">
+            <li><a href="/?s=livsmedel">Livsmedel</a></li>
+            <li><a href="/?s=kropp">Kropp</a></li>
+            <li><a href="/?s=alkohol">Dryck</a></li>
+            <li><a href="/?s=produkter">
               <span class="glyphicon glyphicon-list"></span> Visa alla</a>
             </li>
           </ul>
@@ -200,6 +232,7 @@
           <li><a href="/?s=västerås+restaurang">Västerås</a></li>
           <li><a href="/?s=örebro+restaurang">Örebro</a></li>
           <li><a href="/?s=linköping+restaurang">Linköping</a></li>
+          <li class="desc"><div>Du kan även använda sökfunktionen</div></li>
         </ul>
       </li>
 
@@ -207,18 +240,27 @@
         <a class="toggle-dropdown"><span class="glyphicon glyphicon-ice-lolly-tasted"></span>Produkter</a>
         <ul class="dropdown">
           <li class="title">Produkter</li>
-          <li><a href="/?s=öl">Öl</a></li>
-          <li><a href="/?s=vin">Vin</a></li>
-          <li><a href="/?s=cider">Cider</a></li>
           <li><a href="/?s=chips">Chips</a></li>
+          <li><a href="/?s=glass">Glass</a></li>
           <li><a href="/?s=godis">Godis</a></li>
-          <li><a href="/?s=Shampoo">Shampoo</a></li>
+          <li><a href="/?s=hudvård">Hudvård</a></li>
+          <li><a href="/?s=kosttillskott">Kosttillskott</a></li>
+          <li><a href="/?s=makeup">Makeup</a></li>
+          <li><a href="/?s=ost">Ost</a></li>
+          <li><a href="/?s=shampoo">Shampoo</a></li>
+          <li><a href="/?s=tandkräm">Tandkräm</a></li>
+          <li><a href="/?s=vegokött">Vegokött</a></li>
+          <li><a href="/?s=vin">Vin</a></li>
+          <li><a href="/?s=växtdryck">Växtdryck</a></li>
+          <li><a href="/?s=växtgrädde">Växtgrädde</a></li>
+          <li><a href="/?s=öl">Öl</a></li>
+          <li class="desc"><div>Du kan även använda sökfunktionen för att söka specifika produkter</div></li>
         </ul>
       </li>
 
       <% if (typeof user === 'undefined') { %>
         <li>
-          <a class="toggle-dropdown"><span class="glyphicon glyphicon-user"></span>Konto</a>
+          <a class="toggle-dropdown"><span class="glyphicon glyphicon-user"></span>Logga in</a>
           <ul class="dropdown">
             <li class="title">
               <div><img src="/assets/images/no-picture.svg"></div>
