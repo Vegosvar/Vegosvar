@@ -249,7 +249,7 @@ app.get('/ajax/imageInfo', function (req, res) {
   if(req.query.id != undefined) {
     var dbinstance = db.instance()
     var imagesdb = dbinstance.collection('images')
-    imagesdb.find({ _id : req.query.id }, function (err, doc) {
+    imagesdb.find({ _id : new ObjectID(req.query.id) }).toArray(function (err, doc) {
       res.json(doc)
     })
   }
@@ -266,7 +266,7 @@ app.get('/ajax/addVote', function (req, res) {
           var data = {
             content: req.query.content,
             post: { id:req.query.id },
-            user: { id:req.user._id } 
+            user: { id:req.user._id }
           }
 
           votesdb.insert(data, function (err) {
@@ -645,7 +645,7 @@ app.post('/submit/file', function(req, res) {
               var resize = image_processer.resize(uFilename, 1200, 630)
               if(resize == true) {
                 fstream.on('close', function () {
-                  res.send(doc._id)
+                  res.send(doc.ops[0]._id)
                 })
               }
             })
