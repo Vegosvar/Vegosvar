@@ -329,6 +329,10 @@ app.get('/:url', function (req, res, next) {
         var dbinstance = db.instance()
         var usersdb = dbinstance.collection('users')
         usersdb.find({ _id : result[0].user_info.id }).toArray(function(err, user_info) {
+          if(typeof(user_info[0]) == 'undefined') {
+              result[0].user_info.hidden = true
+              user_info[0] = { id: '', photo: ''}
+          }
           res.render('page', { user: req.user, post: result[0], user_info: user_info[0] })
         })
       })
