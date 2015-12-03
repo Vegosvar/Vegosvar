@@ -260,7 +260,8 @@ app.get('/ajax/addVote', function (req, res) {
     console.log('ID: ' + req.query.id + ' Content: ' + req.query.content)
     req.session.returnTo = req._parsedOriginalUrl.path
     if (req.isAuthenticated()) {
-      var votesdb = db.get('votes')
+      var dbinstance = db.instance()
+      var votesdb = dbinstance.collection('votes')
       votesdb.count({ "post.id": req.query.id, "user.id": req.user._id }, function(err, count) {
         if(count < 1) {
           var data = {
@@ -442,25 +443,22 @@ app.get('/redigera/:url', function (req, res, next) {
   })
 })
 
-app.post('/submit', urlencodedParser, function (req, res) { // Controller for handling page inputs.
-                                                            // ## TODO ######################################################
-                                                            // # Add error handling, check and sanitize inputs              #
-                                                            // # Add support for multiple sources, ingredients, steps et.c. #
-                                                            // ##############################################################
+app.post('/submit', urlencodedParser, function (req, res) {
+  // Controller for handling page inputs.
+  // ## TODO ######################################################
+  // # Add error handling, check and sanitize inputs              #
+  // # Add support for multiple sources, ingredients, steps et.c. #
+  // ##############################################################
+
+  var id = req.body.id
   var type = req.body.type
-
-    if(req.body.hidden) {
-      var hidden = true
-    } else {
-      var hidden = false
-    }
-
-    var niceurl = getSlug(req.body.title, {
-      // URL Settings
-      separator: '-',
-      maintainCase: false,
-      symbols: false
-    })
+  var hidden = (req.body.hidden) ? true : false;
+  var niceurl = getSlug(req.body.title, {
+    // URL Settings
+    separator: '-',
+    maintainCase: false,
+    symbols: false
+  })
 
   var dbinstance = db.instance()
   var pagesdb = dbinstance.collection('pages')
@@ -626,10 +624,10 @@ app.post('/submit', urlencodedParser, function (req, res) { // Controller for ha
   } else {
     res.redirect('/ny')
   }
-  pagesdb.insert(data, function(err, doc) {
+  pagesdb.update({ _id: new ObjectID(id) }, data, { upsert: true }, function(err, doc) {
     if(err) throw err
+    res.redirect('/ny/publicerad/?newpost='+niceurl)
   })
-  res.redirect('/ny/publicerad/?newpost='+niceurl)
 })
 
 app.post('/submit/file', function(req, res) {
