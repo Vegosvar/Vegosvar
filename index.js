@@ -624,7 +624,8 @@ app.post('/submit', urlencodedParser, function (req, res) {
   } else {
     res.redirect('/ny')
   }
-  pagesdb.update({ _id: new ObjectID(id) }, data, { upsert: true }, function(err, doc) {
+  var objId = (id) ? new ObjectID(id) : ''
+  pagesdb.update({ _id: objId }, data, { upsert: true }, function(err, doc) {
     if(err) throw err
     res.redirect('/ny/publicerad/?newpost='+niceurl)
   })
