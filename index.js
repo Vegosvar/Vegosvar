@@ -143,7 +143,9 @@ passport.deserializeUser(function (id, done) {
 app.get('/', function (req, res) {
   var dbinstance = db.instance()
   var pagesdb = dbinstance.collection('pages')
+  var likesdb = dbinstance.collection('likes')
 
+  var pages = {}
   pagesdb.find({}).toArray(function(err, doc) {
     res.render('index', { user: req.user, pages: doc, startpage: false, searchString: req.query.s  })
   })
@@ -257,11 +259,10 @@ app.get('/ajax/imageInfo', function (req, res) {
 
 app.get('/ajax/addVote', function (req, res) {
   if(req.query.id != undefined && req.query.content != undefined) {
-    console.log('ID: ' + req.query.id + ' Content: ' + req.query.content)
     req.session.returnTo = req._parsedOriginalUrl.path
     if (req.isAuthenticated()) {
-      var dbinstance = db.instance()
-      var votesdb = dbinstance.collection('votes')
+      var database = db.instance()
+      var votesdb = database.collection('votes')
       votesdb.count({ "post.id": req.query.id, "user.id": req.user._id }, function(err, count) {
         if(count < 1) {
           var data = {
@@ -269,6 +270,19 @@ app.get('/ajax/addVote', function (req, res) {
             post: { id:req.query.id },
             user: { id:req.user._id }
           }
+
+          votesdb.aggregate([{
+            $match: {
+              "post.id": req.query.id
+            }, $group: {
+              "avg_rating": { $avg: "$content" }
+            } 
+          }], function (err, results) {
+            if (err) {
+              console.log(err)
+            }
+            console.log(results)
+          })
 
           votesdb.insert(data, function (err) {
             if(err) throw err
@@ -291,11 +305,17 @@ app.get('/ajax/like', function (req, res) {
   if(req.query.id != undefined) {
     req.session.returnTo = req._parsedOriginalUrl.path
     if (req.isAuthenticated()) {
-      var likesdb = db.get('likes')
+      var database = db.instance()
+      var likesdb = database.collection('likes')
       likesdb.count({ "post.id": req.query.id, "user.id": req.user._id }, function (err, count) {
         if(count > 0) { // Already liked, remove it
           likesdb.remove({ "post.id": req.query.id, "user.id": req.user._id }, function (err) {
             if (err) throw err
+          })
+
+          var pagesdb = database.collection('pages')
+          pagesdb.update({ "_id": new ObjectID(req.query.id) }, {$inc: { "rating.likes": -1, }}, function (err) {
+            if(err) throw err
           })
             res.send('Unliked')
         } else { // First time pressing, add it
@@ -305,6 +325,11 @@ app.get('/ajax/like', function (req, res) {
           }
 
           likesdb.insert(data, function (err) {
+            if(err) throw err
+          })
+
+          var pagesdb = database.collection('pages')
+          pagesdb.update({ "_id": new ObjectID(req.query.id) }, {$inc: { "rating.likes": 1, }}, function (err) {
             if(err) throw err
           })
 
