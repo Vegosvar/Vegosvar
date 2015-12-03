@@ -11,27 +11,13 @@
                         <form action="/submit" method="post">
 
                             <input type="hidden" name="type" value="4">
+                            <input type="hidden" name="id" value="<%= (typeof(post) !== 'undefined') ? post._id : '' %>">
 
-                            <div class="input-group" id="upload-group">
-                                <div id="uploader" class="dropzone"></div>
-                            </div>
+                            <% include includes/template_parts/imageupload %>
 
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="input-group">
-                                        <input type="text" placeholder="Rubrik" class="form-control" id="header-input" name="title" autocomplete="off" aria-describedby="basic-addon1" value="<%= (typeof(post) !== 'undefined') ? post.title : '' %>">
-                                    </div>
-                                </div>
-                            </div>
+                            <% include includes/template_parts/title %>
 
-                            <div class="row">
-                                <% include includes/editor %>
-                                <div class="col-sm-12 hidden">
-                                    <div class="input-group">
-                                        <textarea name="content" class="form-control editable-content" id="content-input"><%= (typeof(post) !== 'undefined') ? post.post.content : '' %></textarea>
-                                    </div>
-                                </div>
-                            </div>
+                            <% include includes/editor %>
 
                             <h2>Innehåll</h2>
                             <div class="radio">
@@ -186,50 +172,13 @@
                                 </div>
                             </div>
 
-                            <h3>Övrigt</h3>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" name="hidden">
-                                    Jag vill vara anonym
-                                    <a href="/vanliga-fragor" target="_blank" title="Öppna i ny flik" class="small">Läs mer</a>
-                                </label>
-                            </div>
+                            <% include includes/template_parts/other %>
 
-                            <h3>Licens</h3>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <select class="form-control" name="license" id="license_select">
-                                            <option value="CC0" <%= (typeof(post) !== 'undefined' && post.post.license == 'CC0') ? 'selected=selected' : '' %>>CC0</option>
-                                            <option value="CC BY" <%= (typeof(post) !== 'undefined' && post.post.license == 'CC BY') ? 'selected=selected' : '' %>>CC BY (Creative Commons)</option>
-                                            <option value="Copyright" <%= (typeof(post) !== 'undefined' && post.post.license == 'Copyright') ? 'selected=selected' : '' %>>Copyright</option>
-                                        </select>
-                                    </div>
-                                    <div id="license_info">
-                                        <div class="input-group cc-version">
-                                            <span class="input-group-addon">CC-version</span>
-                                            <input type="text" class="form-control" name="license_cc_version" value="<%= (typeof(post) !== 'undefined') ? post.post.license_cc_version : '' %>">
-                                        </div>
-                                        <div class="input-group license-owner">
-                                            <span class="input-group-addon">Licensägare</span>
-                                            <input type="text" class="form-control" name="license_holder" value="<%= (typeof(post) !== 'undefined') ? post.post.license_holder : '' %>">
-                                        </div>
-                                        <div class="input-group license-owner-website">
-                                            <span class="input-group-addon">Ägarens hemsida</span>
-                                            <input type="text" class="form-control" name="license_holder_website" placeholder="http://" value="<%= (typeof(post) !== 'undefined') ? post.post.license_holder_website : '' %>">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <% include includes/template_parts/license %>
 
                             <hr>
 
-                            <div class="row">
-                                <div class="col-sm-12">
-                                <p><button class="btn btn-primary lg">Skapa sida</button><br>
-                                <small>Genom att skapa en sida går du med på <a href="/villkor" target="_blank">våra villkor</a></small></p>
-                                </div>
-                            </div>
+                            <% include includes/template_parts/submit %>
                         </form>
                     </article>
                 </div>

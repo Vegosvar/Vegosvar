@@ -1,206 +1,213 @@
-<div class="col-sm-12">
-    <!-- Editor modals -->
-    <div id="editorModalLink" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <a type="a" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </a>
-                    <h4 class="modal-title">Infoga länk</h4>
-                </div>
-                <div class="modal-body">
-                    <label>
-                        Länk:
-                        <input id="insert-link-url" type="url" class="form-control" placeholder="http://">
-                    </label>
-                    <label>
-                        Text:
-                        <input id="insert-link-text" type="text" class="form-control">
-                    </label>
-                </div>
-                <div class="modal-footer">
-                    <a id="insert-link-save" class="btn btn-primary">OK</a>
-                    <a class="btn btn-danger" data-dismiss="modal">Avbryt</a>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
 
-    <div id="editorModalSource" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <a type="a" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </a>
-                    <h4 class="modal-title">Infoga källa</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="new-source">
-                        <h4 id="source-title-new">Ny Källa</h4>
-                        <h4 id="source-title-edit" class="hidden">Redigera källa</h4>
-                        <div class="input-group hidden">
-                            <input id="insert-source-id" class="form-control" disabled="disabled" type="text">
+<div class="row">
+
+    <div class="col-sm-12">
+        <!-- Editor modals -->
+        <div id="editorModalLink" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a type="a" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                        <h4 class="modal-title">Infoga länk</h4>
+                    </div>
+                    <div class="modal-body">
+                        <label>
+                            Länk:
+                            <input id="insert-link-url" type="url" class="form-control" placeholder="http://">
+                        </label>
+                        <label>
+                            Text:
+                            <input id="insert-link-text" type="text" class="form-control">
+                        </label>
+                    </div>
+                    <div class="modal-footer">
+                        <a id="insert-link-save" class="btn btn-primary">OK</a>
+                        <a class="btn btn-danger" data-dismiss="modal">Avbryt</a>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+
+        <div id="editorModalSource" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a type="a" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                        <h4 class="modal-title">Infoga källa</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="new-source">
+                            <h4 id="source-title-new">Ny Källa</h4>
+                            <h4 id="source-title-edit" class="hidden">Redigera källa</h4>
+                            <div class="input-group hidden">
+                                <input id="insert-source-id" class="form-control" disabled="disabled" type="text">
+                            </div>
+                            <div class="input-group">
+                                <input id="insert-source-name" class="form-control" placeholder="Namn" type="text">
+        					</div>
+                            <div class="input-group">
+                                <input id="insert-source-url" class="form-control" placeholder="http://" type="url">
+                            </div>
                         </div>
-                        <div class="input-group">
-                            <input id="insert-source-name" class="form-control" placeholder="Namn" type="text">
-    					</div>
-                        <div class="input-group">
-                            <input id="insert-source-url" class="form-control" placeholder="http://" type="url">
+                        <div id="source-existing" class="<%= (typeof sources === 'undefined') ? 'hidden' : '' %>">
+                            <h4>Välj befintlig källa</h4>
+                            <select id="insert-source-existing" class="form-control">
+                                <option value=""></option>
+                                <% if (typeof sources !== 'undefined') { %>
+                                    <% sources.forEach(function(source) { %>
+                                        <option value="<%= source.id %>"><%= source.id %>: <%= source.name %></option>
+                                    <% }); %>
+                                <% } %>
+                            </select>
                         </div>
                     </div>
-                    <div id="source-existing" class="<%= (typeof sources === 'undefined') ? 'hidden' : '' %>">
-                        <h4>Välj befintlig källa</h4>
-                        <select id="insert-source-existing" class="form-control">
-                            <option value=""></option>
-                            <% if (typeof sources !== 'undefined') { %>
-                                <% sources.forEach(function(source) { %>
-                                    <option value="<%= source.id %>"><%= source.id %>: <%= source.name %></option>
-                                <% }); %>
-                            <% } %>
-                        </select>
+                    <div class="modal-footer">
+                        <a id="insert-source-save" class="btn btn-primary">OK</a>
+                        <a id="insert-source-edit" class="btn btn-primary hidden">OK</a>
+                        <a class="btn btn-danger" data-dismiss="modal">Avbryt</a>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <a id="insert-source-save" class="btn btn-primary">OK</a>
-                    <a id="insert-source-edit" class="btn btn-primary hidden">OK</a>
-                    <a class="btn btn-danger" data-dismiss="modal">Avbryt</a>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
 
-    <div id="editorModalImage" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <a type="a" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </a>
-                    <h4 class="modal-title">Infoga bild</h4>
-                </div>
-                <div class="modal-body">
-                    <div>
-                        <div class="input-group">
-                            <label for="insert-image-url">
-                                Från länk:
-                                <input id="insert-image-url" type="url" class="form-control" placeholder="http://">
-                            </label>
-                        </div>
-                        <div class="input-group">
-                            <label for="insert-image-upload">
-                                Ladda upp:
-                                <input id="insert-image-upload" class="form-control" disabled="disabled" name="source" type="file">
-                            </label>
+        <div id="editorModalImage" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <a type="a" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </a>
+                        <h4 class="modal-title">Infoga bild</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div>
+                            <div class="input-group">
+                                <label for="insert-image-url">
+                                    Från länk:
+                                    <input id="insert-image-url" type="url" class="form-control" placeholder="http://">
+                                </label>
+                            </div>
+                            <div class="input-group">
+                                <label for="insert-image-upload">
+                                    Ladda upp:
+                                    <input id="insert-image-upload" class="form-control" disabled="disabled" name="source" type="file">
+                                </label>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <a id="insert-image-save" class="btn btn-primary">OK</a>
-                    <a class="btn btn-danger" data-dismiss="modal">Avbryt</a>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
+                    <div class="modal-footer">
+                        <a id="insert-image-save" class="btn btn-primary">OK</a>
+                        <a class="btn btn-danger" data-dismiss="modal">Avbryt</a>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
 
-    <!-- Editor toolbar -->
-    <ul id="toolbar" class="editor-toolbar list-inline">
-        <li>
-            <a class="btn btn-toolbar" data-wysihtml5-command="bold">
-                <span class="glyphicon glyphicon-bold"></span>
-            </a>
-        </li>
-        <li>
-            <a class="btn btn-toolbar" data-wysihtml5-command="italic">
-                <span class="glyphicon glyphicon-italic"></span>
-            </a>
-        </li>
-        <li>
-            <a class="btn btn-toolbar" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2">Rubrik 1</a>
-        </li>
-        <li>
-            <a class="btn btn-toolbar" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h3">Rubrik 2</a>
-        </li>
-        <li>
-            <a class="btn btn-toolbar" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h4">Rubrik 3</a>
-        </li>
-        <!-- for desktops, use the modal to insert links -->
-        <li class="visibile-md-inline-block visible-lg-inline-block">
-            <a class="btn btn-toolbar" id="insert-link-button" data-toggle="modal" data-target="#editorModalLink">
-                <span class="glyphicon glyphicon-link"></span>
-            </a>
-        </li>
-        <li>
-            <a id="insert-source-button" data-toggle="modal" data-target="#editorModalSource" class="btn btn-toolbar">
-                <span class="glyphicon glyphicon-superscript"></span>
-            </a>
-        </li>
-        <li class="hidden">
-            <a class="btn btn-primary" data-toggle="modal" data-target="#editorModalImage">Bild</a>
-        </li>
-        <!-- for mobile devices, fall back to default link handling -->
-        <li class="visible-xs-inline-block visible-sm-inline-block">
-            <a id="insert-link-button-mobile" class="btn btn-toolbar" data-wysihtml5-command="createLink">
-                <span class="glyphicon glyphicon-link"></span>
-            </a>
-        </li>
-        <li class="visible-xs-block visible-sm-block">
-            <div data-wysihtml5-dialog="createLink" style="display:none">
-                <div class="input-group">
-                    <input class="form-control" data-wysihtml5-dialog-field="href" value="http://">
-                    <span class="input-group-btn">
-                        <a class="btn btn-primary" data-wysihtml5-dialog-action="save">OK</a>
-                    </span>
-                    <span class="input-group-btn">
-                        <a class="btn btn-danger" data-wysihtml5-dialog-action="cancel"><span class="glyphicon glyphicon-remove"></span></a>
-                    </span>
-                </div>
-            </div>
-        </li>
-    </ul>
-</div>
-<div class="col-sm-12">
-    <div class="input-group">
-        <div id="editor" class="editable" style="min-height:200px"></div>
-    </div>
-</div>
-<div class="col-sm-12">
-    <div class="alert alert-warning hidden editor-storage-exists">
-        <span class="glyphicon glyphicon-info-sign"></span>
-        <span>Din webbläsare har en autosparad text för den här typen av sida.</span>
-        <span class="editor-storage-timestamp"></span>
-        <a href="#" class="btn btn-block btn-primary">Vill du återställa den?</a>
-    </div>
-</div>
-<div id="sources-container" class="col-sm-12">
-    <% if (typeof sources === 'undefined') { %>
-        <div class="alert alert-info"><span class="glyphicon glyphicon-superscript"></span>Glöm inte att källhänvisa</div>
-    <% } %>
-    <ul id="sources-list" class="list-group">
-        <% if (typeof sources !== 'undefined') { %>
-                <% sources.forEach(function(source) { %>
-                    <li id="source-<%= source.id %>" class="list-group-item">
-                        <span>
-                            <a href="<%= source.url %>" target="_blank" title="<%= source.url %>" class="source-url">
-                                <span class="source-id"><%= source.id %></span><span class="source-delimiter">.</span> <span class="source-name"><%= source.name %></span>
-                            </a>
-                            <a href="#" data-source-id="<%= source.id %>" class="source-edit pull-right">
-                                <span>Redigera</span></span>
-                            </a>
+        <!-- Editor toolbar -->
+        <ul id="toolbar" class="editor-toolbar list-inline">
+            <li>
+                <a class="btn btn-toolbar" data-wysihtml5-command="bold">
+                    <span class="glyphicon glyphicon-bold"></span>
+                </a>
+            </li>
+            <li>
+                <a class="btn btn-toolbar" data-wysihtml5-command="italic">
+                    <span class="glyphicon glyphicon-italic"></span>
+                </a>
+            </li>
+            <li>
+                <a class="btn btn-toolbar" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h2">Rubrik 1</a>
+            </li>
+            <li>
+                <a class="btn btn-toolbar" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h3">Rubrik 2</a>
+            </li>
+            <li>
+                <a class="btn btn-toolbar" data-wysihtml5-command="formatBlock" data-wysihtml5-command-value="h4">Rubrik 3</a>
+            </li>
+            <!-- for desktops, use the modal to insert links -->
+            <li class="visibile-md-inline-block visible-lg-inline-block">
+                <a class="btn btn-toolbar" id="insert-link-button" data-toggle="modal" data-target="#editorModalLink">
+                    <span class="glyphicon glyphicon-link"></span>
+                </a>
+            </li>
+            <li>
+                <a id="insert-source-button" data-toggle="modal" data-target="#editorModalSource" class="btn btn-toolbar">
+                    <span class="glyphicon glyphicon-superscript"></span>
+                </a>
+            </li>
+            <li class="hidden">
+                <a class="btn btn-primary" data-toggle="modal" data-target="#editorModalImage">Bild</a>
+            </li>
+            <!-- for mobile devices, fall back to default link handling -->
+            <li class="visible-xs-inline-block visible-sm-inline-block">
+                <a id="insert-link-button-mobile" class="btn btn-toolbar" data-wysihtml5-command="createLink">
+                    <span class="glyphicon glyphicon-link"></span>
+                </a>
+            </li>
+            <li class="visible-xs-block visible-sm-block">
+                <div data-wysihtml5-dialog="createLink" style="display:none">
+                    <div class="input-group">
+                        <input class="form-control" data-wysihtml5-dialog-field="href" value="http://">
+                        <span class="input-group-btn">
+                            <a class="btn btn-primary" data-wysihtml5-dialog-action="save">OK</a>
                         </span>
-                    </li>
-                <% }); %>
-        <% } %>
-    </ul>
-    <div id="sources-storage" class="hidden">
-        <% if (typeof sources !== 'undefined') { %>
-                <% sources.forEach(function(source) { %>
-                    <div>
-                        <input class="<%= source.id %>" type="text" name="source_name" value="<%= source.name %>" />
-                        <input class="<%= source.id %>" type="text" name="source_url" value="<%= source.url %>" />
+                        <span class="input-group-btn">
+                            <a class="btn btn-danger" data-wysihtml5-dialog-action="cancel"><span class="glyphicon glyphicon-remove"></span></a>
+                        </span>
                     </div>
-                <% }); %>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="col-sm-12">
+        <div class="input-group">
+            <div id="editor" class="editable" style="min-height:200px"></div>
+        </div>
+    </div>
+    <div class="col-sm-12">
+        <div class="alert alert-warning hidden editor-storage-exists">
+            <span class="glyphicon glyphicon-info-sign"></span>
+            <span>Din webbläsare har en autosparad text för den här typen av sida.</span>
+            <span class="editor-storage-timestamp"></span>
+            <a href="#" class="btn btn-block btn-primary">Vill du återställa den?</a>
+        </div>
+    </div>
+    <div id="sources-container" class="col-sm-12">
+        <% if (typeof sources === 'undefined') { %>
+            <div id="sources-reminder" class="alert alert-info"><span class="glyphicon glyphicon-superscript"></span>Glöm inte att källhänvisa</div>
         <% } %>
+        <ul id="sources-list" class="list-group">
+            <% if (typeof sources !== 'undefined') { %>
+                    <% sources.forEach(function(source) { %>
+                        <li id="source-<%= source.id %>" class="list-group-item">
+                            <span>
+                                <a href="<%= source.url %>" target="_blank" title="<%= source.url %>" class="source-url">
+                                    <span class="source-id"><%= source.id %></span><span class="source-delimiter">.</span> <span class="source-name"><%= source.name %></span>
+                                </a>
+                                <a href="#" data-source-id="<%= source.id %>" class="source-edit pull-right">
+                                    <span>Redigera</span></span>
+                                </a>
+                            </span>
+                        </li>
+                    <% }); %>
+            <% } %>
+        </ul>
+        <div id="sources-storage" class="hidden">
+            <% if (typeof sources !== 'undefined') { %>
+                    <% sources.forEach(function(source) { %>
+                        <div>
+                            <input class="<%= source.id %>" type="text" name="source_name" value="<%= source.name %>" />
+                            <input class="<%= source.id %>" type="text" name="source_url" value="<%= source.url %>" />
+                        </div>
+                    <% }); %>
+            <% } %>
+        </div>
+    </div>
+    <div class="hidden">
+        <textarea name="content" class="form-control editable-content" id="content-input"><%= (typeof(post) !== 'undefined') ? post.post.content : '' %></textarea>
     </div>
 </div>

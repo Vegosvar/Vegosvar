@@ -1,0 +1,38 @@
+<h2>
+    <span class="glyphicon glyphicon-time"></span>
+    Öppettider
+</h2>
+<div class="row">
+    <div class="col-sm-6">
+        <div class="input-group">
+            <span class="input-group-addon">Måndag</span>
+            <input type="text" placeholder="00:00 - 00:00" class="form-control" name="monday" value="<%= (typeof(post) !== 'undefined') ? post.post.openhours.monday : '' %>">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Tisdag</span>
+            <input type="text" placeholder="00:00 - 00:00" class="form-control" name="tuesday" value="<%= (typeof(post) !== 'undefined') ? post.post.openhours.tuesday : '' %>">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Onsdag</span>
+            <input type="text" placeholder="00:00 - 00:00" class="form-control" name="wednesday" value="<%= (typeof(post) !== 'undefined') ? post.post.openhours.wednesday : '' %>">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Tordag</span>
+            <input type="text" placeholder="00:00 - 00:00" class="form-control" name="thursday" value="<%= (typeof(post) !== 'undefined') ? post.post.openhours.thursday : '' %>">
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div class="input-group">
+            <span class="input-group-addon">Fredag</span>
+            <input type="text" placeholder="00:00 - 00:00" class="form-control" name="friday" value="<%= (typeof(post) !== 'undefined') ? post.post.openhours.friday : '' %>">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Lördag</span>
+            <input type="text" placeholder="00:00 - 00:00" class="form-control" name="saturday" value="<%= (typeof(post) !== 'undefined') ? post.post.openhours.saturday : '' %>">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">Söndag</span>
+            <input type="text" placeholder="00:00 - 00:00" class="form-control" name="sunday" value="<%= (typeof(post) !== 'undefined') ? post.post.openhours.sunday : '' %>">
+        </div>
+    </div>
+</div>

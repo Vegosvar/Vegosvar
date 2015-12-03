@@ -201,6 +201,11 @@ $(document).ready(function () {
         }
       })
 
+      //Hide reminder to use source references
+      if($('#sources-reminder').is(':visible')) {
+          $('#sources-reminder').hide()
+      }
+
       $('#editorModalSource').modal('hide')
 
       $('#editorModalSource').on('hidden.bs.modal', function() {

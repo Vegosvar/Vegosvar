@@ -11,124 +11,25 @@
 						<form action="/submit" method="post">
 
 							<input type="hidden" name="type" value="5">
+							<input type="hidden" name="id" value="<%= (typeof(post) !== 'undefined') ? post._id : '' %>">
 
-							<div class="input-group" id="upload-group">
-								<div id="uploader" class="dropzone"></div>
-							</div>
+                            <% include includes/template_parts/imageupload %>
 
-							<div class="row">
-								<div class="col-sm-12">
-									<div class="input-group">
-										<input type="text" placeholder="Rubrik" class="form-control" id="header-input" name="title" autocomplete="off" aria-describedby="basic-addon1" value="<%= (typeof(post) !== 'undefined') ? post.title : '' %>">
-									</div>
-								</div>
-							</div>
+                            <% include includes/template_parts/title %>
 
-							<div class="row">
-								<% include includes/editor %>
-								<div class="col-sm-12 hidden">
-									<div class="input-group">
-										<textarea name="content" class="form-control editable-content" id="content-input"><%= (typeof(post) !== 'undefined') ? post.post.content : '' %></textarea>
-									</div>
-								</div>
-							</div>
+                            <% include includes/editor %>
 
-							<h2>
-								<span class="glyphicon glyphicon-map-marker"></span>
-								Hitta hit
-							</h2>
-							<div class="row">
-								<div class="col-sm-7">
-									<div class="input-group">
-										<span class="input-group-addon" id="basic-addon2">Stad</span>
-										<input type="text" class="form-control" name="city" aria-describedby="basic-addon1" placeholder="" value="<%= (typeof(post) !== 'undefined') ? post.post.city : '' %>">
-									</div>
-									<div class="input-group">
-										<span class="input-group-addon" id="basic-addon2">Gata</span>
-										<input type="text" class="form-control" name="street" aria-describedby="basic-addon1" value="<%= (typeof(post) !== 'undefined') ? post.post.street : '' %>">
-									</div>
-									<div class="input-group">
-										<span class="input-group-addon" id="basic-addon2">Hemsida</span>
-										<input type="text" class="form-control" name="website" aria-describedby="basic-addon1" placeholder="http://" value="<%= (typeof(post) !== 'undefined') ? post.post.website : '' %>">
-									</div>
-									<div class="input-desc">Ingen hemsida? Länka till er Facebooksida</div>
-								</div>
-							</div>
+                            <% include includes/template_parts/location %>
 
-							<h2>
-								<span class="glyphicon glyphicon-time"></span>
-								Öppettider
-							</h2>
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="input-group">
-										<span class="input-group-addon">Måndag</span>
-										<input type="text" placeholder="00:00 - 00:00" class="form-control" name="monday" value="<%= (typeof(post) !== 'undefined') ? post.post.openhours.monday : '' %>">
-									</div>
-									<div class="input-group">
-										<span class="input-group-addon">Tisdag</span>
-										<input type="text" placeholder="00:00 - 00:00" class="form-control" name="tuesday" value="<%= (typeof(post) !== 'undefined') ? post.post.openhours.tuesday : '' %>">
-									</div>
-									<div class="input-group">
-										<span class="input-group-addon">Onsdag</span>
-										<input type="text" placeholder="00:00 - 00:00" class="form-control" name="wednesday" value="<%= (typeof(post) !== 'undefined') ? post.post.openhours.wednesday : '' %>">
-									</div>
-									<div class="input-group">
-										<span class="input-group-addon">Tordag</span>
-										<input type="text" placeholder="00:00 - 00:00" class="form-control" name="thursday" value="<%= (typeof(post) !== 'undefined') ? post.post.openhours.thursday : '' %>">
-									</div>
-								</div>
-								<div class="col-sm-6">
-									<div class="input-group">
-										<span class="input-group-addon">Fredag</span>
-										<input type="text" placeholder="00:00 - 00:00" class="form-control" name="friday" value="<%= (typeof(post) !== 'undefined') ? post.post.openhours.friday : '' %>">
-									</div>
-									<div class="input-group">
-										<span class="input-group-addon">Lördag</span>
-										<input type="text" placeholder="00:00 - 00:00" class="form-control" name="saturday" value="<%= (typeof(post) !== 'undefined') ? post.post.openhours.saturday : '' %>">
-									</div>
-									<div class="input-group">
-										<span class="input-group-addon">Söndag</span>
-										<input type="text" placeholder="00:00 - 00:00" class="form-control" name="sunday" value="<%= (typeof(post) !== 'undefined') ? post.post.openhours.sunday : '' %>">
-									</div>
-								</div>
-							</div>
+                            <% include includes/template_parts/openhours %>
 
-                            <h3>Licens</h3>
-							<div class="row">
-								<div class="col-sm-6">
-									<div class="form-group">
-										<select class="form-control" name="license" id="license_select">
-											<option value="CC0" <%= (typeof(post) !== 'undefined' && post.post.license == 'CC0') ? 'selected=selected' : '' %>>CC0</option>
-											<option value="CC BY" <%= (typeof(post) !== 'undefined' && post.post.license == 'CC BY') ? 'selected=selected' : '' %>>CC BY (Creative Commons)</option>
-											<option value="Copyright" <%= (typeof(post) !== 'undefined' && post.post.license == 'Copyright') ? 'selected=selected' : '' %>>Copyright</option>
-										</select>
-									</div>
-									<div id="license_info">
-										<div class="input-group cc-version">
-											<span class="input-group-addon">CC-version</span>
-											<input type="text" class="form-control" name="license_cc_version" value="<%= (typeof(post) !== 'undefined') ? post.post.license_cc_version : '' %>">
-										</div>
-										<div class="input-group license-owner">
-											<span class="input-group-addon">Licensägare</span>
-											<input type="text" class="form-control" name="license_holder" value="<%= (typeof(post) !== 'undefined') ? post.post.license_holder : '' %>">
-										</div>
-										<div class="input-group license-owner-website">
-											<span class="input-group-addon">Ägarens hemsida</span>
-											<input type="text" class="form-control" name="license_holder_website" placeholder="http://" value="<%= (typeof(post) !== 'undefined') ? post.post.license_holder_website : '' %>">
-										</div>
-									</div>
-								</div>
-							</div>
+                            <% include includes/template_parts/other %>
 
-							<hr>
+                            <% include includes/template_parts/license %>
 
-							<div class="row">
-								<div class="col-sm-12">
-									<p><button id="btn-submit" class="btn btn-primary lg"><%= (typeof(post) !== 'undefined') ? 'Uppdatera sida' : 'Skapa sida' %></button><br>
-									<small>Genom att skapa en sida går du med på <a href="/villkor" target="_blank">våra villkor</a></small></p>
-								</div>
-							</div>
+                            <hr>
+
+                            <% include includes/template_parts/submit %>
 						</form>
 					</article>
 				</div>
