@@ -13,7 +13,8 @@
               <img src="/uploads/<%= post.post.cover.filename %>.jpg" alt="<%= post.title %>"/>
               <% } %>
               <span class="license">
-                <%= post.post.license %>
+                <%= post.post.license %> 
+                <%= post.post.license_cc_version %> 
                 <% if (typeof post.post.license_holder_website !== 'undefined' && post.post.license_holder_website !== "") { %>
                   <a href="<%= post.post.license_holder_website %>" target="_blank"  rel="nofollow">
                     <%= post.post.license_holder %>
@@ -32,7 +33,9 @@
                 <h2 class="subtitle"><%= post.post.city %></h2>
               <% } %>
               <% if (post.type === '4') { %>
-                <h2 class="subtitle"><%= post.post.manufacturer %></h2>
+                <h2 class="subtitle">
+                    <%= post.post.manufacturer %>
+                </h2>
               <% } %>
 
               <p>
@@ -50,7 +53,7 @@
 
               <% if (post.type === '3' || post.type === '5' || post.type === '4' && post.post.veg_type !== 'animal') { %>
               <div class="stars" id="<%= post._id %>">
-                <div class="star active" id="1">
+                <div class="star" id="1">
                   <span class="glyphicon glyphicon-star"></span>
                 </div>
                 <div class="star" id="2">
@@ -172,10 +175,10 @@
             <div class="row">
               <div class="col-sm-12">
                   <% if (typeof post.post.sources !== 'undefined') { %>
-                      <% if(post.post.sources.name !== null) { %>
+                      <% if (post.post.sources.name !== null) { %>
                           <h3>Källor</h3>
                           <ul id="sources-list" class="list-group">
-                              <% for(var i=0;i<post.post.sources.name.length;i++) { %>
+                              <% for (var i=0;i<post.post.sources.name.length;i++) { %>
                                   <li id="source-<%= (i+1) %>" class="list-group-item">
                                       <span>
                                           <span class="source-id"><%= (i+1) %>.</span>
@@ -242,7 +245,7 @@
                 </div>
                 <% if (typeof user !== 'undefined') { if (user.id === user_info.id) { %>
                 <div class="col-xs-6 col-md-12">
-                  <a href="#" class="btn btn-edit">Föreslå ändring</a>
+                  <a href="/redigera/<%= post.url %>" class="btn btn-edit">Redigera sida</a>
                 </div>
                 <% } } %>
               </div>
@@ -266,7 +269,7 @@
       <div class="row">
         <div class="col-md-8">
           <% if (post.type === '3') { %>
-          <hr>
+            <hr>
             <h2>Recensioner</h2>
           <% } %>
           <div id="disqus_thread"></div>

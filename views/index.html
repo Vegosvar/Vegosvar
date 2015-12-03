@@ -39,7 +39,7 @@
 		<div class="container">
 			<h2>Populära sidor</h2>
 			<div class="row">
-				<% for(var i=0; i < pages.length; i++) {%>
+				<% for (var i=0; i < pages.length; i++) {%>
 				<div class="col-sm-4 col-md-4 col-lg-3">
 					<div class="result">
 						<% if (typeof pages[i].post.cover !== 'undefined' && pages[i].post.cover.filename !== null) { %>
@@ -77,7 +77,7 @@
 						</div>
 						<% if (pages[i].type !== '1' && pages[i].post.veg_type !== 'animal') { %>
 							<div class="stars" id="<%= pages[i]._id %>">
-								<div class="star active" id="1">
+								<div class="star" id="1">
 									<span class="glyphicon glyphicon-star"></span>
 								</div>
 								<div class="star" id="2">
