@@ -100,9 +100,9 @@
                 </p>
 
                 <p>
-                  <a href="http://maps.google.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Öppna karta</a>
+                  <a href="http://maps.google.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Öppna Google Maps</a>
 
-                  <a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Öppna karta</a>
+                  <a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Öppna Apple Maps</a>
                   <% if (typeof post.post.phone !== 'undefined' && post.post.phone !== "") { %>
                     <a href="tel:<%= post.post.phone %>" target="_blank"  class="btn btn-secondary btn-block visible-xs">
                       <span class="glyphicon glyphicon-phone"></span>
