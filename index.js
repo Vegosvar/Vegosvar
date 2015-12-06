@@ -345,7 +345,7 @@ app.get('/ajax/like', function (req, res) {
         }
       })
     } else {
-      res.send('1') // Not logged in
+      res.redirect('/login/like')
     }
   } else {
     res.send('2') // All variables isnt set
