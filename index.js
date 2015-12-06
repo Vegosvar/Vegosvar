@@ -206,9 +206,14 @@ app.get('/press', function (req, res) {
   res.render('press', { user: req.user })
 })
 
-app.get('/vote-login', function (req, res) {
+app.get('/recensera', function (req, res) {
   res.render('vote-login', { user: req.user })
 })
+
+app.get('/gilla', function (req, res) {
+  res.render('like-login', { user: req.user })
+})
+
 
 app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res) {})
 

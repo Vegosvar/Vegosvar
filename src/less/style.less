@@ -461,7 +461,7 @@ input[type=checkbox], input[type=radio] {
 // Template
 
 .sidebar {
-	margin-bottom: 60px;
+	margin-bottom: 30px;
 	h2, h3 {
 		margin-top: 0;
 	}
@@ -475,6 +475,10 @@ input[type=checkbox], input[type=radio] {
 	overflow: hidden;
 	&.transparent {
 		background: none;
+		@media (max-width: @xs) {
+			padding: 0 15px;
+			margin-bottom: 30px;
+		}
 	}
 	.info {
 		padding-left: 0;

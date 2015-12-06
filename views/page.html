@@ -276,9 +276,11 @@
 
       <div class="row">
         <div class="col-md-8">
-          <% if (post.type === '3') { %>
-            <hr>
+          <% if (post.type === '3' || post.type === '4' || post.type === '5') { %>
             <h2>Recensioner</h2>
+          <% } else { %>
+            <hr>
+            <h2>Kommentarer</h2>
           <% } %>
           <div id="disqus_thread"></div>
           <script>

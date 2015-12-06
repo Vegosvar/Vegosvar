@@ -9,9 +9,9 @@ $(window).load(function () {
         if (data === '0') {
           alert('Voted!')
         } else if (data === '1') {
-          window.location.assign('/vote-login')
+          window.location.assign('/recensera')
         } else if (data === '3') {
-          console.log('You already voted!')
+          console.log('Du har redan röstat!')
         }
       })
     }
