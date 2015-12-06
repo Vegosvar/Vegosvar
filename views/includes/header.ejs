@@ -109,6 +109,16 @@
   <% } %>
 </head>
 
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-55653281-5', 'auto');
+  ga('send', 'pageview');
+</script>
+
 <body>
 
   <nav id="top" class="navbar navbar-default navbar-static-top">
@@ -140,16 +150,18 @@
             Restauranger
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/?s=stockholm+restaurang">Stockholm</a></li>
-            <li><a href="/?s=göteborg+restaurang">Göteborg</a></li>
-            <li><a href="/?s=malmö+restaurang">Malmö</a></li>
-            <li><a href="/?s=uppsala+restaurang">Uppsala</a></li>
-            <li><a href="/?s=västerås+restaurang">Västerås</a></li>
-            <li><a href="/?s=örebro+restaurang">Örebro</a></li>
-            <li><a href="/?s=linköping+restaurang">Linköping</a></li>
-            <li><a href="/?s=restaurang">
-              <span class="glyphicon glyphicon-list"></span> Visa alla</a>
-            </li>
+            <li><a href="/?s=Stockholm+restauranger">Stockholm</a></li>
+            <li><a href="/?s=Göteborg+restauranger">Göteborg</a></li>
+            <li><a href="/?s=Malmö+restauranger">Malmö</a></li>
+            <li><a href="/?s=Uppsala+restauranger">Uppsala</a></li>
+            <li><a href="/?s=Västerås+restauranger">Västerås</a></li>
+            <li><a href="/?s=Örebro+restauranger">Örebro</a></li>
+            <li><a href="/?s=Linköping+restauranger">Linköping</a></li>
+            <li><a href="/?s=Helsingborg+restauranger">Helsingborg</a></li>
+            <li><a href="/?s=Jönköping+restauranger">Jönköping</a></li>
+            <li><a href="/?s=Norrköping+restauranger">Norrköping</a></li>
+            <li><a href="/?s=Lund+restauranger">Lund</a></li>
+            <li><a href="/?s=restauranger">Hela Sverige</a></li>
           </ul>
         </li>
 
@@ -159,16 +171,18 @@
             Butiker
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/?s=stockholm+butik">Stockholm</a></li>
-            <li><a href="/?s=göteborg+butik">Göteborg</a></li>
-            <li><a href="/?s=malmö+butik">Malmö</a></li>
-            <li><a href="/?s=uppsala+butik">Uppsala</a></li>
-            <li><a href="/?s=västerås+butik">Västerås</a></li>
-            <li><a href="/?s=örebro+butik">Örebro</a></li>
-            <li><a href="/?s=linköping+butik">Linköping</a></li>
-            <li><a href="/?s=butik">
-              <span class="glyphicon glyphicon-list"></span> Visa alla</a>
-            </li>
+            <li><a href="/?s=Stockholm+butik">Stockholm</a></li>
+            <li><a href="/?s=Göteborg+butik">Göteborg</a></li>
+            <li><a href="/?s=Malmö+butik">Malmö</a></li>
+            <li><a href="/?s=Uppsala+butik">Uppsala</a></li>
+            <li><a href="/?s=Västerås+butik">Västerås</a></li>
+            <li><a href="/?s=Örebro+butik">Örebro</a></li>
+            <li><a href="/?s=Linköping+butik">Linköping</a></li>
+            <li><a href="/?s=Helsingborg+butik">Helsingborg</a></li>
+            <li><a href="/?s=Jönköping+butik">Jönköping</a></li>
+            <li><a href="/?s=Norrköping+butik">Norrköping</a></li>
+            <li><a href="/?s=Lund+butik">Lund</a></li>
+            <li><a href="/?s=Butiker">Hela Sverige</a></li>
           </ul>
         </li>
         
@@ -178,12 +192,20 @@
             Produkter
           </a>
           <ul class="dropdown-menu">
-            <li><a href="/?s=livsmedel">Livsmedel</a></li>
-            <li><a href="/?s=kropp">Kropp</a></li>
-            <li><a href="/?s=alkohol">Dryck</a></li>
-            <li><a href="/?s=produkter">
-              <span class="glyphicon glyphicon-list"></span> Visa alla</a>
-            </li>
+            <li><a href="/?s=chips">Chips</a></li>
+            <li><a href="/?s=glass">Glass</a></li>
+            <li><a href="/?s=godis">Godis</a></li>
+            <li><a href="/?s=hudvård">Hudvård</a></li>
+            <li><a href="/?s=kosttillskott">Kosttillskott</a></li>
+            <li><a href="/?s=makeup">Makeup</a></li>
+            <li><a href="/?s=ost">Ost</a></li>
+            <li><a href="/?s=shampoo">Shampoo</a></li>
+            <li><a href="/?s=tandkräm">Tandkräm</a></li>
+            <li><a href="/?s=vegokött">Vegokött</a></li>
+            <li><a href="/?s=vin">Vin</a></li>
+            <li><a href="/?s=växtdryck">Växtdryck</a></li>
+            <li><a href="/?s=växtgrädde">Växtgrädde</a></li>
+            <li><a href="/?s=öl">Öl</a></li>
           </ul>
         </li>
 
@@ -225,13 +247,17 @@
         <a class="toggle-dropdown"><span class="glyphicon glyphicon-map-marker"></span>Restauranger</a>
         <ul class="dropdown">
           <li class="title">Restauranger</li>
-          <li><a href="/?s=stockholm+restaurang">Stockholm</a></li>
-          <li><a href="/?s=göteborg+restaurang">Göteborg</a></li>
-          <li><a href="/?s=malmö+restaurang">Malmö</a></li>
-          <li><a href="/?s=uppsala+restaurang">Uppsala</a></li>
-          <li><a href="/?s=västerås+restaurang">Västerås</a></li>
-          <li><a href="/?s=örebro+restaurang">Örebro</a></li>
-          <li><a href="/?s=linköping+restaurang">Linköping</a></li>
+            <li><a href="/?s=Stockholm+restauranger">Stockholm</a></li>
+            <li><a href="/?s=Göteborg+restauranger">Göteborg</a></li>
+            <li><a href="/?s=Malmö+restauranger">Malmö</a></li>
+            <li><a href="/?s=Uppsala+restauranger">Uppsala</a></li>
+            <li><a href="/?s=Västerås+restauranger">Västerås</a></li>
+            <li><a href="/?s=Örebro+restauranger">Örebro</a></li>
+            <li><a href="/?s=Linköping+restauranger">Linköping</a></li>
+            <li><a href="/?s=Helsingborg+restauranger">Helsingborg</a></li>
+            <li><a href="/?s=Jönköping+restauranger">Jönköping</a></li>
+            <li><a href="/?s=Norrköping+restauranger">Norrköping</a></li>
+            <li><a href="/?s=Lund+restauranger">Lund</a></li>
           <li class="desc"><div>Du kan även använda sökfunktionen</div></li>
         </ul>
       </li>
@@ -240,20 +266,20 @@
         <a class="toggle-dropdown"><span class="glyphicon glyphicon-ice-lolly-tasted"></span>Produkter</a>
         <ul class="dropdown">
           <li class="title">Produkter</li>
-          <li><a href="/?s=chips">Chips</a></li>
-          <li><a href="/?s=glass">Glass</a></li>
-          <li><a href="/?s=godis">Godis</a></li>
-          <li><a href="/?s=hudvård">Hudvård</a></li>
-          <li><a href="/?s=kosttillskott">Kosttillskott</a></li>
-          <li><a href="/?s=makeup">Makeup</a></li>
-          <li><a href="/?s=ost">Ost</a></li>
-          <li><a href="/?s=shampoo">Shampoo</a></li>
-          <li><a href="/?s=tandkräm">Tandkräm</a></li>
-          <li><a href="/?s=vegokött">Vegokött</a></li>
-          <li><a href="/?s=vin">Vin</a></li>
-          <li><a href="/?s=växtdryck">Växtdryck</a></li>
-          <li><a href="/?s=växtgrädde">Växtgrädde</a></li>
-          <li><a href="/?s=öl">Öl</a></li>
+          <li><a href="/?s=Chips">Chips</a></li>
+          <li><a href="/?s=Glass">Glass</a></li>
+          <li><a href="/?s=Godis">Godis</a></li>
+          <li><a href="/?s=Hudvård">Hudvård</a></li>
+          <li><a href="/?s=Kosttillskott">Kosttillskott</a></li>
+          <li><a href="/?s=Makeup">Makeup</a></li>
+          <li><a href="/?s=Ost">Ost</a></li>
+          <li><a href="/?s=Shampoo">Shampoo</a></li>
+          <li><a href="/?s=Tandkräm">Tandkräm</a></li>
+          <li><a href="/?s=Vegokött">Vegokött</a></li>
+          <li><a href="/?s=Vin">Vin</a></li>
+          <li><a href="/?s=Växtdryck">Växtdryck</a></li>
+          <li><a href="/?s=Växtgrädde">Växtgrädde</a></li>
+          <li><a href="/?s=Öl">Öl</a></li>
           <li class="desc"><div>Du kan även använda sökfunktionen för att söka specifika produkter</div></li>
         </ul>
       </li>
