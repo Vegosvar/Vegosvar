@@ -672,8 +672,12 @@ app.post('/submit', urlencodedParser, function (req, res) {
   } else {
     res.redirect('/ny')
   }
-  var objId = (id) ? new ObjectID(id) : ''
-  pagesdb.update({ _id: objId }, data, { upsert: true }, function(err, doc) {
+  // var objId = (id) ? new ObjectID(id) : '' Vad är detta?
+  //pagesdb.update({ _id: objId }, data, { upsert: true }, function(err, doc) {
+  //  if(err) throw err
+  //  res.redirect('/ny/publicerad/?newpost='+niceurl)
+  //})
+  pagesdb.insert({}, data, { upsert: true }, function(err, doc) {
     if(err) throw err
     res.redirect('/ny/publicerad/?newpost='+niceurl)
   })
