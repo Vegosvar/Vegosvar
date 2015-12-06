@@ -248,7 +248,7 @@
                       <a href="#" id="<%= post._id %>" class="btn btn-like"><span id="heart-glyphicon" class="glyphicon glyphicon-heart-empty"></span>Gilla <span class="count"><%= post.rating.likes %></span></a>
                     <% } %>
                   <% } else { %>
-                    <a href="#" id="<%= post._id %>" class="btn btn-like"><span id="heart-glyphicon" class="glyphicon glyphicon-heart"></span>Gilla <span class="count">0</span></a>
+                    <a href="#" id="<%= post._id %>" class="btn btn-like"><span id="heart-glyphicon" class="glyphicon glyphicon-heart-empty"></span>Gilla <span class="count">0</span></a>
                   <% } %> 
                 </div>
                 <% if (typeof user !== 'undefined') { if (user.id === user_info.id) { %>
