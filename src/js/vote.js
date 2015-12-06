@@ -21,7 +21,14 @@ $(window).load(function () {
     e.preventDefault()
     var id = $(this).attr('id')
     $.get('/ajax/like?id=' + id, function (data) {
-      console.log(data)
+      if (data.action === 0) {
+        $('#heart-glyphicon').removeClass('glyphicon glyphicon-heart')
+        $('#heart-glyphicon').addClass('glyphicon glyphicon-heart-empty')
+      } else if (data.action === 1) {
+        $('#heart-glyphicon').removeClass('glyphicon glyphicon-heart-empty')
+        $('#heart-glyphicon').addClass('glyphicon glyphicon-heart')
+      }
+      $('.count').html(data.new_value)
     })
   })
 })

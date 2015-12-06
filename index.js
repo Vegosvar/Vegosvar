@@ -312,9 +312,9 @@ app.get('/ajax/like', function (req, res) {
     if (req.isAuthenticated()) {
       var database = db.instance()
       var likesdb = database.collection('likes')
-      likesdb.count({ "post.id": req.query.id, "user.id": req.user._id }, function (err, count) {
+      likesdb.count({ "post.id": new ObjectID(req.query.id), "user.id": req.user._id }, function (err, count) {
         if(count > 0) { // Already liked, remove it
-          likesdb.remove({ "post.id": req.query.id, "user.id": req.user._id }, function (err) {
+          likesdb.remove({ "post.id": new ObjectID(req.query.id), "user.id": req.user._id }, function (err) {
             if (err) throw err
           })
 
@@ -322,10 +322,12 @@ app.get('/ajax/like', function (req, res) {
           pagesdb.update({ "_id": new ObjectID(req.query.id) }, {$inc: { "rating.likes": -1, }}, function (err) {
             if(err) throw err
           })
-            res.send('Unliked')
+          
+          var response = { 'action':0, 'new_value':count -1 }
+          res.send(response)
         } else { // First time pressing, add it
           var data = {
-            post: { id: req.query.id },
+            post: { id: new ObjectID(req.query.id) },
             user: { id: req.user._id }
           }
 
@@ -338,7 +340,8 @@ app.get('/ajax/like', function (req, res) {
             if(err) throw err
           })
 
-          res.send('Liked')
+          var response = { 'action':1, 'new_value':count +1 }
+          res.send(response)
         }
       })
     } else {
@@ -353,18 +356,28 @@ app.get('/:url', function (req, res, next) {
   var url = req.params.url
   var dbinstance = db.instance()
   var pagesdb = dbinstance.collection('pages')
+  var usersdb = dbinstance.collection('users')
+  var likesdb = dbinstance.collection('likes')
 
   pagesdb.count({ url: url }, function (err, count) {
     if(count > 0) {
       pagesdb.find({ url : url }).toArray(function (err, result) {
-        var dbinstance = db.instance()
-        var usersdb = dbinstance.collection('users')
         usersdb.find({ _id : result[0].user_info.id }).toArray(function(err, user_info) {
-          if(typeof(user_info[0]) == 'undefined') {
+          if (req.isAuthenticated ()) {
+            likesdb.count({ "post.id": new ObjectID(result[0]._id), "user.id": req.user._id }, function (err, is_liked) {
+              if(typeof(user_info[0]) == 'undefined') {
+                result[0].user_info.hidden = true
+                user_info[0] = { id: '', photo: ''}
+              }
+                res.render('page', { user: req.user, post: result[0], user_info: user_info[0], userLikes: is_liked })
+            })
+          } else {
+            if(typeof(user_info[0]) == 'undefined') {
               result[0].user_info.hidden = true
               user_info[0] = { id: '', photo: ''}
+            }
+              res.render('page', { user: req.user, post: result[0], user_info: user_info[0], userLikes: 0 })
           }
-          res.render('page', { user: req.user, post: result[0], user_info: user_info[0] })
         })
       })
     } else {
