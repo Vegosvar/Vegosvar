@@ -677,7 +677,7 @@ app.post('/submit', urlencodedParser, function (req, res) {
   //  if(err) throw err
   //  res.redirect('/ny/publicerad/?newpost='+niceurl)
   //})
-  pagesdb.insert({}, data, { upsert: true }, function(err, doc) {
+  pagesdb.insert(data, { upsert: true }, function(err, doc) {
     if(err) throw err
     res.redirect('/ny/publicerad/?newpost='+niceurl)
   })
