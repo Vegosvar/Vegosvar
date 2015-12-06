@@ -22,11 +22,11 @@ var config = require('./config')
 var image_processer = require('./imageProcesser.js')
 
 var urlencodedParser = body_parser.urlencoded({ extended: false })
-
+var striptags = require('striptags')
+var ObjectID = require('mongodb').ObjectID
 var db = require('./db')
 db.connect()
 
-var ObjectID = require('mongodb').ObjectID
 
 // TODO Move this out using cluster to a separate file, add more files for routes etc!
 // TODO Index auth.facebook etc
@@ -102,6 +102,7 @@ app.use(session({
   secret: config.session_secret,
   resave: false,
   saveUninitialized: false,
+  rolling: true,
   store: new session_store({
     url: config.database.host + config.database.name
   }),
@@ -147,7 +148,7 @@ app.get('/', function (req, res) {
 
   var pages = {}
   pagesdb.find({}).toArray(function(err, doc) {
-    res.render('index', { user: req.user, pages: doc, startpage: false, searchString: req.query.s  })
+    res.render('index', { user: req.user, pages: doc, startpage: false, searchString: req.query.s, striptags: striptags })
   })
 })
 
@@ -243,6 +244,10 @@ app.get('/ajax/search', function (req, res) {
         $meta: "textScore"
     }
   }).toArray(function (err, doc) {
+    for (var i = 0; i < doc.length; i++) {
+      doc[i].post.content = striptags(doc[i].post.content, ['br','p'])
+    }
+
     res.json(doc)
   })
 })

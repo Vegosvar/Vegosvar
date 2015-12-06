@@ -1089,7 +1089,9 @@ section {
 		margin: 0 auto 15px auto;
 		transition: transform 0.15s;
 		&:active {
-			transform: scale(0.98);
+			@media (min-width: @xs) {
+				transform: scale(0.98);
+			}
 		}
 		@media (max-width: @xs) {
 			width: 100%;

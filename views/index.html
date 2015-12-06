@@ -71,7 +71,8 @@
 											<strong class="text-success">Veganskt</strong>
 										<% } %>
 									<% } %>
-									<%= content %>
+									<% content = striptags(pages[i].post.content, ['br','p']) %>
+									<%- content %>
 								</p>
 							</div>
 						</div>
