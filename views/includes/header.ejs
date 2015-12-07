@@ -13,27 +13,27 @@
   <meta name="robots" content="noindex,nofollow"> <!-- Remove before release -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-  <meta name="description" content="Sveriges modernaste plattform för vegointresserade. Sök fakta, restauranger, butiker, produkter och recept!">
-  <meta name="keywords" content="vegan,vegetarian,restauranger,produkter">
-  <meta name="robots" content="all">
-
   <meta property="og:site_name" content="Vegosvar">
+  <meta name="keywords" content="vegan,vegetarian,restauranger,produkter">
+  
   <% if(typeof(post) === 'undefined') { %>
-  <meta property="og:title" content="Vegosvar – Enkla svar på vegofrågor">
-  <meta property="og:description" content="Sveriges modernaste plattform för vegointresserade. Sök fakta, restauranger, butiker, produkter och recept!">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="https://vegosvar.se/assets/images/og.png">
-  <meta property="og:url" content="https://vegosvar.se">
+    <meta name="description" content="Sveriges modernaste plattform för vegointresserade. Sök fakta, restauranger, butiker, produkter och recept!">
+    <meta property="og:title" content="Vegosvar – Enkla svar på vegofrågor">
+    <meta property="og:description" content="Sveriges modernaste plattform för vegointresserade. Sök fakta, restauranger, butiker, produkter och recept!">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://vegosvar.se/assets/images/og.png">
+    <meta property="og:url" content="https://vegosvar.se">
   <% } else {
     if (typeof post.post.content !== 'undefined' && post.post.content !== null) {
         if(post.post.content.length > 150) { var content = '' + post.post.content.substring(0, 150)
       } else { var content = '' + post.post.content }
     } %>
-  <meta property="og:title" content="<%= post.title %> – Vegosvar">
-  <meta property="og:description" content="<%= content %>">
-  <meta property="og:type" content="website">
-  <meta property="og:image" content="https://vegosvar.se/uploads/<%= post.post.cover.filename %>.jpg">
-  <meta property="og:url" content="https://vegosvar.se/<%= post.url %>">
+    <meta name="description" content="<%= content %>">
+    <meta property="og:title" content="<%= post.title %> – Vegosvar">
+    <meta property="og:description" content="<%= content %>">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://vegosvar.se/uploads/<%= post.post.cover.filename %>.jpg">
+    <meta property="og:url" content="https://vegosvar.se/<%= post.url %>">
   <% } %>
 
   <link rel="dns-prefetch" href="//fonts.googleapis.com">
