@@ -254,7 +254,7 @@ app.get('/ajax/search', function (req, res) {
     }
   }).toArray(function (err, doc) {
     for (var i = 0; i < doc.length; i++) {
-      doc[i].post.content = striptags(doc[i].post.content, ['br','p'])
+      doc[i].post.content = striptags(doc[i].post.content, ['br','p','a','span','i','b'])
     }
 
     res.json(doc)
@@ -552,6 +552,7 @@ app.post('/submit', urlencodedParser, function (req, res) {
             name: typeof(req.body.source_name) === 'string' ? [req.body.source_name] : req.body.source_name,
             url: typeof(req.body.source_url) === 'string' ? [req.body.source_url] : req.body.source_url,
         },
+        food_type: req.body.food_type,
         license: req.body.license,
         license_cc_version: req.body.license_cc_version,
         license_holder: req.body.license_holder,
