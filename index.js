@@ -286,7 +286,7 @@ app.get('/ajax/addVote', function (req, res) {
               "post.id": req.query.id
             }, $group: {
               "avg_rating": { $avg: "$content" }
-            } 
+            }
           }], function (err, results) {
             if (err) {
               console.log(err)
@@ -327,7 +327,7 @@ app.get('/ajax/like', function (req, res) {
           pagesdb.update({ "_id": new ObjectID(req.query.id) }, {$inc: { "rating.likes": -1, }}, function (err) {
             if(err) throw err
           })
-          
+
           var response = { 'action':0, 'new_value':count -1 }
           res.send(response)
         } else { // First time pressing, add it
@@ -672,14 +672,24 @@ app.post('/submit', urlencodedParser, function (req, res) {
   } else {
     res.redirect('/ny')
   }
-  // var objId = (id) ? new ObjectID(id) : '' Vad är detta?
-  //pagesdb.update({ _id: objId }, data, { upsert: true }, function(err, doc) {
-  //  if(err) throw err
-  //  res.redirect('/ny/publicerad/?newpost='+niceurl)
-  //})
-  pagesdb.insert(data, { upsert: true }, function(err, doc) {
+
+  if(id) {
+    id = new ObjectID(id) //If editing the post, the id will be provided as a string and we need to convert it to an objectid
+  }
+  pagesdb.count({ _id : id }, function(err, count) {
     if(err) throw err
-    res.redirect('/ny/publicerad/?newpost='+niceurl)
+    if(count > 0) {
+      //Update
+      pagesdb.update({_id:id}, data, function(err, result) {
+        res.redirect('/ny/publicerad/?newpost='+niceurl)
+      })
+    } else {
+      //Insert
+      pagesdb.insert(data, function(err, doc) {
+        if(err) throw err
+        res.redirect('/ny/publicerad/?newpost='+niceurl)
+      })
+    }
   })
 })
 
