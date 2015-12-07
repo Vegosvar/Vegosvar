@@ -214,6 +214,10 @@ app.get('/gilla', function (req, res) {
   res.render('like-login', { user: req.user })
 })
 
+app.get('/rapportera', function (req, res) {
+  res.render('report', { user: req.user })
+})
+
 
 app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res) {})
 

@@ -255,7 +255,11 @@
                 <div class="col-xs-6 col-md-12">
                   <a href="/redigera/<%= post.url %>" class="btn btn-edit">Redigera sida</a>
                 </div>
-                <% } } %>
+                <% } } else { %>
+                  <div class="col-xs-6 col-md-12">
+                    <a href="/rapportera" class="btn btn-edit">Repportera ett fel</a>
+                  </div>
+                <% } %>
               </div>
             </div>
           </div>
