@@ -147,7 +147,11 @@ app.get('/', function (req, res) {
   var likesdb = dbinstance.collection('likes')
 
   var pages = {}
-  pagesdb.find({}).toArray(function(err, doc) {
+  var options = {
+    limit: 4,
+    sort: [ ['rating.likes', 'desc'] ]
+  }
+  pagesdb.find({}, options).toArray(function(err, doc) {
     res.render('index', { user: req.user, pages: doc, startpage: false, searchString: req.query.s, striptags: striptags })
   })
 })
