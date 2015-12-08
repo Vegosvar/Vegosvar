@@ -718,8 +718,10 @@ app.post('/submit/file', function(req, res) {
         var dbinstance = db.instance()
         var imagesdb = dbinstance.collection('images')
         imagesdb.count({ }, function (err, num_rows) {
-          uHash = md5(num_rows + 1)
-          uFilename = uHash.substring(0, 11)
+          random = Math.floor((Math.random() * 99999999) + 10000000);
+          uHash = md5(num_rows + 1 + random)
+          randomsubstring = Math.floor((Math.random() * 20) + 10)
+          uFilename = uHash.substring(0, randomsubstring)
           imagesdb.insert({ id:num_rows + 1, filename: uFilename, active: false, deleted: false, "user_info":{ id: req.user._id } }, function(err, doc) {
             if(err) throw err
             fstream = fs.createWriteStream(__dirname + '/uploads/' + uFilename + '_original.jpg')
