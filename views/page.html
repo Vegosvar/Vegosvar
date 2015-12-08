@@ -68,7 +68,12 @@
                 <div class="star" id="5">
                   <span class="glyphicon glyphicon-star"></span>
                 </div>
-                      <span class="votes"><%= post.rating.votes %></span>
+                      <% if (typeof post.rating !== 'undefined' && post.rating.votes !== 'undefined') { %>
+                        <span class="votes"><%= post.rating.votes %></span>
+                      <% } else { %>
+                        <span class="votes">0</span>
+                      <% } %>
+                      
               </div>
               <% } %>
 
