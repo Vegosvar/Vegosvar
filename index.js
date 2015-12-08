@@ -277,14 +277,15 @@ app.get('/ajax/addVote', function (req, res) {
     if (req.isAuthenticated()) {
       var database = db.instance()
       var votesdb = database.collection('votes')
-      votesdb.count({ "post.id": req.query.id, "user.id": req.user._id }, function(err, count) {
+      votesdb.count({ "post.id": new ObjectID(req.query.id), "user.id": req.user._id }, function(err, count) {
         if(count < 1) {
           var data = {
             content: req.query.content,
-            post: { id:req.query.id },
-            user: { id:req.user._id }
+            post: { id: new ObjectID(req.query.id) },
+            user: { id: req.user._id }
           }
 
+<<<<<<< Updated upstream
           votesdb.aggregate([{
             $match: {
               "post.id": req.query.id
@@ -294,11 +295,23 @@ app.get('/ajax/addVote', function (req, res) {
           }], function (err, results) {
             if (err) {
               console.log(err)
+=======
+          db.votes.aggregate([
+            { $match: { post : { id: 'req.post.id'} } },
+            {
+              $group: { 
+                _id: "$post.id",
+                average: { $avg: "$content" }
+              }
+>>>>>>> Stashed changes
             }
-            console.log(results)
-          })
+          ])
 
           votesdb.insert(data, function (err) {
+            if(err) throw err
+          })
+
+          pagesdb.update({ "_id": new ObjectID(req.query.id) }, {$inc: { "rating.votes": 1, }}, function (err) {
             if(err) throw err
           })
 
