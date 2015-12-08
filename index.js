@@ -285,17 +285,6 @@ app.get('/ajax/addVote', function (req, res) {
             user: { id: req.user._id }
           }
 
-<<<<<<< Updated upstream
-          votesdb.aggregate([{
-            $match: {
-              "post.id": req.query.id
-            }, $group: {
-              "avg_rating": { $avg: "$content" }
-            }
-          }], function (err, results) {
-            if (err) {
-              console.log(err)
-=======
           db.votes.aggregate([
             { $match: { post : { id: 'req.post.id'} } },
             {
@@ -303,7 +292,6 @@ app.get('/ajax/addVote', function (req, res) {
                 _id: "$post.id",
                 average: { $avg: "$content" }
               }
->>>>>>> Stashed changes
             }
           ])
 
