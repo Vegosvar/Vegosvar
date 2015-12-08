@@ -125,19 +125,19 @@
                     <div class="row">
                       <div class="col-xs-6">
                         <ul class="list-group">
-                          <li class="list-group-item">
+                          <li class="list-group-item" id="monday">
                             <h4 class="list-group-item-heading">Måndag</h4>
                             <p class="list-group-item-text"><%= post.post.openhours.monday %></p>
                           </li>
-                          <li class="list-group-item">
+                          <li class="list-group-item" id="tuesday">
                             <h4 class="list-group-item-heading">Tisdag</h4>
                             <p class="list-group-item-text"><%= post.post.openhours.tuesday %></p>
                           </li>
-                          <li class="list-group-item">
+                          <li class="list-group-item" id="wednesday">
                             <h4 class="list-group-item-heading">Onsdag</h4>
                             <p class="list-group-item-text"><%= post.post.openhours.wednesday %></p>
                           </li>
-                          <li class="list-group-item">
+                          <li class="list-group-item" id="thursday">
                             <h4 class="list-group-item-heading">Torsdag</h4>
                             <p class="list-group-item-text"><%= post.post.openhours.thursday %></p>
                           </li>
@@ -145,17 +145,17 @@
                       </div>
                       <div class="col-xs-6">
                         <ul class="list-group">
-                          <li class="list-group-item">
+                          <li class="list-group-item" id="friday">
                             <h4 class="list-group-item-heading">Fredag</h4>
                             <p class="list-group-item-text"><%= post.post.openhours.friday %></p>
                           </li>
-                          <li class="list-group-item">
+                          <li class="list-group-item" id="saturday">
                             <h4 class="list-group-item-heading">Lördag</h4>
                             <p class="list-group-item-text"><%= post.post.openhours.saturday %></p>
                           </li>
                         </ul>
                         <ul class="list-group">
-                          <li class="list-group-item">
+                          <li class="list-group-item" id="sunday">
                             <h4 class="list-group-item-heading">Söndag</h4>
                             <p class="list-group-item-text"><%= post.post.openhours.sunday %></p>
                           </li>
@@ -312,5 +312,22 @@
 
     </section>
   </div>
+  <script>
+      var d = new Date();
+      var weekday = new Array(7);
+      weekday[0]=  "sunday";
+      weekday[1] = "monday";
+      weekday[2] = "tuesday";
+      weekday[3] = "wednesday";
+      weekday[4] = "thursday";
+      weekday[5] = "friday";
+      weekday[6] = "saturday";
 
+      var n = weekday[d.getDay()];
+      if($('#'+n).children('p').text() === "Stängt") {
+        $('#'+n).addClass('disabled')
+      } else {
+        $('#'+n).addClass('active')
+      }
+  </script>
 <% include includes/footer %>
