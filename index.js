@@ -337,8 +337,11 @@ app.get('/ajax/like', function (req, res) {
             if(err) throw err
           })
 
-          var response = { 'action':0, 'new_value':count -1 }
-          res.send(response)
+          likesdb.count({ "post.id": new ObjectID(req.query.id) }, function (err, sum) {
+            if (err) throw err
+            var response = { 'action':0, 'new_value':sum }
+            res.send(response)
+          })
         } else { // First time pressing, add it
           var data = {
             post: { id: new ObjectID(req.query.id) },
@@ -346,16 +349,19 @@ app.get('/ajax/like', function (req, res) {
           }
 
           likesdb.insert(data, function (err) {
-            if(err) throw err
+            if (err) throw err
           })
 
           var pagesdb = database.collection('pages')
           pagesdb.update({ "_id": new ObjectID(req.query.id) }, {$inc: { "rating.likes": 1, }}, function (err) {
-            if(err) throw err
+            if (err) throw err
           })
 
-          var response = { 'action':1, 'new_value':count +1 }
-          res.send(response)
+          likesdb.count({ "post.id": new ObjectID(req.query.id) }, function (err, sum) {
+            if (err) throw err
+            var response = { 'action':1, 'new_value':sum }
+            res.send(response)
+          })
         }
       })
     } else {
