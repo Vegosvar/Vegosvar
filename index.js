@@ -148,7 +148,7 @@ app.get('/', function (req, res) {
 
   var pages = {}
   var options = {
-    limit: 4,
+    limit: 8,
     sort: [ ['rating.likes', 'desc'] ]
   }
   pagesdb.find({}, options).toArray(function(err, doc) {

@@ -107,6 +107,7 @@ $(function () {
             content += '<div class="content"><div class="text-overflow">'
             content += '<a href="/' + result[i].url + '"><h3>' + result[i].title + '</h3></a>'
             content += '<p>' + result[i].post.content.substring(0, 115) + '...</p></div></div>'
+            content += '<div class="stars"> <div class="star" id="1"> <span class="glyphicon glyphicon-star"></span> </div> <div class="star" id="2"> <span class="glyphicon glyphicon-star"></span> </div> <div class="star" id="3"> <span class="glyphicon glyphicon-star"></span> </div> <div class="star" id="4"> <span class="glyphicon glyphicon-star"></span> </div> <div class="star" id="5"> <span class="glyphicon glyphicon-star"></span> </div> <span class="votes">0</span> </div>'
             content += '<div class="more">'
             content += '<a href="/' + result[i].url + '" class="btn btn-primary">Läs mer</a></div></div></div>'
             $('#searchResultsContainer').append(content)
