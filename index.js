@@ -292,7 +292,7 @@ app.get('/ajax/addVote', function (req, res) {
           db.votes.aggregate([
             { $match: { post : { id: 'req.post.id'} } },
             {
-              $group: { 
+              $group: {
                 _id: "$post.id",
                 average: { $avg: "$content" }
               }
@@ -446,8 +446,10 @@ app.get('/mina-sidor', function (req, res) {
   var dbinstance = db.instance()
   var pagesdb = dbinstance.collection('pages')
 
-  var userid = req.user.id
-  pagesdb.find({id:userid}).toArray(function(err, doc) {
+  var userid = new ObjectID(req.user._id)
+
+  pagesdb.find( { "user_info.id": userid }).toArray(function(err, doc) {
+    console.log(doc)
     res.render('pages', { user: req.user, pages:doc })
   })
 })
