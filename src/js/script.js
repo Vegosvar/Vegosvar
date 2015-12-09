@@ -45,6 +45,12 @@ $(function () {
   })
 
   // Searchform //
+
+  $('.searchForm').on('focus', function () {
+    $('#heroSearch').addClass('contracted')
+    $('html, body').animate({ scrollTop: 0 }, 'fast')
+  })
+
   $('.searchForm').keyup(setSearchFormState).blur(function () {
     if (this.value === '') {
       $('#heroSearch')
@@ -58,8 +64,6 @@ $(function () {
       $('#searchForm-btn-default').html('<i class="glyphicon glyphicon-search"></i>')
       $('#results').hide()
     } else {
-      $('#heroSearch').addClass('contracted')
-      $('html, body').animate({ scrollTop: 0 }, 'fast')
       $('#searchForm-btn-default').html('<img src="/assets/images/loading.svg" class="loading">')
     }
   }
