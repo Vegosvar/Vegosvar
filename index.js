@@ -144,6 +144,8 @@ passport.deserializeUser(function (id, done) {
 app.get('/', function (req, res) {
   var dbinstance = db.instance()
   var pagesdb = dbinstance.collection('pages')
+  var citiesdb = dbinstance.collection('cities')
+  var categoriesdb = dbinstance.collection('categories')
   var likesdb = dbinstance.collection('likes')
 
   var pages = {}
@@ -151,23 +153,35 @@ app.get('/', function (req, res) {
     limit: 8,
     sort: [ ['rating.likes', 'desc'] ]
   }
-  pagesdb.find({}, options).toArray(function(err, doc) {
-    res.render('index', { user: req.user, pages: doc, startpage: false, searchString: req.query.s, striptags: striptags })
+
+  //Get cities
+  citiesdb.find({}).toArray(function(err, cities) {
+    if (err) throw err
+    //Get categories
+    categoriesdb.find({}).toArray(function(err, categories) {
+      if(err) throw err
+      //Get pages
+      pagesdb.find({}, options).toArray(function(err, doc) {
+        res.render('index', { user: req.user, pages: doc, cities: cities, categories: categories, startpage: false, searchString: req.query.s, striptags: striptags })
+      })
+    })
   })
 })
 
 app.get('/handle', function (req, res) {
   var dbinstance = db.instance()
-  var images = dbinstance.collection('pages')
+  var pagesdb = dbinstance.collection('pages')
 
-  images.find({}).toArray(function(err, doc) {
+  pagesdb.find({}).toArray(function(err, doc) {
     res.json(doc)
   })
 })
 
 app.get('/handle/votes', function (req, res) {
-  var images = db.get('votes')
-  images.find({ }, function(err, doc) {
+  var dbinstance = db.instance()
+  var votesdb = dbinstance.collection('votes')
+
+  votesdb.find({}).toArray(function(err, doc) {
     res.json(doc)
   })
 })
@@ -237,31 +251,75 @@ app.get('/logga-ut', function (req, res) {
 })
 
 app.get('/ajax/search', function (req, res) {
+  var searchString = req.query.s
   var dbinstance = db.instance()
-  var pagesdb = dbinstance.collection('pages')
 
+  //The default query
   var query = {
-      $text: {
-        $search: req.query.s
-      }
+    $text: {
+      $search: searchString
+    }
   }
 
+  //The default options
   var options = {
-      "score": {
-          $meta: "textScore",
-      }
+    "score": {
+      $meta: "textScore",
+    }
   }
 
-  pagesdb.find(query, options).sort({
+  //The default sort options
+  var sort = {
     "score": {
-        $meta: "textScore"
+      $meta: "textScore"
     }
-  }).toArray(function (err, doc) {
-    for (var i = 0; i < doc.length; i++) {
-      doc[i].post.content = striptags(doc[i].post.content, ['br','p','a','span','i','b'])
+  }
+
+  //Check if query matches a type
+  var searchArray = searchString.toLowerCase().split(' ')
+
+  var queryType = false
+  for (var i in searchArray) {
+    switch (searchArray[i]) {
+      case 'butik':
+      case 'butiker':
+        queryType = "5"
+        break
+      case 'restaurang':
+      case 'restauranger':
+        queryType = "3"
+        break
+      case 'produkt':
+      case 'produkter':
+        queryType = "4"
+        break
+    }
+  }
+
+  if(queryType) {
+    query['type'] = queryType
+  }
+
+  var citiesdb = dbinstance.collection('cities')
+  citiesdb.find({name:{$in:searchArray}}).toArray(function(err, doc) {
+    if(err) throw err
+    if(doc.length > 0) {
+      query['post.city'] = {
+        '$regex': doc[0].name, //Search only this city
+        '$options': '-i'
+      }
     }
 
-    res.json(doc)
+    //Find pages
+    var pagesdb = dbinstance.collection('pages')
+
+    pagesdb.find(query, options).sort(sort).toArray(function (err, doc) {
+      if(err) throw err
+      for (var i = 0; i < doc.length; i++) {
+        doc[i].post.content = striptags(doc[i].post.content, ['br','p','a','span','i','b'])
+      }
+      res.json(doc)
+    })
   })
 })
 
@@ -281,6 +339,7 @@ app.get('/ajax/addVote', function (req, res) {
     if (req.isAuthenticated()) {
       var database = db.instance()
       var votesdb = database.collection('votes')
+      var pagesdb = database.collection('pages')
       votesdb.count({ "post.id": new ObjectID(req.query.id), "user.id": req.user._id }, function(err, count) {
         if(count < 1) {
           var data = {
@@ -289,15 +348,18 @@ app.get('/ajax/addVote', function (req, res) {
             user: { id: req.user._id }
           }
 
-          db.votes.aggregate([
+          votesdb.aggregate([
             { $match: { post : { id: 'req.post.id'} } },
             {
               $group: {
                 _id: "$post.id",
                 average: { $avg: "$content" }
               }
+          }]), function (err, results) {
+            if (err) {
+              console.log(err)
             }
-          ])
+          }
 
           votesdb.insert(data, function (err) {
             if(err) throw err
