@@ -529,7 +529,8 @@ app.get('/ny/publicerad', function (req, res) {
 })
 
 app.get('/ny/:type', function (req, res) {
-  res.render('post/'+req.params.type, { user: req.user, type: req.params.type, loadEditorResources: true, loadDropzoneResources: true })
+  var mapResources = (req.params.type === 'restaurang' || req.params.type === 'butik') ? true : false
+  res.render('post/'+req.params.type, { user: req.user, type: req.params.type, loadEditorResources: true, loadDropzoneResources: true, loadMapResources: mapResources })
 })
 
 app.get('/redigera/:url', function (req, res, next) {
