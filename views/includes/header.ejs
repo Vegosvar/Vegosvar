@@ -9,13 +9,13 @@
   <% } else { %>
     <title>Vegosvar – Enkla svar på vegofrågor</title>
   <% } %>
- 
+
   <meta name="robots" content="noindex,nofollow"> <!-- Remove before release -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
   <meta property="og:site_name" content="Vegosvar">
   <meta name="keywords" content="vegan,vegetarian,restauranger,produkter">
-  
+
   <% if(typeof(post) === 'undefined') { %>
     <meta name="description" content="Sveriges modernaste plattform för vegointresserade. Sök fakta, restauranger, butiker, produkter och recept!">
     <meta property="og:title" content="Vegosvar – Enkla svar på vegofrågor">
@@ -150,6 +150,11 @@
             Restauranger
           </a>
           <ul class="dropdown-menu">
+            <% if(typeof(cities) !== 'undefined') { %>
+              <% for(i=0;i<cities.length;i++) { %>
+                <li><a href="/?s=<%= cities[i].name %>+restauranger"><%= cities[i].name %></a></li>
+              <% } %>
+            <% } else { %>
             <li><a href="/?s=Stockholm+restauranger">Stockholm</a></li>
             <li><a href="/?s=Göteborg+restauranger">Göteborg</a></li>
             <li><a href="/?s=Malmö+restauranger">Malmö</a></li>
@@ -162,6 +167,7 @@
             <li><a href="/?s=Norrköping+restauranger">Norrköping</a></li>
             <li><a href="/?s=Lund+restauranger">Lund</a></li>
             <li><a href="/?s=restauranger">Hela Sverige</a></li>
+            <% } %>
           </ul>
         </li>
 
@@ -171,6 +177,11 @@
             Butiker
           </a>
           <ul class="dropdown-menu">
+            <% if(typeof(cities) !== 'undefined') { %>
+              <% for(i=0;i<cities.length;i++) { %>
+                <li><a href="/?s=<%= cities[i].name %>+butik"><%= cities[i].name %></a></li>
+              <% } %>
+            <% } else { %>
             <li><a href="/?s=Stockholm+butik">Stockholm</a></li>
             <li><a href="/?s=Göteborg+butik">Göteborg</a></li>
             <li><a href="/?s=Malmö+butik">Malmö</a></li>
@@ -183,15 +194,21 @@
             <li><a href="/?s=Norrköping+butik">Norrköping</a></li>
             <li><a href="/?s=Lund+butik">Lund</a></li>
             <li><a href="/?s=Butiker">Hela Sverige</a></li>
+            <% } %>
           </ul>
         </li>
-        
+
         <li class="dropdown hidden-sm">
             <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             <span class="glyphicon glyphicon-ice-lolly-tasted"></span>
             Produkter
           </a>
           <ul class="dropdown-menu">
+            <% if(typeof(categories) !== 'undefined') { %>
+              <% for(i=0;i<categories.length;i++) { %>
+                <li><a href="/?s=<%= categories[i].name %>"><%= categories[i].name %></a></li>
+              <% } %>
+            <% } else { %>
             <li><a href="/?s=chips">Chips</a></li>
             <li><a href="/?s=glass">Glass</a></li>
             <li><a href="/?s=godis">Godis</a></li>
@@ -206,6 +223,7 @@
             <li><a href="/?s=växtdryck">Växtdryck</a></li>
             <li><a href="/?s=växtgrädde">Växtgrädde</a></li>
             <li><a href="/?s=öl">Öl</a></li>
+            <% } %>
           </ul>
         </li>
 
