@@ -90,6 +90,12 @@
         FastClick.attach(document.body);
     });
   </script>
+
+  <% if (typeof loadMapResources !== 'undefined' && loadMapResources === true) { %>
+  <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=sv_SE" async defer></script>
+  <script src="/includes/js/googlemaps/input.js"></script>
+  <% } %>
+
   <% if (typeof loadEditorResources !== 'undefined' && loadEditorResources === true) { %>
     <script src="/includes/js/wysihtml5x/wysihtml5x.min.js"></script>
     <script src="/includes/js/wysihtml5x/wysihtml5x-toolbar.min.js"></script>
