@@ -122,6 +122,7 @@ client.connect(config.database.host+config.database.name, function(err, db){
                     //Check that all data in that collection is inserted
                     if(collections[collection].hasOwnProperty('data')) {
                         //Loop over data
+                        verifyDataInCollection(collections[collection].name, collections[collection].data)
                     }
                 }
             }
@@ -154,4 +155,57 @@ function insertDataToCollection(name, data) {
             db.close()
         })
     })
+}
+
+function verifyDataInCollection(name, data) {
+    client.connect(config.database.host+config.database.name, function(err, db){
+        if (err) throw err
+
+        var dataFound = []
+
+        db.collection(name).find({}).toArray(function(err, docs){
+            if (err) throw err
+            for (var doc in docs) {
+                if (docs.hasOwnProperty(doc)) {
+                    for (var entry in data) {
+                        if (data.hasOwnProperty(entry)) {
+                            if(data[entry].name == docs[doc].name) {
+
+                                //Check if it already exists in the dataFound array (in case of duplicate data in db)
+                                if(!containsObject(data[entry],dataFound)) {
+                                    //Entry wasn't found in array, add it
+                                    dataFound.push(data[entry])
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if(dataFound.length < data.length) {
+                var dataToInsert = []
+                for (var i = 0; i < data.length; i++) {
+                    if(!containsObject(data[i], dataFound)) {
+                        dataToInsert.push(data[i])
+                    }
+                }
+                //Insert missing data
+                insertDataToCollection(name, dataToInsert)
+            }
+
+            db.close()
+        })
+
+    })
+}
+
+function containsObject(obj, array) {
+    var i;
+    for (i = 0; i < array.length; i++) {
+        if (array[i] === obj) {
+            return true;
+        }
+    }
+
+    return false;
 }
