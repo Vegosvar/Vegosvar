@@ -112,45 +112,44 @@ $(document).ready(function () {
 
           //Update the sources-list ul with the new source
           $('#sources-list').append(
-              $('<li>')
-              .attr({
-                  class: 'list-group-item',
-                  id: 'source-' + sourceId
-              })
+            $('<li>')
+            .attr({
+              class: 'list-group-item',
+              id: 'source-' + sourceId
+            })
+            .append(
+              $('<span>')
               .append(
+                $('<a>')
+                .attr({
+                  href: sourceUrl,
+                  class: 'source-url',
+                  title: sourceUrl,
+                  target: '_blank'
+                })
+                .append(
+                  $('<span>').
+                  attr('class', 'source-id')
+                  .text(sourceId),
                   $('<span>')
-                  .append(
-                      $('<a>')
-                      .attr({
-                          href: sourceUrl,
-                          class: 'source-url',
-                          title: sourceUrl,
-                          target: '_blank'
-                      })
-                      .append(
-                          $('<span>').
-                          attr('class', 'source-id')
-                          .text(sourceId),
-                          $('<span>')
-                          .attr('class', 'source-delimiter')
-                          .text(':'),
-                          $('<span>')
-                          .attr('class', 'source-name')
-                          .text(sourceText)
-                      ),
-                      $('<a>')
-                          .attr({
-                              href: '#',
-                              class: 'source-edit pull-right'
-                          })
-                          .append(
-                              $('<span>')
-                              .text('Redigera'),
-                              $('<span>')
-                              .attr('class', 'glyphicon glyphicon-edit')
-                          )
-                      )
-              )
+                  .attr('class', 'source-delimiter')
+                  .text('. '),
+                  $('<span>')
+                  .attr('class', 'source-name')
+                  .text(sourceText)
+                )
+              ),
+              $('<a>')
+                .attr({
+                  href: '#',
+                  class: 'source-edit pull-right',
+                  'data-source-id': sourceId
+                })
+                .append(
+                  $('<span>')
+                  .text('Redigera')
+                )
+            )
           );
 
           //Update the select existing sources drop down
