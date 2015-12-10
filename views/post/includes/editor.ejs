@@ -177,11 +177,11 @@
         </div>
     </div>
     <div id="sources-container" class="col-sm-12">
-        <% if (typeof post === 'undefined') { %>
+        <% if (typeof(post) === 'undefined') { %>
             <div id="sources-reminder" class="alert alert-info"><span class="glyphicon glyphicon-superscript"></span>Glöm inte att källhänvisa</div>
         <% } %>
         <ul id="sources-list" class="list-group">
-            <% if (typeof(post.post.sources) !== 'undefined') { %>
+            <% if (typeof(post) !== 'undefined' && typeof(post.post.sources) !== 'undefined') { %>
                 <% for (var i=0;i<post.post.sources.name.length;i++) {
                     var sourceId = (i + 1)
                     var sourceName = post.post.sources.name[i]
@@ -200,7 +200,7 @@
             <% } %>
         </ul>
         <div id="sources-storage" class="hidden">
-            <% if (typeof(post.post.sources) !== 'undefined') { %>
+            <% if (typeof(post) !== 'undefined' && typeof(post.post.sources) !== 'undefined') { %>
                 <% for (var i=0;i<post.post.sources.name.length;i++) {
                     var sourceId = (i + 1)
                     var sourceName = post.post.sources.name[i]
