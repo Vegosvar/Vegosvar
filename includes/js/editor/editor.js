@@ -44,6 +44,37 @@ $(document).ready(function () {
     }
   }
 
+  function updateSourceSelect() {
+    var optionValues = []
+    var optionTexts = []
+    $('#sources-list').children().each(function() {
+      optionValues.push( $(this).find('.source-id').html() )
+      optionTexts.push( $(this).find('.source-name').html() )
+    })
+
+    //Update the select existing sources drop down
+    for (var i = 0; i < optionValues.length; i++) {
+      if($('#insert-source-existing option[value=' + optionValues[i] + ']').length === 0) {
+        //Option does not exist, insert it.
+        $('#insert-source-existing').append(
+          $('<option>')
+          .attr('value',optionValues[i])
+          .text(optionValues[i] + '. ' + optionTexts[i])
+        );
+      }
+
+      //Hide reminder to use source references
+      if($('#sources-reminder').is(':visible')) {
+          $('#sources-reminder').hide()
+      }
+
+      //Make sure the select elements container is visible
+      if($('#source-existing').hasClass('hidden')) {
+       $('#source-existing').removeClass('hidden').show();
+      }
+    }
+  }
+
   //Listen for when the user brings up the insert link modal
   $('#insert-link-button').on('click', function () {
     var url
@@ -152,13 +183,6 @@ $(document).ready(function () {
             )
           );
 
-          //Update the select existing sources drop down
-          $('#insert-source-existing').append(
-              $('<option>')
-              .attr('value',sourceId)
-              .text(sourceId + ': ' + sourceText)
-          );
-
           //And insert a new input field with the new source-link
           $('#sources-storage').append(
               $('<div>').append(
@@ -178,6 +202,9 @@ $(document).ready(function () {
                   })
               )
           );
+
+          //Update existing sources select dropdown
+          updateSourceSelect()
 
           //Finally set up the html to insert into the editor
           html = '<sup class="wysihtml5-uneditable-container source-link" contenteditable="false" data-source="source-' + sourceId + '">[' + sourceId + ']</sup>';
@@ -200,19 +227,9 @@ $(document).ready(function () {
         }
       })
 
-      //Hide reminder to use source references
-      if($('#sources-reminder').is(':visible')) {
-          $('#sources-reminder').hide()
-      }
-
       $('#editorModalSource').modal('hide')
 
       $('#editorModalSource').on('hidden.bs.modal', function() {
-          //Make sure the select elements container is visible
-          if($('#source-existing').hasClass('hidden')) {
-           $('#source-existing').removeClass('hidden').show();
-          }
-
           $('#insert-source-name').val('');
           $('#insert-source-url').val('');
       })
@@ -263,8 +280,6 @@ $(document).ready(function () {
       $(container).find('.source-url').attr('href', url)
       $(container).find('.source-url').attr('title', url)
 
-      console.log(container, name, url);
-
       $('#editorModalSource').modal('hide')
 
       $('#insert-source-name').val('');
@@ -295,7 +310,6 @@ $(document).ready(function () {
     }
   })
 
-
   //Initialize the wysihtml5 editor
   $.fn.editorController('init', {
     element: '.editable',
@@ -307,7 +321,12 @@ $(document).ready(function () {
     },
   })
 
+  //Set text of hidden textarea to editor
   $('.editable').html($('.editable-content').text())
 
+  //Update existing sources select
+  updateSourceSelect()
+
+  //See function
   $('#insert-link-button-mobile').bind("DOMSubtreeModified", mobileInsertLinkFix)
 })
