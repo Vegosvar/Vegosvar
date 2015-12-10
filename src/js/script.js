@@ -101,6 +101,21 @@ $(function () {
 
           $('#searchResultsContainer').show('fast')
 
+          var veg_types = {
+            vegan: {
+              name: 'Veganskt',
+              className: 'text-success'
+            },
+            lacto_ovo: {
+              name: 'Lakto-ovo vegetariskt',
+              className: 'text-warning'
+            },
+            animal: {
+              name: 'Animaliskt',
+              className: 'text-danger'
+            }
+          }
+
           for (var i = 0, result = data; i < result.length; i++) {
             var id = result[i]._id
             var content = '<div class="col-sm-6 col-md-4 col-lg-3" id="searchResult-' + id + '">'
@@ -110,7 +125,11 @@ $(function () {
             content += ')"></div></a>'
             content += '<div class="content"><div class="text-overflow">'
             content += '<a href="/' + result[i].url + '"><h3>' + result[i].title + '</h3></a>'
-            content += '<p>' + result[i].post.content.substring(0, 115) + '...</p></div></div>'
+            content += '<p>'
+            if (result[i].type === '4') {
+              content += '<strong class="' + veg_types[result[i].post.veg_type].className + '">' + veg_types[result[i].post.veg_type].name + '</strong> '
+            }
+            content += result[i].post.content.substring(0, 115) + '...</p></div></div>'
             content += '<div class="stars"> <div class="star" id="1"> <span class="glyphicon glyphicon-star"></span> </div> <div class="star" id="2"> <span class="glyphicon glyphicon-star"></span> </div> <div class="star" id="3"> <span class="glyphicon glyphicon-star"></span> </div> <div class="star" id="4"> <span class="glyphicon glyphicon-star"></span> </div> <div class="star" id="5"> <span class="glyphicon glyphicon-star"></span> </div> <span class="votes">0</span> </div>'
             content += '<div class="more">'
             content += '<a href="/' + result[i].url + '" class="btn btn-primary">Läs mer</a></div></div></div>'
