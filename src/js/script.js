@@ -46,7 +46,7 @@ $(function () {
 
   // Searchform //
 
-  $('.searchForm').on('focus', function () {
+  $('.searchForm').on('keydown', function () {
     $('#heroSearch').addClass('contracted')
     $('html, body').animate({ scrollTop: 0 }, 'fast')
   })
