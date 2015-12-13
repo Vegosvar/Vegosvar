@@ -527,8 +527,7 @@ nav {
 		border: none !important;
 		z-index: 3;
 		@media (max-width: @xs) {
-			width: 100%;
-			top: 0;
+			display: none;
 		}
 		.navbar-right {
 			margin: 0;
@@ -668,8 +667,7 @@ nav {
 			&.startpage {
 				img {
 					@media (max-width: @xs) {
-						width: 145px;
-						margin-top: 25px;
+						display: none;
 					}
 				}
 			}
@@ -1041,8 +1039,13 @@ section {
 	padding: 150px 0 180px 0;
 	color: #fff;
 	@media (max-width: @xs) {
-		padding: 5px 0 30px 0;
+		padding: 40px 0 40px 0;
 		margin-bottom: 0px;
+	}
+
+	.logo img {
+		width: 170px;
+		margin-bottom: 20px;
 	}
 
 	@media (min-width: @xs) { // Only transitions on desktop
@@ -1060,7 +1063,11 @@ section {
 	&.contracted {
 		padding: 10px 0 30px 0;
 		@media (max-width: @xs) {
-			padding: 0 0 0 0;
+			padding: 15px 0 0 0;
+		}
+		.logo img {
+			width: 150px;
+			margin-bottom: 15px;
 		}
 		.intro {
 			margin-bottom: 0;
@@ -1075,6 +1082,68 @@ section {
 		.searchTips {
 			@media (max-width: @xs) {
 				display: none !important;
+			}
+		}
+	}
+
+	.searchEngine {
+		width: 560px;
+		margin: 0 auto 15px auto;
+		transition: transform 0.15s;
+		&:active {
+			@media (min-width: @xs) {
+				transform: scale(0.98);
+			}
+		}
+		@media (max-width: @xs) {
+			width: 100%;
+		}
+		input {
+			font-size: 18px;
+			font-weight: 400;
+			padding: 20px 25px !important;
+			background: #fff;
+			border-radius: 5px 0 0 5px;
+			box-shadow: none;
+			border: none !important;
+			color: #111;
+			@media (max-width: @xs) {
+				padding: 15px 0 15px 20px !important;
+				font-size: 16px;
+				max-height: 52px;
+			}
+		}
+		button {
+			font-size: 18px;
+			font-weight: 700;
+			padding: 20px 25px;
+			background: #fff;
+			border-radius: 0 5px 5px 0;
+			box-shadow: none;
+			border: none;
+			color: #333;
+			transition: color 0.2s;
+			@media (max-width: @xs) {
+				padding: 15px 15px;
+				font-size: 16px;
+				max-height: 52px;
+			}
+			&:hover {
+				background: #fff;
+				color: lighten(#333, 30%);
+			}
+			@keyframes loading {
+				0% { transform: rotate(-360deg); }
+				100% { transform: rotate(360deg); }
+			}
+			.loading {
+				width: 20px;
+				height: 20px;
+				animation: loading 2.5s infinite linear;
+				@media (max-width: @xs) {
+					width: 18px;
+					height: 18px;
+				}
 			}
 		}
 	}
@@ -1104,68 +1173,6 @@ section {
 		}
 	}
 
-}
-
-.searchEngine {
-	width: 560px;
-	margin: 0 auto 15px auto;
-	transition: transform 0.15s;
-	&:active {
-		@media (min-width: @xs) {
-			transform: scale(0.98);
-		}
-	}
-	@media (max-width: @xs) {
-		width: 100%;
-	}
-	input {
-		font-size: 18px;
-		font-weight: 400;
-		padding: 20px 25px !important;
-		background: #fff;
-		border-radius: 5px 0 0 5px;
-		box-shadow: none;
-		border: none !important;
-		color: #111;
-		@media (max-width: @xs) {
-			padding: 15px 0 15px 20px !important;
-			font-size: 16px;
-			max-height: 52px;
-		}
-	}
-	button {
-		font-size: 18px;
-		font-weight: 700;
-		padding: 20px 25px;
-		background: #fff;
-		border-radius: 0 5px 5px 0;
-		box-shadow: none;
-		border: none;
-		color: #333;
-		transition: color 0.2s;
-		@media (max-width: @xs) {
-			padding: 15px 15px;
-			font-size: 16px;
-			max-height: 52px;
-		}
-		&:hover {
-			background: #fff;
-			color: lighten(#333, 30%);
-		}
-		@keyframes loading {
-			0% { transform: rotate(-360deg); }
-			100% { transform: rotate(360deg); }
-		}
-		.loading {
-			width: 20px;
-			height: 20px;
-			animation: loading 2.5s infinite linear;
-			@media (max-width: @xs) {
-				width: 18px;
-				height: 18px;
-			}
-		}
-	}
 }
 
 .stars {
