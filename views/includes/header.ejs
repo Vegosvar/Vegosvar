@@ -126,8 +126,12 @@
 </script>
 
 <body>
-
+  
+  <% if (typeof startpage !== 'undefined') { %>
+  <nav id="top" class="navbar navbar-default navbar-static-top startpage">
+  <% } else { %>
   <nav id="top" class="navbar navbar-default navbar-static-top">
+  <% } %>
     <div class="container">
       <div class="navbar-header">
         <div class="row">

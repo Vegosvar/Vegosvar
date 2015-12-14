@@ -527,7 +527,9 @@ nav {
 		border: none !important;
 		z-index: 3;
 		@media (max-width: @xs) {
-			display: none;
+			&.startpage {
+				display: none;
+			}
 		}
 		.navbar-right {
 			margin: 0;
