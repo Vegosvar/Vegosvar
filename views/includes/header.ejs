@@ -103,6 +103,9 @@
     <% if (typeof loadMapResources.map !== 'undefined' && loadMapResources.map === true) { %>
       <script src="/includes/js/googlemaps/map.js"></script>
     <% } %>
+    <% if (typeof loadMapResources.mapCluster !== 'undefined' && loadMapResources.mapCluster === true) { %>
+      <script src="/includes/js/markerclustererplus/markerclusterer.min.js"></script>
+    <% } %>
   <% } %>
 
   <% if (typeof loadEditorResources !== 'undefined' && loadEditorResources === true) { %>
@@ -170,7 +173,7 @@
           <ul class="dropdown-menu">
             <% if(typeof(cities) !== 'undefined') { %>
               <% for(i=0;i<cities.length;i++) { %>
-                <li><a href="/?s=restauranger+i+<%= cities[i].name %>"><%= cities[i].name %></a></li>
+                <li><a href="/?s=Restauranger+i+<%= cities[i].name %>"><%= cities[i].name %></a></li>
               <% } %>
             <% } else { %>
             <li><a href="/?s=Restauranger+Stockholm">Stockholm</a></li>
