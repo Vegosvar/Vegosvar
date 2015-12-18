@@ -5,7 +5,7 @@
   "authors": [
     "Tobias Järvelöv <tobias@jarvelov.se>"
   ],
-  "license": "MIT",
+  "license": "Unlicense",
   "homepage": "https://github.com/Vegosvar/Vegosvar",
   "moduleType": [
     "node"
@@ -19,20 +19,22 @@
     "tests"
   ],
   "dependencies": {
-    "fastclick": "~1.0.6"
+    "fastclick": "~1.0.6",
+    "markerclustererplus": "~2.1.4"
   },
   "install": {
     "base": "includes",
-    "path" : {
+    "path": {
       "css": "css",
       "js": "js"
     },
-    "sources" : {
-      "wysihtml5x" : [
+    "sources": {
+      "wysihtml5x": [
         "bower_components/wysihtml5x/parser_rules/advanced_and_extended.js",
         "bower_components/wysihtml5x/dist/wysihtml5x.min.js",
         "bower_components/wysihtml5x/dist/wysihtml5x-toolbar.min.js"
-      ]
+      ],
+      "markerclustererplus": "bower_components/markerclustererplus/dist/markerclusterer.min.js"
     }
   }
 }
