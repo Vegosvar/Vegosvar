@@ -149,7 +149,8 @@ var wysihtml5ParserRules = {
      *                            - src:            allows something like "/foobar.jpg", "http://google.com", ...
      *                            - href:           allows something like "mailto:bert@foo.com", "http://google.com", "/foobar.jpg"
      *                            - alt:            strips unwanted characters. if the attribute is not set, then it gets set (to ensure valid and compatible HTML)
-     *                            - numbers:  ensures that the attribute only contains numeric characters
+     *                            - numbers:        ensures that the attribute only contains numeric (integer) characters (no float values or units)
+     *                            - dimension:      for with/height attributes where floating point numbrs and percentages are allowed
      *                            - any:            allows anything to pass 
      */
     "tags": {
@@ -252,10 +253,10 @@ var wysihtml5ParserRules = {
                 "valid_image_src": 1
             },
             "check_attributes": {
-                "width": "numbers",
+                "width": "dimension",
                 "alt": "alt",
                 "src": "src", // if you compiled master manually then change this from 'url' to 'src'
-                "height": "numbers",
+                "height": "dimension",
                 "id": "any"
             },
             "add_class": {
@@ -276,9 +277,7 @@ var wysihtml5ParserRules = {
         "bgsound": {
             "remove": 1
         },
-        "sup": {
-            "unwrap": 1
-        },
+        "sup": {},
         "address": {
             "unwrap": 1
         },
@@ -626,9 +625,7 @@ var wysihtml5ParserRules = {
             "unwrap": 1
         },
         "p": wysihtml5ParserRulesDefaults.blockLevelEl,
-        "sub": {
-            "unwrap": 1
-        },
+        "sub": {},
         "comment": {
             "remove": 1
         },

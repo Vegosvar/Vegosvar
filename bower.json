@@ -20,7 +20,8 @@
   ],
   "dependencies": {
     "fastclick": "~1.0.6",
-    "markerclustererplus": "~2.1.4"
+    "markerclustererplus": "~2.1.4",
+    "wysihtml": "wysihtml5x#~0.5.4"
   },
   "install": {
     "base": "includes",
@@ -29,10 +30,10 @@
       "js": "js"
     },
     "sources": {
-      "wysihtml5x": [
-        "bower_components/wysihtml5x/parser_rules/advanced_and_extended.js",
-        "bower_components/wysihtml5x/dist/wysihtml5x.min.js",
-        "bower_components/wysihtml5x/dist/wysihtml5x-toolbar.min.js"
+      "wysihtml": [
+        "bower_components/wysihtml/parser_rules/advanced_and_extended.js",
+        "bower_components/wysihtml/dist/wysihtml.min.js",
+        "bower_components/wysihtml/dist/wysihtml-toolbar.min.js"
       ],
       "markerclustererplus": "bower_components/markerclustererplus/dist/markerclusterer.min.js"
     }
