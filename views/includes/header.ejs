@@ -91,9 +91,18 @@
     });
   </script>
 
-  <% if (typeof loadMapResources !== 'undefined' && loadMapResources === true) { %>
+  <% if (typeof loadGeoLocation !== 'undefined' && loadGeoLocation === true) { %>
+      <script src="/includes/js/geolocation/geolocation.js"></script>
+  <% } %>
+
+  <% if (typeof loadMapResources !== 'undefined') { %>
   <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=sv_SE" async defer></script>
-  <script src="/includes/js/googlemaps/input.js"></script>
+    <% if (typeof loadMapResources.autocomplete !== 'undefined' && loadMapResources.autocomplete === true) { %>
+      <script src="/includes/js/googlemaps/input.js"></script>
+    <% } %>
+    <% if (typeof loadMapResources.map !== 'undefined' && loadMapResources.map === true) { %>
+      <script src="/includes/js/googlemaps/map.js"></script>
+    <% } %>
   <% } %>
 
   <% if (typeof loadEditorResources !== 'undefined' && loadEditorResources === true) { %>
@@ -127,7 +136,11 @@
 
 <body>
 
+  <% if (typeof startpage !== 'undefined') { %>
+  <nav id="top" class="navbar navbar-default navbar-static-top startpage">
+  <% } else { %>
   <nav id="top" class="navbar navbar-default navbar-static-top">
+  <% } %>
     <div class="container">
       <div class="navbar-header">
         <div class="row">
@@ -271,17 +284,23 @@
         <a class="toggle-dropdown"><span class="glyphicon glyphicon-map-marker"></span>Restauranger</a>
         <ul class="dropdown">
           <li class="title">Restauranger</li>
-            <li><a href="/?s=Stockholm+restauranger">Stockholm</a></li>
-            <li><a href="/?s=Göteborg+restauranger">Göteborg</a></li>
-            <li><a href="/?s=Malmö+restauranger">Malmö</a></li>
-            <li><a href="/?s=Uppsala+restauranger">Uppsala</a></li>
-            <li><a href="/?s=Västerås+restauranger">Västerås</a></li>
-            <li><a href="/?s=Örebro+restauranger">Örebro</a></li>
-            <li><a href="/?s=Linköping+restauranger">Linköping</a></li>
-            <li><a href="/?s=Helsingborg+restauranger">Helsingborg</a></li>
-            <li><a href="/?s=Jönköping+restauranger">Jönköping</a></li>
-            <li><a href="/?s=Norrköping+restauranger">Norrköping</a></li>
-            <li><a href="/?s=Lund+restauranger">Lund</a></li>
+          <% if(typeof(cities) !== 'undefined') { %>
+            <% for(i=0;i<cities.length;i++) { %>
+              <li><a href="/?s=<%= cities[i].name %>+restauranger"><%= cities[i].name %></a></li>
+            <% } %>
+          <% } else { %>
+          <li><a href="/?s=Stockholm+restauranger">Stockholm</a></li>
+          <li><a href="/?s=Göteborg+restauranger">Göteborg</a></li>
+          <li><a href="/?s=Malmö+restauranger">Malmö</a></li>
+          <li><a href="/?s=Uppsala+restauranger">Uppsala</a></li>
+          <li><a href="/?s=Västerås+restauranger">Västerås</a></li>
+          <li><a href="/?s=Örebro+restauranger">Örebro</a></li>
+          <li><a href="/?s=Linköping+restauranger">Linköping</a></li>
+          <li><a href="/?s=Helsingborg+restauranger">Helsingborg</a></li>
+          <li><a href="/?s=Jönköping+restauranger">Jönköping</a></li>
+          <li><a href="/?s=Norrköping+restauranger">Norrköping</a></li>
+          <li><a href="/?s=Lund+restauranger">Lund</a></li>
+          <% } %>
           <li class="desc"><div>Du kan även använda sökfunktionen</div></li>
         </ul>
       </li>
@@ -290,6 +309,11 @@
         <a class="toggle-dropdown"><span class="glyphicon glyphicon-ice-lolly-tasted"></span>Produkter</a>
         <ul class="dropdown">
           <li class="title">Produkter</li>
+          <% if(typeof(categories) !== 'undefined') { %>
+            <% for(i=0;i<categories.length;i++) { %>
+              <li><a href="/?s=<%= categories[i].name %>"><%= categories[i].name %></a></li>
+            <% } %>
+          <% } else { %>
           <li><a href="/?s=Chips">Chips</a></li>
           <li><a href="/?s=Glass">Glass</a></li>
           <li><a href="/?s=Godis">Godis</a></li>
@@ -304,6 +328,7 @@
           <li><a href="/?s=Växtdryck">Växtdryck</a></li>
           <li><a href="/?s=Växtgrädde">Växtgrädde</a></li>
           <li><a href="/?s=Öl">Öl</a></li>
+          <% } %>
           <li class="desc"><div>Du kan även använda sökfunktionen för att söka specifika produkter</div></li>
         </ul>
       </li>

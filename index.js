@@ -434,6 +434,18 @@ app.get('/ajax/like', function (req, res) {
   }
 })
 
+app.get('/ajax/map', function (req, res) {
+  var database = db.instance()
+  var pagesdb = database.collection('pages')
+
+  pagesdb.find({$or: [ { type: '3' }, { type: '5' } ] }).toArray(function(err, doc) {
+    for (var i = 0; i < doc.length; i++) {
+      doc[i].post.content = striptags(doc[i].post.content, ['br'])
+    }
+    res.json(doc)
+  })
+})
+
 app.get('/:url', function (req, res, next) {
   var url = req.params.url
   var dbinstance = db.instance()
@@ -529,7 +541,7 @@ app.get('/ny/publicerad', function (req, res) {
 })
 
 app.get('/ny/:type', function (req, res) {
-  var mapResources = (req.params.type === 'restaurang' || req.params.type === 'butik') ? true : false
+  var mapResources = (req.params.type === 'restaurang' || req.params.type === 'butik') ? { autocomplete: true } : false
   res.render('post/'+req.params.type, { user: req.user, type: req.params.type, loadEditorResources: true, loadDropzoneResources: true, loadMapResources: mapResources })
 })
 
@@ -542,6 +554,7 @@ app.get('/redigera/:url', function (req, res, next) {
       var post = doc[0]
       var type = parseInt(post.type)
       var page = null
+      var mapResources = false
         switch(type) {
           case 1:
             page = 'fakta'
@@ -551,19 +564,21 @@ app.get('/redigera/:url', function (req, res, next) {
             break
           case 3:
             page = 'restaurang'
+            mapResources = { autocomplete: true }
             break
           case 4:
             page = 'produkt'
             break
           case 5:
             page = 'butik'
+            mapResources = { autocomplete: true }
             break
           default:
             return next()
         }
 
       if(page !== null) {
-        res.render('post/' + page, { user: req.user, post: post, loadEditorResources: true, loadDropzoneResources: true })
+        res.render('post/' + page, { user: req.user, post: post, loadEditorResources: true, loadDropzoneResources: true, loadMapResources: mapResources })
       }
     } else {
       next()
@@ -656,6 +671,10 @@ app.post('/submit', urlencodedParser, function (req, res) {
         },
         city: req.body.city,
         street: req.body.street,
+        coordinates: {
+            latitude: req.body.latitude,
+            longitude: req.body.longitude
+        },
         phone: req.body.phone,
         website: req.body.website,
         email: req.body.email,
@@ -730,6 +749,10 @@ app.post('/submit', urlencodedParser, function (req, res) {
         license_holder_website: req.body.license_holder_website,
         city: req.body.city,
         street: req.body.street,
+        coordinates: {
+            latitude: req.body.latitude,
+            longitude: req.body.longitude
+        },
         website: req.body.website,
         openhours: {
           monday: req.body.monday,
@@ -772,6 +795,10 @@ app.post('/submit', urlencodedParser, function (req, res) {
       })
     }
   })
+})
+
+app.get('/karta', function (req, res, next) {
+    res.render('karta', { user: req.user, loadGeoLocation: true, loadMapResources: { map: true } })
 })
 
 app.post('/submit/file', function(req, res) {
