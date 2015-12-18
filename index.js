@@ -798,7 +798,7 @@ app.post('/submit', urlencodedParser, function (req, res) {
 })
 
 app.get('/karta', function (req, res, next) {
-    res.render('karta', { user: req.user, loadGeoLocation: true, loadMapResources: { map: true } })
+    res.render('karta', { user: req.user, loadGeoLocation: true, loadMapResources: { map: true, mapCluster: true } })
 })
 
 app.post('/submit/file', function(req, res) {
