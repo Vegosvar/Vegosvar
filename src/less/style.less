@@ -527,8 +527,9 @@ nav {
 		border: none !important;
 		z-index: 3;
 		@media (max-width: @xs) {
-			width: 100%;
-			top: 0;
+			&.startpage {
+				display: none;
+			}
 		}
 		.navbar-right {
 			margin: 0;
@@ -668,8 +669,7 @@ nav {
 			&.startpage {
 				img {
 					@media (max-width: @xs) {
-						width: 145px;
-						margin-top: 25px;
+						display: none;
 					}
 				}
 			}
@@ -786,6 +786,11 @@ nav {
 									background: #fff;
 									color: @brand-color;
 								}
+							}
+							&.search {
+								margin-top: 15px;
+								padding: 0 15px;
+								background: none;
 							}
 						}
 					}
@@ -1036,8 +1041,13 @@ section {
 	padding: 150px 0 180px 0;
 	color: #fff;
 	@media (max-width: @xs) {
-		padding: 5px 0 30px 0;
+		padding: 40px 0 40px 0;
 		margin-bottom: 0px;
+	}
+
+	.logo img {
+		width: 170px;
+		margin-bottom: 20px;
 	}
 
 	@media (min-width: @xs) { // Only transitions on desktop
@@ -1055,7 +1065,11 @@ section {
 	&.contracted {
 		padding: 10px 0 30px 0;
 		@media (max-width: @xs) {
-			padding: 0 0 0 0;
+			padding: 15px 0 0 0;
+		}
+		.logo img {
+			width: 150px;
+			margin-bottom: 15px;
 		}
 		.intro {
 			margin-bottom: 0;
@@ -1074,31 +1088,6 @@ section {
 		}
 	}
 
-	.intro {
-		margin-bottom: 40px;
-		@media (max-width: @xs) {
-			margin-bottom: 20px;
-		}
-		h1 {
-			font-size: 62px;
-			margin-bottom: 0;
-			font-weight: 300;
-			color: #fff;
-			@media (max-width: @xs) {
-				font-size: 23px;
-				font-weight: 400;
-			}
-		}
-	}
-
-	p {
-		margin-bottom: 0;
-		font-size: 17px;
-		@media (max-width: @xs) {
-			font-size: 14px;
-		}
-	}
-
 	.searchEngine {
 		width: 560px;
 		margin: 0 auto 15px auto;
@@ -1114,14 +1103,14 @@ section {
 		input {
 			font-size: 18px;
 			font-weight: 400;
-			padding: 20px 25px;
+			padding: 20px 25px !important;
 			background: #fff;
 			border-radius: 5px 0 0 5px;
 			box-shadow: none;
-			border: none;
+			border: none !important;
 			color: #111;
 			@media (max-width: @xs) {
-				padding: 15px 0 15px 20px;
+				padding: 15px 0 15px 20px !important;
 				font-size: 16px;
 				max-height: 52px;
 			}
@@ -1160,8 +1149,33 @@ section {
 			}
 		}
 	}
-}
 
+	.intro {
+		margin-bottom: 40px;
+		@media (max-width: @xs) {
+			margin-bottom: 20px;
+		}
+		h1 {
+			font-size: 62px;
+			margin-bottom: 0;
+			font-weight: 300;
+			color: #fff;
+			@media (max-width: @xs) {
+				font-size: 23px;
+				font-weight: 400;
+			}
+		}
+	}
+
+	p {
+		margin-bottom: 0;
+		font-size: 17px;
+		@media (max-width: @xs) {
+			font-size: 14px;
+		}
+	}
+
+}
 
 .stars {
 	&:hover .star.active {
