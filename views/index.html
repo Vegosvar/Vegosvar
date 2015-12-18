@@ -39,77 +39,96 @@
 		</div>
 	</section>
 
-	<section id="handpicked">
-		<div class="container">
-			<h2>Populära sidor</h2>
-			<div class="row">
-				<% for (var i=0; i < pages.length; i++) {%>
-				<div class="col-sm-4 col-md-4 col-lg-3">
-					<div class="result">
-						<% if (typeof pages[i].post.cover !== 'undefined' && pages[i].post.cover.filename !== null) { %>
-						<a href="/<%= pages[i].url %>">
-							<div class="image" style="background-image: url(/uploads/<%= pages[i].post.cover.filename %>_thumb.jpg)"></div>
-						</a>
-						<% } else { %>
-							<a href="/<%= pages[i].url %>">
-								<div class="image" style="background-image: url(/assets/images/placeholder-<%= pages[i].type %>.svg)"></div>
-							</a>
-						<% } %>
-						<div class="content">
-							<div class="text-overflow">
-								<a href="/<%= pages[i].url %>"><h3><%= pages[i].title %></h3></a>
-								<% if (typeof pages[i].post.content !== 'undefined' && pages[i].post.content !== null) {
-									if(pages[i].post.content.length > 115) {
-										var content = '' + pages[i].post.content.substring(0,115) + '...'
-									} else {
-										var content = '' + pages[i].post.content
-									}
-								} %>
-								<p>
-									<% if (pages[i].type === '4') { %>
-										<% if (pages[i].post.veg_type === 'animal') { %>
-											<strong class="text-danger">Animaliskt</strong>
-										<% } else if (pages[i].post.veg_type === 'lacto_ovo') { %>
-											<strong class="text-warning">Lakto-ovo</strong>
-										<% } else { %>
-											<strong class="text-success">Veganskt</strong>
-										<% } %>
-									<% } %>
-									<% content = striptags(pages[i].post.content, ['br','p','a','span','i','b']) %>
-									<%- content %>
-								</p>
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-12">
+				<section id="handpicked">
+					<h2>Populära sidor</h2>
+					<div class="row">
+						<% for (var i=0; i < pages.length; i++) {%>
+						<div class="col-sm-4 col-md-4 col-lg-3">
+							<div class="result">
+								<% if (typeof pages[i].post.cover !== 'undefined' && pages[i].post.cover.filename !== null) { %>
+								<a href="/<%= pages[i].url %>">
+									<div class="image" style="background-image: url(/uploads/<%= pages[i].post.cover.filename %>_thumb.jpg)"></div>
+								</a>
+								<% } else { %>
+									<a href="/<%= pages[i].url %>">
+										<div class="image" style="background-image: url(/assets/images/placeholder-<%= pages[i].type %>.svg)"></div>
+									</a>
+								<% } %>
+								<div class="content">
+									<div class="text-overflow">
+										<a href="/<%= pages[i].url %>"><h3><%= pages[i].title %></h3></a>
+										<% if (typeof pages[i].post.content !== 'undefined' && pages[i].post.content !== null) {
+											if(pages[i].post.content.length > 115) {
+												var content = '' + pages[i].post.content.substring(0,115) + '...'
+											} else {
+												var content = '' + pages[i].post.content
+											}
+										} %>
+										<p>
+											<% if (pages[i].type === '4') { %>
+												<% if (pages[i].post.veg_type === 'animal') { %>
+													<strong class="text-danger">Animaliskt</strong>
+												<% } else if (pages[i].post.veg_type === 'lacto_ovo') { %>
+													<strong class="text-warning">Lakto-ovo</strong>
+												<% } else { %>
+													<strong class="text-success">Veganskt</strong>
+												<% } %>
+											<% } %>
+											<% content = striptags(pages[i].post.content, ['br','p','a','span','i','b']) %>
+											<%- content %>
+										</p>
+									</div>
+								</div>
+								<% if (pages[i].type !== '1' && pages[i].post.veg_type !== 'animal') { %>
+									<div class="stars" id="<%= pages[i]._id %>">
+										<div class="star" id="1">
+											<span class="glyphicon glyphicon-star"></span>
+										</div>
+										<div class="star" id="2">
+											<span class="glyphicon glyphicon-star"></span>
+										</div>
+										<div class="star" id="3">
+											<span class="glyphicon glyphicon-star"></span>
+										</div>
+										<div class="star" id="4">
+											<span class="glyphicon glyphicon-star"></span>
+										</div>
+										<div class="star" id="5">
+											<span class="glyphicon glyphicon-star"></span>
+										</div>
+			                			<span class="votes">0</span>
+									</div>
+								<% } %>
+								<div class="more">
+									<a href="/<%= pages[i].url %>" class="btn btn-primary">Läs mer</a>
+								</div>
 							</div>
 						</div>
-						<% if (pages[i].type !== '1' && pages[i].post.veg_type !== 'animal') { %>
-							<div class="stars" id="<%= pages[i]._id %>">
-								<div class="star" id="1">
-									<span class="glyphicon glyphicon-star"></span>
-								</div>
-								<div class="star" id="2">
-									<span class="glyphicon glyphicon-star"></span>
-								</div>
-								<div class="star" id="3">
-									<span class="glyphicon glyphicon-star"></span>
-								</div>
-								<div class="star" id="4">
-									<span class="glyphicon glyphicon-star"></span>
-								</div>
-								<div class="star" id="5">
-									<span class="glyphicon glyphicon-star"></span>
-								</div>
-	                			<span class="votes">0</span>
-							</div>
-						<% } %>
-						<div class="more">
-							<a href="/<%= pages[i].url %>" class="btn btn-primary">Läs mer</a>
+						<% } %>
+					</div>
+				</section>
+			</div>
+			
+			<div class="col-sm-12">
+				<div id="map">
+					Map goes here...
+					<div class="filter">
+						<div class="vertical-center">
+							<h2>Veganskt nära dig</h2>
+							<h3>Restauranger och butiker i Sverige</h3>
+							<a href="#" class="btn btn-hero">
+								<span class="glyphicon glyphicon-map-marker"></span>
+								Se karta
+							</a>
 						</div>
 					</div>
 				</div>
-				<% } %>
 			</div>
 		</div>
-	</section>
-
+	</div>
 
 <% include includes/promotion %>
 <% include includes/footer %>
