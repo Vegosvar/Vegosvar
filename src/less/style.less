@@ -492,8 +492,32 @@ input[type=checkbox], input[type=radio] {
 	}
 }
 
+#instagram {
+	margin-bottom: 30px;
+	h2 a {
+		color: #222;
+	}
+	.images {
+		overflow: hidden;
+		margin: 0 -5px;
+		img {
+			margin-bottom: 5px;
+			width: 33%;
+			display: block;
+			float: left;
+			padding: 5px;
+			&:nth-child(1) {
+				width: 50%;
+			}
+			&:nth-child(2) {
+				width: 50%;
+			}
+		}
+	}
+}
+
 .card {
-	padding: 30px 30px;
+	padding: 15px;
 	background: #fff;
 	margin-bottom: 30px;
 	border-radius: 3px;
@@ -506,6 +530,9 @@ input[type=checkbox], input[type=radio] {
 			padding: 0 15px;
 			margin-bottom: 30px;
 		}
+	}
+	&.lg {
+		padding: 30px;
 	}
 	.headerImage {
 		margin: -30px -30px 30px -30px;
