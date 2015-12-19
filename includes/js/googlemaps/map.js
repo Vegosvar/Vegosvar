@@ -89,6 +89,7 @@
 $(function() {
   //Initialize map
   mapInstance = $('#map').googleMap();
+
   //Place markers on map
   function setMarkers(data) {
     for (var i = 0; i < data.length; i++) {
@@ -139,6 +140,8 @@ $(function() {
 
   $('#show-map').on('click', function(e) {
     e.preventDefault();
+
+    $('.filter').hide(); //Remove overlay filter
     
     //Get marker data
     $.ajax({
