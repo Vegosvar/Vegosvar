@@ -281,7 +281,6 @@
           <% if (post.type === '3' || post.type === '4' || post.type === '5') { %>
             <h2>Recensioner</h2>
           <% } else { %>
-            <hr>
             <h2>Kommentarer</h2>
           <% } %>
           <div id="disqus_thread"></div>
@@ -306,7 +305,8 @@
         <div class="col-sm-6 col-md-4 sidebar">
 
           <% if (post.type === '3' || post.type === '5') { %>
-            <div id="map" class="sidebar hidden-xs">
+            <div id="mapContainer">
+              <div id="map" class="sidebar hidden-xs" style="height:400px"></div>
               <div class="filter">
                 <div class="vertical-center">
                   <h2>Karta</h2>
@@ -314,8 +314,8 @@
               </div>
             </div>
           <% } else { %>
-            <div id="map" class="sidebar hidden-xs">
-              Map goes here...
+            <div id="mapContainer">
+              <div id="map" class="sidebar hidden-xs" style="height:450px"></div>
               <div class="filter">
                 <div class="vertical-center">
                   <h2>Karta</h2>
