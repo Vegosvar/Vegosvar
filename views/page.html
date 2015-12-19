@@ -43,9 +43,9 @@
                     <% if (post.post.veg_type === 'animal') { %>
                       <strong class="text-danger"><%= post.title %> är animaliskt.</strong>
                     <% } else if (post.post.veg_type === 'lacto_ovo') { %>
-                      <strong class="text-warning"><%= post.title %> är Lakto-ovo-vegetariskt.</strong>
+                      <strong class="text-warning"><%= post.title %> är lakto-ovo-vegetariskt.</strong>
                     <% } else { %>
-                      <strong class="text-success"><%= post.title %> är Veganskt.</strong>
+                      <strong class="text-success"><%= post.title %> är veganskt.</strong>
                     <% } %>
                   <% } %>
                 <%- post.post.content %>
@@ -85,97 +85,107 @@
 
               <% if (post.type === '3' || post.type === '5') { %>
 
-                <p class="hidden-xs">
-                <% if (typeof post.post.phone !== 'undefined' && post.post.phone !== "") { %>
-                  <strong>Telefon</strong> <%= post.post.phone %><br>
-                <% } %>
-
-                <% if (typeof post.post.mail !== 'undefined' && post.post.mail !== "") { %>
-                  <strong>Mail</strong>
-                  <a href="mailto:<%= post.post.email %>" target="_blank">
-                    <%= post.post.email %>
-                  </a><br>
-                <% } %>
-
-                <% if (typeof post.post.website !== 'undefined' && post.post.website !== "") { %>
-                  <a href="<%= post.post.website %>" target="_blank" rel="nofollow" class="truncate">
-                    <%= post.post.website %>
-                  </a><br>
-                <% } %>
-                </p>
-
-                <p>
-                  <a href="http://maps.google.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Öppna Google Maps</a>
-
-                  <a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Öppna Apple Maps</a>
+                <div class="hidden-xs">
                   <% if (typeof post.post.phone !== 'undefined' && post.post.phone !== "") { %>
-                    <a href="tel:<%= post.post.phone %>" target="_blank"  class="btn btn-secondary btn-block visible-xs">
-                      <span class="glyphicon glyphicon-phone"></span>
-                      <strong>Ring</strong> <%= post.post.phone %>
-                    </a>
-                <% } %>
-                </p>
-              </div>
+                    <span class="phone"><%= post.post.phone %></span>
+                  <% } %>
 
-              <hr class="lg hidden-xs">
-              <div class="row">
-                <div class="col-sm-7 text-center-xs">
-                  <div id="openhours">
-                    <h2>Öppettider</h2>
-                    <div class="row">
-                      <div class="col-xs-6">
-                        <ul class="list-group">
-                          <li class="list-group-item" id="monday">
-                            <h4 class="list-group-item-heading">Måndag</h4>
-                            <p class="list-group-item-text"><%= post.post.openhours.monday %></p>
-                          </li>
-                          <li class="list-group-item" id="tuesday">
-                            <h4 class="list-group-item-heading">Tisdag</h4>
-                            <p class="list-group-item-text"><%= post.post.openhours.tuesday %></p>
-                          </li>
-                          <li class="list-group-item" id="wednesday">
-                            <h4 class="list-group-item-heading">Onsdag</h4>
-                            <p class="list-group-item-text"><%= post.post.openhours.wednesday %></p>
-                          </li>
-                          <li class="list-group-item" id="thursday">
-                            <h4 class="list-group-item-heading">Torsdag</h4>
-                            <p class="list-group-item-text"><%= post.post.openhours.thursday %></p>
-                          </li>
-                        </ul>
-                      </div>
-                      <div class="col-xs-6">
-                        <ul class="list-group">
-                          <li class="list-group-item" id="friday">
-                            <h4 class="list-group-item-heading">Fredag</h4>
-                            <p class="list-group-item-text"><%= post.post.openhours.friday %></p>
-                          </li>
-                          <li class="list-group-item" id="saturday">
-                            <h4 class="list-group-item-heading">Lördag</h4>
-                            <p class="list-group-item-text"><%= post.post.openhours.saturday %></p>
-                          </li>
-                        </ul>
-                        <ul class="list-group">
-                          <li class="list-group-item" id="sunday">
-                            <h4 class="list-group-item-heading">Söndag</h4>
-                            <p class="list-group-item-text"><%= post.post.openhours.sunday %></p>
-                          </li>
-                        </ul>
+                  <% if (typeof post.post.mail !== 'undefined' && post.post.mail !== "") { %>
+                    <strong>Mail</strong>
+                    <a href="mailto:<%= post.post.email %>" target="_blank">
+                      <%= post.post.email %>
+                    </a><br>
+                  <% } %>
+
+                  <% if (typeof post.post.website !== 'undefined' && post.post.website !== "") { %>
+                    <a href="<%= post.post.website %>" target="_blank" rel="nofollow" class="truncate">
+                      Besök hemsida
+                    </a>
+                  <% } %>
+                </div>
+
+                <div class="row">
+                  <div class="col-xs-6 less-padding-right">
+                    <p class="visible-xs"><a href="http://maps.google.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Google Maps</a></p>
+                  </div>
+
+                  <div class="col-xs-6 less-padding-left">
+                    <p class="visible-xs"><a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Apple Maps</a></p>
+                  </div>
+                </div>
+
+                <% if (typeof post.post.phone !== 'undefined' && post.post.phone !== "") { %>
+                  <p class="visible-xs">
+                    <a href="tel:<%= post.post.phone %>" target="_blank"  class="btn btn-secondary btn-block phone">
+                      <span class="glyphicon glyphicon-earphone"></span>
+                      <%= post.post.phone %>
+                    </a>
+                  </p>
+                <% } %>
+
+                <hr class="lg hidden-xs">
+                <div class="row">
+                  <div class="col-sm-7 text-center-xs">
+                    <div id="openhours">
+                      <h2>Öppettider</h2>
+                      <div class="row">
+                        <div class="col-xs-6">
+                          <ul class="list-group">
+                            <li class="list-group-item" id="monday">
+                              <h4 class="list-group-item-heading">Måndag</h4>
+                              <p class="list-group-item-text"><%= post.post.openhours.monday %></p>
+                            </li>
+                            <li class="list-group-item" id="tuesday">
+                              <h4 class="list-group-item-heading">Tisdag</h4>
+                              <p class="list-group-item-text"><%= post.post.openhours.tuesday %></p>
+                            </li>
+                            <li class="list-group-item" id="wednesday">
+                              <h4 class="list-group-item-heading">Onsdag</h4>
+                              <p class="list-group-item-text"><%= post.post.openhours.wednesday %></p>
+                            </li>
+                            <li class="list-group-item" id="thursday">
+                              <h4 class="list-group-item-heading">Torsdag</h4>
+                              <p class="list-group-item-text"><%= post.post.openhours.thursday %></p>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="col-xs-6">
+                          <ul class="list-group">
+                            <li class="list-group-item" id="friday">
+                              <h4 class="list-group-item-heading">Fredag</h4>
+                              <p class="list-group-item-text"><%= post.post.openhours.friday %></p>
+                            </li>
+                            <li class="list-group-item" id="saturday">
+                              <h4 class="list-group-item-heading">Lördag</h4>
+                              <p class="list-group-item-text"><%= post.post.openhours.saturday %></p>
+                            </li>
+                          </ul>
+                          <ul class="list-group">
+                            <li class="list-group-item" id="sunday">
+                              <h4 class="list-group-item-heading">Söndag</h4>
+                              <p class="list-group-item-text"><%= post.post.openhours.sunday %></p>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="col-sm-5 text-center hidden-xs" id="location">
-                  <p><img src="/assets/images/map.svg" class="circle"></p>
-                  <h2><%= post.post.city %></h2>
-                  <div class="street">
-                    <%= post.post.street %>
+                  <div class="col-sm-5 text-center hidden-xs" id="location">
+                    <p><img src="/assets/images/map.svg" class="circle"></p>
+                    <h2><%= post.post.city %></h2>
+                    <div class="street">
+                      <%= post.post.street %>
+                    </div>
+                    <p><a href="http://maps.google.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Google Maps</a></p>
+                    <p><a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-secondary" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Apple Maps</a></p>
                   </div>
-                  <p><a href="http://maps.google.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Google Maps</a></p>
-                  <p><a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-secondary" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Apple Maps</a></p>
                 </div>
-              </div>
 
-            <% } %>
+                <% if (typeof post.post.website !== 'undefined' && post.post.website !== "") { %>
+                  <a href="<%= post.post.website %>" class="btn btn-secondary btn-block visible-xs" target="_blank">Besök deras hemsida</a>
+                <% } %>
+
+              <% } %>
 
             <div class="row">
               <div class="col-sm-12">
@@ -268,23 +278,6 @@
               </div>
             </div>
           </div>
-
-        </div>
-
-
-        <div class="col-sm-6 col-md-4 sidebar">
-
-          <div class="card">
-            <h3>Funderar du på något?</h3>
-            <p>Gå med i Sveriges största Facebookgrupp för Vegetarianer & Veganer.</p>
-            <a href="https://www.facebook.com/groups/840104332722635/?fref=ts" target="_blank" class="btn btn-secondary">Gå med i Facebookgruppen</a>
-          </div>
-
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="col-md-8">
           <% if (post.type === '3' || post.type === '4' || post.type === '5') { %>
             <h2>Recensioner</h2>
           <% } else { %>
@@ -308,7 +301,53 @@
           </script>
           <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
         </div>
+
+
+        <div class="col-sm-6 col-md-4 sidebar">
+
+          <% if (post.type === '3' || post.type === '5') { %>
+            <div id="map" class="sidebar hidden-xs">
+              <div class="filter">
+                <div class="vertical-center">
+                  <h2>Karta</h2>
+                </div>
+              </div>
+            </div>
+          <% } else { %>
+            <div id="map" class="sidebar hidden-xs">
+              Map goes here...
+              <div class="filter">
+                <div class="vertical-center">
+                  <h2>Karta</h2>
+                  <h3>Veganskt käk nära dig</h3>
+                  <a href="#" class="btn btn-hero">
+                    <span class="glyphicon glyphicon-map-marker"></span>
+                    Se karta
+                  </a>
+                </div>
+              </div>
+            </div>
+          <% } %>
+
+          <div class="card text-center">
+            <div class="headerImage">
+              <img src="/assets/images/pages.svg">
+            </div>
+            <h2>Skapa en sida</h2>
+            <p>Skapa egna sidor på Vegosvar. Det kan vara allt ifrån fakta, restauranger, butiker, produkter och recept.</p>
+            <a href="/ny" target="_blank" class="btn btn-secondary">Skapa en sida</a>
+          </div>
+
+          <div class="card text-center">
+            <h2>Facebookgrupp</h2>
+            <p>Funderar du på något? Gå med i Facebookgruppen för Vegetarianer & Veganer i Sverige.</p>
+            <a href="https://www.facebook.com/groups/840104332722635/?fref=ts" target="_blank" class="btn btn-fb btn-secondary">Gå med i Facebookgruppen</a>
+          </div>
+
+        </div>
       </div>
+
+
 
     </section>
   </div>

@@ -134,10 +134,22 @@ img {
 	margin-top: 0;
 }
 
+.less-padding-left {
+	padding-left: 7px;
+}
+
+.less-padding-right {
+	padding-right: 7px;
+}
+
 .text-center-xs {
 	@media (max-width: @xs) {
 		text-align: center;
 	}
+}
+
+.text-warning {
+	color: #E26812;
 }
 
 .alert {
@@ -273,6 +285,11 @@ hr {
 		}
 		&:active {
 			background: darken(#3c5a99, 8%);
+		}
+		&.btn-secondary {
+			background: none;
+			border: 1px solid #3c5a99;
+			color: #3c5a99;
 		}
 	}
 	&.btn-edit {
@@ -476,17 +493,23 @@ input[type=checkbox], input[type=radio] {
 }
 
 .card {
-	padding: 15px;
+	padding: 30px 30px;
 	background: #fff;
-	margin-bottom: 15px;
+	margin-bottom: 30px;
 	border-radius: 3px;
 	overflow: hidden;
 	&.transparent {
 		background: none;
+		margin-bottom: 15px;
+		padding: 0 15px;
 		@media (max-width: @xs) {
 			padding: 0 15px;
 			margin-bottom: 30px;
 		}
+	}
+	.headerImage {
+		margin: -30px -30px 30px -30px;
+		position: relative;
 	}
 	.info {
 		padding-left: 0;
@@ -813,6 +836,7 @@ article {
 	.content {
 		position: relative;
 		.stars {
+			margin-top: -5px;
 			display: inline-block;
 			@media (max-width: @xs) {
 				margin-bottom: 15px;
@@ -820,7 +844,7 @@ article {
 			.star {
 				font-size: 16px;
 				@media (max-width: @xs) {
-					font-size: 20px;
+					font-size: 24px;
 				}
 				&:before {
 					top: -6px;
@@ -888,6 +912,17 @@ article {
 			@media (max-width: @xs) {
 				margin-top: 30px;
 				margin-bottom: 30px;
+			}
+		}
+	}
+	.phone {
+		font-size: 25px;
+		font-weight: 700;
+		@media (max-width: @xs) {
+			font-size: 20px;
+			font-weight: 500;
+			span {
+				font-size: 18px;
 			}
 		}
 	}
@@ -1086,6 +1121,43 @@ section {
 				display: none !important;
 			}
 		}
+	}
+
+	@keyframes rubberBand {
+	  from {
+	    -webkit-transform: scale3d(1, 1, 1);
+	    transform: scale3d(1, 1, 1);
+	  }
+
+	  30% {
+	    -webkit-transform: scale3d(1.25, 0.75, 1);
+	    transform: scale3d(1.25, 0.75, 1);
+	  }
+
+	  40% {
+	    -webkit-transform: scale3d(0.75, 1.25, 1);
+	    transform: scale3d(0.75, 1.25, 1);
+	  }
+
+	  50% {
+	    -webkit-transform: scale3d(1.15, 0.85, 1);
+	    transform: scale3d(1.15, 0.85, 1);
+	  }
+
+	  65% {
+	    -webkit-transform: scale3d(.95, 1.05, 1);
+	    transform: scale3d(.95, 1.05, 1);
+	  }
+
+	  75% {
+	    -webkit-transform: scale3d(1.05, .95, 1);
+	    transform: scale3d(1.05, .95, 1);
+	  }
+
+	  to {
+	    -webkit-transform: scale3d(1, 1, 1);
+	    transform: scale3d(1, 1, 1);
+	  }
 	}
 
 	.searchEngine {
@@ -1388,6 +1460,10 @@ section {
 	height: 450px;
 	margin-bottom: 60px;
 	position: relative;
+	&.sidebar {
+		height: 395px;
+		margin-bottom: 30px;
+	}
 	@media (max-width: @xs) {
 		height: 300px;
 	}
