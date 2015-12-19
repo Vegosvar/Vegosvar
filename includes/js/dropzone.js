@@ -138,7 +138,7 @@
       previewsContainer: null,
       hiddenInputContainer: "body",
       capture: null,
-      dictDefaultMessage: "<span class='glyphicon glyphicon-picture'></span> <h2>Huvudbild</h2> <div>Släpp bilden här för att ladda upp <span class='info'>Rekommenderad storlek 1200 x 630 px</span></div> <span class='btn btn-edit'>Lägg till bild</span>",
+      dictDefaultMessage: "<div class='well' style='background:rgba(255,255,255,0.9)'><span class='glyphicon glyphicon-picture'></span> <h2>Huvudbild</h2> <div>Släpp bilden här för att ladda upp <span class='info'>Rekommenderad storlek 1200 x 630 px</span></div> <span class='btn btn-edit'>Lägg till bild</span></div>",
       dictFallbackMessage: "Uppdatera din webbläsare för att kunna ladda upp bilder",
       dictFallbackText: "Please use the fallback form below to upload your files like in the olden days.",
       dictFileTooBig: "Bilden är för stor ({{filesize}}MiB). Maxstorlek: {{maxFilesize}}MiB.",

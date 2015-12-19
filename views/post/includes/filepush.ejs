@@ -1,0 +1,9 @@
+<% if (typeof post !== 'undefined' && post.post.cover !== 'undefined') { %>
+<script>	
+$(document).ready(function() {
+	$('div#uploader').addClass('finished')
+	$('.dz-preview').hide()
+	$('div#uploader').css('background-image', 'url("/uploads/<%= post.post.cover.filename %>.jpg")')
+})
+</script>
+<% } %>
