@@ -150,7 +150,7 @@ app.get('/', function (req, res) {
 
   var pages = {}
   var options = {
-    limit: 8,
+    limit: 4,
     sort: [ ['rating.likes', 'desc'] ]
   }
 
@@ -162,7 +162,7 @@ app.get('/', function (req, res) {
       if(err) throw err
       //Get pages
       pagesdb.find({}, options).toArray(function(err, doc) {
-        res.render('index', { user: req.user, pages: doc, cities: cities, categories: categories, startpage: false, searchString: req.query.s, striptags: striptags })
+        res.render('index', { user: req.user, pages: doc, cities: cities, categories: categories, loadGeoLocation: true, loadMapResources: { map: true, mapCluster: true }, startpage: false, searchString: req.query.s, striptags: striptags })
       })
     })
   })
@@ -684,6 +684,7 @@ app.post('/submit', urlencodedParser, function (req, res) {
         license_holder_website: req.body.license_holder_website,
         veg_offer: req.body.veg_offer,
         food: req.body.food,
+        hashtag: req.body.hashtag,
         openhours: {
           monday: req.body.monday,
           tuesday: req.body.tuesday,
@@ -722,6 +723,7 @@ app.post('/submit', urlencodedParser, function (req, res) {
         product_type: req.body.product_type,
         manufacturer: req.body.manufacturer,
         manufacturer_website: req.body.manufacturer_website,
+        hashtag: req.body.hashtag,
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
@@ -754,6 +756,7 @@ app.post('/submit', urlencodedParser, function (req, res) {
             longitude: req.body.longitude
         },
         website: req.body.website,
+        hashtag: req.body.hashtag,
         openhours: {
           monday: req.body.monday,
           tuesday: req.body.tuesday,
@@ -795,10 +798,6 @@ app.post('/submit', urlencodedParser, function (req, res) {
       })
     }
   })
-})
-
-app.get('/karta', function (req, res, next) {
-    res.render('karta', { user: req.user, loadGeoLocation: true, loadMapResources: { map: true, mapCluster: true } })
 })
 
 app.post('/submit/file', function(req, res) {
