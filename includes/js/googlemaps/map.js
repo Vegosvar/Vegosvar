@@ -87,6 +87,8 @@
 }(jQuery));
 
 $(function() {
+  //Initialize map
+  mapInstance = $('#map').googleMap();
   //Place markers on map
   function setMarkers(data) {
     for (var i = 0; i < data.length; i++) {
@@ -137,8 +139,6 @@ $(function() {
 
   $('#show-map').on('click', function(e) {
     e.preventDefault();
-    //Initialize map
-    mapInstance = $('#map').googleMap();
     
     //Get marker data
     $.ajax({
