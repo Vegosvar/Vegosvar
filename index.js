@@ -665,6 +665,7 @@ app.post('/submit', urlencodedParser, function (req, res) {
         license_holder_website: req.body.license_holder_website,
         veg_offer: req.body.veg_offer,
         food: req.body.food,
+        hashtag: req.body.hashtag,
         openhours: {
           monday: req.body.monday,
           tuesday: req.body.tuesday,
@@ -703,6 +704,7 @@ app.post('/submit', urlencodedParser, function (req, res) {
         product_type: req.body.product_type,
         manufacturer: req.body.manufacturer,
         manufacturer_website: req.body.manufacturer_website,
+        hashtag: req.body.hashtag,
         cover: {
           id: req.body.cover_image_id,
           filename: req.body.cover_image_filename
@@ -731,6 +733,7 @@ app.post('/submit', urlencodedParser, function (req, res) {
         city: req.body.city,
         street: req.body.street,
         website: req.body.website,
+        hashtag: req.body.hashtag,
         openhours: {
           monday: req.body.monday,
           tuesday: req.body.tuesday,
