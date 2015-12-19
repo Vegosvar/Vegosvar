@@ -22,6 +22,10 @@
                 <input type="text" class="hidden" name="latitude" value="<%= (typeof(post) !== 'undefined' && typeof(post.post.coordinates) !== 'undefined') ? post.post.coordinates.latitude : '' %>">
                 <input type="text" class="hidden" name="longitude" value="<%= (typeof(post) !== 'undefined' && typeof(post.post.coordinates) !== 'undefined') ? post.post.coordinates.longitude : '' %>">
             </div>
+            <div class="input-group">
+                <span class="input-group-addon">Hashtag för Instagram</span>
+                <input type="text" class="form-control" name="hashtag" aria-describedby="basic-addon1" placeholder="#" value="<%= (typeof(post) !== 'undefined') ? post.post.hashtag : '' %>">
+            </div>
         </div>
     </div>
 </div>
