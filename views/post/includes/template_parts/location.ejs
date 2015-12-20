@@ -17,6 +17,11 @@
                 <span class="input-group-addon">Hemsida</span>
                 <input type="text" class="form-control" name="website" aria-describedby="basic-addon1" placeholder="http://" value="<%= (typeof(post) !== 'undefined') ? post.post.website : '' %>">
             </div>
+            <div class="input-desc">Ingen hemsida? Länka till er Facebooksida</div>
+            <div class="input-group">
+                <input type="text" class="hidden" name="latitude" value="<%= (typeof(post) !== 'undefined' && typeof(post.post.coordinates) !== 'undefined') ? post.post.coordinates.latitude : '' %>">
+                <input type="text" class="hidden" name="longitude" value="<%= (typeof(post) !== 'undefined' && typeof(post.post.coordinates) !== 'undefined') ? post.post.coordinates.longitude : '' %>">
+            </div>
             <div class="input-group">
                 <span class="input-group-addon">Hashtag för Instagram</span>
                 <input type="text" class="form-control" name="hashtag" aria-describedby="basic-addon1" placeholder="#" value="<%= (typeof(post) !== 'undefined') ? post.post.hashtag : '' %>">

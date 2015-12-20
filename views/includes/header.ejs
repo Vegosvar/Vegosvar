@@ -91,15 +91,27 @@
     });
   </script>
 
-  <% if (typeof loadMapResources !== 'undefined' && loadMapResources === true) { %>
+  <% if (typeof loadGeoLocation !== 'undefined' && loadGeoLocation === true) { %>
+      <script src="/includes/js/geolocation/geolocation.js"></script>
+  <% } %>
+
+  <% if (typeof loadMapResources !== 'undefined') { %>
   <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=sv_SE" async defer></script>
-  <script src="/includes/js/googlemaps/input.js"></script>
+    <% if (typeof loadMapResources.autocomplete !== 'undefined' && loadMapResources.autocomplete === true) { %>
+      <script src="/includes/js/googlemaps/input.js"></script>
+    <% } %>
+    <% if (typeof loadMapResources.map !== 'undefined' && loadMapResources.map === true) { %>
+      <script src="/includes/js/googlemaps/map.js"></script>
+    <% } %>
+    <% if (typeof loadMapResources.mapCluster !== 'undefined' && loadMapResources.mapCluster === true) { %>
+      <script src="/includes/js/markerclustererplus/markerclusterer.min.js"></script>
+    <% } %>
   <% } %>
 
   <% if (typeof loadEditorResources !== 'undefined' && loadEditorResources === true) { %>
-    <script src="/includes/js/wysihtml5x/wysihtml5x.min.js"></script>
-    <script src="/includes/js/wysihtml5x/wysihtml5x-toolbar.min.js"></script>
-    <script src="/includes/js/wysihtml5x/advanced_and_extended.js"></script>
+    <script src="/includes/js/wysihtml/wysihtml.min.js"></script>
+    <script src="/includes/js/wysihtml/wysihtml-toolbar.min.js"></script>
+    <script src="/includes/js/wysihtml/advanced_and_extended.js"></script>
     <script src="/includes/js/editor/controller.js"></script>
     <script src="/includes/js/editor/editor.js"></script>
   <% } %>
@@ -126,7 +138,6 @@
 </script>
 
 <body>
-  
   <% if (typeof startpage !== 'undefined') { %>
   <nav id="top" class="navbar navbar-default navbar-static-top startpage">
   <% } else { %>
@@ -162,7 +173,7 @@
           <ul class="dropdown-menu">
             <% if(typeof(cities) !== 'undefined') { %>
               <% for(i=0;i<cities.length;i++) { %>
-                <li><a href="/?s=restauranger+i+<%= cities[i].name %>"><%= cities[i].name %></a></li>
+                <li><a href="/?s=Restauranger+i+<%= cities[i].name %>"><%= cities[i].name %></a></li>
               <% } %>
             <% } else { %>
             <li><a href="/?s=Restauranger+Stockholm">Stockholm</a></li>
@@ -275,6 +286,11 @@
         <a class="toggle-dropdown"><span class="glyphicon glyphicon-map-marker"></span>Restauranger</a>
         <ul class="dropdown">
           <li class="title">Restauranger</li>
+          <% if(typeof(cities) !== 'undefined') { %>
+            <% for(i=0;i<cities.length;i++) { %>
+              <li><a href="/?s=Restauranger+i+<%= cities[i].name %>"><%= cities[i].name %></a></li>
+            <% } %>
+          <% } else { %>
           <li><a href="/?s=Restauranger+i+Stockholm">Stockholm</a></li>
           <li><a href="/?s=Restauranger+i+Göteborg">Göteborg</a></li>
           <li><a href="/?s=Restauranger+i+Malmö">Malmö</a></li>
@@ -286,6 +302,7 @@
           <li><a href="/?s=Restauranger+i+Jönköping">Jönköping</a></li>
           <li><a href="/?s=Restauranger+i+Norrköping">Norrköping</a></li>
           <li><a href="/?s=Restauranger+i+Lund">Lund</a></li>
+          <% } %>
         </ul>
       </li>
 
@@ -293,6 +310,11 @@
         <a class="toggle-dropdown"><span class="glyphicon glyphicon-ice-lolly-tasted"></span>Produkter</a>
         <ul class="dropdown">
           <li class="title">Produkter</li>
+          <% if(typeof(categories) !== 'undefined') { %>
+            <% for(i=0;i<categories.length;i++) { %>
+              <li><a href="/?s=<%= categories[i].name %>"><%= categories[i].name %></a></li>
+            <% } %>
+          <% } else { %>
           <li><a href="/?s=Chips">Chips</a></li>
           <li><a href="/?s=Glass">Glass</a></li>
           <li><a href="/?s=Godis">Godis</a></li>
@@ -307,6 +329,8 @@
           <li><a href="/?s=Växtdryck">Växtdryck</a></li>
           <li><a href="/?s=Växtgrädde">Växtgrädde</a></li>
           <li><a href="/?s=Öl">Öl</a></li>
+          <% } %>
+          <li class="desc"><div>Du kan även använda sökfunktionen för att söka specifika produkter</div></li>
         </ul>
       </li>
 
