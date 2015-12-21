@@ -134,19 +134,20 @@ img {
 	margin-top: 0;
 }
 
-.less-padding-left {
-	padding-left: 7px;
-}
 
-.less-padding-right {
-	padding-right: 7px;
-}
+@media (max-width: @xs) {
+	.less-padding-left-xs {
+		padding-left: 7px;
+	}
 
-.text-center-xs {
-	@media (max-width: @xs) {
+	.less-padding-right-xs {
+		padding-right: 7px;
+	}
+	.text-center-xs {
 		text-align: center;
 	}
 }
+
 
 .text-warning {
 	color: #E26812;
@@ -953,6 +954,11 @@ article {
 			}
 		}
 	}
+	.maplinks {
+		.btn {
+			padding: 12px 15px;
+		}
+	}
 	#location {
 		img {
 			width: 100px;
@@ -1487,6 +1493,7 @@ section {
 	height: 450px;
 	margin-bottom: 60px;
 	position: relative;
+	overflow: hidden;
 	&.sidebar {
 		height: 395px;
 		margin-bottom: 30px;
