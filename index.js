@@ -20,6 +20,7 @@ var util = require('util')
 
 var config = require('./config')
 var image_processer = require('./imageProcesser.js')
+var functions = require('./functions.js')
 
 var urlencodedParser = body_parser.urlencoded({ extended: false })
 var striptags = require('striptags')
@@ -168,15 +169,6 @@ app.get('/', function (req, res) {
   })
 })
 
-app.get('/handle', function (req, res) {
-  var dbinstance = db.instance()
-  var pagesdb = dbinstance.collection('pages')
-
-  pagesdb.find({}).toArray(function(err, doc) {
-    res.json(doc)
-  })
-})
-
 app.get('/handle/votes', function (req, res) {
   var dbinstance = db.instance()
   var votesdb = dbinstance.collection('votes')
@@ -184,10 +176,6 @@ app.get('/handle/votes', function (req, res) {
   votesdb.find({}).toArray(function(err, doc) {
     res.json(doc)
   })
-})
-
-app.post('/handle/post', urlencodedParser, function(req, res) {
-  res.send('Done')
 })
 
 app.get('/logga-in', function (req, res) {
@@ -596,6 +584,7 @@ app.post('/submit', urlencodedParser, function (req, res) {
   var id = req.body.id
   var type = req.body.type
   var hidden = (req.body.hidden) ? true : false;
+  var isodate = functions.getISOdate()
   var niceurl = getSlug(req.body.title, {
     // URL Settings
     separator: '-',
@@ -783,15 +772,24 @@ app.post('/submit', urlencodedParser, function (req, res) {
   if(id) {
     id = new ObjectID(id) //If editing the post, the id will be provided as a string and we need to convert it to an objectid
   }
+
   pagesdb.count({ _id : id }, function(err, count) {
     if(err) throw err
     if(count > 0) {
       //Update
-      pagesdb.update({_id:id}, data, function(err, result) {
-        res.redirect('/ny/publicerad/?newpost='+niceurl)
-      })
+      pagesdb.find({ _id : id }).toArray(function(err, result) {
+        data.timestamp = {}
+        data.timestamp.update = isodate // Add timestamp for update
+        data.timestamp.updatedby = req.user._id
+        data.timestamp.created = result[0].timestamp.created
+        pagesdb.update({_id:id}, data, function(err, result) {
+          res.redirect('/ny/publicerad/?newpost='+niceurl)
+        })
+       })
     } else {
       //Insert
+      data.timestamp = {}
+      data.timestamp.created = isodate // Add timestamp for creation
       pagesdb.insert(data, function(err, doc) {
         if(err) throw err
         res.redirect('/ny/publicerad/?newpost='+niceurl)
