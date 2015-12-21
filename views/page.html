@@ -104,12 +104,12 @@
                   <% } %>
                 </div>
 
-                <div class="row">
-                  <div class="col-xs-6 less-padding-right">
+                <div class="row maplinks">
+                  <div class="col-xs-6 less-padding-right-xs">
                     <p class="visible-xs"><a href="http://maps.google.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Google Maps</a></p>
                   </div>
 
-                  <div class="col-xs-6 less-padding-left">
+                  <div class="col-xs-6 less-padding-left-xs">
                     <p class="visible-xs"><a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Apple Maps</a></p>
                   </div>
                 </div>
@@ -255,7 +255,7 @@
             </div>
             <div class="col-sm-5 actions">
               <div class="row">
-                <div class="col-xs-6 col-md-12">
+                <div class="col-xs-6 col-md-12 less-padding-right-xs">
                   <% if (typeof post.rating !== 'undefined' && post.rating.likes !== "undefined") { %>
                     <% if (userLikes > 0) { %>
                       <a href="#" id="<%= post._id %>" class="btn btn-like"><span id="heart-glyphicon" class="glyphicon glyphicon-heart"></span>Gilla <span class="count"><%= post.rating.likes %></span></a>
@@ -267,11 +267,11 @@
                   <% } %> 
                 </div>
                 <% if (typeof user !== 'undefined') { if (user.id === user_info.id) { %>
-                <div class="col-xs-6 col-md-12">
+                <div class="col-xs-6 col-md-12 less-padding-left-xs">
                   <a href="/redigera/<%= post.url %>" class="btn btn-edit">Redigera sida</a>
                 </div>
                 <% } } else { %>
-                  <div class="col-xs-6 col-md-12">
+                  <div class="col-xs-6 col-md-12 less-padding-left-xs">
                     <a href="/rapportera" class="btn btn-edit">Rapportera fel</a>
                   </div>
                 <% } %>
