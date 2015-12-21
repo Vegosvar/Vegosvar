@@ -4,6 +4,8 @@ $(document).ready(function() {
 	$('div#uploader').addClass('finished')
 	$('.dz-preview').hide()
 	$('div#uploader').css('background-image', 'url("/uploads/<%= post.post.cover.filename %>.jpg")')
+	$('#upload-group').append('<input type="hidden" value="<%= post.post.cover.id %>" name="cover_image_id" />')
+	$('#upload-group').append('<input type="hidden" value="<%= post.post.cover.filename %>" name="cover_image_filename" />')
 })
 </script>
 <% } %>
