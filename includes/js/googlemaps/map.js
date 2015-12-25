@@ -9,7 +9,8 @@
     zoom: 4,
     google: {
       map: null,
-      markers: []
+      markers: [],
+      cluster: null
     },
     autorun: true
   }
@@ -62,9 +63,10 @@
         })
       },
       clusterMarkers: function() {
-        new MarkerClusterer(settings.google.map, settings.google.markers, {
+        settings.google.cluster = new MarkerClusterer(settings.google.map, settings.google.markers, {
           minimumClusterSize: 1,
-          maxZoom: 9
+          maxZoom: 9,
+          gridSize: 10
         });
       },
       setCenter: function(position) {
