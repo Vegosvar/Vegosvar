@@ -67,6 +67,6 @@ function addAutocompleteListeners() {
     })
 }
 
-$(function() {
+$(document).bind('mapready', function(e) {
     init()
 })

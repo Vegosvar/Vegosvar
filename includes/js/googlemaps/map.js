@@ -86,7 +86,7 @@
   }
 }(jQuery));
 
-$(function() {
+$(document).bind('mapready', function(e) {
   //Initialize map
   mapInstance = $('#map').googleMap();
 
