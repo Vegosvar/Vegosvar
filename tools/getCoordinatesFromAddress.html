@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Coordinates from address</title>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="alert alert-info">
+                        <p>
+                            <strong>Mongo query:</strong><br>
+                            <code>db.pages.find({$or:[{type:"3"},{type:"5"}]},{_id:1,"post.street":1,"post.city":1})</code>
+                        </p>
+                        <p>
+                            <samp>Använd sedan en text editor och ta bort <kbd>ObjectId(...)</kbd> runt <kbd>_id</kbd> attributet.</samp>
+                        </p>
+                    </div>
+                    <div class="alert alert-info">
+                        <p>
+                            <strong>Enkel:</strong><br>
+                            <code>{ "_id" : "56689c3232be98e3400a8400", "post" : { "city" : "Stockholm", "street" : "Hornsgatan 1" } }</code>
+                        </p>
+                        <p>
+                            <strong>Multipla:</strong><br>
+                            <code>
+                                [
+                                    { "_id" : "56689c3232be98e3400a8400", "post" : { "city" : "Stockholm", "street" : "Hornsgatan 1" } },
+                                    { "_id" : "566f4ce4abb80a7001ad1566", "post" : { "city" : "Göteborg, Sverige", "street" : "Sveagatan 15" } }
+                                ]
+                            </code>
+                        </p>
+                    </div>
+                    <textarea id="input" rows="5" placeholder="Klistra in JSON..." style="width:100%"></textarea>
+                </div>
+                <div class="col-xs-12">
+                    <button class="getCoordinates btn btn-primary btn-block">Hämta koordinater</button>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-xs-12">
+                    <div id="status" class="alert alert-info" style="display:none">
+                        <span class="glyphicon glyphicon-info-sign"></span>
+                        <span id="output-status"></span>
+                    </div>
+                    <textarea id="output" rows="5" style="width:100%;" placeholder="Output visas här..."></textarea>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            var geocoder;
+
+            function init() {
+                geocoder = new google.maps.Geocoder();
+            }
+
+            function geocodeAddress(address, city, callback) {
+                geocoder.geocode({
+                    componentRestrictions: {
+                        country: 'SE',
+                        locality: city
+                    },
+                    address: address
+                }, function(results, status) {
+                    if (status === google.maps.GeocoderStatus.OK) {
+                        var latitude = results[0].geometry.location.lat();
+                        var longitude = results[0].geometry.location.lng();
+                        callback({
+                            lat: latitude,
+                            lng: longitude
+                        });
+                    } else {
+                        console.log('Geocode was not successful. Error: ' + status);
+                    }
+                });
+            }
+
+            function addToOutput(obj, latlng) {
+                var sort = {
+                    _id: 1
+                }
+                var update = {
+                    $set: {
+                    "post.coordinates": {
+                            latitude: latlng.lat,
+                            longitude: latlng.lng
+                        }
+                    }
+                }
+
+                var all = {
+                    sort: sort,
+                    update: update
+                }
+
+                var output = 'db.pages.findAndModify('
+                output += '{ \"query\": { \"_id\": '
+                output += 'ObjectId(\"' + obj._id + '\")'
+                output += '},'
+                output += JSON.stringify(all).substring(1).slice(0,-1);
+                output += '})'
+
+                output = output.replace(/\\/g, '');
+                $('#output').val( $('#output').val() + output + "\n\n" );
+            }
+
+            $('.getCoordinates').on('click', function() {
+                var value = $('#input').val();
+
+                if(value.length > 0) {
+                    $('#output').val(''); //Clean output
+
+                    value = JSON.parse(value);
+                    array = ($.isArray(value)) ? value : new Array(value);
+
+                    for (var i = array.length - 1; i >= 0; i--) {
+                        (function(index) {
+                            setTimeout(function() {
+                                $('#status').fadeIn(500);
+                                $('#output-status').html((index + 1) + ' / ' + array.length);
+
+
+                                if (array[index].hasOwnProperty('post')) {
+                                    geocodeAddress(array[index].post.street, array[index].post.city, function(latlng) {
+                                        addToOutput(array[index], latlng);
+                                    });
+                                }
+
+                                if( index == (array.length - 1) ) {
+                                    $('#status').toggleClass('alert-info alert-success');
+                                    $('#status').find('.glyphicon').toggleClass('glyphicon-info-sign glyphicon-exclamation-sign');
+                                    $('#output-status').html( $('#output-status').html() + '<strong>&nbsp;Klart!</strong>');
+                                }
+                            }, i * 1000);
+                        })(i);
+                    }
+                } else {
+                    $('#output').val('No input value!')
+                }
+            });
+        </script>
+
+        <script async defer type="text/javascript" src="https://maps.googleapis.com/maps/api/js?callback=init"></script>
+    </body>
+</html>
