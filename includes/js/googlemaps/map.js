@@ -17,6 +17,11 @@
   $.fn.googleMap = function(options) {
     var settings = $.extend(defaults, options)
 
+    google.maps.InfoWindow.prototype.isOpen = function(){
+        var map = this.map;
+        return (map !== null && typeof map !== "undefined");
+    }
+
     fn = {
       init: function() {
         try {
@@ -46,10 +51,14 @@
         })
 
         settings.google.markers[index].addListener('click', function() {
-          for (var i = settings.google.markers.length - 1; i >= 0; i--) {
-            settings.google.markers[i].infowindow.close();
-          };
-          settings.google.markers[index].infowindow.open(settings.google.map, settings.google.markers[index]);
+          if( settings.google.markers[index].infowindow.isOpen() ) {
+            settings.google.markers[index].infowindow.close();
+          } else {
+            for (var i = settings.google.markers.length - 1; i >= 0; i--) {
+              settings.google.markers[i].infowindow.close();
+            };
+            settings.google.markers[index].infowindow.open(settings.google.map, settings.google.markers[index]);
+          }
         })
       },
       clusterMarkers: function() {
@@ -153,7 +162,6 @@ $(document).bind('mapready', function(e) {
 
     $.fn.geoLocation(function(result) {
       if (result.success === true) {
-        console.log(result);
         mapInstance.setMarker({
           position: {
             lat: parseFloat(result.position.latitude),
