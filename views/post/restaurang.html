@@ -53,7 +53,7 @@
 								<div class="col-sm-7">
 									<div class="input-group">
 										<span class="input-group-addon">Typ av mat</span>
-										<input type="text" class="form-control" name="food" aria-describedby="basic-addon1" placeholder="Grill, Husmanskost, Pizza, Indiskt...">
+										<input type="text" class="form-control" name="food" aria-describedby="basic-addon1" placeholder="Grill, Husmanskost, Pizza, Indiskt..." value="<%= (typeof(post) !== 'undefined') ? post.post.food : '' %>">
 									</div>
 								</div>
 							</div>
