@@ -305,7 +305,7 @@
         <div class="col-sm-6 col-md-4 sidebar">
 
           <% if (post.type === '3' || post.type === '5') { %>
-            <div id="mapContainer">
+            <div id="mapContainer" class="sidebar">
               <div id="map" class="sidebar hidden-xs" style="height:400px"></div>
               <div class="filter">
                 <div class="vertical-center">
@@ -314,7 +314,7 @@
               </div>
             </div>
           <% } else { %>
-            <div id="mapContainer">
+            <div id="mapContainer" class="sidebar">
               <div id="map" class="sidebar hidden-xs" style="height:450px"></div>
               <div class="filter">
                 <div class="vertical-center">
@@ -329,19 +329,22 @@
             </div>
           <% } %>
 
-          <div id="instagram">
-            <h2><a href="https://instagram.com/#hashtag">#hashtag</a></h2>
-            <div class="images">
-              <img src="http://dev.vegosvar.se/uploads/bb404720a4e134c.jpg">
-              <img src="http://dev.vegosvar.se/uploads/bb404720a4e134c.jpg">
-              <img src="http://dev.vegosvar.se/uploads/bb404720a4e134c.jpg">
-              <img src="http://dev.vegosvar.se/uploads/bb404720a4e134c.jpg">
-              <img src="http://dev.vegosvar.se/uploads/bb404720a4e134c.jpg">
-              <img src="http://dev.vegosvar.se/uploads/bb404720a4e134c.jpg">
-              <img src="http://dev.vegosvar.se/uploads/bb404720a4e134c.jpg">
-              <img src="http://dev.vegosvar.se/uploads/bb404720a4e134c.jpg">
+          <% if (post.type === '3' || post.type === '5') { %>
+            <div id="instagram">
+              <h2>Fotat på <%= post.title %></a></h2>
+              <div class="images">
+                <img src="http://dev.vegosvar.se/uploads/bb404720a4e134c.jpg">
+                <img src="http://dev.vegosvar.se/uploads/aec7af9782f.jpg">
+                <img src="http://dev.vegosvar.se/uploads/063abb8cd89cb1353be4ec46f.jpg">
+                <img src="http://dev.vegosvar.se/uploads/bb404720a4e134c.jpg">
+                <img src="http://dev.vegosvar.se/uploads/aec7af9782f.jpg">
+                <img src="http://dev.vegosvar.se/uploads/aec7af9782f.jpg">
+                <img src="http://dev.vegosvar.se/uploads/063abb8cd89cb1353be4ec46f.jpg">
+                <img src="http://dev.vegosvar.se/uploads/bb404720a4e134c.jpg">
+              </div>
+              <small><p>Checka in på <%= post.title %> när du postar på <a href="https://instagram.com" target="_blank">Instagram</a> nästa gång så delas dina bilder här.</p></small>
             </div>
-          </div>
+          <% } %>
 
           <div class="card lg text-center">
             <div class="headerImage">
