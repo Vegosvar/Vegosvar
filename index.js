@@ -669,6 +669,11 @@ app.post('/submit', urlencodedParser, function (req, res) {
   var dbinstance = db.instance()
   var pagesdb = dbinstance.collection('pages')
 
+  if(req.body.cover_image_id == 'undefined' || req.body.cover_image_filename == 'undefined') {
+    req.body.cover_image_id = null
+    req.body.cover_image_filename = null
+  }
+
   if(type == 1) { // Fakta
     var data = {
       title: req.body.title,
