@@ -306,7 +306,7 @@
 
           <% if (post.type === '3' || post.type === '5') { %>
             <div id="mapContainer" class="sidebar">
-              <div id="map" class="sidebar hidden-xs" style="height:400px"></div>
+              <div id="map" data-map-init="true" data-map-filter="single" class="sidebar hidden-xs" style="height:400px"></div>
               <div class="filter">
                 <div class="vertical-center">
                   <h2>Karta</h2>
@@ -315,12 +315,12 @@
             </div>
           <% } else { %>
             <div id="mapContainer" class="sidebar">
-              <div id="map" class="sidebar hidden-xs" style="height:450px"></div>
+              <div id="map" data-map-filter="restaurant" data-map-cluster="true" class="sidebar hidden-xs" style="height:450px"></div>
               <div class="filter">
                 <div class="vertical-center">
                   <h2>Karta</h2>
                   <h3>Veganskt käk nära dig</h3>
-                  <a href="#" class="btn btn-hero">
+                  <a href="#" id="show-map" class="btn btn-hero">
                     <span class="glyphicon glyphicon-map-marker"></span>
                     Se karta
                   </a>
