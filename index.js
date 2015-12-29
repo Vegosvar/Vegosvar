@@ -423,10 +423,38 @@ app.get('/ajax/like', function (req, res) {
 })
 
 app.get('/ajax/map', function (req, res) {
+  var filter = {
+    $or: [
+      { type: '3' },
+      { type: '5' }
+    ]
+  }
+
+  if(req.query.filter !== undefined) { //A filter is used
+    var filters = {
+      id: function(id) {
+        return {
+          _id: new ObjectID(id)
+        }
+      },
+      type: function(type) {
+        return {
+          type: String(type)
+        }
+      }
+    }
+
+    for(var key in req.query.filter) {
+      if(key in filters) {
+        filter = filters[key](req.query.filter[key])
+      }
+    }
+  }
+
   var database = db.instance()
   var pagesdb = database.collection('pages')
 
-  pagesdb.find({$or: [ { type: '3' }, { type: '5' } ] }).toArray(function(err, doc) {
+  pagesdb.find(filter).toArray(function(err, doc) {
     for (var i = 0; i < doc.length; i++) {
       doc[i].post.content = striptags(doc[i].post.content, ['br'])
     }
@@ -444,6 +472,11 @@ app.get('/:url', function (req, res, next) {
   pagesdb.count({ url: url }, function (err, count) {
     if(count > 0) {
       pagesdb.find({ url : url }).toArray(function (err, result) {
+        var mapResources = {
+          map: true,
+          mapCluster: !(result[0].type === '3' || result[0].type === '5')
+        }
+
         usersdb.find({ _id : result[0].user_info.id }).toArray(function(err, user_info) {
           if (req.isAuthenticated ()) {
             likesdb.count({ "post.id": new ObjectID(result[0]._id), "user.id": req.user._id }, function (err, is_liked) {
@@ -451,14 +484,14 @@ app.get('/:url', function (req, res, next) {
                 result[0].user_info.hidden = true
                 user_info[0] = { id: '', photo: ''}
               }
-                res.render('page', { user: req.user, post: result[0], user_info: user_info[0], userLikes: is_liked })
+                res.render('page', { user: req.user, post: result[0], user_info: user_info[0], userLikes: is_liked, loadGeoLocation: true, loadMapResources: mapResources })
             })
           } else {
             if(typeof(user_info[0]) == 'undefined') {
               result[0].user_info.hidden = true
               user_info[0] = { id: '', photo: ''}
             }
-              res.render('page', { user: req.user, post: result[0], user_info: user_info[0], userLikes: 0 })
+              res.render('page', { user: req.user, post: result[0], user_info: user_info[0], userLikes: 0, loadGeoLocation: true, loadMapResources: mapResources })
           }
         })
       })
@@ -572,6 +605,47 @@ app.get('/redigera/:url', function (req, res, next) {
       next()
     }
   })
+})
+
+app.get('/historik/:url/:revision', function (req, res, next) {
+  var dbinstance = db.instance()
+  var pagesdb = dbinstance.collection('pages')
+  var revisionsdb = dbinstance.collection('revisions')
+
+  var revision = req.params.revision
+  var url = req.params.url
+
+  pagesdb.find({url:url}).toArray(function(err, doc) {
+    var post = doc[0]
+
+    revisionsdb.find({ post_id : new ObjectID(post._id) }).toArray(function(err, docs) {
+      if(err) throw err
+
+      var revisions = docs[0].revisions
+      var jsdiff = require('diff');
+
+      var diffs = []
+      for(var key in revisions) {
+        var revision = revisions[key]
+        var diff = jsdiff.diffLines(post.post.content, revision.content)
+
+        var diffStr = ''
+
+        diff.forEach(function(part){
+          // green for additions, red for deletions
+          // grey for common parts
+          var color = part.added ? 'success' : part.removed ? 'danger' : 'muted'
+
+          diffStr += '<span class="text-' + color + '">' + part.value + '</span>'
+        })
+
+        diffs.push(diffStr)
+      }
+
+      res.render('history', { user: req.user, post: post, revisions: diffs })
+    })
+  })
+
 })
 
 app.post('/submit', urlencodedParser, function (req, res) {
