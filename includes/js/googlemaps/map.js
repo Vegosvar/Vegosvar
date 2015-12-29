@@ -66,7 +66,7 @@
         settings.google.cluster = new MarkerClusterer(settings.google.map, settings.google.markers, {
           minimumClusterSize: 1,
           maxZoom: 9,
-          gridSize: 10
+          gridSize: 15
         });
       },
       setCenter: function(position) {
@@ -102,7 +102,7 @@ $(document).bind('mapready', function(e) {
   mapInstance = $('#map').googleMap();
 
   //Place markers on map
-  function setMarkers(data) {
+  function setMarkers(data, settings) {
     for (var i = 0; i < data.length; i++) {
       entry = data[i]
       if(typeof(entry.post.coordinates) !== 'undefined') {
@@ -146,22 +146,14 @@ $(document).bind('mapready', function(e) {
         console.log(entry.title + ' has no coordinates!')
       }
     }
-    mapInstance.clusterMarkers();
+    if(typeof(settings) !== 'undefined' && settings.hasOwnProperty('cluster')) {
+      if(settings.cluster === true) {
+        mapInstance.clusterMarkers();
+      }
+    }
   }
 
-  $('#show-map').on('click', function(e) {
-    e.preventDefault();
-
-    $('.filter').hide(); //Remove overlay filter
-    
-    //Get marker data
-    $.ajax({
-      url: '/ajax/map',
-    })
-    .done(function(data) {
-      setMarkers(data)
-    });
-
+  function zoomToUserLocation() {
     $.fn.geoLocation(function(result) {
       if (result.success === true) {
         mapInstance.setMarker({
@@ -177,10 +169,109 @@ $(document).bind('mapready', function(e) {
           lat: result.position.latitude,
           lng: result.position.longitude
         })
-        mapInstance.setZoom(11)
+        mapInstance.setZoom(11);
       } else {
         //TODO display error
       }
     })
+  }
+
+  function getMarkerData(options, callback) {
+    var settings = $.extend({
+      url: '/ajax/map'
+    }, options);
+
+    $.ajax(settings)
+    .done(function(data) {
+      callback(data)
+    });
+  }
+
+  function getMapOptions() {
+    var options = {};
+    var mapData = $('#map').data();
+
+    //Check if map is configured to auto initialize
+    if(mapData.hasOwnProperty('mapInit')) {
+      options.init = true;
+    }
+
+    if(mapData.hasOwnProperty('mapCluster')) {
+      options.cluster = true;
+    }
+
+    if(mapData.hasOwnProperty('mapFilter')) {
+      var filters = {
+        single: function() {
+          return {
+            id: $('.content')[0].id
+          }
+        },
+        restaurant: function() {
+          return {
+            type: '3'
+          }
+        },
+        butik: function() {
+          return {
+            type: '5'
+          }
+        }
+      }
+
+      if(mapData.mapFilter in filters) {
+        options.data = {
+          filter: filters[mapData.mapFilter](),
+          filterName: mapData.mapFilter
+        }
+      }
+    }
+
+    return options;
+  }
+
+  function applyMarkerData(data, options) {
+    if(options.hasOwnProperty('data')) {
+      if(options.data.filterName === 'single') {
+        mapInstance.setCenter({
+          lat: data[0].post.coordinates.latitude,
+          lng: data[0].post.coordinates.longitude
+        });
+
+        mapInstance.setZoom(11);
+      }
+    }
+
+    setMarkers(data, options);
+  }
+
+  $('#show-map').on('click', function(e) {
+    e.preventDefault();
+
+    $('.filter').fadeOut(1000); //Remove overlay filter
+
+    //Get map options
+    var options = getMapOptions();
+    
+    //Get marker data
+    getMarkerData(options, function(data) {
+      applyMarkerData(data, options);
+    })
+
+    zoomToUserLocation();
   })
+
+  if($('#map').length > 0) {
+    var options = getMapOptions();
+
+    if(options.init === true) {
+      var markerFilter = (options.hasOwnProperty('filter')) ? options.filter : false;
+
+      getMarkerData(options, function(data) {
+        applyMarkerData(data, options);
+      })
+
+      $('.filter').fadeOut(1000); //Remove overlay filter
+    }
+  }
 })
