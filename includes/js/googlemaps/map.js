@@ -248,7 +248,7 @@ $(document).bind('mapready', function(e) {
   $('#show-map').on('click', function(e) {
     e.preventDefault();
 
-    $('.filter').fadeOut(1000); //Remove overlay filter
+    $('.filter').hide(); //Remove overlay filter
 
     //Get map options
     var options = getMapOptions();
@@ -271,7 +271,7 @@ $(document).bind('mapready', function(e) {
         applyMarkerData(data, options);
       })
 
-      $('.filter').fadeOut(1000); //Remove overlay filter
+      $('.filter').hide(); //Remove overlay filter
     }
   }
 })
