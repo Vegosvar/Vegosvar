@@ -233,12 +233,14 @@ $(document).bind('mapready', function(e) {
   function applyMarkerData(data, options) {
     if(options.hasOwnProperty('data')) {
       if(options.data.filterName === 'single') {
-        mapInstance.setCenter({
-          lat: data[0].post.coordinates.latitude,
-          lng: data[0].post.coordinates.longitude
-        });
+        if(data.length > 0 && data[0].post.hasOwnProperty('coordinates')) {
+          mapInstance.setCenter({
+            lat: data[0].post.coordinates.latitude,
+            lng: data[0].post.coordinates.longitude
+          });
 
-        mapInstance.setZoom(11);
+          mapInstance.setZoom(11);
+        }
       }
     }
 
