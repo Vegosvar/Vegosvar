@@ -268,7 +268,8 @@
                 </div>
                 <% if (typeof user !== 'undefined') { if (user.id === user_info.id) { %>
                 <div class="col-xs-6 col-md-12 less-padding-left-xs">
-                  <a href="/redigera/<%= post.url %>" class="btn btn-edit">Redigera sida</a>
+                  <a href="/redigera/<%= post.url %>" class="btn btn-edit">Redigera sida</a><br />
+                  <a href="#" id="btn-delete" class="btn btn-danger">Ta bort</a> 
                 </div>
                 <% } } else { %>
                   <div class="col-xs-6 col-md-12 less-padding-left-xs">
@@ -277,6 +278,14 @@
                 <% } %>
               </div>
             </div>
+            <% if (typeof user !== 'undefined') { if (user.id === user_info.id) { %>
+            <div class="col-xs-5 col-md-10" id="post-delete-container" style="float:right;text-align:left;margin-top:-70px;margin-right:22px;display:none;">
+              <input type="text" style="width:100&;" placeholder="Kommentar"><br />
+              <b>Borttagning av sida</b><br />
+              Vänligen ange en anledning till att sidan ska tas bort. Om det är fel information vänligen använd redigera funktionen.
+              Kommentaren skickas till moderatorer som godkänner borttagningen.
+            </div>
+            <% } } %>
           </div>
           <% if (post.type === '3' || post.type === '4' || post.type === '5') { %>
             <h2>Recensioner</h2>
@@ -303,7 +312,6 @@
 
 
         <div class="col-sm-6 col-md-4 sidebar">
-
           <% if (post.type === '3' || post.type === '5') { %>
             <div id="mapContainer" class="sidebar">
               <div id="map" data-map-init="true" data-map-filter="single" class="sidebar hidden-xs" style="height:400px"></div>
@@ -369,6 +377,11 @@
     </section>
   </div>
   <script>
+      $('#btn-delete').on('click', function (e) {
+        e.preventDefault()
+        $('#post-delete-container').slideToggle('fast')
+      })
+
       var d = new Date();
       var weekday = new Array(7);
       weekday[0]=  "sunday";
