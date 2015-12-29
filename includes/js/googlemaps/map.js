@@ -161,7 +161,7 @@ $(document).bind('mapready', function(e) {
             lat: parseFloat(result.position.latitude),
             lng: parseFloat(result.position.longitude)
           },
-          title: entry.title,
+          title: 'Din plats',
           content: 'Du är här!',
           icon: '/assets/images/pin-my-position.png'
         })
