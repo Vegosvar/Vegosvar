@@ -1,0 +1,21 @@
+<% include includes/header %>
+
+<div class="container">
+    <section id="main" class="text-center">
+        <div class="row">
+            <div class="col-sm-12">
+                <article>
+                    <% if(typeof(revisions) !== 'undefined') {
+                        for(i=0;i<revisions.length;i++) { %>
+                            <p><h3>Revision <%= i %> </h3>
+                            <%- revisions[i] %>
+                            </p>
+                        <% }
+                    } %>
+                </article>
+            </div>
+        </div>
+    </section>
+</div>
+
+<% include includes/footer %>
