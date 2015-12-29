@@ -73,6 +73,10 @@ var collections = [
         exists: false
     },
     {
+        name: 'revisions',
+        exists: false
+    },
+    {
         name: 'sessions',
         exists: false
     },
