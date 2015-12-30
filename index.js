@@ -151,7 +151,7 @@ app.get('/', function (req, res) {
 
   var pages = {}
   var options = {
-    limit: 4,
+    limit: 6,
     sort: [ ['rating.likes', 'desc'] ]
   }
 

@@ -42,12 +42,12 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-12">
+			<div class="col-sm-12 col-md-7 col-lg-8">
 				<section id="handpicked">
-					<h2>Populära sidor</h2>
+					<h2>Hett just nu</h2>
 					<div class="row">
 						<% for (var i=0; i < pages.length; i++) {%>
-						<div class="col-sm-4 col-md-4 col-lg-3">
+						<div class="col-sm-4 col-md-6 col-lg-4">
 							<div class="result">
 								<% if (typeof pages[i].post.cover !== 'undefined' && pages[i].post.cover.filename !== null) { %>
 								<a href="/<%= pages[i].url %>">
@@ -103,14 +103,54 @@
 			                			<span class="votes">0</span>
 									</div>
 								<% } %>
-								<div class="more">
-									<a href="/<%= pages[i].url %>" class="btn btn-primary">Läs mer</a>
-								</div>
 							</div>
 						</div>
 						<% } %>
 					</div>
 				</section>
+			</div>
+			
+			<div class="col-sm-12 col-md-5 col-lg-4">
+				<div id="highlights">
+					<div class="row">
+
+						<div class="col-sm-6 col-md-12">
+							<div class="highlight" style="background-image: url(/assets/images/vegan-stockholm.jpg);">
+								<h2>Veganskt i Stockholm</h2>
+								<p>Hitta veganska restauranger i Stockholmsområdet, eller varför inte i <a href="/?s=Restauranger i Malmö">Malmö</a>, <a href="/?s=Restauranger i Göteborg">Göteborg</a>, <a href="/?s=Restauranger i Uppsala">Uppsala</a>, <a href="/?s=Restauranger i Lund">Lund</a>... ja vilken stad som helst egentligen.</p>
+								<a href="/?s=Restauranger i Stockholm" class="btn btn-primary">
+									<span class="glyphicon glyphicon-map-marker"></span> 
+									Restauranger i Stockholm
+								</a>
+							</div>
+						</div>
+
+						<div class="col-sm-6 col-md-12">
+							<a href="/?s=Chips">
+								<div class="highlight xs" style="background-image: url(/assets/images/veganska-chips.jpg);">
+									<h2>Veganska chips</h2>
+								</div>
+							</a>
+						</div>
+
+						<div class="col-sm-6 col-md-12">
+							<a href="/vilka-e-nummer-ar-veganska">
+								<div class="highlight xs" style="background-image: url(/assets/images/e-nummer.jpg);">
+									<h2>Lista på E-ämnen</h2>
+								</div>
+							</a>
+						</div>
+
+						<div class="col-sm-6 col-md-12">
+							<a href="/?s=Glass">
+								<div class="highlight xs" style="background-image: url(/assets/images/vegansk-glass.jpg);">
+									<h2>Vegansk glass</h2>
+								</div>
+							</a>
+						</div>
+
+					</div>
+				</div>
 			</div>
 			
 			<div class="col-sm-12">
