@@ -6,6 +6,11 @@
 <head>
   <% if(typeof(post) !== 'undefined') { %>
     <title><%= post.title %> – Vegosvar</title>
+  <% } else if (typeof(searchString) !== 'undefined') { %>
+    <title>
+      Resultat för  
+      "<%= typeof searchString !== 'undefined' ? searchString:'' %>" 
+    </title>
   <% } else { %>
     <title>Vegosvar – Enkla svar på vegofrågor</title>
   <% } %>
