@@ -180,11 +180,9 @@
                     <p><a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-secondary" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Apple Maps</a></p>
                   </div>
                 </div>
-
                 <% if (typeof post.post.website !== 'undefined' && post.post.website !== "") { %>
                   <a href="<%= post.post.website %>" class="btn btn-secondary btn-block visible-xs" target="_blank">Besök deras hemsida</a>
                 <% } %>
-
               <% } %>
 
             <div class="row">
@@ -211,7 +209,6 @@
                   <% } %>
               </div>
             </div>
-
           </article>
 
           <div class="row">
@@ -270,11 +267,11 @@
                 <div class="col-xs-6 col-md-12 less-padding-left-xs">
                   <a href="/redigera/<%= post.url %>" class="btn btn-edit">Redigera sida</a>
                 </div>
-                <% } } else { %>
+                <% } else { %>
                   <div class="col-xs-6 col-md-12 less-padding-left-xs">
                     <a href="/rapportera" class="btn btn-edit">Rapportera fel</a>
                   </div>
-                <% } %>
+                <% } } %>
               </div>
             </div>
             <% if (typeof user !== 'undefined') { if (user.id === user_info.id) { %>
@@ -308,7 +305,6 @@
           </script>
           <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
         </div>
-
 
         <div class="col-sm-6 col-md-4 sidebar">
           <% if (post.type === '3' || post.type === '5') { %>
@@ -370,9 +366,6 @@
 
         </div>
       </div>
-
-
-
     </section>
   </div>
   <script>
