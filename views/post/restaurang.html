@@ -67,6 +67,10 @@
                             <% include includes/template_parts/submit %>
 						</form>
 					</article>
+						<h3>Ta bort</h3>
+				        <p>För att ta bort en sida måste du ange en anledning för borttagning och därefter tas sidan bort om anledningen accepteras. I din händelselogg under <a href="/mina-sidor">Mina sidor</a> ser du om ditt ärende är behandlat.</p>
+				        <a id="btn-delete" class="btn btn-secondary">Ta bort sida</a>
+				        <div id="post-delete-container" style="display:none;float:right;" class="hidden"><input type="text" style="width:400px;" /></div></p>
 				</div>
 				<div class="col-md-4">
 					<aside>
@@ -77,6 +81,19 @@
 
 		</section>
 	</div>
+	<script>
+	$('#btn-delete').on('click', function (e) {
+    	e.preventDefault()
+    	if($('#post-delete-container').hasClass('hidden')) {
+    		$('#btn-delete').html('X')
+    		$('#post-delete-container').removeClass('hidden')
+    		$('#post-delete-container').slideDown('fast')
+    	} else {
+    		$('#btn-delete').html('Ta bort sida')
+    		$('#post-delete-container').slideUp('fast')
+    		setTimeout(function () { $('#post-delete-container').addClass('hidden') }, 210)
+    	}
+    })</script>
 
 <% include includes/filepush %>
 <% include ../includes/footer %>

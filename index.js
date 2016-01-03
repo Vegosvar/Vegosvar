@@ -517,6 +517,23 @@ app.get('/installningar', function (req, res) {
   res.render('settings', { user: req.user, loadEditorResources: true })
 })
 
+app.get('/installningar/ta-bort', function (req, res) {
+  res.render('deregister', { user: req.user })
+})
+
+app.get('/installningar/ta-bort/submit', function (req, res) {
+  if(req.isAuthenticated()) {
+    var dbinstance = db.instance()
+    var users = dbinstance.collection('users')
+    users.remove({ "_id": ObjectID(req.user._id) }, function(err, doc) {
+      if (err) throw err
+      res.send('1')
+    })
+  } else {
+    res.send('0')
+  }
+})
+
 app.post('/installningar/submit', urlencodedParser, function (req, res) {
   var id = req.user._id
   var display_name = req.body.displayName
@@ -544,7 +561,6 @@ app.get('/mina-sidor', function (req, res) {
   var userid = new ObjectID(req.user._id)
 
   pagesdb.find( { "user_info.id": userid }).toArray(function(err, doc) {
-    console.log(doc)
     res.render('pages', { user: req.user, pages:doc })
   })
 })
@@ -652,7 +668,6 @@ app.post('/submit', urlencodedParser, function (req, res) {
   // Controller for handling page inputs.
   // ## TODO ######################################################
   // # Add error handling, check and sanitize inputs              #
-  // # Add support for multiple sources, ingredients, steps et.c. #
   // ##############################################################
 
   var id = req.body.id
@@ -670,8 +685,11 @@ app.post('/submit', urlencodedParser, function (req, res) {
   var pagesdb = dbinstance.collection('pages')
 
   if(req.body.cover_image_id == 'undefined' || req.body.cover_image_filename == 'undefined') {
-    req.body.cover_image_id = null
-    req.body.cover_image_filename = null
+    cover_image_id = null
+    cover_image_filename = null
+  } else {
+    cover_image_id = req.body.cover_image_id
+    cover_image_filename = req.body.cover_image_filename
   }
 
   if(type == 1) { // Fakta
