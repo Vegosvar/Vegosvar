@@ -1526,19 +1526,29 @@ section {
 		display: flex;
 		align-items: center;
 		justify-content: center;
+		@media (max-width: @xs) {
+			padding: 30px 15px;
+		}
+		img {
+			margin-bottom: 15px;
+		}
 		h2 {
 			margin-top: 0;
 			margin-bottom: 15px;
 			font-size: 40px;
 			font-weight: 100;
 			@media (max-width: @xs) {
-				font-size: 35px;
+				font-size: 25px;
+				font-weight: 400;
 			}
 		}
 		h3 {
 			margin-top: 0;
 			margin-bottom: 30px;
 			font-weight: 400;
+			@media (max-width: @xs) {
+				font-size: 14px;
+			}
 		}
 		.btn-hero {
 			color: @pink;
