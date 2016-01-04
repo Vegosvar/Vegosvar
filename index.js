@@ -709,8 +709,8 @@ app.post('/submit', urlencodedParser, function (req, res) {
         license_holder: req.body.license_holder,
         license_holder_website: req.body.license_holder_website,
         cover: {
-          id: req.body.cover_image_id,
-          filename: req.body.cover_image_filename
+          id: cover_image_id,
+          filename: cover_image_filename
         }
       },
       user_info: {
@@ -735,8 +735,8 @@ app.post('/submit', urlencodedParser, function (req, res) {
         license_holder: req.body.license_holder,
         license_holder_website: req.body.license_holder_website,
         cover: {
-          id: req.body.cover_image_id,
-          filename: req.body.cover_image_filename
+          id: cover_image_id,
+          filename: cover_image_filename
         }
       },
       user_info: {
@@ -781,8 +781,8 @@ app.post('/submit', urlencodedParser, function (req, res) {
           sunday: req.body.sunday
         },
         cover: {
-          id: req.body.cover_image_id,
-          filename: req.body.cover_image_filename
+          id: cover_image_id,
+          filename: cover_image_filename
         },
       },
       user_info: {
@@ -811,8 +811,8 @@ app.post('/submit', urlencodedParser, function (req, res) {
         manufacturer_website: req.body.manufacturer_website,
         hashtag: req.body.hashtag,
         cover: {
-          id: req.body.cover_image_id,
-          filename: req.body.cover_image_filename
+          id: cover_image_id,
+          filename: cover_image_filename
         }
       },
       user_info: {
@@ -853,8 +853,8 @@ app.post('/submit', urlencodedParser, function (req, res) {
           sunday: req.body.sunday
         },
         cover: {
-          id: req.body.cover_image_id,
-          filename: req.body.cover_image_filename
+          id: cover_image_id,
+          filename: cover_image_filename
         }
       },
       user_info: {
