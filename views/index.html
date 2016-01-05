@@ -42,9 +42,28 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-12 col-md-7 col-lg-8">
-				<section id="handpicked">
-					<h2>Hett just nu</h2>
+			<div class="col-md-5 col-lg-4 pull-first-sm">
+				<section id="mapContainer">
+					<div id="map" data-map-cluster="true" style="height:450px"></div>
+					<div class="filter">
+						<div class="vertical-center">
+							<img src="/assets/images/map-icon.svg" style="width: 70px;"> 
+							<h2>Veganskt käk nära dig</h2>
+							<h3>Restauranger & butiker</h3>
+							<a href="#" id="show-map" class="btn btn-hero">
+								<span class="glyphicon glyphicon-map-marker"></span>
+								Se karta
+							</a>
+						</div>
+					</div>
+				</section>
+			</div>
+			<div class="col-md-7 col-lg-8 pull-last-sm">
+				<section id="hot">
+					<h2>
+						<img src="/assets/images/fire.svg"> 
+						Hett just nu
+					</h2>
 					<div class="row">
 						<% for (var i=0; i < pages.length; i++) {%>
 						<div class="col-sm-4 col-md-6 col-lg-4">
@@ -108,74 +127,6 @@
 						<% } %>
 					</div>
 				</section>
-			</div>
-			
-			<div class="col-sm-12 col-md-5 col-lg-4">
-				<div id="highlights">
-					<div class="row">
-
-						<div class="col-sm-6 col-md-12">
-							<div class="highlight" style="background-image: url(/assets/images/vegan-stockholm.jpg);">
-								<h2>Veganskt i Stockholm</h2>
-								<p>Hitta veganska restauranger i Stockholmsområdet, eller varför inte i <a href="/?s=Restauranger i Malmö">Malmö</a>, <a href="/?s=Restauranger i Göteborg">Göteborg</a>, <a href="/?s=Restauranger i Uppsala">Uppsala</a>, <a href="/?s=Restauranger i Lund">Lund</a>... ja vilken stad som helst egentligen.</p>
-								<a href="/?s=Restauranger i Stockholm" class="btn btn-primary">
-									<span class="glyphicon glyphicon-map-marker"></span> 
-									Restauranger i Stockholm
-								</a>
-							</div>
-						</div>
-
-						<div class="col-sm-6 col-md-12">
-							<a href="/?s=Chips">
-								<div class="highlight xs" style="background-image: url(/assets/images/veganska-chips.jpg);">
-									<h2>Veganska chips</h2>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-sm-6 col-md-12">
-							<a href="/vilka-e-nummer-ar-veganska">
-								<div class="highlight xs" style="background-image: url(/assets/images/e-nummer.jpg);">
-									<h2>Lista på E-nummer</h2>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-sm-6 col-md-12">
-							<a href="/?s=Glass">
-								<div class="highlight xs" style="background-image: url(/assets/images/vegansk-glass.jpg);">
-									<h2>Vegansk glass</h2>
-								</div>
-							</a>
-						</div>
-
-						<div class="col-sm-6 col-md-12">
-							<a href="/?s=Pannkakor">
-								<div class="highlight xs" style="background-image: url(/assets/images/veganska-pannkakor.jpg);">
-									<h2>Recept på pannkakor</h2>
-								</div>
-							</a>
-						</div>
-
-					</div>
-				</div>
-			</div>
-			
-			<div class="col-sm-12">
-				<div id="mapContainer">
-					<div id="map" data-map-cluster="true" style="height:450px"></div>
-					<div class="filter">
-						<div class="vertical-center">
-							<img src="/assets/images/map-icon.svg" style="width: 70px;"> 
-							<h2>Veganskt käk nära dig</h2>
-							<h3>Goda restauranger och trevliga butiker</h3>
-							<a href="#" id="show-map" class="btn btn-hero">
-								<span class="glyphicon glyphicon-map-marker"></span>
-								Se karta
-							</a>
-						</div>
-					</div>
-				</div>
 			</div>
 		</div>
 	</div>
