@@ -30,12 +30,18 @@
               <h1><%= post.title %></h1>
 
               <% if (post.type === '3' || post.type === '5') { %>
-                <h2 class="subtitle"><%= post.post.city %></h2>
+                <a href="/?s=<%= post.post.city %>">
+                  <h2 class="subtitle">
+                    <%= post.post.city %>
+                  </h2>
+                </a>
               <% } %>
               <% if (post.type === '4') { %>
-                <h2 class="subtitle">
-                    <%= post.post.manufacturer %>
-                </h2>
+                <a href="/?s=<%= post.post.manufacturer %>">
+                  <h2 class="subtitle">
+                      <%= post.post.manufacturer %>
+                  </h2>
+                </a>
               <% } %>
 
               <p>
@@ -307,6 +313,23 @@
         </div>
 
         <div class="col-sm-6 col-md-4 sidebar">
+
+          <% if (post.type === '3' || post.type === '5') { %>
+            <div id="instagram">
+              <div class="images">
+                <img src="http://dev.vegosvar.se/uploads/bb404720a4e134c.jpg">
+                <img src="http://dev.vegosvar.se/uploads/aec7af9782f.jpg">
+                <img src="http://dev.vegosvar.se/uploads/063abb8cd89cb1353be4ec46f.jpg">
+                <img src="http://dev.vegosvar.se/uploads/bb404720a4e134c.jpg">
+                <img src="http://dev.vegosvar.se/uploads/aec7af9782f.jpg">
+                <img src="http://dev.vegosvar.se/uploads/aec7af9782f.jpg">
+                <img src="http://dev.vegosvar.se/uploads/063abb8cd89cb1353be4ec46f.jpg">
+                <img src="http://dev.vegosvar.se/uploads/bb404720a4e134c.jpg">
+              </div>
+              <small><p>Checka in på <%= post.title %> nästa gång du postar på <a href="https://instagram.com" target="_blank">Instagram</a> så delas dina bilder här.</p></small>
+            </div>
+          <% } %>
+
           <% if (post.type === '3' || post.type === '5') { %>
             <div id="mapContainer" class="sidebar">
               <div id="map" data-map-init="true" data-map-filter="single" class="sidebar hidden-xs" style="height:400px"></div>
@@ -321,31 +344,15 @@
               <div id="map" data-map-filter="restaurant" data-map-cluster="true" class="sidebar hidden-xs" style="height:450px"></div>
               <div class="filter">
                 <div class="vertical-center">
-                  <h2>Karta</h2>
-                  <h3>Veganskt käk nära dig</h3>
+                  <img src="/assets/images/map-icon.svg" style="width: 60px;"> 
+                  <h2>Veganskt käk nära dig</h2>
+                  <h3>Restauranger & butiker</h3>
                   <a href="#" id="show-map" class="btn btn-hero">
                     <span class="glyphicon glyphicon-map-marker"></span>
                     Se karta
                   </a>
                 </div>
               </div>
-            </div>
-          <% } %>
-
-          <% if (post.type === '3' || post.type === '5') { %>
-            <div id="instagram">
-              <h2>Fotat på <%= post.title %></a></h2>
-              <div class="images">
-                <img src="http://dev.vegosvar.se/uploads/bb404720a4e134c.jpg">
-                <img src="http://dev.vegosvar.se/uploads/aec7af9782f.jpg">
-                <img src="http://dev.vegosvar.se/uploads/063abb8cd89cb1353be4ec46f.jpg">
-                <img src="http://dev.vegosvar.se/uploads/bb404720a4e134c.jpg">
-                <img src="http://dev.vegosvar.se/uploads/aec7af9782f.jpg">
-                <img src="http://dev.vegosvar.se/uploads/aec7af9782f.jpg">
-                <img src="http://dev.vegosvar.se/uploads/063abb8cd89cb1353be4ec46f.jpg">
-                <img src="http://dev.vegosvar.se/uploads/bb404720a4e134c.jpg">
-              </div>
-              <small><p>Checka in på <%= post.title %> när du postar på <a href="https://instagram.com" target="_blank">Instagram</a> nästa gång så delas dina bilder här.</p></small>
             </div>
           <% } %>
 
