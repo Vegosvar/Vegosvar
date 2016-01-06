@@ -12,6 +12,15 @@
             <div class="row">
               <div class="col-sm-6">
                 <div class="input-group">
+                  <span class="btn btn-edit btn-file">
+                    <span class="glyphicon glyphicon-camera"></span> Välj profilbild <input type="file">
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="input-group">
                   <span class="input-group-addon" id="basic-addon2">Visningsnamn</span>
                   <input type="text" class="form-control" name="displayName" placeholder="<%= user.name.display_name %>" value="<%= user.name.display_name %>" aria-describedby="basic-addon1">
                 </div>
@@ -28,17 +37,11 @@
             <div class="row">
               <div class="col-sm-12">
                 <div class="input-group">
-                  <br><label for="description">Beskrivning av dig, ert företag eller er hemsida</label>
+                  <br><label for="description">Beskrivning av dig, ditt företag eller hemsida</label>
                   <textarea type="text" id="description" name="description" class="form-control"><% if (typeof user.info !== 'undefined') { if(typeof user.info.description !== 'undefined') { %><%= user.info.description %><% } } %></textarea>
                   <p><small>Max 150 bokstäver</small></p>
                 </div>
               </div>
-            </div>
-            <div class="input-group">
-              <span class="btn btn-edit btn-file">
-                <span class="glyphicon glyphicon-camera"></span> Välj profilbild <input type="file">
-              </span>
-              <p><small>Rekommenderad storlek <strong>200 x 200 px</strong></small></p>
             </div>
             <div class="row">
               <div class="col-sm-12">
