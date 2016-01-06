@@ -1526,7 +1526,7 @@ section {
 	}
 	@media (max-width: @xs) {
 		margin: 0 -15px 0 -15px;
-		height: 280px;
+		height: 290px;
 		width: auto;
 	}
 	#map {
@@ -1548,7 +1548,7 @@ section {
 		@media (max-width: @xs) {
 			padding: 30px 15px;
 			border-radius: 0;
-			background: rgba(255, 255, 255, 0.90);
+			background: rgba(255, 255, 255, 0.92);
 			color: #222;
 		}
 		img {
@@ -1606,6 +1606,18 @@ section {
 			height: 25px;
 			position: relative;
 			top: -4px;
+			&.fire-dark {
+				display: inline-block;
+				@media (max-width: @xs) {
+					display: none;
+				}
+			}
+			&.fire-color {
+				display: none;
+				@media (max-width: @xs) {
+					display: inline-block;
+				}
+			}
 		}
 	}
 }
@@ -1913,7 +1925,7 @@ section {
 	color: #fff;
 	@media (max-width: @xs) {
 		text-align: center;
-		padding: 60px 0 120px 0;
+		padding: 0 30px 110px 30px;
 	}
 	.facebook {
 		display: inline-block;
@@ -1946,6 +1958,28 @@ section {
 		transition: opacity 0.2s;
 		&:hover {
 			opacity: 0.6;
+		}
+		@media (max-width: @xs) {
+			font-size: 18px;
+			border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+			padding: 10px 0;
+			&:last-child {
+				border: none;
+			}
+		}
+	}
+	.socialt {
+		@media (max-width: @xs) {
+			margin: -15px -30px 30px -30px;
+			padding: 0;
+			background: #23252F;
+			a {
+				color: #fff;
+				display: inline-block;
+				margin: 0 3px;
+				border: none;
+				font-size: 14px;
+			}
 		}
 	}
 }
