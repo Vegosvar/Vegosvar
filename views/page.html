@@ -8,6 +8,27 @@
 
           <article>
 
+            <div class="like">
+              <% if (typeof post.rating !== 'undefined' && post.rating.likes !== "undefined") { %>
+                <% if (userLikes > 0) { %>
+                  <a href="#" id="<%= post._id %>" class="btn-like">
+                    <span id="heart-glyphicon" class="glyphicon glyphicon-heart"></span>
+                    <span class="count"><%= post.rating.likes %></span>
+                  </a>
+                <% } else { %>
+                  <a href="#" id="<%= post._id %>" class="btn-like">
+                    <span id="heart-glyphicon" class="glyphicon glyphicon-heart-empty"></span>
+                    <span class="count"><%= post.rating.likes %></span>
+                  </a>
+                <% } %>
+              <% } else { %>
+                <a href="#" id="<%= post._id %>" class="btn-like">
+                  <span id="heart-glyphicon" class="glyphicon glyphicon-heart-empty"></span>
+                  <span class="count">0</span>
+                </a>
+              <% } %> 
+            </div>
+
             <div class="headerImage">
               <% if (typeof post.post.cover.filename !== 'undefined' && post.post.cover.filename !== "" && post.post.cover.filename !== null) { %>
               <img src="/uploads/<%= post.post.cover.filename %>.jpg" alt="<%= post.title %>"/>
@@ -74,11 +95,12 @@
                 <div class="star" id="5">
                   <span class="glyphicon glyphicon-star"></span>
                 </div>
-                      <% if (typeof post.rating !== 'undefined' && post.rating.votes !== 'undefined') { %>
-                        <span class="votes"><%= post.rating.votes %></span>
-                      <% } else { %>
-                        <span class="votes">0</span>
-                      <% } %>
+            
+                <% if (typeof post.rating !== 'undefined' && post.rating.votes !== 'undefined') { %>
+                  <span class="votes"><%= post.rating.votes %></span>
+                <% } else { %>
+                  <span class="votes">0</span>
+                <% } %>
                       
               </div>
               <% } %>
@@ -218,7 +240,7 @@
           </article>
 
           <div class="row">
-            <div class="col-sm-7">
+            <div class="col-sm-6">
               <div class="card transparent">
                 <div class="row">
                   <% if (typeof post.user_info.hidden !== true && post.user_info.hidden == "") { %>
@@ -240,11 +262,11 @@
                       </span>
                     </div>
                   <% } else { %>
-                    <div class="col-xs-4 col-sm-4 col-md-3 avatar">
+                    <div class="col-xs-3 col-xs-offset-1 col-sm-4 col-sm-offset-0 col-md-3 avatar">
                       <a href="#"><img src="/assets/images/no-picture.svg" class="avatar circle"></a>
                     </div>
 
-                    <div class="col-xs-8 col-sm-8 col-md-8 info">
+                    <div class="col-xs-7 col-sm-8 col-md-8 info">
                       <small>Publicerat av</small>
                       <h3>Anonym</h3>
                       <span class="description">
@@ -256,38 +278,20 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-5 actions">
-              <div class="row">
-                <div class="col-xs-6 col-md-12 less-padding-right-xs">
-                  <% if (typeof post.rating !== 'undefined' && post.rating.likes !== "undefined") { %>
-                    <% if (userLikes > 0) { %>
-                      <a href="#" id="<%= post._id %>" class="btn btn-like"><span id="heart-glyphicon" class="glyphicon glyphicon-heart"></span>Gilla <span class="count"><%= post.rating.likes %></span></a>
-                    <% } else { %>
-                      <a href="#" id="<%= post._id %>" class="btn btn-like"><span id="heart-glyphicon" class="glyphicon glyphicon-heart-empty"></span>Gilla <span class="count"><%= post.rating.likes %></span></a>
-                    <% } %>
-                  <% } else { %>
-                    <a href="#" id="<%= post._id %>" class="btn btn-like"><span id="heart-glyphicon" class="glyphicon glyphicon-heart-empty"></span>Gilla <span class="count">0</span></a>
-                  <% } %> 
-                </div>
-                <% if (typeof user !== 'undefined') { if (user.id === user_info.id) { %>
-                <div class="col-xs-6 col-md-12 less-padding-left-xs">
-                  <a href="/redigera/<%= post.url %>" class="btn btn-edit">Redigera sida</a>
-                </div>
-                <% } else { %>
-                  <div class="col-xs-6 col-md-12 less-padding-left-xs">
-                    <a href="/rapportera" class="btn btn-edit">Rapportera fel</a>
-                  </div>
-                <% } } %>
-              </div>
+            <div class="col-xs-8 col-xs-offset-2 col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-2 actions">
+
+              <% if (typeof user !== 'undefined') { if (user.id === user_info.id) { %>
+                <a href="/redigera/<%= post.url %>" class="btn btn-third">
+                  <span class="glyphicon glyphicon-cog"></span> 
+                  Redigera sida
+                </a>
+              <% } else { %>
+                <a href="/rapportera" class="btn btn-third">
+                  <span class="glyphicon glyphicon-cog"></span> 
+                  Föreslå ändring
+                </a>
+              <% } } %>
             </div>
-            <% if (typeof user !== 'undefined') { if (user.id === user_info.id) { %>
-            <div class="col-xs-5 col-md-10" id="post-delete-container" style="float:right;text-align:left;margin-top:-70px;margin-right:22px;display:none;">
-              <input type="text" style="width:100&;" placeholder="Kommentar"><br />
-              <b>Borttagning av sida</b><br />
-              Vänligen ange en anledning till att sidan ska tas bort. Om det är fel information vänligen använd redigera funktionen.
-              Kommentaren skickas till moderatorer som godkänner borttagningen.
-            </div>
-            <% } } %>
           </div>
           <% if (post.type === '3' || post.type === '4' || post.type === '5') { %>
             <h2>Recensioner</h2>
@@ -357,6 +361,7 @@
           <% } %>
 
           <div class="card lg text-center">
+
             <div class="headerImage">
               <img src="/assets/images/pages.svg">
             </div>

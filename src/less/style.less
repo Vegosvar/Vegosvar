@@ -8,12 +8,12 @@
 @green:					@brand-color;
 @yellow:				#ffd23a;
 @blue:					#236FAF;
-@red:					#d04c4c;
+@red:					#E04A43;
 @pink:					#F95376;
 @orange:				#F69424;
 
 @recipe:				@pink;
-@restaurant:			#694E8C;
+@restaurant:			#8D53A1;
 @store:					#FB8B11;
 @product:				@blue;
 
@@ -348,31 +348,21 @@ hr {
 			background: darken(@blue, 8%) !important;
 		}
 	}
-	&.btn-like {
-		background: @pink;
-		color: #fff;
-		&:hover {
-			background: darken(@pink, 3%);
-		}
-		&:active {
-			background: darken(@pink, 8%);
-		}
-		.count {
-			display: inline-block;
-			background: #fff;
-			color: @red;
-			border-radius: 30px;
-			padding: 4px 7px;
-			line-height: 1;
-			margin-left: 5px;
-			font-size: 11px;
-		}
-	}
 	&.btn-secondary {
 		background: none;
 		color: @brand-color;
 		border: 1px solid @brand-color;
 		padding: 10px 17px;
+	}
+	&.btn-third {
+		background: none;
+		color: #888;
+		border: 1px solid #888;
+		padding: 10px 17px;
+		&:hover {
+			color: #666;
+			border: 1px solid #666;
+		}
 	}
 }
 
@@ -571,8 +561,8 @@ input[type=checkbox], input[type=radio] {
 			color: #111;
 		}
 		.description {
-			font-size: 13px;
-			line-height: 1.4;
+			font-size: 12px;
+			line-height: 1.5;
 			display: block;
 		}
 	}
@@ -870,6 +860,11 @@ nav {
 	}
 }
 
+@keyframes heartbeat {
+	from { transform: none; }
+	50% { transform: scale(1.6); }
+	to { transform: none; }
+}
 
 article {
 	padding: 50px 30px;
@@ -879,6 +874,42 @@ article {
 	@media (max-width: @xs) {
 		padding: 50px 20px;
 		margin: 0 -15px 30px -15px;
+	}
+	.like {
+		position: absolute;
+		z-index: 1;
+		right: 25px;
+		top: 10px;
+		@media (max-width: @xs) {
+			right: 10px;
+		}
+		a {
+			display: inline-block;
+			border-radius: 3px;
+			background: @red;
+			color: #fff;
+			padding: 5px 10px;
+			&:hover {
+				background: darken(@red, 3%);
+			}
+			&:active {
+				background: darken(@red, 8%);
+			}
+			.glyphicon {
+				font-size: 13px;
+				&.glyphicon-heart {
+					animation: heartbeat .5s forwards;
+				}
+			}
+			.count {
+				display: inline-block;
+				margin-left: 2px;
+				border-radius: 30px;
+				line-height: 1;
+				font-size: 15px;
+				font-weight: 600;
+			}
+		}
 	}
 	.content {
 		position: relative;
