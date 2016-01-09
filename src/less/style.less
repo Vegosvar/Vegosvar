@@ -913,6 +913,10 @@ article {
 	}
 	.content {
 		position: relative;
+		font-size: 16px;
+		@media (max-width: @xs) {
+			font-size: 15px;
+		}
 		.stars {
 			margin-top: -5px;
 			display: inline-block;
@@ -1027,27 +1031,30 @@ article {
 }
 
 
-.actions {
-	overflow: hidden;
-	margin-bottom: 30px;
-	.col-lg-6:first-child {
-		padding-right: 7.5px;
-		@media (max-width: @md) {
-			padding-right: 15px;
-		}
-	}
-	.col-lg-6:last-child {
-		padding-left: 7.5px;
-		@media (max-width: @md) {
-			padding-left: 15px;
-		}
-	}
-	.btn {
-		display: block;
-		text-align: center;
-		margin-bottom: 5px;
+#cred {
+	margin-bottom: 25px;
+	.card {
+		margin-bottom: 15px;
 	}
 }
+
+
+#comments {
+	@media (max-width: @xs) {
+		background: #fff;
+		margin: 0 -15px;
+		padding: 30px 15px 0 15px;
+		margin-bottom: 30px;
+	}
+	h2 {
+		@media (max-width: @xs) {
+			text-align: center;
+			margin-top: 0;
+			margin-bottom: 30px;
+		}
+	}
+}
+
 
 aside {
 	padding: 40px 30px;
