@@ -240,6 +240,8 @@ $(document).bind('mapready', function(e) {
           });
 
           mapInstance.setZoom(11);
+        } else {
+          return;
         }
       }
     }
