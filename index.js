@@ -565,6 +565,10 @@ app.get('/mina-sidor', function (req, res) {
   })
 })
 
+app.get('/admin', function (req, res) {
+  res.render('admin/index', { user: req.user })
+})
+
 app.get('/ny', function (req, res) {
   res.render('new', { user: req.user })
 })
