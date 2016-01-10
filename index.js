@@ -169,6 +169,23 @@ app.get('/', function (req, res) {
   })
 })
 
+app.get('/handle/script', function (req, res) {
+  var dbinstance = db.instance()
+  var pages = dbinstance.collection('pages')
+  pages.update({
+      "timestamp.created": {
+          $exists: false
+      }
+  }, {
+      $set: {
+          "timestamp.created": '2015-11-11T00:00:00.000Z'
+      }
+  }, {
+      multi: true
+  })
+  res.send('done')
+})
+
 app.get('/handle/votes', function (req, res) {
   var dbinstance = db.instance()
   var votesdb = dbinstance.collection('votes')
