@@ -866,6 +866,12 @@ nav {
 	to { transform: none; }
 }
 
+@keyframes popup {
+	from { transform: none; }
+	50% { transform: scale(1.1); }
+	to { transform: none; }
+}
+
 article {
 	padding: 50px 30px;
 	background: #fff;
@@ -875,7 +881,7 @@ article {
 		padding: 50px 20px;
 		margin: 0 -15px 30px -15px;
 	}
-	.like {
+	#like {
 		position: absolute;
 		z-index: 1;
 		right: 25px;
@@ -883,12 +889,28 @@ article {
 		@media (max-width: @xs) {
 			right: 10px;
 		}
-		a {
+		.hint {
+			opacity: 0.95;
+			position: absolute;
+			left: -250px;
+			border-radius: 3px;
+			background: #fff;
+			padding: 5px 10px;
+			opacity: 0;
+			transition: opacity .1s;
+			&.active {
+				opacity: 1;
+				animation: popup .3s forwards;
+			}
+		}
+		.like {
+			cursor: pointer;
 			display: inline-block;
 			border-radius: 3px;
 			background: @red;
 			color: #fff;
 			padding: 5px 10px;
+			user-select: none;
 			&:hover {
 				background: darken(@red, 3%);
 			}

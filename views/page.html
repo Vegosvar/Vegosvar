@@ -8,25 +8,49 @@
 
           <article>
 
-            <div class="like">
-              <% if (typeof post.rating !== 'undefined' && post.rating.likes !== "undefined") { %>
-                <% if (userLikes > 0) { %>
-                  <a href="#" id="<%= post._id %>" class="btn-like">
-                    <span id="heart-glyphicon" class="glyphicon glyphicon-heart"></span>
-                    <span class="count"><%= post.rating.likes %></span>
-                  </a>
+            <div id="like">
+                <div class="hint">
+                  <a href="/logga-in">Logga in</a> på Vegosvar för att gilla
+                </div>
+                <% if (typeof user !== 'undefined') { %>
+                  <% if (typeof post.rating !== 'undefined' && post.rating.likes !== "undefined") { %>
+                    <% if (userLikes > 0) { %>
+                      <span id="<%= post._id %>" class="like add-like">
+                        <span id="heart-glyphicon" class="glyphicon glyphicon-heart"></span>
+                        <span class="count"><%= post.rating.likes %></span>
+                      </span>
+                    <% } else { %>
+                      <span id="<%= post._id %>" class="like add-like">
+                        <span id="heart-glyphicon" class="glyphicon glyphicon-heart-empty"></span>
+                        <span class="count"><%= post.rating.likes %></span>
+                      </span>
+                    <% } %>
+                  <% } else { %>
+                    <span href="#" id="<%= post._id %>" class="like add-like">
+                      <span id="heart-glyphicon" class="glyphicon glyphicon-heart-empty"></span>
+                      <span class="count">0</span>
+                    </span>
+                  <% } %> 
                 <% } else { %>
-                  <a href="#" id="<%= post._id %>" class="btn-like">
-                    <span id="heart-glyphicon" class="glyphicon glyphicon-heart-empty"></span>
-                    <span class="count"><%= post.rating.likes %></span>
-                  </a>
+                  <% if (typeof post.rating !== 'undefined' && post.rating.likes !== "undefined") { %>
+                    <% if (userLikes > 0) { %>
+                      <span id="<%= post._id %>" class="like toggle-hint">
+                        <span id="heart-glyphicon" class="glyphicon glyphicon-heart"></span>
+                        <span class="count"><%= post.rating.likes %></span>
+                      </span>
+                    <% } else { %>
+                      <span id="<%= post._id %>" class="like toggle-hint">
+                        <span id="heart-glyphicon" class="glyphicon glyphicon-heart-empty"></span>
+                        <span class="count"><%= post.rating.likes %></span>
+                      </span>
+                    <% } %>
+                  <% } else { %>
+                    <span id="<%= post._id %>" class="like toggle-hint">
+                      <span id="heart-glyphicon" class="glyphicon glyphicon-heart-empty"></span>
+                      <span class="count">0</span>
+                    </span>
+                  <% } %> 
                 <% } %>
-              <% } else { %>
-                <a href="#" id="<%= post._id %>" class="btn-like">
-                  <span id="heart-glyphicon" class="glyphicon glyphicon-heart-empty"></span>
-                  <span class="count">0</span>
-                </a>
-              <% } %> 
             </div>
 
             <div class="headerImage">
