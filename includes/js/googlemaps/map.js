@@ -166,8 +166,8 @@ $(document).bind('mapready', function(e) {
           icon: '/assets/images/pin-my-position.png'
         })
         mapInstance.setCenter({
-          lat: result.position.latitude,
-          lng: result.position.longitude
+          lat: parseFloat(result.position.latitude),
+          lng: parseFloat(result.position.longitude)
         })
         mapInstance.setZoom(11);
       } else {
@@ -235,8 +235,8 @@ $(document).bind('mapready', function(e) {
       if(options.data.filterName === 'single') {
         if(data.length > 0 && data[0].post.hasOwnProperty('coordinates')) {
           mapInstance.setCenter({
-            lat: data[0].post.coordinates.latitude,
-            lng: data[0].post.coordinates.longitude
+            lat: parseFloat(data[0].post.coordinates.latitude),
+            lng: parseFloat(data[0].post.coordinates.longitude)
           });
 
           mapInstance.setZoom(11);
