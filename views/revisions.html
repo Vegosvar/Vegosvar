@@ -41,33 +41,20 @@
             <div class="col-sm-4">
                 <h2>Välj version</h2>
                 <div class="list-group">
-                    <a href="#" class="list-group-item active">
-                        2016-01-11 23:25:28 
-                        <span class="label label-success pull-right">Aktiv</span>
-                    </a>
-                    <a href="#" class="list-group-item">
-                        2016-01-11 23:25:28
-                    </a>
-                    <a href="#" class="list-group-item">
-                        2016-01-11 23:25:28
-                    </a>
-                    <a href="#" class="list-group-item">
-                        2016-01-11 23:25:28
-                    </a>
-                    <a href="#" class="list-group-item">
-                        2016-01-11 23:25:28
-                    </a>
-                </div>
-                <select id="revision_compare" class="form-control">
                     <% if(typeof(revisions) !== 'undefined') {
-                        for(i=0;i<revisions.length;i++) {
+                        for(var i = revisions.length - 1;i >= 0; i--) {
                             var revision_id = revisions[i].id
                             var revision_date = revisions[i].created
                             %>
-                            <option value="<%= revision_id %>" <%= (revision_id == current) ? 'selected="selected"' : '' %>><%= (revision_id == current) ? 'Nuvarande' : revision_date %></option>
+                            <a href="#" class="list-group-item <%= (revision_id == current) ? 'active' : '' %>" data-revision="<%= revision_id %>">
+                            <%= revision_date %>
+                            <% if(revision_id == current) { %>
+                                 <span class="label label-success pull-right">Aktiv</span>
+                            <% } %>
+                            </a>
                         <% }
                     } %>
-                </select>
+                </div>
             </div>
         </div>
     </section>
