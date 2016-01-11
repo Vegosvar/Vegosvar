@@ -1,6 +1,5 @@
 
 <div class="row">
-
     <div class="col-sm-12">
         <!-- Editor modals -->
         <div id="editorModalLink" class="modal fade">
@@ -53,14 +52,18 @@
                                 <input id="insert-source-url" class="form-control" placeholder="http://" type="url">
                             </div>
                         </div>
-                        <div id="source-existing" class="<%= (typeof sources === 'undefined') ? 'hidden' : '' %>">
+                        <div id="source-existing" class="<%= (typeof(post) !== 'undefined' && typeof(post.post.sources) === 'undefined') ? 'hidden' : '' %>">
                             <h4>Välj befintlig källa</h4>
                             <select id="insert-source-existing" class="form-control">
                                 <option value=""></option>
-                                <% if (typeof sources !== 'undefined') { %>
-                                    <% sources.forEach(function(source) { %>
-                                        <option value="<%= source.id %>"><%= source.id %>: <%= source.name %></option>
-                                    <% }); %>
+                                <% if (typeof(post) !== 'undefined' && typeof(post.post.sources) !== 'undefined') {
+                                    if (typeof(post.post.sources.name !== 'undefined') && post.post.sources.name !== null) {
+                                        for (var i=0;i<post.post.sources.name.length;i++) {
+                                            var sourceId = (i + 1)
+                                            var sourceName = post.post.sources.name[i] %>
+                                            <option value="<%= sourceId %>"><%= sourceId %>: <%= sourceName %></option>
+                                        <% } %>
+                                    <% } %>
                                 <% } %>
                             </select>
                         </div>
@@ -68,7 +71,7 @@
                     <div class="modal-footer">
                         <a id="insert-source-save" class="btn btn-primary">OK</a>
                         <a id="insert-source-edit" class="btn btn-primary hidden">OK</a>
-                        <a class="btn btn-danger" data-dismiss="modal">Avbryt</a>
+                        <a id="insert-source-dismiss" class="btn btn-danger" data-dismiss="modal">Avbryt</a>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
@@ -171,7 +174,7 @@
     <div class="col-sm-12">
         <div class="alert alert-warning hidden editor-storage-exists">
             <span class="glyphicon glyphicon-info-sign"></span>
-            <span>Din webbläsare har en autosparad text för den här typen av sida.</span>
+            <span>Din webbläsare har en autosparad text från ett tidigare datum.</span>
             <span class="editor-storage-timestamp"></span>
             <a href="#" class="btn btn-block btn-primary">Vill du återställa den?</a>
         </div>
@@ -181,34 +184,38 @@
             <div id="sources-reminder" class="alert alert-info"><span class="glyphicon glyphicon-superscript"></span>Glöm inte att källhänvisa</div>
         <% } %>
         <ul id="sources-list" class="list-group">
-            <% if (typeof(post) !== 'undefined' && post.post.sources.name !== null) { %>
-                <% for (var i=0;i<post.post.sources.name.length;i++) {
-                    var sourceId = (i + 1)
-                    var sourceName = post.post.sources.name[i]
-                    var sourceUrl = post.post.sources.url[i] %>
-                    <li id="source-<%= sourceId %>" class="list-group-item">
-                        <span>
-                            <a href="<%= sourceUrl %>" target="_blank" title="<%= sourceUrl %>" class="source-url">
-                                <span class="source-id"><%= sourceId %></span><span class="source-delimiter">.</span> <span class="source-name"><%= sourceName %></span>
-                            </a>
-                            <a href="#" data-source-id="<%= sourceId %>" class="source-edit pull-right">
-                                <span>Redigera</span></span>
-                            </a>
-                        </span>
-                    </li>
+            <% if (typeof(post) !== 'undefined' && typeof(post.post.sources) !== 'undefined') {
+                if (typeof(post.post.sources.name !== 'undefined') && post.post.sources.name !== null) {
+                    for (var i=0;i<post.post.sources.name.length;i++) {
+                        var sourceId = (i + 1)
+                        var sourceName = post.post.sources.name[i]
+                        var sourceUrl = post.post.sources.url[i] %>
+                        <li id="source-<%= sourceId %>" class="list-group-item">
+                            <span>
+                                <a href="<%= sourceUrl %>" target="_blank" title="<%= sourceUrl %>" class="source-url">
+                                    <span class="source-id"><%= sourceId %></span><span class="source-delimiter">.</span> <span class="source-name"><%= sourceName %></span>
+                                </a>
+                                <a href="#" data-source-id="<%= sourceId %>" class="source-edit pull-right">
+                                    <span>Redigera</span></span>
+                                </a>
+                            </span>
+                        </li>
+                    <% } %>
                 <% } %>
             <% } %>
         </ul>
         <div id="sources-storage" class="hidden">
-            <% if (typeof(post) !== 'undefined' && post.post.sources.name !== null) { %>
-                <% for (var i=0;i<post.post.sources.name.length;i++) {
-                    var sourceId = (i + 1)
-                    var sourceName = post.post.sources.name[i]
-                    var sourceUrl = post.post.sources.url[i] %>
-                    <div>
-                        <input class="<%= sourceId %>" type="text" name="source_name" value="<%= sourceName %>" />
-                        <input class="<%= sourceId %>" type="text" name="source_url" value="<%= sourceUrl %>" />
-                    </div>
+            <% if (typeof(post) !== 'undefined' && typeof(post.post.sources) !== 'undefined') {
+                if (typeof(post.post.sources.name !== 'undefined') && post.post.sources.name !== null) {
+                    for (var i=0;i<post.post.sources.name.length;i++) {
+                        var sourceId = (i + 1)
+                        var sourceName = post.post.sources.name[i]
+                        var sourceUrl = post.post.sources.url[i] %>
+                        <div>
+                            <input class="<%= sourceId %>" type="text" name="source_name" value="<%= sourceName %>" />
+                            <input class="<%= sourceId %>" type="text" name="source_url" value="<%= sourceUrl %>" />
+                        </div>
+                    <% } %>
                 <% } %>
             <% } %>
         </div>
