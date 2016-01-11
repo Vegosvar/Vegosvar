@@ -1,0 +1,53 @@
+<% include includes/header %>
+
+<style>
+.text-danger *,
+.text-success *,
+.text-muted * {
+    color: inherit !important;
+}
+
+.text-danger,
+.text-danger * {
+    text-decoration: line-through;
+}
+</style>
+
+<div class="container">
+    <section id="main">
+        <div class="row">
+            <div class="col-sm-12">
+                <article>
+                    <div id="<%= post._id %>" class="content">
+                        <h1><%= post.title %></h1>
+                        <label class="label-control" for="revision_compare"> Välj revision att jämföra mot
+                            <select id="revision_compare" class="form-control">
+                                <% if(typeof(revisions) !== 'undefined') {
+                                    for(i=0;i<revisions.length;i++) {
+                                        var revision_id = revisions[i].id
+                                        var revision_date = revisions[i].created
+                                        %>
+                                        <option value="<%= revision_id %>" <%= (revision_id == current) ? 'selected="selected"' : '' %>><%= (revision_id == current) ? 'Nuvarande' : revision_date %></option>
+                                    <% }
+                                } %>
+                            </select>
+                        </label>
+                        <div class="revision">
+                            <div class="revision_content"></div>
+                        </div>
+                        <div class="revision_options">
+                            <div class="col-sm-3">
+                                <button id="apply" class="btn btn-block btn-success">Använd</button>
+                            </div>
+                            <div class="col-sm-3 col-sm-push-6">
+                                <button id="delete" class="btn btn-block btn-danger">Ta bort</button>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+</div>
+
+<% include includes/footer %>
