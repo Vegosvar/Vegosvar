@@ -96,6 +96,12 @@
     });
   </script>
 
+  <% if (typeof loadPageResources !== 'undefined') {
+    if( typeof loadPageResources.revisions !== 'undefined' && loadPageResources.revisions === true) { %>
+      <script src="/includes/js/pages/revisions.js"></script>
+   <% }
+  } %>
+
   <% if (typeof loadGeoLocation !== 'undefined' && loadGeoLocation === true) { %>
       <script src="/includes/js/geolocation/geolocation.js"></script>
   <% } %>
