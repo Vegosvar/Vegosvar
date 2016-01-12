@@ -57,7 +57,7 @@ $(function(){
 
             $(msg).removeClass('alert-danger').addClass('alert-success')
 
-            $(msg).html('<span class="glyphicon glyphicon-info-sign"></span>&nbsp;Den aktuella sidans har uppdaterats till vald revision!')
+            $(msg).html('<span class="glyphicon glyphicon-ok"></span>&nbsp;Sidan har uppdaterats till vald version')
 
             //Move the label to the new revision
             $('.revision.active').append( $('.revisions').find('.current') )

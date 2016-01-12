@@ -133,6 +133,23 @@ p {
 	}
 }
 
+.pageflag {
+	position: absolute;
+	top: 0;
+	left: 15px;
+	font-size: 13px;
+	background: @yellow;
+	color: #401E0D;
+	padding: 5px 10px;
+	border-radius: 5px 0 5px 0;
+	@media (max-width: @xs) {
+		width: 100%;
+		left: 0;
+		border-radius: 0;
+		text-align: center;
+	}
+}
+
 
 
 // Common elements
@@ -1952,6 +1969,16 @@ section {
 		border: 2px solid #C8C8C8;
 		border-top: 0;
 		outline: none !important;
+	}
+}
+
+
+
+.revision_options {
+	button {
+		@media (max-width: @xs) {
+			margin-bottom: 15px;
+		}
 	}
 }
 

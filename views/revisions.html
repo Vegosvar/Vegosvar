@@ -17,20 +17,23 @@
     <section id="main">
         <div class="row">
             <div class="col-sm-8">
+                    <div class="pageflag">
+                        <span class="glyphicon glyphicon-eye-open"></span> 
+                        Granskningsläge
+                    </div>
                 <article>
                     <div id="<%= post._id %>" class="content">
-                        <h1>Granska ändringar</h1>
-                        <h2 class="subtitle"><%= post.title %></h2>
-                        <div class="message alert" style="display: none"></div>
+                        <h1><%= post.title %></h1>
                         <div class="revision_content"><%- post.post.content %></div>
                         <hr>
                         <div class="revision_options">
+                            <div class="message alert" style="display: none"></div>
                             <div class="row">
                                 <div class="col-sm-3">
                                     <button id="apply" class="btn btn-block btn-success">Använd</button>
                                 </div>
                                 <div class="col-sm-3 col-sm-push-6">
-                                    <button id="delete" class="btn btn-block btn-danger">Ta bort</button>
+                                    <button id="delete" class="btn btn-block btn-danger">Neka</button>
                                 </div>
                             </div>
                         </div>
