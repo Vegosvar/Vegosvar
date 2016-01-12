@@ -151,7 +151,7 @@ app.get('/', function (req, res) {
 
   var pages = {}
   var options = {
-    limit: 6,
+    limit: 9,
     sort: [ ['rating.likes', 'desc'] ]
   }
 
@@ -563,6 +563,10 @@ app.get('/mina-sidor', function (req, res) {
   pagesdb.find( { "user_info.id": userid }).toArray(function(err, doc) {
     res.render('pages', { user: req.user, pages:doc })
   })
+})
+
+app.get('/admin', function (req, res) {
+  res.render('admin/index', { user: req.user })
 })
 
 app.get('/ny', function (req, res) {
