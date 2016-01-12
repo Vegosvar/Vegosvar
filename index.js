@@ -323,7 +323,10 @@ app.get('/ajax/imageInfo', function (req, res) {
 
 app.get('/ajax/addVote', function (req, res) {
   if(req.query.id != undefined && req.query.content != undefined) {
-    req.session.returnTo = req._parsedOriginalUrl.path
+    previousUrl = req.headers.referer
+    host = req.headers.host
+    previousUrl = previousUrl.substr(previousUrl.indexOf(host) + host.length)
+    req.session.returnTo = previousUrl
     if (req.isAuthenticated()) {
       var database = db.instance()
       var votesdb = database.collection('votes')
@@ -372,7 +375,10 @@ app.get('/ajax/addVote', function (req, res) {
 
 app.get('/ajax/like', function (req, res) {
   if(req.query.id != undefined) {
-    req.session.returnTo = req._parsedOriginalUrl.path
+    previousUrl = req.headers.referer
+    host = req.headers.host
+    previousUrl = previousUrl.substr(previousUrl.indexOf(host) + host.length)
+    req.session.returnTo = previousUrl
     if (req.isAuthenticated()) {
       var database = db.instance()
       var likesdb = database.collection('likes')
@@ -502,7 +508,10 @@ app.get('/:url', function (req, res, next) {
 })
 
 app.use(function ensure_authenticated (req, res, next) {
-  req.session.returnTo = req._parsedOriginalUrl.path
+  previousUrl = req.headers.referer
+  host = req.headers.host
+  previousUrl = previousUrl.substr(previousUrl.indexOf(host) + host.length)
+  req.session.returnTo = previousUrl
   if (req.isAuthenticated()) {
     return next()
   }
