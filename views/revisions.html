@@ -21,9 +21,8 @@
                     <div id="<%= post._id %>" class="content">
                         <h1>Granska ändringar</h1>
                         <h2 class="subtitle"><%= post.title %></h2>
-                        <div class="revision">
-                            <div class="revision_content"></div>
-                        </div>
+                        <div class="message alert" style="display: none"></div>
+                        <div class="revision_content"><%- post.post.content %></div>
                         <hr>
                         <div class="revision_options">
                             <div class="row">
@@ -40,16 +39,31 @@
             </div>
             <div class="col-sm-4">
                 <h2>Välj version</h2>
-                <div class="list-group">
+                <div class="list-group revisions">
                     <% if(typeof(revisions) !== 'undefined') {
                         for(var i = revisions.length - 1;i >= 0; i--) {
                             var revision_id = revisions[i].id
                             var revision_date = revisions[i].created
+                            var status = revisions[i].accepted
+
+                            var itemClasses = {
+                                true: function() {
+                                    return 'list-group-item-success'
+                                },
+                                false: function() {
+                                    return 'list-group-item-danger'
+                                },
+                                null: function() {
+                                    return ''
+                                }
+                            }
+
+                            var itemClass = (status in itemClasses && revision_id !== current) ? itemClasses[status]() : 'active'
                             %>
-                            <a href="#" class="list-group-item <%= (revision_id == current) ? 'active' : '' %>" data-revision="<%= revision_id %>">
+                            <a href="#" class="revision list-group-item <%= itemClass %>" data-item-class="<%= itemClass %>" data-revision="<%= revision_id %>">
                             <%= revision_date %>
                             <% if(revision_id == current) { %>
-                                 <span class="label label-success pull-right">Aktiv</span>
+                                 <span class="current label label-success pull-right">Aktiv</span>
                             <% } %>
                             </a>
                         <% }
