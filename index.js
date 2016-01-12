@@ -645,12 +645,11 @@ app.get('/revisioner/:url', function (req, res, next) {
 
         var revisions_available = []
         for(var revision in revisions) {
-          if(revisions[revision].meta.accepted !== false) { //Only list non-rejected revisions
-            revisions_available.push({
-              id: revision,
-              created: functions.getPrettyDateTime(new Date(revision * 1000))
-            })
-          }
+          revisions_available.push({
+            id: revision,
+            accepted: revisions[revision].meta.accepted,
+            created: functions.getPrettyDateTime(new Date(revision * 1000))
+          })
         }
 
         res.render('revisions', { user: req.user, post: post, revisions: revisions_available, current: current, loadPageResources: { revisions: true } })
@@ -680,7 +679,6 @@ app.get('/ajax/revision/apply/:page_id/:revision_number', function (req, res, ne
     }
 
     var revisions = docs[0].revisions
-    console.log(page_id,revision_number)
     if(revision_number in revisions) {
 
       var data = {
