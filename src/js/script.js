@@ -44,6 +44,12 @@ $(function () {
     }
   })
 
+  // Searchfilter toggle //
+  $('.toggleFilters').on('click', function () {
+      $('.toggleFilters').toggleClass('active')
+      $('.filters').toggleClass('active')
+  })
+
   // Searchform //
 
   $('.searchForm').on('keydown', function () {
