@@ -2017,7 +2017,18 @@ section {
 }
 
 
+.revision_content {
+	.text-danger *,
+	.text-success *,
+	.text-muted * {
+	    color: inherit !important;
+	}
 
+	.text-danger,
+	.text-danger * {
+	    text-decoration: line-through;
+	}
+}
 .revision_options {
 	button {
 		@media (max-width: @xs) {

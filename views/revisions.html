@@ -1,26 +1,13 @@
 <% include includes/header %>
 
-<style>
-.text-danger *,
-.text-success *,
-.text-muted * {
-    color: inherit !important;
-}
-
-.text-danger,
-.text-danger * {
-    text-decoration: line-through;
-}
-</style>
-
 <div class="container">
     <section id="main">
         <div class="row">
             <div class="col-sm-8">
-                    <div class="pageflag">
-                        <span class="glyphicon glyphicon-eye-open"></span> 
-                        Granskningsläge
-                    </div>
+                <div class="pageflag">
+                    <span class="glyphicon glyphicon-eye-open"></span> 
+                    Granskningsläge
+                </div>
                 <article>
                     <div id="<%= post._id %>" class="content">
                         <h1><%= post.title %></h1>
