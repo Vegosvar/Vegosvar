@@ -39,26 +39,27 @@ module.exports = {
     return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
 	},
   returnUrl: function(req) {
+    var url = '/'
     previousUrl = req.headers.referer
     host = req.headers.host
 
     if(typeof(previousUrl) !== 'undefined') {
       if(previousUrl.indexOf(host) >= 0) {
         var page = ( previousUrl.substr(previousUrl.indexOf(host) + host.length) )
-        var url = page
+        url = page
 
         if ( req.session.returnTo !== 'undefined' ) {
-          if( req.session.returnTo === '/' && page === '/' && req.originalUrl.indexOf('.') === -1 ) {
+          if( req.originalUrl.indexOf('.') === -1 ) { //Fix for not redirecting to an image or something
             url = req.originalUrl
           }
         }
-
-        return url
       } else {
-        return req.originalUrl
+        url = req.originalUrl
       }
     } else {
-      return req.originalUrl
+      url = req.originalUrl
     }
+
+    return url
   }
 }
