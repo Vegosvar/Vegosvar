@@ -181,7 +181,6 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRe
 app.get('/logga-in', function (req, res) {
   // TODO make this a middleware or something
   if (req.isAuthenticated()) {
-    // TODO get latest page we were on or something instead
     return req.session.returnTo
   }
 
@@ -189,15 +188,13 @@ app.get('/logga-in', function (req, res) {
 })
 
 app.get('/*', function (req, res, next) {
-  var noRedirect = ['logga-in','logga-ut', 'ajax']
+  var noRedirect = ['logga-in','logga-ut', 'ajax', 'recensera']
   var canRedirectTo = true
   var path = req.originalUrl.split("?")
 
   if(path[0] !== '/' && path[0] !== 'auth') {
     path = path.shift().split('/')[1]
     for (var i = noRedirect.length - 1; i >= 0; i--) {
-      //console.log(req.originalUrl)
-      //console.log(noRedirect[i], req.path, noRedirect[i].indexOf(req.path))
       if(noRedirect[i].indexOf(path) !== -1) {
         canRedirectTo = false
       }
@@ -206,13 +203,12 @@ app.get('/*', function (req, res, next) {
     if( canRedirectTo ) {
       req.session.returnTo = functions.returnUrl(req)
     }
-
-    console.log(canRedirectTo, req.session.returnTo)
+  } else if(path[0] === '/') {
+    req.session.returnTo = '/'
   }
 
   next()
 })
-
 
 app.get('/om', function(req, res) {
   res.render('about', { user: req.user })
@@ -239,11 +235,13 @@ app.get('/press', function (req, res) {
 })
 
 app.get('/recensera', function (req, res) {
-  res.render('vote-login', { user: req.user })
-})
+  if (req.isAuthenticated()) {
+    return req.session.returnTo
+  }
 
-app.get('/gilla', function (req, res) {
-  res.render('like-login', { user: req.user })
+  req.session.returnTo = req.headers.referer //Fix
+
+  res.render('vote-login', { user: req.user })
 })
 
 app.get('/rapportera', function (req, res) {
