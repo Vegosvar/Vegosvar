@@ -180,7 +180,6 @@ app.get('/handle/votes', function (req, res) {
 
 app.get('/logga-in', function (req, res) {
   // TODO make this a middleware or something
-  //req.session.returnTo = functions.returnUrl(req)
   if (req.isAuthenticated()) {
     // TODO get latest page we were on or something instead
     return res.redirect(req.session.returnTo)
@@ -507,11 +506,10 @@ app.get('/:url', function (req, res, next) {
 })
 
 app.use(function ensure_authenticated (req, res, next) {
-  req.session.returnTo = functions.returnUrl(req)
-
   if (req.isAuthenticated()) {
     return next()
   }
+  req.session.returnTo = functions.returnUrl(req)
   res.redirect('/logga-in')
 })
 
