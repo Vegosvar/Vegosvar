@@ -142,6 +142,7 @@ passport.deserializeUser(function (id, done) {
 // TODO cache views etc, NODE_ENV === production?
 
 // TODO make one default template instead of the same includes in every?
+
 app.get('/', function (req, res) {
   var dbinstance = db.instance()
   var pagesdb = dbinstance.collection('pages')
@@ -169,24 +170,49 @@ app.get('/', function (req, res) {
   })
 })
 
-app.get('/handle/votes', function (req, res) {
-  var dbinstance = db.instance()
-  var votesdb = dbinstance.collection('votes')
+app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res) {})
 
-  votesdb.find({}).toArray(function(err, doc) {
-    res.json(doc)
-  })
+// TODO manually handle failure?
+// TODO redirect to /konto?
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), function (req, res) {
+  res.redirect(req.session.returnTo);
 })
 
 app.get('/logga-in', function (req, res) {
   // TODO make this a middleware or something
   if (req.isAuthenticated()) {
     // TODO get latest page we were on or something instead
-    return res.redirect(req.session.returnTo)
+    return req.session.returnTo
   }
 
   res.render('login', { })
 })
+
+app.get('/*', function (req, res, next) {
+  var noRedirect = ['logga-in','logga-ut', 'ajax']
+  var canRedirectTo = true
+  var path = req.originalUrl.split("?")
+
+  if(path[0] !== '/' && path[0] !== 'auth') {
+    path = path.shift().split('/')[1]
+    for (var i = noRedirect.length - 1; i >= 0; i--) {
+      //console.log(req.originalUrl)
+      //console.log(noRedirect[i], req.path, noRedirect[i].indexOf(req.path))
+      if(noRedirect[i].indexOf(path) !== -1) {
+        canRedirectTo = false
+      }
+    }
+
+    if( canRedirectTo ) {
+      req.session.returnTo = functions.returnUrl(req)
+    }
+
+    console.log(canRedirectTo, req.session.returnTo)
+  }
+
+  next()
+})
+
 
 app.get('/om', function(req, res) {
   res.render('about', { user: req.user })
@@ -224,18 +250,18 @@ app.get('/rapportera', function (req, res) {
   res.render('report', { user: req.user })
 })
 
-
-app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res) {})
-
-// TODO manually handle failure?
-// TODO redirect to /konto?
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), function (req, res) {
-  res.redirect(req.session.returnTo);
-})
-
 app.get('/logga-ut', function (req, res) {
   req.logout()
   res.redirect('/')
+})
+
+app.get('/handle/votes', function (req, res) {
+  var dbinstance = db.instance()
+  var votesdb = dbinstance.collection('votes')
+
+  votesdb.find({}).toArray(function(err, doc) {
+    res.json(doc)
+  })
 })
 
 app.get('/ajax/search', function (req, res) {
@@ -311,6 +337,7 @@ app.get('/ajax/search', function (req, res) {
   })
 })
 
+
 app.get('/ajax/imageInfo', function (req, res) {
   if(req.query.id != undefined) {
     var dbinstance = db.instance()
@@ -323,8 +350,6 @@ app.get('/ajax/imageInfo', function (req, res) {
 
 app.get('/ajax/addVote', function (req, res) {
   if(req.query.id != undefined && req.query.content != undefined) {
-
-  req.session.returnTo = functions.returnUrl(req)
 
    if (req.isAuthenticated()) {
       var database = db.instance()
@@ -374,8 +399,6 @@ app.get('/ajax/addVote', function (req, res) {
 
 app.get('/ajax/like', function (req, res) {
   if(req.query.id != undefined) {
-
-    req.session.returnTo = functions.returnUrl(req)
 
     if (req.isAuthenticated()) {
       var database = db.instance()
@@ -509,7 +532,7 @@ app.use(function ensure_authenticated (req, res, next) {
   if (req.isAuthenticated()) {
     return next()
   }
-  req.session.returnTo = functions.returnUrl(req)
+
   res.redirect('/logga-in')
 })
 
