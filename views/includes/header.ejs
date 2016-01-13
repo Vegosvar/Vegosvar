@@ -180,53 +180,33 @@
         <li class="dropdown hidden-sm">
             <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             <span class="glyphicon glyphicon-map-marker"></span>
-            Restauranger
+            Välj stad
           </a>
           <ul class="dropdown-menu">
             <% if(typeof(cities) !== 'undefined') { %>
               <% for(i=0;i<cities.length;i++) { %>
-                <li><a href="/?s=Restauranger+i+<%= cities[i].name %>"><%= cities[i].name %></a></li>
+                <li><a href="/?s=<%= cities[i].name %>"><%= cities[i].name %></a></li>
               <% } %>
             <% } else { %>
-            <li><a href="/?s=Restauranger+Stockholm">Stockholm</a></li>
-            <li><a href="/?s=Restauranger+Göteborg">Göteborg</a></li>
-            <li><a href="/?s=Restauranger+Malmö">Malmö</a></li>
-            <li><a href="/?s=Restauranger+Uppsala">Uppsala</a></li>
-            <li><a href="/?s=Restauranger+Västerås">Västerås</a></li>
-            <li><a href="/?s=Restauranger+Örebro">Örebro</a></li>
-            <li><a href="/?s=Restauranger+Linköping">Linköping</a></li>
-            <li><a href="/?s=Restauranger+Helsingborg">Helsingborg</a></li>
-            <li><a href="/?s=Restauranger+Jönköping">Jönköping</a></li>
-            <li><a href="/?s=Restauranger+Norrköping">Norrköping</a></li>
-            <li><a href="/?s=Restauranger+Lund">Lund</a></li>
-            <li><a href="/?s=Restauranger">Hela Sverige</a></li>
-            <% } %>
-          </ul>
-        </li>
-
-        <li class="dropdown hidden-sm">
-            <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-            <span class="glyphicon glyphicon-tag"></span>
-            Butiker
-          </a>
-          <ul class="dropdown-menu">
-            <% if(typeof(cities) !== 'undefined') { %>
-              <% for(i=0;i<cities.length;i++) { %>
-                <li><a href="/?s=butiker+i+<%= cities[i].name %>"><%= cities[i].name %></a></li>
-              <% } %>
-            <% } else { %>
-            <li><a href="/?s=Butiker+i+Stockholm">Stockholm</a></li>
-            <li><a href="/?s=Butiker+i+Göteborg">Göteborg</a></li>
-            <li><a href="/?s=Butiker+i+Malmö">Malmö</a></li>
-            <li><a href="/?s=Butiker+i+Uppsala">Uppsala</a></li>
-            <li><a href="/?s=Butiker+i+Västerås">Västerås</a></li>
-            <li><a href="/?s=Butiker+i+Örebro">Örebro</a></li>
-            <li><a href="/?s=Butiker+i+Linköping">Linköping</a></li>
-            <li><a href="/?s=Butiker+i+Helsingborg">Helsingborg</a></li>
-            <li><a href="/?s=Butiker+i+Jönköping">Jönköping</a></li>
-            <li><a href="/?s=Butiker+i+Norrköping">Norrköping</a></li>
-            <li><a href="/?s=Butiker+i+Lund">Lund</a></li>
-            <li><a href="/?s=Butiker">Hela Sverige</a></li>
+            <li><a href="/?s=Stockholm">Stockholm</a></li>
+            <li><a href="/?s=Göteborg">Göteborg</a></li>
+            <li><a href="/?s=Malmö">Malmö</a></li>
+            <li><a href="/?s=Uppsala">Uppsala</a></li>
+            <li><a href="/?s=Västerås">Västerås</a></li>
+            <li><a href="/?s=Örebro">Örebro</a></li>
+            <li><a href="/?s=Linköping">Linköping</a></li>
+            <li><a href="/?s=Helsingborg">Helsingborg</a></li>
+            <li><a href="/?s=Jönköping">Jönköping</a></li>
+            <li><a href="/?s=Norrköping">Norrköping</a></li>
+            <li><a href="/?s=Lund">Lund</a></li>
+            <li><a href="/?s=Umeå">Umeå</a></li>
+            <li><a href="/?s=Gävle">Gävle</a></li>
+            <li><a href="/?s=Eskilstuna">Eskilstuna</a></li>
+            <li><a href="/?s=Södertälje">Södertälje</a></li>
+            <li><a href="/?s=Karlstad">Karlstad</a></li>
+            <li><a href="/?s=Täby">Täby</a></li>
+            <li><a href="/?s=Växjö">Växjö</a></li>
+            <li><a href="/?s=Halmstad">Halmstad</a></li>
             <% } %>
           </ul>
         </li>
@@ -296,26 +276,35 @@
       <li><a href="/"><span class="glyphicon glyphicon-search"></span>Sök</a></li>
 
       <li>
-        <a class="toggle-dropdown"><span class="glyphicon glyphicon-map-marker"></span>Restauranger</a>
+        <a class="toggle-dropdown"><span class="glyphicon glyphicon-map-marker"></span>Välj stad</a>
         <ul class="dropdown">
-          <li class="title">Restauranger</li>
+          <li class="title">Välj stad</li>
           <% if(typeof(cities) !== 'undefined') { %>
             <% for(i=0;i<cities.length;i++) { %>
               <li><a href="/?s=Restauranger+i+<%= cities[i].name %>"><%= cities[i].name %></a></li>
             <% } %>
           <% } else { %>
-          <li><a href="/?s=Restauranger+i+Stockholm">Stockholm</a></li>
-          <li><a href="/?s=Restauranger+i+Göteborg">Göteborg</a></li>
-          <li><a href="/?s=Restauranger+i+Malmö">Malmö</a></li>
-          <li><a href="/?s=Restauranger+i+Uppsala">Uppsala</a></li>
-          <li><a href="/?s=Restauranger+i+Västerås">Västerås</a></li>
-          <li><a href="/?s=Restauranger+i+Örebro">Örebro</a></li>
-          <li><a href="/?s=Restauranger+i+Linköping">Linköping</a></li>
-          <li><a href="/?s=Restauranger+i+Helsingborg">Helsingborg</a></li>
-          <li><a href="/?s=Restauranger+i+Jönköping">Jönköping</a></li>
-          <li><a href="/?s=Restauranger+i+Norrköping">Norrköping</a></li>
-          <li><a href="/?s=Restauranger+i+Lund">Lund</a></li>
+          <li><a href="/?s=Stockholm">Stockholm</a></li>
+          <li><a href="/?s=Göteborg">Göteborg</a></li>
+          <li><a href="/?s=Malmö">Malmö</a></li>
+          <li><a href="/?s=Uppsala">Uppsala</a></li>
+          <li><a href="/?s=Västerås">Västerås</a></li>
+          <li><a href="/?s=Örebro">Örebro</a></li>
+          <li><a href="/?s=Linköping">Linköping</a></li>
+          <li><a href="/?s=Helsingborg">Helsingborg</a></li>
+          <li><a href="/?s=Jönköping">Jönköping</a></li>
+          <li><a href="/?s=Norrköping">Norrköping</a></li>
+          <li><a href="/?s=Lund">Lund</a></li>
+          <li><a href="/?s=Umeå">Umeå</a></li>
+          <li><a href="/?s=Gävle">Gävle</a></li>
+          <li><a href="/?s=Eskilstuna">Eskilstuna</a></li>
+          <li><a href="/?s=Södertälje">Södertälje</a></li>
+          <li><a href="/?s=Karlstad">Karlstad</a></li>
+          <li><a href="/?s=Täby">Täby</a></li>
+          <li><a href="/?s=Växjö">Växjö</a></li>
+          <li><a href="/?s=Halmstad">Halmstad</a></li>
           <% } %>
+          <li class="desc"><div>Du kan även använda sökfunktionen för att söka på specifika städer eller områden</div></li>
         </ul>
       </li>
 
@@ -343,7 +332,7 @@
           <li><a href="/?s=Växtgrädde">Växtgrädde</a></li>
           <li><a href="/?s=Öl">Öl</a></li>
           <% } %>
-          <li class="desc"><div>Du kan även använda sökfunktionen för att söka specifika produkter</div></li>
+          <li class="desc"><div>Du kan även använda sökfunktionen för att söka specifika produkter eller märken</div></li>
         </ul>
       </li>
 
