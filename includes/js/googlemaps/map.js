@@ -120,8 +120,6 @@ $(document).bind('mapready', function(e) {
             break
         }
 
-        console.log(entry.post.cover)
-
         var entryContent = '<div class="infowindow-container">'
         entryContent += '<div class="infowindow-header">'
         entryContent += '<div class="infowindow-image">'
