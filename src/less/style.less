@@ -545,7 +545,6 @@ input[type=checkbox], input[type=radio] {
 	background: #fff;
 	margin-bottom: 30px;
 	border-radius: 3px;
-	overflow: hidden;
 	&.transparent {
 		background: none;
 		margin-bottom: 15px;
@@ -571,14 +570,19 @@ input[type=checkbox], input[type=radio] {
 		font-weight: 400;
 		color: #999;
 	}
-	.card-menu {
+	.page-menu {
 		margin: 0 -30px 0 -30px;
 		padding: 0;
+		&:hover {
+			img {
+				display: block !important;
+			}
+		}
 		li {
 			list-style: none;
 			position: relative;
 			display: block;
-			padding: 5px 30px;
+			padding: 0 30px;
 			border-top: 1px solid #eee;
 			&:hover {
 				background: #F8F8F7;
@@ -588,8 +592,36 @@ input[type=checkbox], input[type=radio] {
 			}
 			.item {
 				color: #444;
+				display: inline-block;
+				padding: 5px 0;
+				img {
+					display: none;
+					z-index: 1;
+					position: absolute;
+					opacity: 0;
+					top: -25px;
+					left: -155px;
+					width: 150px;
+					height: auto;
+					background: #fff;
+					box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2);
+					border-radius: 5px;
+					transform: scale(0.97);
+					transition: opacity 0.15s, 
+								left 0.25s, 
+								box-shadow 0.28s, 
+								transform 0.25s;
+				}
 				&:hover {
 					color: #111;
+					img {
+						opacity: 1;
+						left: -160px;
+						width: 150px;
+						transform: scale(1);
+						box-shadow: 0 10px 10px 0 rgba(0, 0, 0, 0.1);
+						height: auto;
+					}
 				}
 			}
 			.subitem {
