@@ -1632,7 +1632,7 @@ section {
 		width: auto;
 	}
 	#map {
-		height: 450px;
+		height: inherit;
 	}
 	.filter {
 		position: absolute;
@@ -1684,6 +1684,28 @@ section {
 				background: #9260A3;
 				color: #fff;
 			}
+		}
+	}
+	.infowindow-container {
+		.infowindow-header {
+			overflow: hidden;
+			margin-bottom: 5px;
+			.infowindow-image {
+				margin: 5px 10px 5px 0;
+				float: left;
+				img {
+					width: 70px;
+					border-radius: 3px;
+				}
+			}
+			.infowindow-title a {
+				font-size: 14px;
+				font-weight: 400;
+			}
+		}
+		.infowindow-content {
+			font-size: 12px;
+			line-height: 1.4;
 		}
 	}
 }
@@ -2020,7 +2042,18 @@ section {
 }
 
 
+.revision_content {
+	.text-danger *,
+	.text-success *,
+	.text-muted * {
+	    color: inherit !important;
+	}
 
+	.text-danger,
+	.text-danger * {
+	    text-decoration: line-through;
+	}
+}
 .revision_options {
 	button {
 		@media (max-width: @xs) {

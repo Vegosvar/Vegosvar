@@ -182,7 +182,7 @@ app.get('/logga-in', function (req, res) {
   // TODO make this a middleware or something
   if (req.isAuthenticated()) {
     // TODO get latest page we were on or something instead
-    return res.redirect('/')
+    return res.redirect(req.session.returnTo)
   }
 
   res.render('login', { })
@@ -230,7 +230,7 @@ app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res) 
 // TODO manually handle failure?
 // TODO redirect to /konto?
 app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), function (req, res) {
-  res.redirect(req.session.returnTo || '/');
+  res.redirect(req.session.returnTo);
 })
 
 app.get('/logga-ut', function (req, res) {
@@ -323,11 +323,10 @@ app.get('/ajax/imageInfo', function (req, res) {
 
 app.get('/ajax/addVote', function (req, res) {
   if(req.query.id != undefined && req.query.content != undefined) {
-    previousUrl = req.headers.referer
-    host = req.headers.host
-    previousUrl = previousUrl.substr(previousUrl.indexOf(host) + host.length)
-    req.session.returnTo = previousUrl
-    if (req.isAuthenticated()) {
+
+  req.session.returnTo = functions.returnUrl(req)
+
+   if (req.isAuthenticated()) {
       var database = db.instance()
       var votesdb = database.collection('votes')
       var pagesdb = database.collection('pages')
@@ -375,10 +374,9 @@ app.get('/ajax/addVote', function (req, res) {
 
 app.get('/ajax/like', function (req, res) {
   if(req.query.id != undefined) {
-    previousUrl = req.headers.referer
-    host = req.headers.host
-    previousUrl = previousUrl.substr(previousUrl.indexOf(host) + host.length)
-    req.session.returnTo = previousUrl
+
+    req.session.returnTo = functions.returnUrl(req)
+
     if (req.isAuthenticated()) {
       var database = db.instance()
       var likesdb = database.collection('likes')
@@ -508,13 +506,10 @@ app.get('/:url', function (req, res, next) {
 })
 
 app.use(function ensure_authenticated (req, res, next) {
-  previousUrl = req.headers.referer
-  host = req.headers.host
-  previousUrl = previousUrl.substr(previousUrl.indexOf(host) + host.length)
-  req.session.returnTo = previousUrl
   if (req.isAuthenticated()) {
     return next()
   }
+  req.session.returnTo = functions.returnUrl(req)
   res.redirect('/logga-in')
 })
 

@@ -122,11 +122,14 @@ $(document).bind('mapready', function(e) {
 
         var entryContent = '<div class="infowindow-container">'
         entryContent += '<div class="infowindow-header">'
+        entryContent += '<div class="infowindow-image">'
+        entryContent += '<img src="/uploads/' + entry.post.cover.filename + '.jpg">'
+        entryContent += '</div>'
         entryContent +='<div class="infowindow-title"><a href="' + entry.url + '">' + entry.title + '</a></div>'
         entryContent += '<div class="infowindow-stars-container"><div class="star">5 <span class="glyphicon glyphicon-star"></span></div></div>' //TODO add actual rating
         entryContent += '</div>' // /.infowindow-header
         entryContent += '<div class="infowindow-content">'
-        entryContent += (entry.post.content.length > 115) ? entry.post.content.substr(0, 115) + '...' : entry.post.content
+        entryContent += (entry.post.content.length > 90) ? entry.post.content.substr(0, 90) + '...' : entry.post.content
         entryContent += '</div>' // /.infowindow-content
         entryContent += '</div>' // /.infowindow-container
 
