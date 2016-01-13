@@ -62,105 +62,19 @@
 					<h2>Goda nyheter</h2>
 					<h3 class="subtitle">Nya restauranger & butiker</h3>
 					<ul class="card-menu">
-						<li>
-							<a href="" class="item">
-								GG Bar
-							</a>
-							<a href="/?s=Stockholm" 
-							   class="subitem">
-								Göteborg
-							</a>
-						</li>
-						<li>
-							<a href="" class="item">
-								Bagelstreet Hornstull
-							</a> 
-							<a href="/?s=Stockholm" 
-							   class="subitem">
-								Stockholm
-							</a>
-						</li>
-						<li>
-							<a href="" class="item">
-								Kellys 
-							</a>
-							<a href="/?s=Stockholm" 
-							   class="subitem">
-								Göteborg
-							</a>
-						</li>
-						<li>
-							<a href="" class="item">
-								The Green Room 
-							</a>
-							<a href="/?s=Stockholm" 
-							   class="subitem">
-								Göteborg
-							</a>
-						</li>
-						<li>
-							<a href="" class="item">
-								Bagelstreet Hornstull
-							</a> 
-							<a href="/?s=Stockholm" 
-							   class="subitem">
-								Stockholm
-							</a>
-						</li>
-						<li>
-							<a href="" class="item">
-								Kellys 
-							</a>
-							<a href="/?s=Stockholm" 
-							   class="subitem">
-								Göteborg
-							</a>
-						</li>
-						<li>
-							<a href="" class="item">
-								Bagelstreet 
-							</a>
-							<a href="/?s=Stockholm" 
-							   class="subitem">
-								Stockholm
-							</a>
-						</li>
-						<li>
-							<a href="" class="item">
-								Bagelstreet Hornstull
-							</a> 
-							<a href="/?s=Stockholm" 
-							   class="subitem">
-								Stockholm
-							</a>
-						</li>
-						<li>
-							<a href="" class="item">
-								Kellys 
-							</a>
-							<a href="/?s=Stockholm" 
-							   class="subitem">
-								Stockholm
-							</a>
-						</li>
-						<li>
-							<a href="" class="item">
-								Bagelstreet Hornstull
-							</a> 
-							<a href="/?s=Stockholm" 
-							   class="subitem">
-								Stockholm
-							</a>
-						</li>
-						<li>
-							<a href="" class="item">
-								Bagelstreet Hornstull
-							</a> 
-							<a href="/?s=Stockholm" 
-							   class="subitem">
-								Stockholm
-							</a>
-						</li>
+					<% if(typeof(establishments) !== 'undefined') {
+						for (var i = establishments.length - 1; i >= 0; i--) { %>
+							<li>
+								<a href="<%= establishments[i].url %>" class="item">
+									<%= establishments[i].title %>
+								</a>
+								<a href="/?s=<%= establishments[i].post.city %>" 
+								   class="subitem">
+									<%= establishments[i].post.city %>
+								</a>
+							</li>
+						<% } %>
+					<% } %>
 					</ul>
 				</div>
 			</div>

@@ -163,8 +163,15 @@ app.get('/', function (req, res) {
     categoriesdb.find({}).toArray(function(err, categories) {
       if(err) throw err
       //Get pages
-      pagesdb.find({}, options).toArray(function(err, doc) {
-        res.render('index', { user: req.user, pages: doc, cities: cities, categories: categories, loadGeoLocation: true, loadMapResources: { map: true, mapCluster: true }, startpage: false, searchString: req.query.s, striptags: striptags })
+      pagesdb.find({}, options).toArray(function(err, pages) {
+        pagesdb.find({
+          $or:[
+            {type:'3'},
+            {type:'5'}
+            ]
+          }).sort({_id:-1}).limit(10).toArray(function(err, establishments) {
+            res.render('index', { user: req.user, pages: pages, cities: cities, categories: categories, establishments: establishments, loadGeoLocation: true, loadMapResources: { map: true, mapCluster: true }, startpage: false, searchString: req.query.s, striptags: striptags })
+        })
       })
     })
   })
