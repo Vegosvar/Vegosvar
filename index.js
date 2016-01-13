@@ -325,8 +325,18 @@ app.get('/ajax/addVote', function (req, res) {
   if(req.query.id != undefined && req.query.content != undefined) {
     previousUrl = req.headers.referer
     host = req.headers.host
-    previousUrl = previousUrl.substr(previousUrl.indexOf(host) + host.length)
-    req.session.returnTo = previousUrl
+
+    if(typeof(previousUrl) !== 'undefined') {
+      if(previousUrl.indexOf(host) >= 0) {
+        req.session.returnTo = previousUrl.substr(previousUrl.indexOf(host) + host.length)
+      } else {
+        req.session.returnTo = '/'
+      }
+    } else {
+      req.session.returnTo = req.originalUrl
+    }
+
+    console.log(req.session.returnTo)
     if (req.isAuthenticated()) {
       var database = db.instance()
       var votesdb = database.collection('votes')
@@ -377,8 +387,19 @@ app.get('/ajax/like', function (req, res) {
   if(req.query.id != undefined) {
     previousUrl = req.headers.referer
     host = req.headers.host
-    previousUrl = previousUrl.substr(previousUrl.indexOf(host) + host.length)
-    req.session.returnTo = previousUrl
+
+    if(typeof(previousUrl) !== 'undefined') {
+      if(previousUrl.indexOf(host) >= 0) {
+        req.session.returnTo = previousUrl.substr(previousUrl.indexOf(host) + host.length)
+      } else {
+        req.session.returnTo = '/'
+      }
+    } else {
+      req.session.returnTo = req.originalUrl
+    }
+
+    console.log(req.session.returnTo)
+
     if (req.isAuthenticated()) {
       var database = db.instance()
       var likesdb = database.collection('likes')
@@ -510,8 +531,19 @@ app.get('/:url', function (req, res, next) {
 app.use(function ensure_authenticated (req, res, next) {
   previousUrl = req.headers.referer
   host = req.headers.host
-  previousUrl = previousUrl.substr(previousUrl.indexOf(host) + host.length)
-  req.session.returnTo = previousUrl
+
+  if(typeof(previousUrl) !== 'undefined') {
+    if(previousUrl.indexOf(host) >= 0) {
+      req.session.returnTo = previousUrl.substr(previousUrl.indexOf(host) + host.length)
+    } else {
+      req.session.returnTo = '/'
+    }
+  } else {
+    req.session.returnTo = req.originalUrl
+  }
+
+  console.log(req.session.returnTo)
+
   if (req.isAuthenticated()) {
     return next()
   }
