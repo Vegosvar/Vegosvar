@@ -1,0 +1,18 @@
+<% include ../includes/header %>
+
+    <div class="container">
+        <section id="main">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <article>
+                    <% console.log(current_user) %>
+                        <h1 class="no-margin-top"><%= current_user.name.display_name %></h1>
+                    </article>
+                </div>
+            </div>
+
+        </section>
+    </div>
+
+<% include ../includes/footer %>
