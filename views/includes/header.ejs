@@ -361,9 +361,7 @@
             </li>
             <li><a href="/ny">Skapa sida</a></li>
             <li><a href="/mina-sidor">Mina sidor</a></li>
-            <% if(typeof user.info.permission !== 'undefined' && user.info.permission == 'admin') { %>
-              <li><a href="/admin">Administration</a></li>
-            <% } %>
+            <li><a href="/admin">[<%= user.info.permission %>]</a></li>
             <li><a href="/installningar">Inställningar</a></li>
             <li><a href="/logga-ut">Logga ut</a></li>
           </ul>
