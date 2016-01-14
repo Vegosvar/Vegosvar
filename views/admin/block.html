@@ -1,0 +1,31 @@
+<% include ../includes/header %>
+
+    <div class="container">
+        <section id="main">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <article>
+                        <h1 class="no-margin-top">Blockera användare</h1>
+                        <div class="list-group">
+
+                            <% if(typeof(users) !== 'undefined') {
+                                for(var i = users.length -1; i >= 0; i--) { %>
+                                <% console.log(users[i].name.display_name) %>
+                                    <div class="list-group-item">
+                                        <div class="user_name">
+                                            <a href="/admin/profil/<%= users[i]._id %>"><%= users[i].name.display_name %></a>
+                                            <img src="<%= users[i].photo %>" style="width:80px">
+                                        </div>
+                                    </div>
+                                <% } %>
+                            <% } %>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+        </section>
+    </div>
+
+<% include ../includes/footer %>

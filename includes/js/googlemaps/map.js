@@ -122,11 +122,14 @@ $(document).bind('mapready', function(e) {
 
         var entryContent = '<div class="infowindow-container">'
         entryContent += '<div class="infowindow-header">'
+        entryContent += '<div class="infowindow-image">'
+        entryContent += '<img src="/uploads/' + entry.post.cover.filename + '.jpg">'
+        entryContent += '</div>'
         entryContent +='<div class="infowindow-title"><a href="' + entry.url + '">' + entry.title + '</a></div>'
         entryContent += '<div class="infowindow-stars-container"><div class="star">5 <span class="glyphicon glyphicon-star"></span></div></div>' //TODO add actual rating
         entryContent += '</div>' // /.infowindow-header
         entryContent += '<div class="infowindow-content">'
-        entryContent += (entry.post.content.length > 115) ? entry.post.content.substr(0, 115) + '...' : entry.post.content
+        entryContent += (entry.post.content.length > 90) ? entry.post.content.substr(0, 90) + '...' : entry.post.content
         entryContent += '</div>' // /.infowindow-content
         entryContent += '</div>' // /.infowindow-container
 
@@ -166,8 +169,8 @@ $(document).bind('mapready', function(e) {
           icon: '/assets/images/pin-my-position.png'
         })
         mapInstance.setCenter({
-          lat: result.position.latitude,
-          lng: result.position.longitude
+          lat: parseFloat(result.position.latitude),
+          lng: parseFloat(result.position.longitude)
         })
         mapInstance.setZoom(11);
       } else {
@@ -235,11 +238,13 @@ $(document).bind('mapready', function(e) {
       if(options.data.filterName === 'single') {
         if(data.length > 0 && data[0].post.hasOwnProperty('coordinates')) {
           mapInstance.setCenter({
-            lat: data[0].post.coordinates.latitude,
-            lng: data[0].post.coordinates.longitude
+            lat: parseFloat(data[0].post.coordinates.latitude),
+            lng: parseFloat(data[0].post.coordinates.longitude)
           });
 
           mapInstance.setZoom(11);
+        } else {
+          return;
         }
       }
     }

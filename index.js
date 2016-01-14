@@ -142,6 +142,7 @@ passport.deserializeUser(function (id, done) {
 // TODO cache views etc, NODE_ENV === production?
 
 // TODO make one default template instead of the same includes in every?
+
 app.get('/', function (req, res) {
   var dbinstance = db.instance()
   var pagesdb = dbinstance.collection('pages')
@@ -162,30 +163,58 @@ app.get('/', function (req, res) {
     categoriesdb.find({}).toArray(function(err, categories) {
       if(err) throw err
       //Get pages
-      pagesdb.find({}, options).toArray(function(err, doc) {
-        res.render('index', { user: req.user, pages: doc, cities: cities, categories: categories, loadGeoLocation: true, loadMapResources: { map: true, mapCluster: true }, startpage: false, searchString: req.query.s, striptags: striptags })
+      pagesdb.find({}, options).toArray(function(err, pages) {
+        pagesdb.find({
+          $or:[
+            {type:'3'},
+            {type:'5'}
+            ]
+          }).sort({_id:-1}).limit(10).toArray(function(err, establishments) {
+            res.render('index', { user: req.user, pages: pages, cities: cities, categories: categories, establishments: establishments, loadGeoLocation: true, loadMapResources: { map: true, mapCluster: true }, startpage: false, searchString: req.query.s, striptags: striptags })
+        })
       })
     })
   })
 })
 
-app.get('/handle/votes', function (req, res) {
-  var dbinstance = db.instance()
-  var votesdb = dbinstance.collection('votes')
+app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res) {})
 
-  votesdb.find({}).toArray(function(err, doc) {
-    res.json(doc)
-  })
+// TODO manually handle failure?
+// TODO redirect to /konto?
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), function (req, res) {
+  res.redirect(req.session.returnTo);
 })
 
 app.get('/logga-in', function (req, res) {
   // TODO make this a middleware or something
   if (req.isAuthenticated()) {
-    // TODO get latest page we were on or something instead
-    return res.redirect('/')
+    return req.session.returnTo
   }
 
   res.render('login', { })
+})
+
+app.get('/*', function (req, res, next) {
+  var noRedirect = ['logga-in','logga-ut', 'ajax', 'recensera']
+  var canRedirectTo = true
+  var path = req.originalUrl.split("?")
+
+  if(path[0] !== '/' && path[0] !== 'auth') {
+    path = path.shift().split('/')[1]
+    for (var i = noRedirect.length - 1; i >= 0; i--) {
+      if(noRedirect[i].indexOf(path) !== -1) {
+        canRedirectTo = false
+      }
+    }
+
+    if( canRedirectTo ) {
+      req.session.returnTo = functions.returnUrl(req)
+    }
+  } else if(path[0] === '/') {
+    req.session.returnTo = '/'
+  }
+
+  next()
 })
 
 app.get('/om', function(req, res) {
@@ -213,29 +242,31 @@ app.get('/press', function (req, res) {
 })
 
 app.get('/recensera', function (req, res) {
-  res.render('vote-login', { user: req.user })
-})
+  if (req.isAuthenticated()) {
+    return req.session.returnTo
+  }
 
-app.get('/gilla', function (req, res) {
-  res.render('like-login', { user: req.user })
+  req.session.returnTo = req.headers.referer //Fix
+
+  res.render('vote-login', { user: req.user })
 })
 
 app.get('/rapportera', function (req, res) {
   res.render('report', { user: req.user })
 })
 
-
-app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res) {})
-
-// TODO manually handle failure?
-// TODO redirect to /konto?
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), function (req, res) {
-  res.redirect(req.session.returnTo || '/');
-})
-
 app.get('/logga-ut', function (req, res) {
   req.logout()
   res.redirect('/')
+})
+
+app.get('/handle/votes', function (req, res) {
+  var dbinstance = db.instance()
+  var votesdb = dbinstance.collection('votes')
+
+  votesdb.find({}).toArray(function(err, doc) {
+    res.json(doc)
+  })
 })
 
 app.get('/ajax/search', function (req, res) {
@@ -311,6 +342,7 @@ app.get('/ajax/search', function (req, res) {
   })
 })
 
+
 app.get('/ajax/imageInfo', function (req, res) {
   if(req.query.id != undefined) {
     var dbinstance = db.instance()
@@ -323,8 +355,8 @@ app.get('/ajax/imageInfo', function (req, res) {
 
 app.get('/ajax/addVote', function (req, res) {
   if(req.query.id != undefined && req.query.content != undefined) {
-    req.session.returnTo = req._parsedOriginalUrl.path
-    if (req.isAuthenticated()) {
+
+   if (req.isAuthenticated()) {
       var database = db.instance()
       var votesdb = database.collection('votes')
       var pagesdb = database.collection('pages')
@@ -372,7 +404,7 @@ app.get('/ajax/addVote', function (req, res) {
 
 app.get('/ajax/like', function (req, res) {
   if(req.query.id != undefined) {
-    req.session.returnTo = req._parsedOriginalUrl.path
+
     if (req.isAuthenticated()) {
       var database = db.instance()
       var likesdb = database.collection('likes')
@@ -502,10 +534,10 @@ app.get('/:url', function (req, res, next) {
 })
 
 app.use(function ensure_authenticated (req, res, next) {
-  req.session.returnTo = req._parsedOriginalUrl.path
   if (req.isAuthenticated()) {
     return next()
   }
+
   res.redirect('/logga-in')
 })
 
@@ -569,6 +601,16 @@ app.get('/admin', function (req, res) {
   res.render('admin/index', { user: req.user })
 })
 
+app.get('/admin/blockera', function (req, res) {
+  var dbinstance = db.instance()
+  var usersdb = dbinstance.collection('users')
+
+  usersdb.find({}).toArray(function(err, users) {
+    res.render('admin/block', { user: req.user, users: users })
+  })
+
+})
+
 app.get('/ny', function (req, res) {
   res.render('new', { user: req.user })
 })
@@ -627,12 +669,11 @@ app.get('/redigera/:url', function (req, res, next) {
   })
 })
 
-app.get('/historik/:url/:revision', function (req, res, next) {
+app.get('/revisioner/:url', function (req, res, next) {
   var dbinstance = db.instance()
   var pagesdb = dbinstance.collection('pages')
   var revisionsdb = dbinstance.collection('revisions')
 
-  var revision = req.params.revision
   var url = req.params.url
 
   pagesdb.find({url:url}).toArray(function(err, doc) {
@@ -640,32 +681,179 @@ app.get('/historik/:url/:revision', function (req, res, next) {
 
     revisionsdb.find({ post_id : new ObjectID(post._id) }).toArray(function(err, docs) {
       if(err) throw err
+      if(docs.length > 0) {
+        var revisions = docs[0].revisions
+        var current = docs[0].revision
 
-      var revisions = docs[0].revisions
-      var jsdiff = require('diff');
+        var revisions_available = []
+        for(var revision in revisions) {
+          revisions_available.push({
+            id: revision,
+            accepted: revisions[revision].meta.accepted,
+            created: functions.getPrettyDateTime(new Date(revision * 1000))
+          })
+        }
 
-      var diffs = []
-      for(var key in revisions) {
-        var revision = revisions[key]
-        var diff = jsdiff.diffLines(post.post.content, revision.content)
-
-        var diffStr = ''
-
-        diff.forEach(function(part){
-          // green for additions, red for deletions
-          // grey for common parts
-          var color = part.added ? 'success' : part.removed ? 'danger' : 'muted'
-
-          diffStr += '<span class="text-' + color + '">' + part.value + '</span>'
-        })
-
-        diffs.push(diffStr)
+        res.render('revisions', { user: req.user, post: post, revisions: revisions_available, current: current, loadPageResources: { revisions: true } })
+      } else {
+        console.log(post.title + ' saknar document i revisions collection')
+        return next()
       }
-
-      res.render('history', { user: req.user, post: post, revisions: diffs })
     })
   })
+})
 
+app.get('/ajax/revision/apply/:page_id/:revision_number', function (req, res, next) {
+  var dbinstance = db.instance()
+  var pagesdb = dbinstance.collection('pages')
+  var revisionsdb = dbinstance.collection('revisions')
+
+  var page_id = req.params.page_id
+  var revision_number = req.params.revision_number
+
+  revisionsdb.find({ post_id: new ObjectID(page_id)}).toArray(function(err, docs) {
+    if(err) {
+      res.json({
+        success:false,
+        post: page_id,
+        message: 'Could not find an entry for the page\'s revisions in the database'
+      })
+    }
+
+    var revisions = docs[0].revisions
+    if(revision_number in revisions) {
+
+      var data = {
+        revision: revision_number,
+        revisions: revisions
+      }
+
+      data.revisions[revision_number].meta.accepted = true
+
+      revisionsdb.findAndModify({
+          post_id: new ObjectID(page_id)
+        },
+        ['_id','asc'], // sort order
+        {
+          $set: data
+        }, {
+          new: true,
+          upsert: true
+        },
+        function (err, result) {
+          if(err) {
+            res.json({
+              success:false,
+              post: page_id,
+              message:'Failed to update the page\'s revision'
+            })
+          }
+
+          var new_post = data.revisions[revision_number]
+          delete(new_post['meta'])
+
+          var isodate = functions.newISOdate(new Date(revision_number * 1000))
+
+          pagesdb.findAndModify({
+              _id: new ObjectID(page_id)
+            },
+            ['_id','asc'], // sort order
+            {
+              $set: {
+                post: new_post,
+                "timestamp.updated": isodate
+              }
+            }, {
+              new: true,
+              upsert: true
+            }, function (err, result) {
+              if(err) {
+                res.json({
+                  success:false,
+                  post: page_id,
+                  message: 'Failed to update the page\'s content'
+                })
+              }
+
+              res.json({
+                success:true,
+                post: page_id,
+                message: 'Successfully updated page to approved revision'
+              })
+            }
+          )
+        }
+      )
+    } else {
+      res.json({
+        success:false,
+        post: page_id,
+        message:'Could not find a revision with supplied id among the page\'s revisions'
+      })
+    }
+  })
+})
+
+app.get('/ajax/revision/compare/:page_id/:revision_number', function (req, res, next) {
+  var dbinstance = db.instance()
+  var pagesdb = dbinstance.collection('pages')
+  var revisionsdb = dbinstance.collection('revisions')
+
+  var page_id = req.params.page_id
+  var revision_number = req.params.revision_number
+
+  pagesdb.find({_id : new ObjectID(page_id)}).toArray(function(err, doc) {
+    var post = doc[0]
+
+    revisionsdb.find({ post_id : new ObjectID(page_id) }).toArray(function(err, docs) {
+      if(err) throw err
+      var revisions = docs[0].revisions
+      var contentPost = post.post.content
+      var contentRevision = revisions[revision_number].content
+
+      //Find <br> tags ("line breaks" - kind of) and compare line by line
+      var regex = /<br\s*[\/]?>/gi
+
+      var contentNow = contentPost.split(regex) ? contentPost.split(regex) : [contentPost]
+      var contentUpdated = contentRevision.split(regex) ? contentRevision.split(regex) : [contentRevision]
+
+      var loop = (contentNow.length > contentUpdated.length) ? contentNow : contentUpdated
+
+      var diffs = []
+      for (var i = 0; i < loop.length; i++) {
+        if(i < contentNow.length && i < contentUpdated.length) {
+          if(contentNow[i] == contentUpdated[i]) {
+            diffs.push({status: 'muted', value: contentNow[i] + '<br>' })
+          } else {
+            diffs.push({status: 'success', value: contentUpdated[i] })
+            diffs.push({status: 'danger', value: contentNow[i] + '<br>' })
+          }
+        } else {
+          if(i < contentNow.length) {
+            diffs.push({status: 'danger', value: contentNow[i] + '<br>' })
+          } else if (i < contentUpdated.length) {
+            diffs.push({status: 'success', value: contentUpdated[i] + '<br>' })
+          }
+        }
+      }
+
+      var output = {
+        post: {
+          id: page_id,
+          created: post.created,
+          updated: post.updated
+        },
+        revision: {
+          number: revision_number,
+          created: revisions[revision_number].meta.timestamp.created,
+          accepted: revisions[revision_number].meta.accepted
+        },
+        diffs: diffs
+      }
+
+      res.json(output);
+    })
+  })
 })
 
 app.post('/submit', urlencodedParser, function (req, res) {
@@ -687,6 +875,7 @@ app.post('/submit', urlencodedParser, function (req, res) {
 
   var dbinstance = db.instance()
   var pagesdb = dbinstance.collection('pages')
+  var revisionsdb = dbinstance.collection('revisions')
 
   if(req.body.cover_image_id == 'undefined' || req.body.cover_image_filename == 'undefined') {
     cover_image_id = null
@@ -878,22 +1067,69 @@ app.post('/submit', urlencodedParser, function (req, res) {
     if(err) throw err
     if(count > 0) {
       //Update
-      pagesdb.find({ _id : id }).toArray(function(err, result) {
-        data.timestamp = {}
-        data.timestamp.update = isodate // Add timestamp for update
-        data.timestamp.updatedby = req.user._id
-        data.timestamp.created = result[0].timestamp.created
-        pagesdb.update({_id:id}, data, function(err, result) {
-          res.redirect('/ny/publicerad/?newpost='+niceurl)
-        })
-       })
+      revisionsdb.find({ post_id : id }).toArray(function(err, result) {
+        if(result.length > 0) {
+          var revision = result[0]
+          revision_number = (new Date(isodate).getTime() / 1000) //This is a unix timestamp
+          revision.revisions[revision_number] = data.post
+
+          revision.revisions[revision_number].meta = {
+            accepted: null,
+            user_info: {
+              id: req.user._id,
+              hidden: hidden
+            },
+            timestamp: {
+              created: isodate,
+              updatedby: req.user._id
+            }
+          }
+
+          revisionsdb.update({ post_id : id}, revision, function(err, result) {
+            res.redirect('/ny/publicerad/?newpost='+niceurl)
+          })
+        } else {
+          console.log('No entry for this page in revisions collection')
+          pagesdb.find({ _id : id }).toArray(function(err, result) {
+            data.timestamp = {
+              created: result[0].timestamp.created,
+              update: isodate, // Add timestamp for update
+              updatedby: req.user._id
+            }
+
+            pagesdb.update({_id:id}, data, function(err, result) {
+              res.redirect('/ny/publicerad/?newpost='+niceurl)
+            })
+          })
+        }
+      })
     } else {
       //Insert
       data.timestamp = {}
       data.timestamp.created = isodate // Add timestamp for creation
       pagesdb.insert(data, function(err, doc) {
         if(err) throw err
-        res.redirect('/ny/publicerad/?newpost='+niceurl)
+
+        var revision_number = (new Date(isodate).getTime() / 1000) //This is a unix timestamp
+        var revision = {
+          post_id: doc.ops[0]._id,
+          revision: revision_number,
+          revisions: {},
+        }
+
+        revision.revisions[revision_number] = data.post
+        revision.revisions[revision_number].meta = {
+          accepted: null,
+          user_info: data.user_info,
+          timestamp: {
+            created: isodate
+          }
+        }
+
+        revisionsdb.insert(revision, function(err, doc) {
+          //Should probably make a redirect to a page showing that the page is updated and will be published after moderation
+          res.redirect('/ny/publicerad/?newpost='+niceurl)
+        })
       })
     }
   })

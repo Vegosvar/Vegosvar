@@ -280,17 +280,31 @@ $(document).ready(function () {
       $(container).find('.source-url').attr('href', url)
       $(container).find('.source-url').attr('title', url)
 
-      $('#editorModalSource').modal('hide')
+      $('#editorModalSource').modal('hide').on('hidden.bs.modal', function () {
 
-      $('#insert-source-name').val('');
-      $('#insert-source-url').val('');
+        $('#insert-source-name').val('')
+        $('#insert-source-url').val('')
 
-      //Reset modal content
+        //Reset modal content
+        $('#source-title-edit').addClass('hidden')
+        $('#insert-source-edit').addClass('hidden')
+        $('#source-existing').removeClass('hidden')
+        $('#source-title-new').removeClass('hidden')
+        $('#insert-source-save').removeClass('hidden')
+      })
+  })
+
+  //User dismissed modal for updating a source reference
+  $('#insert-source-dismiss').on('click', function () {
+    $('#editorModalSource').modal('hide').on('hidden.bs.modal', function () {
+      $('#insert-source-name').val('')
+      $('#insert-source-url').val('')
+
       $('#source-title-edit').addClass('hidden')
       $('#insert-source-edit').addClass('hidden')
       $('#source-existing').removeClass('hidden')
-      $('#source-title-new').removeClass('hidden')
       $('#insert-source-save').removeClass('hidden')
+    })
   })
 
   //Listen for when the user inserts an image

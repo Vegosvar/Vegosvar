@@ -46,8 +46,8 @@ $(function () {
 
   // Searchfilter toggle //
   $('.toggleFilters').on('click', function () {
-      $('.toggleFilters').toggleClass('active')
-      $('.filters').toggleClass('active')
+    $('.toggleFilters').toggleClass('active')
+    $('.filters').toggleClass('active')
   })
 
   // Searchform //

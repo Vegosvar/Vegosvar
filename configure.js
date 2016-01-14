@@ -90,51 +90,16 @@ var collections = [
     }
 ]
 
-/* Check for collections */
-client.connect(config.database.host+config.database.name, function(err, db){
-    if(err) throw err
-
-    db.listCollections().toArray(function(err, dbCollections) {
-        if(err) throw err
-
-        for (var collection in collections) {
-            if (collections.hasOwnProperty(collection)) {
-                for (var dbCollection in dbCollections) {
-                    if (dbCollections.hasOwnProperty(dbCollection)) {
-                        if(dbCollections[dbCollection].hasOwnProperty('name')) {
-                            if(dbCollections[dbCollection].name == collections[collection].name) {
-                                collections[collection].exists = true
-                            }
-                        }
-                    }
-                }
-            }
+function containsObject(obj, array) {
+    var i;
+    for (i = 0; i < array.length; i++) {
+        if (array[i] === obj) {
+            return true;
         }
+    }
 
-        /* Create collections that don't exist */
-        createCollections = []
-
-        for (var collection in collections) {
-            if (collections.hasOwnProperty(collection)) {
-                if(collections[collection].exists == false) {
-                    createCollection(collections[collection].name)
-
-                    if(collections[collection].hasOwnProperty('data')) {
-                        insertDataToCollection(collections[collection].name, collections[collection].data)
-                    }
-                } else {
-                    //Check that all data in that collection is inserted
-                    if(collections[collection].hasOwnProperty('data')) {
-                        //Loop over data
-                        verifyDataInCollection(collections[collection].name, collections[collection].data)
-                    }
-                }
-            }
-        }
-
-        db.close()
-    })
-})
+    return false;
+}
 
 function createCollection(name) {
     client.connect(config.database.host+config.database.name, function(err, db){
@@ -203,13 +168,107 @@ function verifyDataInCollection(name, data) {
     })
 }
 
-function containsObject(obj, array) {
-    var i;
-    for (i = 0; i < array.length; i++) {
-        if (array[i] === obj) {
-            return true;
-        }
-    }
 
-    return false;
+function verifyPageRevision(page) {
+    client.connect(config.database.host+config.database.name, function(err, db){
+    if (err) throw err
+        db.collection('revisions').find({post_id:page._id}).toArray(function(err, doc) {
+            if (err) throw err
+            if(doc.length <= 0) {
+                insertPageRevision(page)
+            }
+
+            db.close()
+        })
+    })
 }
+
+function insertPageRevision(page) {
+    client.connect(config.database.host+config.database.name, function(err, db){
+        if (err) throw err
+
+        var timestamp = ( new Date(page.timestamp.created) / 1000 ) //Unix timestamp
+        var revision = {
+            post_id: page._id,
+            revision: timestamp,
+            revisions: {}
+        }
+
+        revision.revisions[timestamp] = page.post
+        revision.revisions[timestamp].meta = {
+            accepted: true, //always accept current page version
+            user_info: page.user_info,
+            timestamp: page.timestamp
+        }
+
+        db.collection('revisions').insert(revision, function(err, result) {
+            if (err) throw err
+            
+            if(result.insertedCount > 0) {
+                console.log('Skapade revision document för sida ' + page.title)
+            }
+
+            db.close()
+        })
+    })
+}
+
+/* Check for collections */
+client.connect(config.database.host+config.database.name, function(err, db){
+    if(err) throw err
+
+    db.listCollections().toArray(function(err, dbCollections) {
+        if(err) throw err
+
+        for (var collection in collections) {
+            if (collections.hasOwnProperty(collection)) {
+                for (var dbCollection in dbCollections) {
+                    if (dbCollections.hasOwnProperty(dbCollection)) {
+                        if(dbCollections[dbCollection].hasOwnProperty('name')) {
+                            if(dbCollections[dbCollection].name == collections[collection].name) {
+                                collections[collection].exists = true
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /* Create collections that don't exist */
+        createCollections = []
+
+        for (var collection in collections) {
+            if (collections.hasOwnProperty(collection)) {
+                if(collections[collection].exists == false) {
+                    createCollection(collections[collection].name)
+
+                    if(collections[collection].hasOwnProperty('data')) {
+                        insertDataToCollection(collections[collection].name, collections[collection].data)
+                    }
+                } else {
+                    //Check that all data in that collection is inserted
+                    if(collections[collection].hasOwnProperty('data')) {
+                        //Loop over data
+                        verifyDataInCollection(collections[collection].name, collections[collection].data)
+                    }
+                }
+            }
+        }
+
+        /* Create revision document for pages that don't have one */
+        db.collection('pages').find({}).toArray(function(err, docs){
+            if (err) throw err
+            if(docs.length > 0) {
+                for (var i = docs.length - 1; i >= 0; i--) {
+                    verifyPageRevision(docs[i])
+                }
+
+                db.close()
+            }
+        })
+    })
+
+    process.on('exit', function() {
+        console.log('*** Configure done! ***')
+    });
+})

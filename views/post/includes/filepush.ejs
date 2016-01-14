@@ -1,4 +1,4 @@
-<% if (typeof post !== 'undefined' && post.post.cover !== 'undefined' || post.post.cover !== 'null') { %>
+<% if ( typeof(post) !== 'undefined' && typeof(post.post.cover) !== 'undefined' && post.post.cover !== 'null') { %>
 <script>	
 $(document).ready(function() {
 	$('div#uploader').addClass('finished')

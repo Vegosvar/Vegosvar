@@ -1,0 +1,67 @@
+<% include includes/header %>
+
+<div class="container">
+    <section id="main">
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="pageflag">
+                    <span class="glyphicon glyphicon-eye-open"></span> 
+                    Granskningsläge
+                </div>
+                <article>
+                    <div id="<%= post._id %>" class="content">
+                        <h1><%= post.title %></h1>
+                        <div class="revision_content"><%- post.post.content %></div>
+                        <hr>
+                        <div class="revision_options">
+                            <div class="message alert" style="display: none"></div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <button id="apply" class="btn btn-block btn-success">Använd</button>
+                                </div>
+                                <div class="col-sm-3 col-sm-push-6">
+                                    <button id="delete" class="btn btn-block btn-danger">Neka</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+            </div>
+            <div class="col-sm-4">
+                <h2>Välj version</h2>
+                <div class="list-group revisions">
+                    <% if(typeof(revisions) !== 'undefined') {
+                        for(var i = revisions.length - 1;i >= 0; i--) {
+                            var revision_id = revisions[i].id
+                            var revision_date = revisions[i].created
+                            var status = revisions[i].accepted
+
+                            var itemClasses = {
+                                true: function() {
+                                    return 'list-group-item-success'
+                                },
+                                false: function() {
+                                    return 'list-group-item-danger'
+                                },
+                                null: function() {
+                                    return ''
+                                }
+                            }
+
+                            var itemClass = (status in itemClasses && revision_id !== current) ? itemClasses[status]() : 'active'
+                            %>
+                            <a href="#" class="revision list-group-item <%= itemClass %>" data-item-class="<%= itemClass %>" data-revision="<%= revision_id %>">
+                            <%= revision_date %>
+                            <% if(revision_id == current) { %>
+                                 <span class="current label label-success pull-right">Aktiv</span>
+                            <% } %>
+                            </a>
+                        <% }
+                    } %>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<% include includes/footer %>
