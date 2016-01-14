@@ -601,6 +601,16 @@ app.get('/admin', function (req, res) {
   res.render('admin/index', { user: req.user })
 })
 
+app.get('/admin/blockera', function (req, res) {
+  var dbinstance = db.instance()
+  var usersdb = dbinstance.collection('users')
+
+  usersdb.find({}).toArray(function(err, users) {
+    res.render('admin/block', { user: req.user, users: users })
+  })
+
+})
+
 app.get('/ny', function (req, res) {
   res.render('new', { user: req.user })
 })
