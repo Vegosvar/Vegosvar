@@ -4,7 +4,7 @@
         <section id="main">
 
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6 col-sm-offset-3">
                     <article>
                         <h1 class="no-margin-top">Blockera användare</h1>
                         <div class="list-group">
@@ -14,8 +14,10 @@
                                 <% console.log(users[i].name.display_name) %>
                                     <div class="list-group-item">
                                         <div class="user_name">
-                                            <a href="/admin/profil/<%= users[i]._id %>"><%= users[i].name.display_name %></a>
-                                            <img src="<%= users[i].photo %>" style="width:80px">
+                                            <a href="/admin/profil/<%= users[i]._id %>">
+                                            <img src="<%= users[i].photo %>" class="circle" style="width: 30px; margin-right: 5px;">
+                                            <%= users[i].name.display_name %></a>
+                                            <a href="" class="btn btn-danger btn-xs pull-right">Blockera</a>
                                         </div>
                                     </div>
                                 <% } %>
