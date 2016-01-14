@@ -67,7 +67,6 @@ passport.use(new facebook_strategy({
         info: {
           website: null,
           description: null,
-          permission: 'user'
         },
 
         photo: profile.photos ? profile.photos[0].value : '/unknown_user.png'
@@ -619,7 +618,7 @@ app.get('/admin/profil/:user_id', function (req, res) {
 
   usersdb.find({_id: new ObjectID(user_id) }).toArray(function(err, user) {
     user = user[0]
-    pagesdb.find( { "user_info.id": user_id }).toArray(function(err, pages) {
+    pagesdb.find( { "user_info.id": new ObjectID(user_id) }).toArray(function(err, pages) {
       res.render('admin/profil', { user: req.user, current_user: user, pages: pages })
     })
   })

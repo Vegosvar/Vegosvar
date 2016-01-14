@@ -1,18 +1,40 @@
 <% include ../includes/header %>
-
-    <div class="container">
-        <section id="main">
-
-            <div class="row">
-                <div class="col-md-12">
-                    <article>
-                    <% console.log(current_user) %>
-                        <h1 class="no-margin-top"><%= current_user.name.display_name %></h1>
-                    </article>
-                </div>
+<div class="container">
+    <section id="main">
+        <div class="row">
+            <div class="col-md-12">
+                <article>
+                    <h1 class="no-margin-top"><%= current_user.name.display_name %></h1>
+                    <div class="panel panel-default">
+                        <!-- No table heading, h1 is enough? -->
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Skapade sidor</h3>
+                        </div>
+                        <table class="table">
+                            <tbody>
+                                <% for(var i=0; i < pages.length; i++) {%>
+                                <tr>
+                                    <td>
+                                        <a href="/<%= pages[i].url %>">
+                                        <%= pages[i].title %>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <span class="disqus-comment-count" data-disqus-identifier="<%= pages[i]._id %>"></span>
+                                    </td>
+                                    <td>
+                                        <a href="/redigera/<%= pages[i].url %>" class="btn btn-primary btn-xs pull-right">
+                                        Redigera
+                                        </a>
+                                    </td>
+                                </tr>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+                </article>
             </div>
-
-        </section>
-    </div>
-
+        </div>
+    </section>
+</div>
 <% include ../includes/footer %>
