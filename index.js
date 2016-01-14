@@ -67,6 +67,7 @@ passport.use(new facebook_strategy({
         info: {
           website: null,
           description: null,
+          permission: 'user'
         },
 
         photo: profile.photos ? profile.photos[0].value : '/unknown_user.png'
