@@ -608,7 +608,20 @@ app.get('/admin/blockera', function (req, res) {
   usersdb.find({}).toArray(function(err, users) {
     res.render('admin/block', { user: req.user, users: users })
   })
+})
 
+app.get('/admin/profil/:user_id', function (req, res) {
+  var dbinstance = db.instance()
+  var usersdb = dbinstance.collection('users')
+  var pagesdb = dbinstance.collection('pages')
+  var user_id = req.params.user_id
+
+  usersdb.find({_id: new ObjectID(user_id) }).toArray(function(err, user) {
+    user = user[0]
+    pagesdb.find( { "user_info.id": user_id }).toArray(function(err, pages) {
+      res.render('admin/profil', { user: req.user, current_user: user, pages: pages })
+    })
+  })
 })
 
 app.get('/ny', function (req, res) {
