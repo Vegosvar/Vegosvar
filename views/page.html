@@ -169,7 +169,11 @@
                     </div>
                     <% if (post.type === '3' || post.type === '5') { %>
                       <div id="mapContainer" class="in-content">
-                        <div id="map" data-map-init="true" data-map-filter="single" class="sidebar hidden-xs"></div>
+                        <div id="map" data-map-init="true" data-map-filter="single" class="sidebar"></div>
+                        <a href="#" class="showMyLocation">
+                          <span class="fa fa-location-arrow"></span>
+                          Min position
+                        </a>
                         <div class="filter">
                           <div class="vertical-center">
                             <img src="/assets/images/map-icon.svg" style="width: 60px;">
@@ -355,7 +359,7 @@
                 </div>
               </div>
 
-              <div class="col-xs-8 col-xs-offset-2 col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-2 actions">
+              <div class="col-xs-8 col-xs-offset-2 col-sm-5 col-sm-offset-1 col-md-5 col-md-offset-1 actions">
                 <% if (typeof user !== 'undefined') { %>
                   <a href="/redigera/<%= post.url %>" class="btn btn-third btn-block pull-right">
                     <span class="glyphicon glyphicon-cog"></span> 
@@ -368,7 +372,15 @@
                   </a>
                   <% } %>
                 <% } else { %>
-                <small class="text-muted"><a href="/logga-in">Logga in</a> för att föreslå ändringar</small>
+                <div class="pull-right">
+                  <a href="/logga-in" class="btn btn-third btn-xs">
+                    Föreslå ändringar
+                  </a>
+                  <a href="/rapportera" class="btn btn-third btn-xs">
+                    <span class="fa fa-flag"></span> 
+                    Rapportera
+                  </a>
+                </div>
 
                 <% } %>
               </div>
@@ -421,9 +433,31 @@
 
 
           <% if (post.type === '3' || post.type === '5') { %>
+            <div class="card lg hidden-xs">
+              <h2>Ställen i närheten</h2>
+              <h3 class="subtitle">Restauranger & butiker</h3>
+              <ul class="page-menu">
+              <% if(typeof(establishments) !== 'undefined') {
+                for (var i = establishments.length - 1; i >= 0; i--) { %>
+                  <li>
+                    <a href="<%= establishments[i].url %>" class="item">
+                      <%= establishments[i].title %>
+                      <% if (typeof establishments[i].post.cover !== 'undefined' && establishments[i].post.cover.filename !== null) { %>
+                        <img src="/uploads/<%= establishments[i].post.cover.filename %>_thumb.jpg">
+                      <% } %>
+                    </a>
+                    <a href="/?s=<%= establishments[i].post.city %>" 
+                       class="subitem">
+                      <%= establishments[i].post.city %>
+                    </a>
+                  </li>
+                <% } %>
+              <% } %>
+              </ul>
+            </div>
           <% } else { %>
             <div id="mapContainer" class="sidebar">
-              <div id="map" data-map-filter="restaurant" data-map-cluster="true" class="sidebar hidden-xs"></div>
+              <div id="map" data-map-filter="restaurant" data-map-cluster="true" class="sidebar"></div>
               <div class="filter">
                 <div class="vertical-center">
                   <img src="/assets/images/map-icon.svg" style="width: 60px;"> 
@@ -437,29 +471,6 @@
               </div>
             </div>
           <% } %>
-
-          <div class="card lg hidden-xs">
-            <h2>Ställen i närheten</h2>
-            <h3 class="subtitle">Restauranger & butiker</h3>
-            <ul class="page-menu">
-            <% if(typeof(establishments) !== 'undefined') {
-              for (var i = establishments.length - 1; i >= 0; i--) { %>
-                <li>
-                  <a href="<%= establishments[i].url %>" class="item">
-                    <%= establishments[i].title %>
-                    <% if (typeof establishments[i].post.cover !== 'undefined' && establishments[i].post.cover.filename !== null) { %>
-                      <img src="/uploads/<%= establishments[i].post.cover.filename %>_thumb.jpg">
-                    <% } %>
-                  </a>
-                  <a href="/?s=<%= establishments[i].post.city %>" 
-                     class="subitem">
-                    <%= establishments[i].post.city %>
-                  </a>
-                </li>
-              <% } %>
-            <% } %>
-            </ul>
-          </div>
 
           <div class="card lg text-center">
             <div class="headerImage">

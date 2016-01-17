@@ -255,7 +255,7 @@ $(document).bind('mapready', function(e) {
   $('#show-map').on('click', function(e) {
     e.preventDefault();
 
-    $('.filter').hide(); //Remove overlay filter
+    $('.filter').addClass('hidden'); //Remove overlay filter
 
     //Get map options
     var options = getMapOptions();
@@ -264,7 +264,10 @@ $(document).bind('mapready', function(e) {
     getMarkerData(options, function(data) {
       applyMarkerData(data, options);
     })
+  })
 
+  $('.showMyLocation').on('click', function(e) {
+    e.preventDefault();
     zoomToUserLocation();
   })
 
@@ -278,7 +281,7 @@ $(document).bind('mapready', function(e) {
         applyMarkerData(data, options);
       })
 
-      $('.filter').hide(); //Remove overlay filter
+      $('.filter').addClass('visible-xs'); //Remove overlay filter
     }
   }
 })

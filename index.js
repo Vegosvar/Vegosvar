@@ -509,22 +509,35 @@ app.get('/:url', function (req, res, next) {
           mapCluster: !(result[0].type === '3' || result[0].type === '5')
         }
 
-        usersdb.find({ _id : result[0].user_info.id }).toArray(function(err, user_info) {
-          if (req.isAuthenticated ()) {
-            likesdb.count({ "post.id": new ObjectID(result[0]._id), "user.id": req.user._id }, function (err, is_liked) {
+        pagesdb.find({
+          $and: [
+            {
+              $or:[
+                {type:'3'},
+                {type:'5'}
+              ]
+            },
+            {"post.city":result[0].post.city}
+          ]
+        }).sort({_id:-1}).limit(10).toArray(function(err, establishments) {
+
+          usersdb.find({ _id : result[0].user_info.id }).toArray(function(err, user_info) {
+            if (req.isAuthenticated ()) {
+              likesdb.count({ "post.id": new ObjectID(result[0]._id), "user.id": req.user._id }, function (err, is_liked) {
+                if(typeof(user_info[0]) == 'undefined') {
+                  result[0].user_info.hidden = true
+                  user_info[0] = { id: '', photo: ''}
+                }
+                  res.render('page', { user: req.user, post: result[0], user_info: user_info[0], userLikes: is_liked, establishments: establishments, loadGeoLocation: true, loadMapResources: mapResources })
+              })
+            } else {
               if(typeof(user_info[0]) == 'undefined') {
                 result[0].user_info.hidden = true
                 user_info[0] = { id: '', photo: ''}
               }
-                res.render('page', { user: req.user, post: result[0], user_info: user_info[0], userLikes: is_liked, loadGeoLocation: true, loadMapResources: mapResources })
-            })
-          } else {
-            if(typeof(user_info[0]) == 'undefined') {
-              result[0].user_info.hidden = true
-              user_info[0] = { id: '', photo: ''}
+                res.render('page', { user: req.user, post: result[0], user_info: user_info[0], userLikes: 0, establishments: establishments, loadGeoLocation: true, loadMapResources: mapResources })
             }
-              res.render('page', { user: req.user, post: result[0], user_info: user_info[0], userLikes: 0, loadGeoLocation: true, loadMapResources: mapResources })
-          }
+          })
         })
       })
     } else {
