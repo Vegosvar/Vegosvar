@@ -509,8 +509,6 @@ app.get('/:url', function (req, res, next) {
           mapCluster: !(result[0].type === '3' || result[0].type === '5')
         }
 
-        console.log(result[0].post.city);
-
         pagesdb.find({
           $and: [
             {
