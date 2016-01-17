@@ -137,9 +137,11 @@
 
               <% if (post.type === '3' || post.type === '5') { %>
 
-                <div class="hidden-xs">
+                <div>
                   <% if (typeof post.post.phone !== 'undefined' && post.post.phone !== "") { %>
-                    <span class="phone"><%= post.post.phone %></span>
+                    <a href="tel:<%= post.post.phone %>" class="phone">
+                      <%= post.post.phone %>
+                    </a>
                   <% } %>
 
                   <% if (typeof post.post.mail !== 'undefined' && post.post.mail !== "") { %>
@@ -150,38 +152,54 @@
                   <% } %>
 
                   <% if (typeof post.post.website !== 'undefined' && post.post.website !== "") { %>
-                    <a href="<%= post.post.website %>" target="_blank" rel="nofollow" class="truncate">
+                    <div><a href="<%= post.post.website %>" target="_blank" rel="nofollow" class="hidden-xs">
                       Besök hemsida
-                    </a>
+                    </a></div>
                   <% } %>
                 </div>
 
-                <div class="row maplinks">
-                  <div class="col-xs-6 less-padding-right-xs">
-                    <p class="visible-xs"><a href="http://maps.google.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block visible-xs" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Google Maps</a></p>
-                  </div>
-
-                  <div class="col-xs-6 less-padding-left-xs">
-                    <p class="visible-xs"><a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Apple Maps</a></p>
-                  </div>
-                </div>
-
-                <% if (typeof post.post.phone !== 'undefined' && post.post.phone !== "") { %>
-                  <p class="visible-xs">
-                    <a href="tel:<%= post.post.phone %>" target="_blank"  class="btn btn-secondary btn-block phone">
-                      <span class="glyphicon glyphicon-earphone"></span>
-                      <%= post.post.phone %>
-                    </a>
-                  </p>
-                <% } %>
-
                 <hr class="lg hidden-xs">
                 <div class="row">
-                  <div class="col-sm-7 text-center-xs">
+                  <div class="col-lg-6 text-center-xs" id="location">
+                    <div class="hidden-xs">
+                      <h2><%= post.post.city %></h2>
+                      <div class="street">
+                        <%= post.post.street %>
+                      </div>
+                    </div>
+                    <% if (post.type === '3' || post.type === '5') { %>
+                      <div id="mapContainer" class="in-content">
+                        <div id="map" data-map-init="true" data-map-filter="single" class="sidebar hidden-xs"></div>
+                        <div class="filter">
+                          <div class="vertical-center">
+                            <img src="/assets/images/map-icon.svg" style="width: 60px;">
+                            <h2><%= post.post.city %></h2>
+                            <h3><%= post.post.street %></h3>
+                            <div><a href="#" id="show-map" class="btn btn-hero">
+                              <span class="glyphicon glyphicon-map-marker"></span>
+                              Se karta
+                            </a></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row maplinks">
+                        <div class="col-xs-6 less-padding-right">
+                          <p><a href="http://maps.google.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block" target="_blank"><span class="fa fa-google"></span> Google Maps</a></p>
+                        </div>
+
+                        <div class="col-xs-6 less-padding-left">
+                          <p><a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block" target="_blank">
+                          <span class="fa fa-apple"></span> Apple Maps</a></p>
+                        </div>
+                      </div>
+                    <% } %>
+                  </div>
+
+                  <div class="col-lg-6 text-center-xs">
                     <div id="openhours">
                       <h2>Öppettider</h2>
                       <div class="row">
-                        <div class="col-xs-6 less-padding-right-xs">
+                        <div class="col-xs-6 less-padding-right">
                           <ul class="list-group">
                             <li class="list-group-item" id="monday">
                               <h4 class="list-group-item-heading">Måndag</h4>
@@ -201,7 +219,7 @@
                             </li>
                           </ul>
                         </div>
-                        <div class="col-xs-6 less-padding-left-xs">
+                        <div class="col-xs-6 less-padding-left">
                           <ul class="list-group">
                             <li class="list-group-item" id="friday">
                               <h4 class="list-group-item-heading">Fredag</h4>
@@ -211,8 +229,6 @@
                               <h4 class="list-group-item-heading">Lördag</h4>
                               <p class="list-group-item-text"><%= post.post.openhours.saturday %></p>
                             </li>
-                          </ul>
-                          <ul class="list-group">
                             <li class="list-group-item" id="sunday">
                               <h4 class="list-group-item-heading">Söndag</h4>
                               <p class="list-group-item-text"><%= post.post.openhours.sunday %></p>
@@ -222,18 +238,9 @@
                       </div>
                     </div>
                   </div>
-                  <div class="col-sm-5 text-center hidden-xs" id="location">
-                    <p><img src="/assets/images/map.svg" class="circle"></p>
-                    <h2><%= post.post.city %></h2>
-                    <div class="street">
-                      <%= post.post.street %>
-                    </div>
-                    <p><a href="http://maps.google.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Google Maps</a></p>
-                    <p><a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-secondary" target="_blank"><span class="glyphicon glyphicon-map-marker"></span> Apple Maps</a></p>
-                  </div>
                 </div>
                 <% if (typeof post.post.website !== 'undefined' && post.post.website !== "") { %>
-                  <a href="<%= post.post.website %>" class="btn btn-secondary btn-block visible-xs" target="_blank">Besök deras hemsida</a>
+                  <a href="<%= post.post.website %>" class="btn btn-third btn-block visible-xs" target="_blank">Besök deras hemsida</a>
                 <% } %>
               <% } %>
 
@@ -307,17 +314,21 @@
               </div>
 
               <div class="col-xs-8 col-xs-offset-2 col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-2 actions">
-                <% if (typeof user !== 'undefined') { if (user.id === user_info.id) { %>
+                <% if (typeof user !== 'undefined') { %>
                   <a href="/redigera/<%= post.url %>" class="btn btn-third btn-block pull-right">
                     <span class="glyphicon glyphicon-cog"></span> 
                     Redigera sida
                   </a>
-                <% } else { %>
-                  <a href="/rapportera" class="btn btn-third btn-block pull-right">
-                    <span class="glyphicon glyphicon-cog"></span> 
-                    Föreslå ändring
+                  <% if (user.id === user_info.id) { %>
+                  <a href="/revisioner/<%= post.url %>" class="btn btn-third btn-block pull-right">
+                    <span class="glyphicon glyphicon-eye-open"></span> 
+                    Granska ändringar
                   </a>
-                <% } } %>
+                  <% } %>
+                <% } else { %>
+                <small class="text-muted"><a href="/logga-in">Logga in</a> för att föreslå ändringar</small>
+
+                <% } %>
               </div>
 
             </div>
@@ -366,15 +377,8 @@
             </div>
           <% } %>
 
+
           <% if (post.type === '3' || post.type === '5') { %>
-            <div id="mapContainer" class="sidebar">
-              <div id="map" data-map-init="true" data-map-filter="single" class="sidebar hidden-xs"></div>
-              <div class="filter">
-                <div class="vertical-center">
-                  <h2>Karta</h2>
-                </div>
-              </div>
-            </div>
           <% } else { %>
             <div id="mapContainer" class="sidebar">
               <div id="map" data-map-filter="restaurant" data-map-cluster="true" class="sidebar hidden-xs"></div>
@@ -391,6 +395,29 @@
               </div>
             </div>
           <% } %>
+
+          <div class="card lg hidden-xs">
+            <h2>Ställen i närheten</h2>
+            <h3 class="subtitle">Restauranger & butiker</h3>
+            <ul class="page-menu">
+            <% if(typeof(establishments) !== 'undefined') {
+              for (var i = establishments.length - 1; i >= 0; i--) { %>
+                <li>
+                  <a href="<%= establishments[i].url %>" class="item">
+                    <%= establishments[i].title %>
+                    <% if (typeof establishments[i].post.cover !== 'undefined' && establishments[i].post.cover.filename !== null) { %>
+                      <img src="/uploads/<%= establishments[i].post.cover.filename %>_thumb.jpg">
+                    <% } %>
+                  </a>
+                  <a href="/?s=<%= establishments[i].post.city %>" 
+                     class="subitem">
+                    <%= establishments[i].post.city %>
+                  </a>
+                </li>
+              <% } %>
+            <% } %>
+            </ul>
+          </div>
 
           <div class="card lg text-center">
             <div class="headerImage">
