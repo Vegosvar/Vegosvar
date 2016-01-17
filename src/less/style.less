@@ -1150,7 +1150,7 @@ article {
 			font-size: 16px;
 			margin-bottom: 15px;
 		}
-		.btn {
+		.btn-primary {
 			margin-right: 10px;
 			margin-bottom: 10px;
 		}
@@ -1684,11 +1684,34 @@ section {
 	&.in-content {
 		height: 266px;
 		margin: 0 0 15px 0;
-		@media (min-width: @xs) {
-			.filter {
-				display: none;
+		@media (max-width: @xs) {
+			margin: 0 -20px 15px -20px;
+		}
+		.hidden {
+			display: none !important;
+		}
+		.showMyLocation {
+			position: absolute;
+			top: 5px;
+			right: 5px;
+			background: #fff;
+			color: #222;
+			font-size: 11px;
+			padding: 5px 7px;
+			border-radius: 3px;
+			.fa {
+				margin-right: 2px;
+			}
+			&:hover {
+				background: #F6F6F6;
+			}
+			&:active {
+				background: #eee;
 			}
 		}
+	}
+	.gmnoprint { // Hide map texture options
+		display: none;
 	}
 	@media (max-width: @sm) {
 		margin: 30px 0 40px 0;
