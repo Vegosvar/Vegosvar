@@ -355,7 +355,7 @@
                 </div>
               </div>
 
-              <div class="col-xs-8 col-xs-offset-2 col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-2 actions">
+              <div class="col-xs-8 col-xs-offset-2 col-sm-5 col-sm-offset-1 col-md-5 col-md-offset-1 actions">
                 <% if (typeof user !== 'undefined') { %>
                   <a href="/redigera/<%= post.url %>" class="btn btn-third btn-block pull-right">
                     <span class="glyphicon glyphicon-cog"></span> 
@@ -368,7 +368,15 @@
                   </a>
                   <% } %>
                 <% } else { %>
-                <small class="text-muted"><a href="/logga-in">Logga in</a> för att föreslå ändringar</small>
+                <div class="pull-right">
+                  <a href="/logga-in" class="btn btn-third btn-xs">
+                    Föreslå ändringar
+                  </a>
+                  <a href="/rapportera" class="btn btn-third btn-xs">
+                    <span class="fa fa-flag"></span> 
+                    Rapportera
+                  </a>
+                </div>
 
                 <% } %>
               </div>
