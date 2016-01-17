@@ -1,0 +1,24 @@
+<% include ../includes/header %>
+
+	<div class="container">
+		<section id="main">
+
+			<div class="row">
+				<div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 col-lg-10 col-lg-offset-1">
+
+					<article class="text-center">
+						<p><img src="/assets/images/cow.svg" class="circle" style="width: 200px;"></p>
+						<h1>Uppdaterat & klart</h1>
+						<p class="preamble">Nu kan du pusta ut, sidan är uppdaterad!</p><br>
+						<% if (typeof hideredirect === 'undefined') { %>
+						<a href="/<%= post_url %>" class="btn btn-primary lg">Besök sida</a> 
+						<% } %>
+					</article>
+
+				</div>
+			</div>
+
+		</section>
+	</div>
+
+<% include ../includes/footer %>
