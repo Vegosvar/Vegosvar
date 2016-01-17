@@ -64,7 +64,7 @@
 							<h2>Veganskt käk nära mig</h2>
 							<h3>Restauranger & butiker</h3>
 							<a href="#" id="show-map" class="btn btn-hero showMyLocation">
-								<span class="glyphicon glyphicon-map-marker"></span>
+								<span class="fa fa-location-arrow"></span>
 								Se karta
 							</a>
 						</div>
@@ -165,6 +165,28 @@
 					</div>
 				</section>
 			</div>
+		</div>
+		<div class="card lg visible-xs">
+			<h2>Goda nyheter</h2>
+			<h3 class="subtitle">Nya restauranger & butiker</h3>
+			<ul class="page-menu">
+			<% if(typeof(establishments) !== 'undefined') {
+				for (var i = establishments.length - 1; i >= 0; i--) { %>
+					<li>
+						<a href="<%= establishments[i].url %>" class="item">
+							<%= establishments[i].title %>
+							<% if (typeof establishments[i].post.cover !== 'undefined' && establishments[i].post.cover.filename !== null) { %>
+								<img src="/uploads/<%= establishments[i].post.cover.filename %>_thumb.jpg">
+							<% } %>
+						</a>
+						<a href="/?s=<%= establishments[i].post.city %>" 
+						   class="subitem">
+							<%= establishments[i].post.city %>
+						</a>
+					</li>
+				<% } %>
+			<% } %>
+			</ul>
 		</div>
 	</div>
 
