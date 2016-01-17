@@ -102,6 +102,7 @@ $(function () {
             $('#searchEngine-noResults').show()
           }
           $('#searchFor').html('<h2 id="searchFor">Resultat för <strong>' + $('.searchForm').val() + '</strong></h2>')
+          $('#searchFilter').show()
           $('#results').show()
           $('#searchResult').append('<div id="searchResultsContainer"></div>')
 
@@ -145,10 +146,10 @@ $(function () {
             $('#searchEngine-noResults').hide()
           }
         } else { // No results
+          $('#searchFor').html('<h2>Inga resultat kunde hittas</h2>')
           $('#searchForm-btn-default').html('<i class="glyphicon glyphicon-search"></i>')
-          $('#searchEngine-noResults').show()
+          $('#searchFilter').hide()
           $('#results').show()
-          $('#searchFor').html('')
           $('#searchResultsContainer').show()
         }
       })
