@@ -64,9 +64,18 @@
       },
       clusterMarkers: function() {
         settings.google.cluster = new MarkerClusterer(settings.google.map, settings.google.markers, {
-          minimumClusterSize: 1,
-          maxZoom: 9,
-          gridSize: 15
+          minimumClusterSize: 2,
+          maxZoom: 13,
+          gridSize: 20,
+          styles: [
+            {
+              textColor: 'white',
+              url: '/assets/images/map/cluster.png',
+              height: 28,
+              width: 31
+            },
+            
+          ]
         });
       },
       setCenter: function(position) {
