@@ -67,6 +67,15 @@
           minimumClusterSize: 2,
           maxZoom: 13,
           gridSize: 20,
+          styles: [
+            {
+              textColor: 'white',
+              url: '/assets/images/map/cluster.png',
+              height: 28,
+              width: 31
+            },
+            
+          ]
         });
       },
       setCenter: function(position) {
