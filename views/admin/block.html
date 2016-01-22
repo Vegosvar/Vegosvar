@@ -2,6 +2,61 @@
 
     <div class="container">
         <section id="main">
+            <div id="user-block-modal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <a class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </a>
+                            <h4 class="modal-title">Blockera <small><span class="user-block-display-name"></span></small>?</h4>
+                        </div>
+                        <div class="modal-body">
+                            <strong>En blockering upphäver användarens rättigheter att:</strong>
+                            <ul>
+                                <li>Skapa nya sidor</li>
+                                <li>Redigera sidor</li>
+                                <li>Gilla/betygsätta sidor</li>
+                            </ul>
+                            <strong>En blockerad användare kan fortfarande:</strong>
+                            <ul>
+                                <li>Logga in på Vegosvar</li>
+                                <li>Radera sidor den själv skapat</li>
+                                <li>Radera sitt konto</li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="user-block-confirm" class="btn btn-primary">Blockera användare</button>
+                            <button class="btn btn-danger" data-dismiss="modal">Avbryt</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
+
+            <div id="user-unblock-modal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <a class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </a>
+                            <h4 class="modal-title">Upphäv blockering för <small><span class="user-unblock-display-name"></span></small>?</h4>
+                        </div>
+                        <div class="modal-body">
+                            <strong>Att häva blockeringen återställer användarens rättigheter att:</strong>
+                            <ul>
+                                <li>Skapa nya sidor</li>
+                                <li>Redigera sidor</li>
+                                <li>Gilla/betygsätta sidor</li>
+                            </ul>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="user-unblock-confirm" class="btn btn-primary">Upphäv blockering</button>
+                            <button class="btn btn-danger" data-dismiss="modal">Avbryt</button>
+                        </div>
+                    </div><!-- /.modal-content -->
+                </div><!-- /.modal-dialog -->
+            </div><!-- /.modal -->
 
             <div class="row">
                 <div class="col-md-6 col-sm-offset-3">
@@ -11,7 +66,6 @@
 
                             <% if(typeof(users) !== 'undefined') {
                                 for(var i = users.length -1; i >= 0; i--) { %>
-                                <% console.log(users[i].name.display_name) %>
                                     <div class="list-group-item">
                                         <div class="user_name">
                                             <a href="/admin/profil/<%= users[i]._id %>">
