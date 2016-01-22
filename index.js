@@ -187,7 +187,7 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRe
 
 app.get('/logga-in', function (req, res) {
   // TODO make this a middleware or something
-  if (req.isAuthenticated()) {
+ if ( req.isAuthenticated()) {
     req.session.returnTo = (req.session.returnTo) ? req.session.returnTo : '/' //Return to / if the user has not visited any other page than the front page before logging in during this session
     return req.session.returnTo
   }
@@ -495,6 +495,26 @@ app.get('/ajax/map', function (req, res) {
     }
     res.json(doc)
   })
+})
+
+app.get('/ajax/admin/block/:user_id', function (req, res) {
+  var database = db.instance()
+  var usersdb = database.collection('users')
+
+  var user_id = req.params.user_id
+
+  usersdb.update(
+    {
+      _id : new ObjectID(user_id)
+    }, {
+      $set: {
+       "info.blocked":true,
+     }
+    }, function(err, status) {
+      if(err) throw err
+      console.log(status)
+    }
+  )
 })
 
 app.get('/:url', function (req, res, next) {
