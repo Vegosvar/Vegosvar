@@ -370,7 +370,6 @@ app.get('/ajax/imageInfo', function (req, res) {
 
 app.get('/ajax/addVote', function (req, res) {
   if(req.query.id != undefined && req.query.content != undefined) {
-
    if (req.isAuthenticated()) {
       var database = db.instance()
       var votesdb = database.collection('votes')
@@ -395,7 +394,6 @@ app.get('/ajax/addVote', function (req, res) {
               }
             } ], function(err, result) {
               result[0].count = count+1
-              console.log(result)
               pagesdb.update({ "_id": new ObjectID(req.query.id) }, {$set: { "rating.votes_sum": result[0].avg}, $inc: { "rating.votes": 1 }}, function (err) {
                 if(err) throw err
                 res.send(result)
