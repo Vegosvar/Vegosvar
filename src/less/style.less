@@ -1482,7 +1482,7 @@ section {
 	}
 	.star {
 		color: #DEDEDE;
-		transition: transform 0.15s, color 0.15s;
+		transition: transform 0.15s, color 0.15s, top 0.15s;
 		cursor: pointer;
 		font-size: 13px;
 		display: inline-block;
@@ -1509,18 +1509,34 @@ section {
 		}
 		@keyframes star-push {
 			0% {
+				top: 0;
 				transform: rotateY(0deg);
 			}
+			25% {
+				top: -5px;
+				transform: rotateY(150deg);
+				color: #F1AE00;
+			}
 			50% {
-				transform: rotateY(150deg) scale(1.7);
+				top: -10px;
+				transform: rotateY(0);
+				color: #F1AE00;
+			}
+			75% {
+				top: -5px;
+				transform: rotateY(150deg);
 				color: #F1AE00;
 			}
 			100% {
+				top: 0;
 				transform: rotateY(0deg);
 			}
 		}
 		&.push {
-  			animation: star-push 2s forwards;
+  			animation: star-push 1.2s forwards;
+  			&:before {
+  				display: none;
+  			}
 		}
 		&:hover {
 			transform: scale(1.5);
