@@ -10,7 +10,10 @@
           <h3>Konto</h3>
           <% if (typeof user !== 'undefined') { %>
 						<a href="/installningar">Inställningar</a>
-						<a href="/mina-sidor">Mina sidor</a>	
+						<a href="/mina-sidor">Mina sidor</a>
+            <% if (typeof user.info.permission !== 'undefined' && (user.info.permission === "admin" || user.info.permission === "moderator")) { %>
+              <a href="/admin">Administration</a>
+            <% } %>
 						<a href="/logga-ut">Logga ut</a>
           <% } %>
           <% if (typeof user === 'undefined') { %>
