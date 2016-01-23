@@ -2202,6 +2202,29 @@ section {
 	}
 }
 
+.ui-autocomplete {
+    z-index: 9999;
+    background: @blue;
+    color: #fff;
+    width: 265px;
+    padding: 0;
+    border-radius: 3px;
+    li {
+    	list-style: none;
+    	padding: 8px 17px;
+    	border-bottom: 1px solid darken(@blue, 5%);
+    	border-radius: 3px;
+    	font-size: 13px;
+    	&:last-child {
+    		border-bottom: none;
+    	}
+    	&:hover {
+    		background: darken(@blue, 5%);
+    	}
+    }
+}
+
+
 
 .revision_content {
 	.text-danger *,
