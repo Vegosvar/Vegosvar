@@ -133,6 +133,10 @@ p {
 	}
 }
 
+.text-success {
+	color: @brand-color;
+}
+
 .pageflag {
 	position: absolute;
 	top: 0;
@@ -593,12 +597,6 @@ input[type=checkbox], input[type=radio] {
 			display: block;
 			padding: 0 30px;
 			border-top: 1px solid #eee;
-			&:hover {
-				background: #F8F8F7;
-				@media (max-width: @xs) {
-					background: none;
-				}
-			}
 			&:last-child {
 				border-bottom: 1px solid #eee;
 			}
@@ -650,8 +648,8 @@ input[type=checkbox], input[type=radio] {
 		}
 	}
 	.bottom-description {
-		margin-top: 10px;
-		margin-bottom: -20px;
+		margin-top: 15px;
+		margin-bottom: -15px;
 		font-size: 12px;
 		color: #777;
 		text-align: center;
