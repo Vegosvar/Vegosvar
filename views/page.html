@@ -79,6 +79,25 @@
               </strong>
               <% } %>
 
+              <% if (post.type === '4') { %>
+                <% if (post.post.veg_type === 'animal') { %>
+                  <strong class="text-danger small">
+                    <span class="fa fa-info-circle"></span> 
+                    Animaliskt
+                  </strong>
+                <% } else if (post.post.veg_type === 'lacto_ovo') { %>
+                  <strong class="text-warning small">
+                    <span class="fa fa-info-circle"></span> 
+                    Lakto-ovo-vegetariskt
+                  </strong>
+                <% } else { %>
+                  <strong class="text-success small">
+                    <span class="fa fa-check-circle"></span> 
+                    Veganskt
+                  </strong>
+                <% } %>
+              <% } %>
+
               <h1><%= post.title %></h1>
 
               <% if (post.type === '3' || post.type === '5') { %>
@@ -89,23 +108,16 @@
                 </a>
               <% } %>
               <% if (post.type === '4') { %>
-                <a href="/?s=<%= post.post.manufacturer %>">
-                  <h2 class="subtitle">
-                      <%= post.post.manufacturer %>
-                  </h2>
-                </a>
+                <% if (typeof post.post.manufacturer !== 'undefined' && post.post.manufacturer !== "") { %>
+                  <a href="/?s=<%= post.post.manufacturer %>">
+                    <h2 class="subtitle">
+                        <%= post.post.manufacturer %>
+                    </h2>
+                  </a>
+                <% } %>
               <% } %>
 
               <p>
-                <% if (post.type === '4') { %>
-                    <% if (post.post.veg_type === 'animal') { %>
-                      <strong class="text-danger"><%= post.title %> är animaliskt.</strong>
-                    <% } else if (post.post.veg_type === 'lacto_ovo') { %>
-                      <strong class="text-warning"><%= post.title %> är lakto-ovo-vegetariskt.</strong>
-                    <% } else { %>
-                      <strong class="text-success"><%= post.title %> är veganskt.</strong>
-                    <% } %>
-                  <% } %>
                 <%- post.post.content %>
               </p>
 
@@ -151,11 +163,10 @@
                     </a>
                   <% } %>
 
-                  <% if (typeof post.post.mail !== 'undefined' && post.post.mail !== "") { %>
-                    <strong>Mail</strong>
-                    <a href="mailto:<%= post.post.email %>" target="_blank">
+                  <% if (typeof post.post.email !== 'undefined' && post.post.email !== "") { %>
+                    <div><a href="mailto:<%= post.post.email %>" target="_blank" class="text-muted">
                       <%= post.post.email %>
-                    </a><br>
+                    </a></div>
                   <% } %>
 
                   <% if (typeof post.post.website !== 'undefined' && post.post.website !== "") { %>

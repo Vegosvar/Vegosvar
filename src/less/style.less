@@ -49,6 +49,9 @@ a {
 		text-decoration: none;
 		color: darken(@brand-color, 5%);
 	}
+	&.text-muted:hover {
+		color: #333;
+	}
 }
 
 h1 {
@@ -1499,10 +1502,25 @@ section {
 		&:nth-child(1):before { content: 'Dåligt'; 	left: -3px; }
 		&:nth-child(2):before { content: 'Sådär'; 	left: -3px; }
 		&:nth-child(3):before { content: 'Helt ok'; left: -6px; }
-		&:nth-child(4):before { content: 'Bra'; } 	left: -1px;
+		&:nth-child(4):before { content: 'Bra'; 	left: -1px; }
 		&:nth-child(5):before { content: 'Superbra';left: -9px; }
 		&.active {
 			color: #EC960B;
+		}
+		@keyframes star-push {
+			0% {
+				transform: rotateY(0deg);
+			}
+			50% {
+				transform: rotateY(150deg) scale(1.7);
+				color: #F1AE00;
+			}
+			100% {
+				transform: rotateY(0deg);
+			}
+		}
+		&.push {
+  			animation: star-push 2s forwards;
 		}
 		&:hover {
 			transform: scale(1.5);
