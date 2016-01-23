@@ -377,8 +377,10 @@ app.get('/ajax/addVote', function (req, res) {
       var pagesdb = database.collection('pages')
       votesdb.count({ "post.id": new ObjectID(req.query.id), "user.id": req.user._id }, function(err, count) {
         if(count < 1) {
+          var isodate = functions.newISOdate(new Date(revision_number * 1000))
           var data = {
             content: parseInt(req.query.content),
+            timestamp: isodate,
             post: { id: new ObjectID(req.query.id) },
             user: { id: req.user._id }
           }

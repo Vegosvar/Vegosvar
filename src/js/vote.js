@@ -12,7 +12,7 @@ $(window).load(function () {
           alert('Du har redan röstat!')
         } else {
           $('span.votes').html(data[0].count)
-          var element = $('#'+data[0]._id)
+          var element = $('#' + data[0]._id)
           console.log(data[0]._id)
           element.removeClass('active')
           if (data[0].avg > 4) {
