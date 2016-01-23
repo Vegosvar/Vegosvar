@@ -144,6 +144,13 @@ passport.deserializeUser(function (id, done) {
 // TODO make one default template instead of the same includes in every?
 
 app.get('/', function (req, res) {
+  req.session.returnTo = '/'
+  /* Return to / if the user has not visited any other page than the front page
+    before logging in during this session, also works as a "reset" should the user
+    come back to the front page after browsing around and then logging in, otherwise
+    they would have been returned to the most recent page that the visited before returning
+    to the front page */
+
   var dbinstance = db.instance()
   var pagesdb = dbinstance.collection('pages')
   var citiesdb = dbinstance.collection('cities')
@@ -194,7 +201,6 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRe
 app.get('/logga-in', function (req, res) {
   // TODO make this a middleware or something
  if ( req.isAuthenticated()) {
-    req.session.returnTo = (req.session.returnTo) ? req.session.returnTo : '/' //Return to / if the user has not visited any other page than the front page before logging in during this session
     return req.session.returnTo
   }
 
