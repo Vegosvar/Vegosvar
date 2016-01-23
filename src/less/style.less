@@ -133,6 +133,10 @@ p {
 	}
 }
 
+.text-success {
+	color: @brand-color;
+}
+
 .pageflag {
 	position: absolute;
 	top: 0;
@@ -465,6 +469,16 @@ button {
 		&:focus {
 			border: 2px solid @blue;
 		}
+		&.title {
+			font-size: 25px;
+			border-radius: 3px;
+			font-weight: 700;
+			border: none;
+			background: #F7F7F7;
+			@media (max-width: @xs) {
+				font-size: 17px;
+			}
+		}
 	}
 }
 
@@ -593,12 +607,6 @@ input[type=checkbox], input[type=radio] {
 			display: block;
 			padding: 0 30px;
 			border-top: 1px solid #eee;
-			&:hover {
-				background: #F8F8F7;
-				@media (max-width: @xs) {
-					background: none;
-				}
-			}
 			&:last-child {
 				border-bottom: 1px solid #eee;
 			}
@@ -650,8 +658,8 @@ input[type=checkbox], input[type=radio] {
 		}
 	}
 	.bottom-description {
-		margin-top: 10px;
-		margin-bottom: -20px;
+		margin-top: 15px;
+		margin-bottom: -15px;
 		font-size: 12px;
 		color: #777;
 		text-align: center;
@@ -1901,7 +1909,7 @@ section {
 				background: #fff;
 				color: @pink;
 				display: inline-block;
-				padding: 5px 6px 5px 18px;
+				padding: 5px 8px 5px 15px;
 				border-radius: 0;
 				.glyphicon {
 					margin-right: 2px;
@@ -1912,12 +1920,15 @@ section {
 				display: inline-block;
 				background: @pink;
 				color: #fff;
-				padding: 10px 18px;
+				padding: 10px 15px;
 				&:hover {
 					background: darken(@pink, 3%);
 				}
-				@media (max-width: @xs) {
+				@media (max-width: @md) {
 					font-size: 15px;
+				}
+				@media (max-width: @sm) {
+					font-size: 14px;
 				}
 			}
 		}
@@ -2253,9 +2264,9 @@ section {
 			a {
 				color: #fff;
 				display: inline-block;
-				margin: 0 3px;
+				margin: 5px 10px;
 				border: none;
-				font-size: 14px;
+				font-size: 25px;
 			}
 		}
 	}

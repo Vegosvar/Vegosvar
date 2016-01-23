@@ -93,7 +93,6 @@
 					<% } %>
 					</ul>
 					<div class="bottom-description">
-						<span class="fa fa-check"></span> 
 						Alltid garanterat veganskt på menyn
 					</div>
 				</div>
@@ -175,7 +174,7 @@
 			<div class="row">
 				<% if(typeof(recipes) !== 'undefined') {
 					for (var i = recipes.length - 1; i >= 0; i--) { %>
-						<div class="col-sm-6">
+						<div class="col-sm-4">
 							<div class="recipe">
 								<a href="<%= recipes[i].url %>" class="item">
 									<% if (typeof recipes[i].post.cover !== 'undefined' && recipes[i].post.cover.filename !== null) { %>
@@ -218,7 +217,6 @@
 			<% } %>
 			</ul>
 			<div class="bottom-description">
-				<span class="fa fa-check"></span> 
 				Alltid garanterat veganskt på menyn
 			</div>
 		</div>

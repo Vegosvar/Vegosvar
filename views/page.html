@@ -72,6 +72,13 @@
 
             <div id="<%= post._id %>" class="content">
 
+              <% if (post.post.veg_offer === 'Endast veganskt på menyn') { %>
+              <strong class="text-success small">
+                <span class="fa fa-check-circle"></span> 
+                100% veganskt
+              </strong>
+              <% } %>
+
               <h1><%= post.title %></h1>
 
               <% if (post.type === '3' || post.type === '5') { %>
@@ -453,6 +460,9 @@
                 <% } %>
               <% } %>
               </ul>
+              <div class="bottom-description">
+                Alltid garanterat veganskt på menyn
+              </div>
             </div>
           <% } else { %>
             <div id="mapContainer" class="sidebar">
