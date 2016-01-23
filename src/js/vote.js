@@ -25,7 +25,7 @@ $(window).load(function () {
       })
     }
   })
-​
+
   $('#like .add-like').on('click', function (e) {
     e.preventDefault()
     var id = $(this).attr('id')
@@ -40,8 +40,9 @@ $(window).load(function () {
       $('.count').html(data.new_value)
     })
   })
-​
+
   $('#like .toggle-hint').on('click', function (e) {
     $('#like .hint').toggleClass('active')
   })
+
 })
