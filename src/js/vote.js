@@ -1,6 +1,7 @@
 $(window).load(function () {
   $('.star').on('click', function (e) {
     e.preventDefault()
+    console.log('click')
     $(this).addClass('push')
     var article = $(this).parent().attr('id')
     var content = $(this).attr('id')
@@ -12,29 +13,13 @@ $(window).load(function () {
           alert('Du har redan röstat!')
         } else {
           $('span.votes').html(data[0].count)
-          var element = $('#' + data[0]._id)
-          console.log(data[0]._id)
-          element.removeClass('active')
-          if (data[0].avg > 4) {
-            $('.stars#' + data[0]._id + ' > #1').addClass('active')
-            $('.stars#' + data[0]._id + ' > #2').addClass('active')
-            $('.stars#' + data[0]._id + ' > #3').addClass('active')
-            $('.stars#' + data[0]._id + ' > #4').addClass('active')
-            $('.stars#' + data[0]._id + ' > #5').addClass('active')
-          } else if (data[0].avg > 3) {
-            $('.stars#' + data[0]._id + ' > #1').addClass('active')
-            $('.stars#' + data[0]._id + ' > #2').addClass('active')
-            $('.stars#' + data[0]._id + ' > #3').addClass('active')
-            $('.stars#' + data[0]._id + ' > #4').addClass('active')
-          } else if (data[0].avg > 2) {
-            $('.stars#' + data[0]._id + ' > #1').addClass('active')
-            $('.stars#' + data[0]._id + ' > #2').addClass('active')
-            $('.stars#' + data[0]._id + ' > #3').addClass('active')
-          } else if (data[0].avg > 1) {
-            $('.stars#' + data[0]._id + ' > #1').addClass('active')
-            $('.stars#' + data[0]._id + ' > #2').addClass('active')
-          } else if (data[0].avg > 0) {
-            $('.stars#' + data[0]._id + ' > #1').addClass('active')
+          var element = $('#' + data[0]._id + '.stars')
+          $(element).children('.star').each(function () {
+            $(this).removeClass('active')
+          })
+
+          for (var i = 0; i <= data[0].avg; i++) {
+            $('#' + data[0]._id + '.stars > div:nth-child(' + i  + ')').addClass('active')
           }
         }
       })
