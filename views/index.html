@@ -93,6 +93,24 @@
 					<% } %>
 					</ul>
 				</div>
+				<div class="card lg hidden-xs">
+					<h2>Härliga recept</h2>
+					<h3 class="subtitle">Vad blir det för mat?</h3>
+					<ul class="page-menu">
+					<% if(typeof(recipes) !== 'undefined') {
+						for (var i = recipes.length - 1; i >= 0; i--) { %>
+							<li>
+								<a href="<%= recipes[i].url %>" class="item">
+									<%= recipes[i].title %>
+									<% if (typeof recipes[i].post.cover !== 'undefined' && recipes[i].post.cover.filename !== null) { %>
+										<img src="/uploads/<%= recipes[i].post.cover.filename %>_thumb.jpg">
+									<% } %>
+								</a>
+							</li>
+						<% } %>
+					<% } %>
+					</ul>
+				</div>
 			</div>
 			<div class="col-md-7 col-lg-8 pull-last-sm">
 				<section id="hot">

@@ -169,8 +169,14 @@ app.get('/', function (req, res) {
             {type:'3'},
             {type:'5'}
             ]
-          }).sort({_id:-1}).limit(10).toArray(function(err, establishments) {
-            res.render('index', { user: req.user, pages: pages, cities: cities, categories: categories, establishments: establishments, loadGeoLocation: true, loadMapResources: { map: true, mapCluster: true }, startpage: false, searchString: req.query.s, striptags: striptags })
+        }).sort({_id:-1}).limit(10).toArray(function(err, establishments) {
+          pagesdb.find({
+            $or:[
+              {type:'2'}
+              ]
+          }).sort({_id:-1}).limit(10).toArray(function(err, recipes) {
+            res.render('index', { user: req.user, pages: pages, cities: cities, categories: categories, establishments: establishments, recipes: recipes, loadGeoLocation: true, loadMapResources: { map: true, mapCluster: true }, startpage: false, searchString: req.query.s, striptags: striptags })
+          })
         })
       })
     })
