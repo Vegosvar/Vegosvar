@@ -16,25 +16,25 @@ $(window).load(function () {
           console.log(data[0]._id)
           element.removeClass('active')
           if (data[0].avg > 4) {
-            $('.stars#' + data[0]._id +' > #1').addClass('active')
-            $('.stars#' + data[0]._id +' > #2').addClass('active')
-            $('.stars#' + data[0]._id +' > #3').addClass('active')
-            $('.stars#' + data[0]._id +' > #4').addClass('active')
-            $('.stars#' + data[0]._id +' > #5').addClass('active')
+            $('.stars#' + data[0]._id + ' > #1').addClass('active')
+            $('.stars#' + data[0]._id + ' > #2').addClass('active')
+            $('.stars#' + data[0]._id + ' > #3').addClass('active')
+            $('.stars#' + data[0]._id + ' > #4').addClass('active')
+            $('.stars#' + data[0]._id + ' > #5').addClass('active')
           } else if (data[0].avg > 3) {
-            $('.stars#' + data[0]._id +' > #1').addClass('active')
-            $('.stars#' + data[0]._id +' > #2').addClass('active')
-            $('.stars#' + data[0]._id +' > #3').addClass('active')
-            $('.stars#' + data[0]._id +' > #4').addClass('active')
+            $('.stars#' + data[0]._id + ' > #1').addClass('active')
+            $('.stars#' + data[0]._id + ' > #2').addClass('active')
+            $('.stars#' + data[0]._id + ' > #3').addClass('active')
+            $('.stars#' + data[0]._id + ' > #4').addClass('active')
           } else if (data[0].avg > 2) {
-            $('.stars#' + data[0]._id +' > #1').addClass('active')
-            $('.stars#' + data[0]._id +' > #2').addClass('active')
-            $('.stars#' + data[0]._id +' > #3').addClass('active')
+            $('.stars#' + data[0]._id + ' > #1').addClass('active')
+            $('.stars#' + data[0]._id + ' > #2').addClass('active')
+            $('.stars#' + data[0]._id + ' > #3').addClass('active')
           } else if (data[0].avg > 1) {
-            $('.stars#' + data[0]._id +' > #1').addClass('active')
-            $('.stars#' + data[0]._id +' > #2').addClass('active')
+            $('.stars#' + data[0]._id + ' > #1').addClass('active')
+            $('.stars#' + data[0]._id + ' > #2').addClass('active')
           } else if (data[0].avg > 0) {
-            $('.stars#' + data[0]._id +' > #1').addClass('active')
+            $('.stars#' + data[0]._id + ' > #1').addClass('active')
           }
         }
       })
