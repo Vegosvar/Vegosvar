@@ -298,7 +298,7 @@
           <li class="title">Välj stad</li>
           <% if(typeof(cities) !== 'undefined') { %>
             <% for(i=0;i<cities.length;i++) { %>
-              <li><a href="/?s=Restauranger+i+<%= cities[i].name %>"><%= cities[i].name %></a></li>
+              <li><a href="/?s=<%= cities[i].name %>"><%= cities[i].name %></a></li>
             <% } %>
           <% } else { %>
           <li><a href="/?s=Stockholm">Stockholm</a></li>
