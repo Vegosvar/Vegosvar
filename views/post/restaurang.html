@@ -32,7 +32,7 @@
 								Utbud
 							</h2>
 							<div class="radio">
-								<label>
+								<label class="text-muted">
 									<input type="radio" name="veg_offer" value="Veganskt går att ordna" <%= (typeof(post) !== 'undefined' && post.post.veg_offer == 'Veganskt går att ordna') ? 'checked=checked' : '' %>>
 									Veganskt går att ordna
 								</label>
@@ -44,18 +44,12 @@
 								</label>
 							</div>
 							<div class="radio">
-								<label>
+								<label class="text-success">
+								<strong>
 									<input type="radio" name="veg_offer" value="Endast veganskt på menyn" <%= (typeof(post) !== 'undefined' && post.post.veg_offer == 'Endast veganskt på menyn') ? 'checked=checked' : '' %>>
-									Endast veganskt på menyn
+									100% veganskt
+								</strong>
 								</label>
-							</div>
-							<div class="row">
-								<div class="col-sm-7">
-									<div class="input-group">
-										<span class="input-group-addon">Typ av mat</span>
-										<input type="text" class="form-control" name="food" aria-describedby="basic-addon1" placeholder="Grill, Husmanskost, Pizza, Indiskt..." value="<%= (typeof(post) !== 'undefined') ? post.post.food : '' %>">
-									</div>
-								</div>
 							</div>
 
                             <% include includes/template_parts/other %>
