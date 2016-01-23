@@ -142,26 +142,31 @@
 										</p>
 									</div>
 								</div>
-								<% if (pages[i].type !== '1' && pages[i].post.veg_type !== 'animal') { %>
-									<div class="stars" id="<%= pages[i]._id %>">
-										<div class="star" id="1">
-											<span class="glyphicon glyphicon-star"></span>
-										</div>
-										<div class="star" id="2">
-											<span class="glyphicon glyphicon-star"></span>
-										</div>
-										<div class="star" id="3">
-											<span class="glyphicon glyphicon-star"></span>
-										</div>
-										<div class="star" id="4">
-											<span class="glyphicon glyphicon-star"></span>
-										</div>
-										<div class="star" id="5">
-											<span class="glyphicon glyphicon-star"></span>
-										</div>
-			                			<span class="votes">0</span>
-									</div>
-								<% } %>
+								<% if (pages[i].type === '3' || pages[i].type === '5' || pages[i].type === '4' && pages[i].post.veg_type !== 'animal') { %>
+					              <div class="stars" id="<%= pages[i]._id %>">
+					                <div class="star<%if(pages[i].rating.votes_sum > 0){ %> active<%}%>" id="1">
+					                  <span class="glyphicon glyphicon-star"></span>
+					                </div>
+					                <div class="star<%if(pages[i].rating.votes_sum > 1){ %> active<%}%>" id="2">
+					                  <span class="glyphicon glyphicon-star"></span>
+					                </div>
+					                <div class="star<%if(pages[i].rating.votes_sum > 2){ %> active<%}%>" id="3">
+					                  <span class="glyphicon glyphicon-star"></span>
+					                </div>
+					                <div class="star<%if(pages[i].rating.votes_sum > 3){ %> active<%}%>" id="4">
+					                  <span class="glyphicon glyphicon-star"></span>
+					                </div>
+					                <div class="star<%if(pages[i].rating.votes_sum > 4){ %> active<%}%>" id="5">
+					                  <span class="glyphicon glyphicon-star"></span>
+					                </div>
+					            
+					                <% if (typeof pages[i].rating.votes !== 'undefined') { %>
+					                  <span class="votes"><%= pages[i].rating.votes %></span>
+					                <% } else { %>
+					                  <span class="votes">0</span>
+					                <% } %>  
+					              </div>
+					            <% } %>
 							</div>
 						</div>
 						<% } %>

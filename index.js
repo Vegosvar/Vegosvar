@@ -378,33 +378,28 @@ app.get('/ajax/addVote', function (req, res) {
       votesdb.count({ "post.id": new ObjectID(req.query.id), "user.id": req.user._id }, function(err, count) {
         if(count < 1) {
           var data = {
-            content: req.query.content,
+            content: parseInt(req.query.content),
             post: { id: new ObjectID(req.query.id) },
             user: { id: req.user._id }
           }
 
-          votesdb.aggregate([
-            { $match: { post : { id: 'req.post.id'} } },
-            {
-              $group: {
-                _id: "$post.id",
-                average: { $avg: "$content" }
-              }
-          }]), function (err, results) {
-            if (err) {
-              console.log(err)
-            }
-          }
-
           votesdb.insert(data, function (err) {
             if(err) throw err
+            votesdb.aggregate(
+            [ { $match: { "post.id": new ObjectID(req.query.id) } },
+              { $group: {
+                _id: new ObjectID(req.query.id),
+                avg: { $avg: "$content" },
+              }
+            } ], function(err, result) {
+              result[0].count = count+1
+              console.log(result)
+              pagesdb.update({ "_id": new ObjectID(req.query.id) }, {$set: { "rating.votes_sum": result[0].avg}, $inc: { "rating.votes": 1 }}, function (err) {
+                if(err) throw err
+                res.send(result)
+              })
+            })
           })
-
-          pagesdb.update({ "_id": new ObjectID(req.query.id) }, {$inc: { "rating.votes": 1, }}, function (err) {
-            if(err) throw err
-          })
-
-          res.send('0')
         } else {
           res.send('3') // Vote already found!
         }
