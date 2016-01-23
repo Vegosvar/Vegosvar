@@ -84,6 +84,7 @@
   <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   
   <link rel="stylesheet" href="/assets/css/style.css">
@@ -100,7 +101,10 @@
   <% if (typeof loadPageResources !== 'undefined') {
     if( typeof loadPageResources.revisions !== 'undefined' && loadPageResources.revisions === true) { %>
       <script src="/includes/js/pages/revisions.js"></script>
-   <% }
+    <% }
+    if( typeof loadPageResources.page !== 'undefined' && loadPageResources.page === true) { %>
+      <script src="/includes/js/pages/page.js"></script>
+    <% }
   } %>
 
   <% if (typeof loadGeoLocation !== 'undefined' && loadGeoLocation === true) { %>
@@ -151,6 +155,16 @@
 </script>
 
 <body>
+  
+  <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/sv_SE/sdk.js#xfbml=1&version=v2.5&appId=861887517224420";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
+
   <% if (typeof startpage !== 'undefined') { %>
   <nav id="top" class="navbar navbar-default navbar-static-top startpage">
   <% } else { %>
@@ -284,7 +298,7 @@
           <li class="title">Välj stad</li>
           <% if(typeof(cities) !== 'undefined') { %>
             <% for(i=0;i<cities.length;i++) { %>
-              <li><a href="/?s=Restauranger+i+<%= cities[i].name %>"><%= cities[i].name %></a></li>
+              <li><a href="/?s=<%= cities[i].name %>"><%= cities[i].name %></a></li>
             <% } %>
           <% } else { %>
           <li><a href="/?s=Stockholm">Stockholm</a></li>

@@ -49,6 +49,9 @@ a {
 		text-decoration: none;
 		color: darken(@brand-color, 5%);
 	}
+	&.text-muted:hover {
+		color: #333;
+	}
 }
 
 h1 {
@@ -468,6 +471,16 @@ button {
 		box-shadow: none;
 		&:focus {
 			border: 2px solid @blue;
+		}
+		&.title {
+			font-size: 25px;
+			border-radius: 3px;
+			font-weight: 700;
+			border: none;
+			background: #F7F7F7;
+			@media (max-width: @xs) {
+				font-size: 17px;
+			}
 		}
 	}
 }
@@ -1469,7 +1482,7 @@ section {
 	}
 	.star {
 		color: #DEDEDE;
-		transition: transform 0.15s, color 0.15s;
+		transition: transform 0.15s, color 0.15s, top 0.15s;
 		cursor: pointer;
 		font-size: 13px;
 		display: inline-block;
@@ -1489,10 +1502,41 @@ section {
 		&:nth-child(1):before { content: 'Dåligt'; 	left: -3px; }
 		&:nth-child(2):before { content: 'Sådär'; 	left: -3px; }
 		&:nth-child(3):before { content: 'Helt ok'; left: -6px; }
-		&:nth-child(4):before { content: 'Bra'; } 	left: -1px;
+		&:nth-child(4):before { content: 'Bra'; 	left: -1px; }
 		&:nth-child(5):before { content: 'Superbra';left: -9px; }
 		&.active {
 			color: #EC960B;
+		}
+		@keyframes star-push {
+			0% {
+				top: 0;
+				transform: rotateY(0deg);
+			}
+			25% {
+				top: -5px;
+				transform: rotateY(150deg);
+				color: #F1AE00;
+			}
+			50% {
+				top: -10px;
+				transform: rotateY(0);
+				color: #F1AE00;
+			}
+			75% {
+				top: -5px;
+				transform: rotateY(150deg);
+				color: #F1AE00;
+			}
+			100% {
+				top: 0;
+				transform: rotateY(0deg);
+			}
+		}
+		&.push {
+  			animation: star-push 1.2s forwards;
+  			&:before {
+  				display: none;
+  			}
 		}
 		&:hover {
 			transform: scale(1.5);
@@ -1899,7 +1943,7 @@ section {
 				background: #fff;
 				color: @pink;
 				display: inline-block;
-				padding: 5px 6px 5px 18px;
+				padding: 5px 8px 5px 15px;
 				border-radius: 0;
 				.glyphicon {
 					margin-right: 2px;
@@ -1910,12 +1954,15 @@ section {
 				display: inline-block;
 				background: @pink;
 				color: #fff;
-				padding: 10px 18px;
+				padding: 10px 15px;
 				&:hover {
 					background: darken(@pink, 3%);
 				}
-				@media (max-width: @xs) {
+				@media (max-width: @md) {
 					font-size: 15px;
+				}
+				@media (max-width: @sm) {
+					font-size: 14px;
 				}
 			}
 		}
@@ -2171,6 +2218,29 @@ section {
 	}
 }
 
+.ui-autocomplete {
+    z-index: 9999;
+    background: @blue;
+    color: #fff;
+    width: 265px;
+    padding: 0;
+    border-radius: 3px;
+    li {
+    	list-style: none;
+    	padding: 8px 17px;
+    	border-bottom: 1px solid darken(@blue, 5%);
+    	border-radius: 3px;
+    	font-size: 13px;
+    	&:last-child {
+    		border-bottom: none;
+    	}
+    	&:hover {
+    		background: darken(@blue, 5%);
+    	}
+    }
+}
+
+
 
 .revision_content {
 	.text-danger *,
@@ -2251,9 +2321,9 @@ section {
 			a {
 				color: #fff;
 				display: inline-block;
-				margin: 0 3px;
+				margin: 5px 10px;
 				border: none;
-				font-size: 14px;
+				font-size: 25px;
 			}
 		}
 	}

@@ -38,6 +38,11 @@ module.exports = {
     second = "" + date.getUTCSeconds(); if (second.length == 1) { second = "0" + second; }
     return year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
 	},
+  formatHtmlEntities: function (str) {
+    return str.replace(/[^]/g, function(str) {
+        return "&#" + str.charCodeAt(0) + ";"
+    })
+  },
   returnUrl: function(req) {
     var url = '/'
     previousUrl = req.headers.referer

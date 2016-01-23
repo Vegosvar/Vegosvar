@@ -2,13 +2,18 @@
     <div class="container">
       <div class="row">
         <div class="col-sm-6 hidden-xs">
-          <a href="https://facebook.com/vegosvar" target="_blank" class="facebook"><img src="/assets/images/facebook.svg"></a>
+          <a href="/" target="_blank" class="facebook">
+            <img src="/assets/images/vegosvar_icon.svg" style="width: 50px;">
+          </a>
         </div>
         <div class="col-sm-2 hidden-xs konto">
           <h3>Konto</h3>
           <% if (typeof user !== 'undefined') { %>
 						<a href="/installningar">Inställningar</a>
-						<a href="/mina-sidor">Mina sidor</a>	
+						<a href="/mina-sidor">Mina sidor</a>
+            <% if (typeof user.info.permission !== 'undefined' && (user.info.permission === "admin" || user.info.permission === "moderator")) { %>
+              <a href="/admin">Administration</a>
+            <% } %>
 						<a href="/logga-ut">Logga ut</a>
           <% } %>
           <% if (typeof user === 'undefined') { %>
@@ -18,10 +23,22 @@
         </div>
         <div class="col-sm-2 socialt">
           <h3 class="hidden-xs">Socialt</h3>
-          <a href="http://facebook.com/vegosvar">Facebook</a>
-          <a href="http://twitter.com/vegosvar">Twitter</a>
-          <a href="http://instagram.com/vegosvar">Instagram</a>
-          <a href="https://github.com/vegosvar">Github</a>
+          <a href="http://facebook.com/vegosvar">
+            <span class="fa fa-facebook-square visible-xs"></span> 
+            <span class="hidden-xs">Facebook</span>
+          </a>
+          <a href="http://twitter.com/vegosvar">
+            <span class="fa fa-twitter visible-xs"></span> 
+            <span class="hidden-xs">Twitter</span>
+          </a>
+          <a href="http://instagram.com/vegosvar">
+            <span class="fa fa-instagram visible-xs"></span> 
+            <span class="hidden-xs">Instagram</span>
+          </a>
+          <a href="https://github.com/vegosvar">
+            <span class="fa fa-github visible-xs"></span> 
+            <span class="hidden-xs">Github</span>
+          </a>
         </div>
         <div class="col-sm-2 vegosvar">
           <h3 class="hidden-xs">Vegosvar</h3>

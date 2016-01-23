@@ -144,6 +144,13 @@ passport.deserializeUser(function (id, done) {
 // TODO make one default template instead of the same includes in every?
 
 app.get('/', function (req, res) {
+  req.session.returnTo = '/'
+  /* Return to / if the user has not visited any other page than the front page
+    before logging in during this session, also works as a "reset" should the user
+    come back to the front page after browsing around and then logging in, otherwise
+    they would have been returned to the most recent page that the visited before returning
+    to the front page */
+
   var dbinstance = db.instance()
   var pagesdb = dbinstance.collection('pages')
   var citiesdb = dbinstance.collection('cities')
@@ -169,12 +176,12 @@ app.get('/', function (req, res) {
             {type:'3'},
             {type:'5'}
             ]
-        }).sort({_id:-1}).limit(10).toArray(function(err, establishments) {
+        }).sort({_id:-1}).limit(12).toArray(function(err, establishments) {
           pagesdb.find({
             $or:[
               {type:'2'}
               ]
-          }).sort({_id:-1}).limit(2).toArray(function(err, recipes) {
+          }).sort({_id:-1}).limit(3).toArray(function(err, recipes) {
             res.render('index', { user: req.user, pages: pages, cities: cities, categories: categories, establishments: establishments, recipes: recipes, loadGeoLocation: true, loadMapResources: { map: true, mapCluster: true }, startpage: false, searchString: req.query.s, striptags: striptags })
           })
         })
@@ -194,7 +201,6 @@ app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRe
 app.get('/logga-in', function (req, res) {
   // TODO make this a middleware or something
  if ( req.isAuthenticated()) {
-    req.session.returnTo = (req.session.returnTo) ? req.session.returnTo : '/' //Return to / if the user has not visited any other page than the front page before logging in during this session
     return req.session.returnTo
   }
 
@@ -364,41 +370,36 @@ app.get('/ajax/imageInfo', function (req, res) {
 
 app.get('/ajax/addVote', function (req, res) {
   if(req.query.id != undefined && req.query.content != undefined) {
-
    if (req.isAuthenticated()) {
       var database = db.instance()
       var votesdb = database.collection('votes')
       var pagesdb = database.collection('pages')
       votesdb.count({ "post.id": new ObjectID(req.query.id), "user.id": req.user._id }, function(err, count) {
         if(count < 1) {
+          var isodate = functions.getISOdate()
           var data = {
-            content: req.query.content,
+            content: parseInt(req.query.content),
+            timestamp: isodate,
             post: { id: new ObjectID(req.query.id) },
             user: { id: req.user._id }
           }
 
-          votesdb.aggregate([
-            { $match: { post : { id: 'req.post.id'} } },
-            {
-              $group: {
-                _id: "$post.id",
-                average: { $avg: "$content" }
-              }
-          }]), function (err, results) {
-            if (err) {
-              console.log(err)
-            }
-          }
-
           votesdb.insert(data, function (err) {
             if(err) throw err
+            votesdb.aggregate(
+            [ { $match: { "post.id": new ObjectID(req.query.id) } },
+              { $group: {
+                _id: new ObjectID(req.query.id),
+                avg: { $avg: "$content" },
+              }
+            } ], function(err, result) {
+              result[0].count = count+1
+              pagesdb.update({ "_id": new ObjectID(req.query.id) }, {$set: { "rating.votes_sum": result[0].avg}, $inc: { "rating.votes": 1 }}, function (err) {
+                if(err) throw err
+                res.send(result)
+              })
+            })
           })
-
-          pagesdb.update({ "_id": new ObjectID(req.query.id) }, {$inc: { "rating.votes": 1, }}, function (err) {
-            if(err) throw err
-          })
-
-          res.send('0')
         } else {
           res.send('3') // Vote already found!
         }
@@ -557,14 +558,30 @@ app.get('/:url', function (req, res, next) {
                   result[0].user_info.hidden = true
                   user_info[0] = { id: '', photo: ''}
                 }
-                  res.render('page', { user: req.user, post: result[0], user_info: user_info[0], userLikes: is_liked, establishments: establishments, loadGeoLocation: true, loadMapResources: mapResources })
+                  res.render('page', {
+                      user: req.user,
+                      post: result[0],
+                      user_info: user_info[0],
+                      userLikes: is_liked,
+                      establishments: establishments,
+                      loadGeoLocation: true,
+                      loadMapResources: mapResources
+                  })
               })
             } else {
               if(typeof(user_info[0]) == 'undefined') {
                 result[0].user_info.hidden = true
                 user_info[0] = { id: '', photo: ''}
               }
-                res.render('page', { user: req.user, post: result[0], user_info: user_info[0], userLikes: 0, establishments: establishments, loadGeoLocation: true, loadMapResources: mapResources })
+                res.render('page', {
+                  user: req.user,
+                  post: result[0],
+                  user_info: user_info[0],
+                  userLikes: 0,
+                  establishments: establishments,
+                  loadGeoLocation: true,
+                  loadMapResources: mapResources
+              })
             }
           })
         })
@@ -680,7 +697,14 @@ app.get('/ny/publicerad', function (req, res) {
 
 app.get('/ny/:type', function (req, res) {
   var mapResources = (req.params.type === 'restaurang' || req.params.type === 'butik') ? { autocomplete: true } : false
-  res.render('post/'+req.params.type, { user: req.user, type: req.params.type, loadEditorResources: true, loadDropzoneResources: true, loadMapResources: mapResources })
+  res.render('post/'+req.params.type, {
+    user: req.user,
+    type: req.params.type,
+    loadEditorResources: true,
+    loadDropzoneResources: true,
+    loadMapResources: mapResources,
+    loadPageResources: { page: true }
+  })
 })
 
 app.get('/redigera/:url', function (req, res, next) {
@@ -716,7 +740,14 @@ app.get('/redigera/:url', function (req, res, next) {
         }
 
       if(page !== null) {
-        res.render('post/' + page, { user: req.user, post: post, loadEditorResources: true, loadDropzoneResources: true, loadMapResources: mapResources })
+        res.render('post/' + page, {
+            user: req.user,
+            post: post,
+            loadEditorResources: true,
+            loadDropzoneResources: true,
+            loadMapResources: mapResources,
+            loadPageResources: { page: true }
+        })
       }
     } else {
       next()

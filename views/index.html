@@ -134,7 +134,7 @@
 												<% } else if (pages[i].post.veg_type === 'lacto_ovo') { %>
 													<strong class="text-warning">Lakto-ovo</strong>
 												<% } else { %>
-													<strong class="text-success">Veganskt</strong>
+													<strong class="text-success"><span class="fa fa-check-circle"></span> Veganskt</strong>
 												<% } %>
 											<% } %>
 											<% content = striptags(pages[i].post.content, ['br','p','a','span','i','b']) %>
@@ -142,26 +142,31 @@
 										</p>
 									</div>
 								</div>
-								<% if (pages[i].type !== '1' && pages[i].post.veg_type !== 'animal') { %>
-									<div class="stars" id="<%= pages[i]._id %>">
-										<div class="star" id="1">
-											<span class="glyphicon glyphicon-star"></span>
-										</div>
-										<div class="star" id="2">
-											<span class="glyphicon glyphicon-star"></span>
-										</div>
-										<div class="star" id="3">
-											<span class="glyphicon glyphicon-star"></span>
-										</div>
-										<div class="star" id="4">
-											<span class="glyphicon glyphicon-star"></span>
-										</div>
-										<div class="star" id="5">
-											<span class="glyphicon glyphicon-star"></span>
-										</div>
-			                			<span class="votes">0</span>
-									</div>
-								<% } %>
+								<% if (pages[i].type === '3' || pages[i].type === '5' || pages[i].type === '4' && pages[i].post.veg_type !== 'animal') { %>
+					              <div class="stars" id="<%= pages[i]._id %>">
+					                <div class="star<%if(pages[i].rating.votes_sum > 0){ %> active<%}%>" id="1">
+					                  <span class="glyphicon glyphicon-star"></span>
+					                </div>
+					                <div class="star<%if(pages[i].rating.votes_sum > 1){ %> active<%}%>" id="2">
+					                  <span class="glyphicon glyphicon-star"></span>
+					                </div>
+					                <div class="star<%if(pages[i].rating.votes_sum > 2){ %> active<%}%>" id="3">
+					                  <span class="glyphicon glyphicon-star"></span>
+					                </div>
+					                <div class="star<%if(pages[i].rating.votes_sum > 3){ %> active<%}%>" id="4">
+					                  <span class="glyphicon glyphicon-star"></span>
+					                </div>
+					                <div class="star<%if(pages[i].rating.votes_sum > 4){ %> active<%}%>" id="5">
+					                  <span class="glyphicon glyphicon-star"></span>
+					                </div>
+					            
+					                <% if (typeof pages[i].rating.votes !== 'undefined') { %>
+					                  <span class="votes"><%= pages[i].rating.votes %></span>
+					                <% } else { %>
+					                  <span class="votes">0</span>
+					                <% } %>  
+					              </div>
+					            <% } %>
 							</div>
 						</div>
 						<% } %>
@@ -174,7 +179,7 @@
 			<div class="row">
 				<% if(typeof(recipes) !== 'undefined') {
 					for (var i = recipes.length - 1; i >= 0; i--) { %>
-						<div class="col-sm-6">
+						<div class="col-sm-4">
 							<div class="recipe">
 								<a href="<%= recipes[i].url %>" class="item">
 									<% if (typeof recipes[i].post.cover !== 'undefined' && recipes[i].post.cover.filename !== null) { %>

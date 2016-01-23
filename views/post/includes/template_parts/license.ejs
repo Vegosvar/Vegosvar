@@ -8,7 +8,10 @@
                 <option value="Copyright" <%= (typeof(post) !== 'undefined' && post.post.license == 'Copyright') ? 'selected=selected' : '' %>>Copyright</option>
             </select>
         </div>
-        <div id="license_info">
+
+
+
+        <div id="license_info" <%= (typeof(post) !== 'undefined') ? ( ( post.post.license !== 'CC0' ) ? '' : 'style=display:none' ) : 'style=display:none' %>>
             <div class="input-group cc-version">
                 <span class="input-group-addon">CC-version</span>
                 <input type="text" class="form-control" name="license_cc_version" value="<%= (typeof(post) !== 'undefined') ? post.post.license_cc_version : '' %>">

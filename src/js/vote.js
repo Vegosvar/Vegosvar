@@ -1,17 +1,26 @@
 $(window).load(function () {
   $('.star').on('click', function (e) {
     e.preventDefault()
+    console.log('click')
+    $(this).addClass('push')
     var article = $(this).parent().attr('id')
     var content = $(this).attr('id')
     if (!($(this).parent().hasClass('deactive'))) {
       $.get('/ajax/addVote?id=' + article + '&content=' + content, function (data) {
-        console.log(data)
-        if (data === '0') {
-          alert('Voted!')
-        } else if (data === '1') {
+        if (data === '1') {
           window.location.assign('/recensera')
         } else if (data === '3') {
-          console.log('Du har redan röstat!')
+          alert('Du har redan röstat!')
+        } else {
+          $('span.votes').html(data[0].count)
+          var element = $('#' + data[0]._id + '.stars')
+          $(element).children('.star').each(function () {
+            $(this).removeClass('active')
+          })
+
+          for (var i = 0; i <= data[0].avg; i++) {
+            $('#' + data[0]._id + '.stars > div:nth-child(' + i  + ')').addClass('active')
+          }
         }
       })
     }
@@ -35,4 +44,5 @@ $(window).load(function () {
   $('#like .toggle-hint').on('click', function (e) {
     $('#like .hint').toggleClass('active')
   })
+
 })
