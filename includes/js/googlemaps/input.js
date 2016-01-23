@@ -1,72 +1,98 @@
-var addressAutocomplete, cityAutocomplete
-var inputAddress, inputCity
+var autocompleteService;
 
-function checkCityBounds() {
-    var cityEntered = $(inputCity).val()
-    if(cityEntered) {
-        var geocoder = new google.maps.Geocoder();
-        geocoder.geocode({
-            country: 'SE',
-            address: cityEntered
-        }, function(result, status) {
-            if(result.length > 0) {
-                setAutocompleteAddressBound(result[0].geometry.bounds)
-            }
-        })
+var requestCity = {
+    types: ['(cities)'],
+    componentRestrictions: {
+        country: 'SE'
     }
-
 }
 
-function init() {
-    inputCity = (document.getElementsByName('city')[0]);
-    inputAddress = (document.getElementsByName('street')[0]);
-    inputLatitude = (document.getElementsByName('latitude')[0]);
-    inputLongitude =  (document.getElementsByName('longitude')[0]);
-
-    checkCityBounds()
-
-    setupAutocomplete()
-    addAutocompleteListeners()
+var requestAddress = {
+    types: ['address']
 }
 
 function setupAutocomplete() {
-    var optionsCity = {
-        types: ['(cities)'],
-        componentRestrictions: {
-            country: 'SE'
+    $('input[name="city"]').autocomplete({
+        source: function (request, response) {
+            requestCity.input = request.term;
+
+            return getAutocompletePredictions(requestCity, response);
+        },
+        select: function (event, ui) {
+            if('object' in ui.item) {
+                var city = ui.item.object.terms[0]['value'];
+                ui.item.value = city;
+                limitAddressBounds(city);
+            } else {
+                ui.item.value = ""
+            }
         }
-    }
+    });
 
-    var optionsAddress = {
-        types: ['address']
-    }
+    $('input[name="street"]').autocomplete({
+        source: function (request, response) {
+            requestAddress.input = request.term;
+            return getAutocompletePredictions(requestAddress, response);
+        },
+        select: function (event, ui) {
+            if('object' in ui.item) {
+                var geoObj = ui.item.object
 
-    cityAutocomplete = new google.maps.places.Autocomplete(inputCity, optionsCity);
-    addressAutocomplete = new google.maps.places.Autocomplete(inputAddress, optionsAddress);
+                var street = ui.item.object.terms[0]['value'];
+                if(geoObj.terms.length > 3) { //A street number was supplied as well
+                    ui.item.value = street + ' ' + ui.item.object.terms[1]['value']
+                } else {
+                    ui.item.value = street
+                }
+            } else {
+                ui.item.value = ""
+            }
+        }
+    });
 }
 
-function setAutocompleteAddressBound(bounds) {
-    addressAutocomplete.setBounds(bounds)
+function getAutocompletePredictions(request, response) {
+    autocompleteService.getPlacePredictions(request, function (predictions, status) {
+        if (status != google.maps.places.PlacesServiceStatus.OK) {
+            response([{
+                label: 'Inga resultat hittades',
+                value: 'Inga resultat hittades'
+            }])
+
+            return false;
+        }
+
+        response($.map(predictions, function (prediction, i) {
+            return {
+                object: prediction,
+                label: prediction.description,
+                value: prediction.description
+            }
+        }));
+    });
 }
 
-function addAutocompleteListeners() {
-    cityAutocomplete.addListener('place_changed', function() {
-        city = cityAutocomplete.getPlace()
-        inputCity.value = city.name
-
-        setAutocompleteAddressBound(city.geometry.viewport)
-    })
-
-    addressAutocomplete.addListener('place_changed', function() {
-        address = addressAutocomplete.getPlace()
-
-        inputAddress.value = address.name
-
-        inputLatitude.value = address.geometry.location.lat()
-        inputLongitude.value = address.geometry.location.lng()
+function limitAddressBounds(city) {
+    var geocoder = new google.maps.Geocoder();
+    
+    geocoder.geocode({
+        country: 'SE',
+        address: city
+    }, function(result, status) {
+        if(result.length > 0) {
+            if('geometry' in result[0]) {
+                var geometry = result[0].geometry;
+                if('bounds' in geometry) {
+                    requestAddress.bounds = geometry.bounds //Large areas such as cities
+                } else {
+                    requestAddress.bounds = geometry.viewport //Small areas such as villages
+                }
+            }
+        }
     })
 }
 
 $(document).bind('mapready', function(e) {
-    init()
+    autocompleteService = new google.maps.places.AutocompleteService();
+    setupAutocomplete();
 })
