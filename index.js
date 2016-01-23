@@ -169,8 +169,14 @@ app.get('/', function (req, res) {
             {type:'3'},
             {type:'5'}
             ]
-          }).sort({_id:-1}).limit(10).toArray(function(err, establishments) {
-            res.render('index', { user: req.user, pages: pages, cities: cities, categories: categories, establishments: establishments, loadGeoLocation: true, loadMapResources: { map: true, mapCluster: true }, startpage: false, searchString: req.query.s, striptags: striptags })
+        }).sort({_id:-1}).limit(10).toArray(function(err, establishments) {
+          pagesdb.find({
+            $or:[
+              {type:'2'}
+              ]
+          }).sort({_id:-1}).limit(2).toArray(function(err, recipes) {
+            res.render('index', { user: req.user, pages: pages, cities: cities, categories: categories, establishments: establishments, recipes: recipes, loadGeoLocation: true, loadMapResources: { map: true, mapCluster: true }, startpage: false, searchString: req.query.s, striptags: striptags })
+          })
         })
       })
     })
@@ -181,13 +187,14 @@ app.get('/auth/facebook', passport.authenticate('facebook'), function(req, res) 
 
 // TODO manually handle failure?
 // TODO redirect to /konto?
-app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/login' }), function (req, res) {
-  res.redirect(req.session.returnTo);
+app.get('/auth/facebook/callback', passport.authenticate('facebook', { failureRedirect: '/logga-in' }), function (req, res) {
+  res.redirect( req.session.returnTo );
 })
 
 app.get('/logga-in', function (req, res) {
   // TODO make this a middleware or something
-  if (req.isAuthenticated()) {
+ if ( req.isAuthenticated()) {
+    req.session.returnTo = (req.session.returnTo) ? req.session.returnTo : '/' //Return to / if the user has not visited any other page than the front page before logging in during this session
     return req.session.returnTo
   }
 
@@ -195,12 +202,12 @@ app.get('/logga-in', function (req, res) {
 })
 
 app.get('/*', function (req, res, next) {
-  var noRedirect = ['logga-in','logga-ut', 'ajax', 'recensera']
+  var noRedirect = ['logga-in','logga-ut', 'ajax', 'recensera', 'auth']
   var canRedirectTo = true
-  var path = req.originalUrl.split("?")
+  var path = req.originalUrl.split("?").shift()
 
-  if(path[0] !== '/' && path[0] !== 'auth') {
-    path = path.shift().split('/')[1]
+  if(path !== '/') {
+    path = path.split('/')[1]
     for (var i = noRedirect.length - 1; i >= 0; i--) {
       if(noRedirect[i].indexOf(path) !== -1) {
         canRedirectTo = false
@@ -209,8 +216,10 @@ app.get('/*', function (req, res, next) {
 
     if( canRedirectTo ) {
       req.session.returnTo = functions.returnUrl(req)
+    } else {
+      req.session.returnTo = '/'
     }
-  } else if(path[0] === '/') {
+  } else {
     req.session.returnTo = '/'
   }
 
@@ -492,6 +501,26 @@ app.get('/ajax/map', function (req, res) {
     }
     res.json(doc)
   })
+})
+
+app.get('/ajax/admin/block/:user_id', function (req, res) {
+  var database = db.instance()
+  var usersdb = database.collection('users')
+
+  var user_id = req.params.user_id
+
+  usersdb.update(
+    {
+      _id : new ObjectID(user_id)
+    }, {
+      $set: {
+       "info.blocked":true,
+     }
+    }, function(err, status) {
+      if(err) throw err
+      console.log(status)
+    }
+  )
 })
 
 app.get('/:url', function (req, res, next) {
