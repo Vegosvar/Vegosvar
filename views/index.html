@@ -92,24 +92,10 @@
 						<% } %>
 					<% } %>
 					</ul>
-				</div>
-				<div class="card lg hidden-xs">
-					<h2>Härliga recept</h2>
-					<h3 class="subtitle">Vad blir det för mat?</h3>
-					<ul class="page-menu">
-					<% if(typeof(recipes) !== 'undefined') {
-						for (var i = recipes.length - 1; i >= 0; i--) { %>
-							<li>
-								<a href="<%= recipes[i].url %>" class="item">
-									<%= recipes[i].title %>
-									<% if (typeof recipes[i].post.cover !== 'undefined' && recipes[i].post.cover.filename !== null) { %>
-										<img src="/uploads/<%= recipes[i].post.cover.filename %>_thumb.jpg">
-									<% } %>
-								</a>
-							</li>
-						<% } %>
-					<% } %>
-					</ul>
+					<div class="bottom-description">
+						<span class="fa fa-check"></span> 
+						Alltid garanterat veganskt på menyn
+					</div>
 				</div>
 			</div>
 			<div class="col-md-7 col-lg-8 pull-last-sm">
@@ -184,9 +170,35 @@
 				</section>
 			</div>
 		</div>
+		
+		<section id="recipes">
+			<div class="row">
+				<% if(typeof(recipes) !== 'undefined') {
+					for (var i = recipes.length - 1; i >= 0; i--) { %>
+						<div class="col-sm-6">
+							<div class="recipe">
+								<a href="<%= recipes[i].url %>" class="item">
+									<% if (typeof recipes[i].post.cover !== 'undefined' && recipes[i].post.cover.filename !== null) { %>
+										<img src="/uploads/<%= recipes[i].post.cover.filename %>.jpg">
+									<% } %>
+									<div class="title">
+										<div><span class="label">
+										<span class="glyphicon glyphicon-heart"></span> 
+										Populärt recept
+										</span></div>
+										<h3><%= recipes[i].title %></h3>
+									</div>
+								</a>
+							</div>
+						</div>
+					<% } %>
+				<% } %>
+			</div>
+		</section>
+
 		<div class="card lg visible-xs">
-			<h2>Goda nyheter</h2>
-			<h3 class="subtitle">Nya restauranger & butiker</h3>
+			<h2 class="text-center">Goda nyheter</h2>
+			<h3 class="subtitle text-center">Nya restauranger & butiker</h3>
 			<ul class="page-menu">
 			<% if(typeof(establishments) !== 'undefined') {
 				for (var i = establishments.length - 1; i >= 0; i--) { %>
@@ -205,6 +217,10 @@
 				<% } %>
 			<% } %>
 			</ul>
+			<div class="bottom-description">
+				<span class="fa fa-check"></span> 
+				Alltid garanterat veganskt på menyn
+			</div>
 		</div>
 	</div>
 

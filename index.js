@@ -174,7 +174,7 @@ app.get('/', function (req, res) {
             $or:[
               {type:'2'}
               ]
-          }).sort({_id:-1}).limit(10).toArray(function(err, recipes) {
+          }).sort({_id:-1}).limit(2).toArray(function(err, recipes) {
             res.render('index', { user: req.user, pages: pages, cities: cities, categories: categories, establishments: establishments, recipes: recipes, loadGeoLocation: true, loadMapResources: { map: true, mapCluster: true }, startpage: false, searchString: req.query.s, striptags: striptags })
           })
         })

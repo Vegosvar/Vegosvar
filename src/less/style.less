@@ -575,7 +575,7 @@ input[type=checkbox], input[type=radio] {
 	}
 	.subtitle {
 		margin-top: -5px;
-		margin-bottom: 15px;
+		margin-bottom: 20px;
 		font-weight: 400;
 		color: #999;
 	}
@@ -595,6 +595,9 @@ input[type=checkbox], input[type=radio] {
 			border-top: 1px solid #eee;
 			&:hover {
 				background: #F8F8F7;
+				@media (max-width: @xs) {
+					background: none;
+				}
 			}
 			&:last-child {
 				border-bottom: 1px solid #eee;
@@ -644,6 +647,16 @@ input[type=checkbox], input[type=radio] {
 					color: #555;
 				}
 			}
+		}
+	}
+	.bottom-description {
+		margin-top: 10px;
+		margin-bottom: -20px;
+		font-size: 12px;
+		color: #777;
+		text-align: center;
+		@media (max-width: @xs) {
+			margin-bottom: 0;
 		}
 	}
 	.info {
@@ -1183,7 +1196,7 @@ article {
 		background: #fff;
 		margin: 0 -15px;
 		padding: 30px 15px 0 15px;
-		margin-bottom: 30px;
+		margin-bottom: 0;
 	}
 	h2 {
 		@media (max-width: @xs) {
@@ -1689,6 +1702,9 @@ section {
 	&.sidebar {
 		height: 395px;
 		margin: 0 0 30px 0;
+		@media (max-width: @xs) {
+			margin: 0 -15px 30px -15px;
+		}
 	}
 	&.in-content {
 		height: 266px;
@@ -1830,8 +1846,8 @@ section {
 	margin: 60px 0 30px 0;
 	@media (max-width: @xs) {
 		background: #E04A43;
-		margin: 0 -15px;
-		padding: 30px 15px;
+		margin: 0 -15px 0 -15px;
+		padding: 30px 15px 15px 15px;
 	}
 	h2 {
 		margin-top: 0px;
@@ -1862,51 +1878,51 @@ section {
 	}
 }
 
-#highlights {
-	margin-bottom: 50px;
-	@media (max-width: @sm) {
-		margin-top: 0;
-		margin-bottom: 45px;
+
+#recipes {
+	margin-bottom: 60px;
+	@media (max-width: @xs) {
+		margin: 0 -15px;
+		background: #fff;
+		padding: 30px 15px 0
+		 15px;
 	}
-	.highlight {
-		padding: 30px;
-		border-radius: 3px;
-		background-color: #eee;
-		background-position: center;
-		background-size: cover;
-		color: #fff;
-		margin-bottom: 15px;
-		text-align: center;
-		h2 {
-			margin-top: 5px;
+	.recipe {
+		position: relative;
+		@media (max-width: @xs) {
+			margin-bottom: 15px;
 		}
-		a {
-			color: #fff;
-		}
-		img {
-			margin: 0 -15px;
-		}
-		.btn.btn-primary {
-			background: #fff;
-			color: #333;
-			transition: opacity 0.15s;
-			&:hover {
-				opacity: 0.9;
+		.title {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			.label {
+				position: relative;
+				background: #fff;
+				color: @pink;
+				display: inline-block;
+				padding: 5px 6px 5px 18px;
+				border-radius: 0;
+				.glyphicon {
+					margin-right: 2px;
+				}
 			}
-		}
-		&.xs {
-			transition: opacity 0.15s;
-			h2 {
+			h3 {
 				margin: 0;
-				font-size: 24px;
-			}
-			&:hover {
-				opacity: 0.9;
+				display: inline-block;
+				background: @pink;
+				color: #fff;
+				padding: 10px 18px;
+				&:hover {
+					background: darken(@pink, 3%);
+				}
+				@media (max-width: @xs) {
+					font-size: 15px;
+				}
 			}
 		}
 	}
 }
-
 
 
 #pages {
