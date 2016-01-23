@@ -563,14 +563,30 @@ app.get('/:url', function (req, res, next) {
                   result[0].user_info.hidden = true
                   user_info[0] = { id: '', photo: ''}
                 }
-                  res.render('page', { user: req.user, post: result[0], user_info: user_info[0], userLikes: is_liked, establishments: establishments, loadGeoLocation: true, loadMapResources: mapResources })
+                  res.render('page', {
+                      user: req.user,
+                      post: result[0],
+                      user_info: user_info[0],
+                      userLikes: is_liked,
+                      establishments: establishments,
+                      loadGeoLocation: true,
+                      loadMapResources: mapResources
+                  })
               })
             } else {
               if(typeof(user_info[0]) == 'undefined') {
                 result[0].user_info.hidden = true
                 user_info[0] = { id: '', photo: ''}
               }
-                res.render('page', { user: req.user, post: result[0], user_info: user_info[0], userLikes: 0, establishments: establishments, loadGeoLocation: true, loadMapResources: mapResources })
+                res.render('page', {
+                  user: req.user,
+                  post: result[0],
+                  user_info: user_info[0],
+                  userLikes: 0,
+                  establishments: establishments,
+                  loadGeoLocation: true,
+                  loadMapResources: mapResources
+              })
             }
           })
         })
@@ -686,7 +702,14 @@ app.get('/ny/publicerad', function (req, res) {
 
 app.get('/ny/:type', function (req, res) {
   var mapResources = (req.params.type === 'restaurang' || req.params.type === 'butik') ? { autocomplete: true } : false
-  res.render('post/'+req.params.type, { user: req.user, type: req.params.type, loadEditorResources: true, loadDropzoneResources: true, loadMapResources: mapResources })
+  res.render('post/'+req.params.type, {
+    user: req.user,
+    type: req.params.type,
+    loadEditorResources: true,
+    loadDropzoneResources: true,
+    loadMapResources: mapResources,
+    loadPageResources: { page: true }
+  })
 })
 
 app.get('/redigera/:url', function (req, res, next) {
@@ -722,7 +745,14 @@ app.get('/redigera/:url', function (req, res, next) {
         }
 
       if(page !== null) {
-        res.render('post/' + page, { user: req.user, post: post, loadEditorResources: true, loadDropzoneResources: true, loadMapResources: mapResources })
+        res.render('post/' + page, {
+            user: req.user,
+            post: post,
+            loadEditorResources: true,
+            loadDropzoneResources: true,
+            loadMapResources: mapResources,
+            loadPageResources: { page: true }
+        })
       }
     } else {
       next()
