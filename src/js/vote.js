@@ -1,11 +1,11 @@
 $(window).load(function () {
-  $('.star').on('click', function (e) {
+  $(document).on('click', '.star', function (e) {
     e.preventDefault()
     console.log('click')
-    $(this).addClass('push')
-    var article = $(this).parent().attr('id')
-    var content = $(this).attr('id')
-    if (!($(this).parent().hasClass('deactive'))) {
+    $(e.target).parent().addClass('push')
+    var article = $(e.target).parent().parent().attr('id')
+    var content = $(e.target).parent().index() + 1
+    if (!($(e.target).parent().hasClass('deactive'))) {
       $.get('/ajax/addVote?id=' + article + '&content=' + content, function (data) {
         if (data === '1') {
           window.location.assign('/recensera')
@@ -15,7 +15,7 @@ $(window).load(function () {
           $('span.votes').html(data[0].count)
           var element = $('#' + data[0]._id + '.stars')
           $(element).children('.star').each(function () {
-            $(this).removeClass('active')
+            $(e.target).removeClass('active')
           })
 
           for (var i = 0; i <= data[0].avg; i++) {

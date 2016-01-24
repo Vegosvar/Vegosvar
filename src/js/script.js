@@ -19,7 +19,7 @@ $(window).load(function () {
 
 })
 
-$(function () {
+$(document).ready(function () {
   if ($('#srch-term').length > 0 && $('#srch-term').val() === '') {
     setSearchFormState()
     doTrigger()
@@ -95,63 +95,197 @@ $(function () {
   // Search results //
   function doTrigger() {
     if ($('.searchForm').val().length > 2) {
-      $('#searchResultsContainer').html('')
-      $.getJSON('/ajax/search/?s=' + $('.searchForm').val(), function (data) {
-        if (data[0] !== undefined) {
+
+      var searchTerm = $('.searchForm').val()
+      var container = $('#searchResult')
+
+      $.getJSON('/ajax/search/?s=' + searchTerm, function (data) {
+        if (data.length > 0 && data[0] !== undefined) {
           if ($('#searchEngine-noResults').css('display') === 'block') {
             $('#searchEngine-noResults').show()
           }
-          $('#searchFor').html('<h2 id="searchFor">Resultat för <strong>' + $('.searchForm').val() + '</strong></h2>')
+
+          $('#searchFor')
+          .html(
+            $('<h2>', {
+              id: 'searchFor'
+            })
+            .append(
+              $('<span>').text('Resultat för '),
+              $('<strong>').html(searchTerm)
+            )
+          )
+
           $('#searchFilter').show()
           $('#results').show()
-          $('#searchResult').append('<div id="searchResultsContainer"></div>')
 
-          $('#searchResultsContainer').show('fast')
+          var entryImage = function (entry) {
+            var image = entry.post.cover.filename !== null ? '/uploads/' + entry.post.cover.filename + '_thumb.jpg'
+              : 'assets/images/placeholder-' + entry.type + '.svg'
+            var imageSrc = 'background-image: url(' + image + ')'
 
-          var veg_types = {
-            vegan: {
-              name: 'Veganskt',
-              className: 'text-success'
-            },
-            lacto_ovo: {
-              name: 'Lakto-ovo vegetariskt',
-              className: 'text-warning'
-            },
-            animal: {
-              name: 'Animaliskt',
-              className: 'text-danger'
-            }
+            var entryImage = $('<a>', {
+              href: entry.url
+            })
+            .append(
+              $('<div>', {
+                class: 'image'
+              }).attr('style', imageSrc)
+            )
+
+            return entryImage
           }
 
-          for (var i = 0, result = data; i < result.length; i++) {
-            var id = result[i]._id
-            var content = '<div class="col-sm-6 col-md-4 col-lg-3" id="searchResult-' + id + '">'
-            content += '<div class="result">'
-            content += '<a href="/' + result[i].url + '"><div class="image" style="background-image: url('
-            content += (result[i].post.cover.filename !== null) ? '/uploads/' + result[i].post.cover.filename + '_thumb.jpg' : 'assets/images/placeholder-' + result[i].type + '.svg'
-            content += ')"></div></a>'
-            content += '<div class="content"><div class="text-overflow">'
-            content += '<a href="/' + result[i].url + '"><h3>' + result[i].title + '</h3></a>'
-            content += '<p>'
-            if (result[i].type === '4') {
-              content += '<strong class="' + veg_types[result[i].post.veg_type].className + '">' + veg_types[result[i].post.veg_type].name + '</strong> '
-            }
-            content += result[i].post.content.substring(0, 115) + '...</p></div></div>'
-            content += '<div class="stars"> <div class="star" id="1"> <span class="glyphicon glyphicon-star"></span> </div> <div class="star" id="2"> <span class="glyphicon glyphicon-star"></span> </div> <div class="star" id="3"> <span class="glyphicon glyphicon-star"></span> </div> <div class="star" id="4"> <span class="glyphicon glyphicon-star"></span> </div> <div class="star" id="5"> <span class="glyphicon glyphicon-star"></span> </div> <span class="votes">0</span> </div>'
-            content += '<div class="more">'
-            content += '<a href="/' + result[i].url + '" class="btn btn-primary">Läs mer</a></div></div></div>'
-            $('#searchResultsContainer').append(content)
-            $('#searchResult-' + id).show()
-            $('#searchForm-btn-default').html('<i class="glyphicon glyphicon-search"></i>')
-            $('#searchEngine-noResults').hide()
+          var entryTitle = function (entry) {
+            return $('<a>', {
+              href: '/' + entry.url
+            })
+            .append(
+              $('<h3>').text(entry.title)
+            )
           }
+
+          var entryDescription = function (entry) {
+            var description = $('<p>')
+            if (entry.type === '4') {
+              veg_type = entry.post.veg_type
+
+              //TODO this info needs to be updated
+              var veg_types = {
+                vegan: function () {
+                  return $('<strong>', {
+                    class: 'text-success'
+                  })
+                  .append(
+                    $('<span>', {
+                      class: 'fa fa-check-circle'
+                    }),
+                    $('<span>').html('Veganskt&nbsp;')
+                  )
+                },
+                lacto_ovo: function () {
+                  return $('<strong>', {
+                    class: 'text-warning'
+                  })
+                  .append(
+                    $('<span>').html('Lakto-Ovo&nbsp;')
+                  )
+                },
+                animal: function () {
+                  return $('<strong>', {
+                    class: 'text-danger'
+                  })
+                  .append(
+                    $('<span>').html('Animaliskt&nbsp;')
+                  )
+                }
+              }
+
+              if (veg_type in veg_types) {
+                $(description).append(
+                  veg_types[veg_type]()
+                )
+              }
+            }
+
+            $(description).append(
+              $('<span>')
+              .html(entry.post.content.substring(0, 115) + '...')
+            )
+
+            return description
+          }
+
+          var entryRating = function (entry) {
+            var rating = (entry.hasOwnProperty('rating') ? (entry.rating.hasOwnProperty('votes_sum') ? entry.rating.votes_sum : false) : false)
+            return $('<div>', {
+              class: 'stars',
+              id: entry._id
+            })
+            .append(
+              $.map(new Array(5), function (item, index) {
+                return $('<div>', {
+                  class: (rating !== false && index <= rating) ? 'active star' : 'star'
+                })
+                .append(
+                  $('<span>', {
+                    class: 'glyphicon glyphicon-star'
+                  })
+                )
+              }),
+              $('<span>', {
+                class: 'votes'
+              })
+              .text((rating) ? entry.rating.votes : 0)
+            )
+          }
+
+          var createEntry = function (entry) {
+            return $('<div>', {
+              class: 'col-sm-6 col-md-4 col-lg-3',
+              id: 'searchResult-' + entry._id
+            })
+            .append(
+              $('<div>', {
+                class: 'result'
+              })
+              .append(
+                entryImage(entry),
+                $('<div>', {
+                  class: 'content'
+                })
+                .append(
+                  $('<div>', {
+                    class: 'text-overflow'
+                  })
+                  .append(
+                    entryTitle(entry),
+                    entryDescription(entry),
+                    entryRating(entry),
+                    $('<div>', {
+                      class: 'more'
+                    })
+                    .append(
+                      $('<a>', {
+                        href: '/' + entry.url,
+                        class: 'btn btn-primary'
+                      })
+                      .html('L&auml;s mer')
+                    )
+                  )
+                )
+              )
+            )
+          }
+
+          var resultContainer = $('<div>', {
+            id: 'searchResultsContainer'
+          })
+
+          $.each(data, function (i, entry) {
+            $(resultContainer).append(
+              createEntry(entry)
+            )
+          })
+
+          $(container).html(resultContainer)
+
+          $('#searchEngine-noResults').hide()
         } else { // No results
-          $('#searchFor').html('<h2>Inga resultat kunde hittas</h2>')
-          $('#searchForm-btn-default').html('<i class="glyphicon glyphicon-search"></i>')
+          $('#searchFor').html(
+            $('<h2>').text('Inga resultat kunde hittas')
+          )
+
           $('#searchFilter').hide()
           $('#results').show()
-          $('#searchResultsContainer').show()
+          $('#searchResultsContainer').html('')
         }
+
+        $('#searchForm-btn-default').html(
+          $('<i>', {
+            class: 'glyphicon glyphicon-search'
+          })
+        )
       })
     }
   }
