@@ -2,7 +2,7 @@ $(window).load(function () {
   $(document).on('click', '.star', function (e) {
     e.preventDefault()
     console.log('click')
-    $(e.target).addClass('push')
+    $(e.target).parent().addClass('push')
     var article = $(e.target).parent().parent().attr('id')
     var content = $(e.target).parent().index() + 1
     if (!($(e.target).parent().hasClass('deactive'))) {
