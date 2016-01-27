@@ -2,7 +2,6 @@ if (process.env.NODE_ENV !== 'development') {
   process.env.NODE_ENV = 'production'
 }
 
-//testing travis
 var passport = require('passport')
 var facebook_strategy = require('passport-facebook').Strategy
 
