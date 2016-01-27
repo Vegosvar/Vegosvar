@@ -375,7 +375,7 @@ app.get('/ajax/addVote', function (req, res) {
       var votesdb = database.collection('votes')
       var pagesdb = database.collection('pages')
       votesdb.count({ "post.id": new ObjectID(req.query.id), "user.id": req.user._id }, function(err, count) {
-        if(count < 1) {
+        if(count < 1) { // Användaren har inte röstat
           var isodate = functions.getISOdate()
           var data = {
             content: parseInt(req.query.content),
@@ -393,14 +393,16 @@ app.get('/ajax/addVote', function (req, res) {
                 avg: { $avg: "$content" },
               }
             } ], function(err, result) {
-              result[0].count = count+1
-              pagesdb.update({ "_id": new ObjectID(req.query.id) }, {$set: { "rating.votes_sum": result[0].avg}, $inc: { "rating.votes": 1 }}, function (err) {
-                if(err) throw err
-                res.send(result)
+              votesdb.count({ "post.id": new ObjectID(req.query.id) }, function (err, total_count) {
+                result[0].count = total_count
+                pagesdb.update({ "_id": new ObjectID(req.query.id) }, {$set: { "rating.votes_sum": result[0].avg}, $inc: { "rating.votes": 1 }}, function (err) {
+                  if(err) throw err
+                  res.send(result)
+                })
               })
             })
           })
-        } else {
+        } else { // Användaren har röstat
           res.send('3') // Vote already found!
         }
       })
