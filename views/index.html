@@ -33,16 +33,24 @@
 
 			<div id="searchFilter">
 				<div class="dropdown">
-				<button class="btn btn-third dropdown-toggle" type="button" id="filterOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-				Filter
-				<span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="filterOptions">
-					<li><a href="#">Restauranger</a></li>
-					<li><a href="#">Butiker</a></li>
-					<li><a href="#">Fakta</a></li>
-					<li><a href="#">Produkter</a></li>
+					<button class="btn btn-third dropdown-toggle" type="button" id="filterOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+						Filter
+						<span class="fa fa-angle-down"></span>
+					</button>
+					<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="filterOptions">
+						<li><a href="#">Restauranger</a></li>
+						<li><a href="#">Butiker</a></li>
+						<li><a href="#">Fakta</a></li>
+						<li><a href="#">Produkter</a></li>
+					</ul>
 				</div>
+			</div>
+
+			<div id="searchMap">
+				<a class="btn btn-third">
+					<span class="fa fa-map-o"></span>
+					Se karta
+				</a>
 			</div>
 
 			<div id="searchFor"></div>
@@ -58,6 +66,15 @@
 			<div class="col-md-5 col-lg-4 pull-first-sm">
 				<section id="mapContainer">
 					<div id="map" data-map-cluster="true"></div>
+					<div class="toolbar">
+	                    <a href="#" class="btn showMyLocation">
+	                      <span class="fa fa-location-arrow"></span>
+	                      Min position
+	                    </a>
+	                    <a href="#" class="btn showFullscreen">
+	                      <span class="glyphicon glyphicon-fullscreen"></span>
+	                    </a>
+					</div>
 					<div class="filter">
 						<div class="vertical-center">
 							<img src="/assets/images/map-icon.svg" style="width: 70px;"> 

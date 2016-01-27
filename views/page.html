@@ -172,7 +172,7 @@
 
               <% if (post.type === '3' || post.type === '5') { %>
 
-                <div>
+                <div class="contact">
                   <% if (typeof post.post.phone !== 'undefined' && post.post.phone !== "") { %>
                     <a href="tel:<%= post.post.phone %>" class="phone">
                       <%= post.post.phone %>
@@ -180,13 +180,14 @@
                   <% } %>
 
                   <% if (typeof post.post.email !== 'undefined' && post.post.email !== "") { %>
-                    <div><a href="mailto:<%= post.post.email %>" target="_blank" class="text-muted">
+                    <div><a href="mailto:<%= post.post.email %>" target="_blank" class="text-muted email">
                       <%= post.post.email %>
                     </a></div>
                   <% } %>
 
                   <% if (typeof post.post.website !== 'undefined' && post.post.website !== "") { %>
-                    <div><a href="<%= post.post.website %>" target="_blank" rel="nofollow" class="hidden-xs">
+                    <div><a href="<%= post.post.website %>" target="_blank" rel="nofollow" class="website">
+                      <span class="fa fa-external-link"></span> 
                       Besök hemsida
                     </a></div>
                   <% } %>
@@ -204,10 +205,15 @@
                     <% if (post.type === '3' || post.type === '5') { %>
                       <div id="mapContainer" class="in-content">
                         <div id="map" data-map-init="true" data-map-filter="single" class="sidebar"></div>
-                        <a href="#" class="showMyLocation">
-                          <span class="fa fa-location-arrow"></span>
-                          Min position
-                        </a>
+                        <div class="toolbar">
+                          <a href="#" class="btn showMyLocation">
+                            <span class="fa fa-location-arrow"></span>
+                            Min position
+                          </a>
+                          <a href="#" class="btn showFullscreen">
+                            <span class="glyphicon glyphicon-fullscreen"></span>
+                          </a>
+                        </div>
                         <div class="filter">
                           <div class="vertical-center">
                             <img src="/assets/images/map-icon.svg" style="width: 60px;">

@@ -111,8 +111,8 @@ $(document).ready(function () {
               id: 'searchFor'
             })
             .append(
-              $('<span>').text('Resultat för '),
-              $('<strong>').html(searchTerm)
+              $('<span class="searchIntro">').html('<span class="visible-xs text-muted">Sökresultat</span><span class="hidden-xs">Resultat för</span> '),
+              $('<span class="searchTerm hidden-xs">').html(searchTerm)
             )
           )
 

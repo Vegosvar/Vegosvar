@@ -1,11 +1,18 @@
 $(window).load(function () {
   $(document).on('click', '.star', function (e) {
     e.preventDefault()
+<<<<<<< Updated upstream
     console.log('click')
     $(e.target).parent().addClass('push')
     var article = $(e.target).parent().parent().attr('id')
     var content = $(e.target).parent().index() + 1
     if (!($(e.target).parent().hasClass('deactive'))) {
+=======
+    $(this).addClass('push')
+    var article = $(this).parent().attr('id')
+    var content = $(this).attr('id')
+    if (!($(this).parent().hasClass('deactive'))) {
+>>>>>>> Stashed changes
       $.get('/ajax/addVote?id=' + article + '&content=' + content, function (data) {
         if (data === '1') {
           window.location.assign('/recensera')
