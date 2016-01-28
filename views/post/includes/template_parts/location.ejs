@@ -1,26 +1,44 @@
-<div class="col-sm-6">
-    <h2>
-        <span class="glyphicon glyphicon-map-marker"></span>
-        Hitta hit
-    </h2>
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="input-group">
-                <span class="input-group-addon">Stad</span>
-                <input type="text" class="form-control" name="city" aria-describedby="basic-addon1" placeholder="" value="<%= (typeof(post) !== 'undefined') ? post.post.city : '' %>">
+<h2>
+    <span class="glyphicon glyphicon-map-marker"></span>
+    Hitta hit
+</h2>
+
+<div class="row">
+    <div class="col-sm-6">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="input-group">
+                    <span class="input-group-addon">Stad</span>
+                    <input type="text" class="form-control" name="city" aria-describedby="basic-addon1" placeholder="" value="<%= (typeof(post) !== 'undefined') ? post.post.city : '' %>">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Gata</span>
+                    <input type="text" class="form-control" name="street" aria-describedby="basic-addon1" placeholder="" value="<%= (typeof(post) !== 'undefined') ? post.post.street : '' %>">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">Hemsida</span>
+                    <input type="text" class="form-control" name="website" aria-describedby="basic-addon1" placeholder="http://" value="<%= (typeof(post) !== 'undefined') ? post.post.website : '' %>">
+                </div>
+                <div class="input-desc">Ingen hemsida? Länka till er Facebooksida</div>
+                <div class="input-group">
+                    <input type="text" class="hidden" name="latitude" value="<%= (typeof(post) !== 'undefined' && typeof(post.post.coordinates) !== 'undefined') ? post.post.coordinates.latitude : '' %>">
+                    <input type="text" class="hidden" name="longitude" value="<%= (typeof(post) !== 'undefined' && typeof(post.post.coordinates) !== 'undefined') ? post.post.coordinates.longitude : '' %>">
+                </div>
             </div>
-            <div class="input-group">
-                <span class="input-group-addon">Gata</span>
-                <input type="text" class="form-control" name="street" aria-describedby="basic-addon1" placeholder="" value="<%= (typeof(post) !== 'undefined') ? post.post.street : '' %>">
-            </div>
-            <div class="input-group">
-                <span class="input-group-addon">Hemsida</span>
-                <input type="text" class="form-control" name="website" aria-describedby="basic-addon1" placeholder="http://" value="<%= (typeof(post) !== 'undefined') ? post.post.website : '' %>">
-            </div>
-            <div class="input-desc">Ingen hemsida? Länka till er Facebooksida</div>
-            <div class="input-group">
-                <input type="text" class="hidden" name="latitude" value="<%= (typeof(post) !== 'undefined' && typeof(post.post.coordinates) !== 'undefined') ? post.post.coordinates.latitude : '' %>">
-                <input type="text" class="hidden" name="longitude" value="<%= (typeof(post) !== 'undefined' && typeof(post.post.coordinates) !== 'undefined') ? post.post.coordinates.longitude : '' %>">
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div id="mapContainer" style="margin:0;height:200px;">
+            <% if(typeof(post) !== 'undefined' && typeof(post.post.coordinates) !== 'undefined') { %>
+                <div id="map" data-map-init="true" data-marker-latitude="<%= post.post.coordinates.latitude %>" data-marker-longitude=<%= post.post.coordinates.longitude %> data-marker-title="<%= post.post.street %>"></div>
+            <% } else { %>
+                <div id="map"></div>
+            <% } %>
+            <div class="filter transparent"></div>
+            <div class="toolbar">
+              <span class="label label-primary">
+                Förhandsvisning
+              </span>
             </div>
         </div>
     </div>

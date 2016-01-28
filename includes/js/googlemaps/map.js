@@ -19,8 +19,8 @@
     var settings = $.extend(defaults, options)
 
     google.maps.InfoWindow.prototype.isOpen = function(){
-        var map = this.map;
-        return (map !== null && typeof map !== "undefined");
+        var map = this.map
+        return (map !== null && typeof map !== "undefined")
     }
 
     fn = {
@@ -53,12 +53,12 @@
 
         settings.google.markers[index].addListener('click', function() {
           if( settings.google.markers[index].infowindow.isOpen() ) {
-            settings.google.markers[index].infowindow.close();
+            settings.google.markers[index].infowindow.close()
           } else {
             for (var i = settings.google.markers.length - 1; i >= 0; i--) {
-              settings.google.markers[i].infowindow.close();
-            };
-            settings.google.markers[index].infowindow.open(settings.google.map, settings.google.markers[index]);
+              settings.google.markers[i].infowindow.close()
+            }
+            settings.google.markers[index].infowindow.open(settings.google.map, settings.google.markers[index])
           }
         })
       },
@@ -76,7 +76,7 @@
             },
             
           ]
-        });
+        })
       },
       setCenter: function(position) {
         try {
@@ -92,6 +92,13 @@
               throw err
           }
       },
+      setBounds: function(bounds) {
+        try {
+          settings.google.map.fitBounds(bounds);
+        } catch(err) {
+          throw err
+        }
+      },
       getSettings: function() {
         return settings
       }
@@ -104,11 +111,11 @@
 
     return fn
   }
-}(jQuery));
+}(jQuery))
 
 $(document).bind('mapready', function(e) {
   //Initialize map
-  mapInstance = $('#map').googleMap();
+  mapInstance = $('#map').googleMap()
 
   //Place markers on map
   function setMarkers(data, settings) {
@@ -129,18 +136,55 @@ $(document).bind('mapready', function(e) {
             break
         }
 
-        var entryContent = '<div class="infowindow-container">'
-        entryContent += '<div class="infowindow-header">'
-        entryContent += '<div class="infowindow-image">'
-        entryContent += '<img src="/uploads/' + entry.post.cover.filename + '.jpg">'
-        entryContent += '</div>'
-        entryContent +='<div class="infowindow-title"><a href="' + entry.url + '">' + entry.title + '</a></div>'
-        entryContent += '<div class="infowindow-stars-container"><div class="star">5 <span class="glyphicon glyphicon-star"></span></div></div>' //TODO add actual rating
-        entryContent += '</div>' // /.infowindow-header
-        entryContent += '<div class="infowindow-content">'
-        entryContent += (entry.post.content.length > 90) ? entry.post.content.substr(0, 90) + '...' : entry.post.content
-        entryContent += '</div>' // /.infowindow-content
-        entryContent += '</div>' // /.infowindow-container
+        var infoWindowContent = function(entry) {
+          var content = (entry.post.content.length > 90) ? entry.post.content.substr(0, 90) + '...' : entry.post.content
+          return $('<div>', {
+            class: 'infowindow-content'
+          })
+          .html(content)
+        }
+
+        var entryContent = $('<div>', {
+          class: 'infowindow-container'
+        })
+        .append(
+          $('<div>', {
+            class: 'infowindow-header'
+          })
+          .append(
+            $('<div>', {
+              class: 'infowindow-image'
+            })
+            .append(
+              $('<img>', {
+                src: '/uploads/' + entry.post.cover.filename + '.jpg'
+              })
+            ),
+            $('<div>', {
+              class: 'infowindow-title'
+            })
+            .append(
+              $('<a>', {
+                href: entry.url
+              })
+              .html(entry.title)
+            ),
+            $('<div>', {
+              class: 'infowindow-stars-container'
+            })
+            .append(
+              $('<div>', {
+                class: 'star'
+              })
+              .append(
+                $('<span>', {
+                  class: 'glyphicon glyphicon-star'
+                })
+              )
+            )
+          ),
+          infoWindowContent(entry)
+        )
 
         mapInstance.setMarker({
           position: {
@@ -148,7 +192,7 @@ $(document).bind('mapready', function(e) {
             lng: parseFloat(entry.post.coordinates.longitude)
           },
           title: entry.title,
-          content: entryContent,
+          content: entryContent.html(),
           icon: {
             url: iconUrl,
             size: new google.maps.Size(32, 32)
@@ -160,7 +204,7 @@ $(document).bind('mapready', function(e) {
     }
     if(typeof(settings) !== 'undefined' && settings.hasOwnProperty('cluster')) {
       if(settings.cluster === true) {
-        mapInstance.clusterMarkers();
+        mapInstance.clusterMarkers()
       }
     }
   }
@@ -181,7 +225,7 @@ $(document).bind('mapready', function(e) {
           lat: parseFloat(result.position.latitude),
           lng: parseFloat(result.position.longitude)
         })
-        mapInstance.setZoom(11);
+        mapInstance.setZoom(11)
       } else {
         //TODO display error
       }
@@ -191,25 +235,25 @@ $(document).bind('mapready', function(e) {
   function getMarkerData(options, callback) {
     var settings = $.extend({
       url: '/ajax/map'
-    }, options);
+    }, options)
 
     $.ajax(settings)
     .done(function(data) {
       callback(data)
-    });
+    })
   }
 
-  function getMapOptions() {
-    var options = {};
-    var mapData = $('#map').data();
+  function getMapOptions(element) {
+    var options = {}
+    var mapData = $('#map').data()
 
     //Check if map is configured to auto initialize
     if(mapData.hasOwnProperty('mapInit')) {
-      options.init = true;
+      options.init = mapData.mapInit
     }
 
     if(mapData.hasOwnProperty('mapCluster')) {
-      options.cluster = true;
+      options.cluster = mapData.cluster
     }
 
     if(mapData.hasOwnProperty('mapFilter')) {
@@ -239,7 +283,19 @@ $(document).bind('mapready', function(e) {
       }
     }
 
-    return options;
+    if(mapData.hasOwnProperty('markerLatitude')) {
+      options.markerLatitude = mapData.markerLatitude
+    }
+
+    if(mapData.hasOwnProperty('markerLongitude')) {
+      options.markerLongitude = mapData.markerLongitude
+    }
+
+    if(mapData.hasOwnProperty('markerTitle')) {
+      options.markerTitle = mapData.markerTitle
+    }
+
+    return options
   }
 
   function applyMarkerData(data, options) {
@@ -249,48 +305,80 @@ $(document).bind('mapready', function(e) {
           mapInstance.setCenter({
             lat: parseFloat(data[0].post.coordinates.latitude),
             lng: parseFloat(data[0].post.coordinates.longitude)
-          });
+          })
 
-          mapInstance.setZoom(11);
+          mapInstance.setZoom(11)
         } else {
-          return;
+          return
         }
       }
     }
 
-    setMarkers(data, options);
+    setMarkers(data, options)
+  }
+
+  function setSingleOpenMarker(obj) {
+    mapInstance.setMarker({
+      position: {
+        lat: parseFloat(obj.coordinates.latitude),
+        lng: parseFloat(obj.coordinates.longitude)
+      },
+      content: obj.content
+    })
+
+    mapInstance.setZoom(11)
+
+    mapInstance.setCenter({
+      lat: parseFloat(obj.coordinates.latitude),
+      lng: parseFloat(obj.coordinates.longitude)
+    })
+
+    settings = mapInstance.getSettings()
+    marker = settings.google.markers[0]
+    marker.infowindow.open(settings.google.map, marker)
   }
 
   $('#show-map').on('click', function(e) {
-    e.preventDefault();
+    e.preventDefault()
 
-    $('.filter').addClass('hidden'); //Remove overlay filter
+    $('.filter').addClass('hidden') //Remove overlay filter
 
     //Get map options
-    var options = getMapOptions();
+    var options = getMapOptions()
     
     //Get marker data
     getMarkerData(options, function(data) {
-      applyMarkerData(data, options);
+      applyMarkerData(data, options)
     })
   })
 
   $('.showMyLocation').on('click', function(e) {
-    e.preventDefault();
-    zoomToUserLocation();
+    e.preventDefault()
+    zoomToUserLocation()
   })
 
   if($('#map').length > 0) {
-    var options = getMapOptions();
+    var options = getMapOptions()
 
-    if(options.init === true) {
-      var markerFilter = (options.hasOwnProperty('filter')) ? options.filter : false;
+    if('init' in options && options.init === true) {
+      if('markerLatitude' in options && 'markerLongitude' in options) {
+        //Map provides it's own coordinates
 
-      getMarkerData(options, function(data) {
-        applyMarkerData(data, options);
-      })
+        setSingleOpenMarker({
+          coordinates: {
+            latitude: options.markerLatitude,
+            longitude: options.markerLongitude
+          },
+          content: options.markerTitle
+        })
 
-      $('.filter').addClass('visible-xs'); //Remove overlay filter
+      } else {
+        getMarkerData(options, function(data) {
+          applyMarkerData(data, options)
+        })
+      }
+
+      $('.filter').addClass('visible-xs') //Remove overlay filter
     }
   }
 })

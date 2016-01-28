@@ -1880,6 +1880,9 @@ section {
 			background: rgba(255, 255, 255, 0.92);
 			color: #222;
 		}
+		&.transparent {
+			background: none;
+		}
 		img {
 			margin-bottom: 15px;
 		}
@@ -2292,7 +2295,7 @@ section {
     	&:last-child {
     		border-bottom: none;
     	}
-    	&:hover {
+    	&.ui-state-focus {
     		background: darken(@blue, 5%);
     	}
     }

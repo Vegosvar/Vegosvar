@@ -698,7 +698,7 @@ app.get('/ny/publicerad', function (req, res) {
 })
 
 app.get('/ny/:type', function (req, res) {
-  var mapResources = (req.params.type === 'restaurang' || req.params.type === 'butik') ? { autocomplete: true } : false
+  var mapResources = (req.params.type === 'restaurang' || req.params.type === 'butik') ? { autocomplete: true, map: true } : false
   res.render('post/'+req.params.type, {
     user: req.user,
     type: req.params.type,
@@ -728,14 +728,14 @@ app.get('/redigera/:url', function (req, res, next) {
             break
           case 3:
             page = 'restaurang'
-            mapResources = { autocomplete: true }
+            mapResources = { autocomplete: true, map: true }
             break
           case 4:
             page = 'produkt'
             break
           case 5:
             page = 'butik'
-            mapResources = { autocomplete: true }
+            mapResources = { autocomplete: true, map: true }
             break
           default:
             return next()

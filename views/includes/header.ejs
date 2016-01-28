@@ -112,7 +112,7 @@
   <% } %>
 
   <% if (typeof loadMapResources !== 'undefined') { %>
-  <script src="https://maps.googleapis.com/maps/api/js?libraries=places&language=sv_SE&callback=mapReady" async defer></script>
+  <script src="https://maps.googleapis.com/maps/api/js?libraries=places&region=SE&language=sv_SE&callback=mapReady" async defer></script>
   <script>function mapReady() { $(document).ready(function() { $(document).trigger('mapready') }) }</script>
     <% if (typeof loadMapResources.autocomplete !== 'undefined' && loadMapResources.autocomplete === true) { %>
       <script src="/includes/js/googlemaps/input.js"></script>
