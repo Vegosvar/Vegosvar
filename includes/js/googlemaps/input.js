@@ -172,9 +172,13 @@ function setStreetCoordinates(prediction) {
 
     //If the user changes to the same address in another city, update inputCity correspondingly
     if(inputCity.val() !== city) {
+        //Set bounds to new city
+        limitBounds(city)
+
         var originalColor = inputCity.css('color')
         inputCity.animate({ color: 'rgb(255, 255, 255)' }, 300)
         setTimeout(function() {
+            //Update inputCity value to the new city
             inputCity.val(city)
             inputCity.animate({ color: originalColor }, 300)
         }, 300)
