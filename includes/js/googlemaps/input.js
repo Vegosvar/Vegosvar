@@ -241,7 +241,9 @@ function limitBounds(location) {
 }
 
 function resetMap() {
-    mapInstance.setZoom(4)
+    settings = mapInstance.getSettings()
+    mapInstance.setZoom(3)
+    mapInstance.setCenter(settings.center)
 }
 
 function setMarker(obj) {
