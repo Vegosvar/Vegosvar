@@ -25,3 +25,16 @@
         </div>
     </div>
 </div>
+<div class="col-sm-6">
+    <h2>
+        <span class="glyphicon glyphicon-globe"></span>
+        Karta
+    </h2>
+    <div id="mapContainer" style="margin:0;height:200px;">
+        <% if(typeof(post) !== 'undefined' && typeof(post.post.coordinates) !== 'undefined') { %>
+            <div id="map" data-map-init="true" data-marker-latitude="<%= post.post.coordinates.latitude %>" data-marker-longitude=<%= post.post.coordinates.longitude %> data-marker-title="<%= post.post.street %>"></div>
+        <% } else { %>
+            <div id="map"></div>
+        <% } %>
+    </div>
+</div>
