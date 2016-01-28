@@ -180,7 +180,7 @@ function setStreetCoordinates(prediction) {
         setTimeout(function() {
             //Update inputCity value to the new city
             inputCity.val(city)
-            inputCity.animate({ color: originalColor }, 300)
+            inputCity.animate({ color: '#222' }, 300)
         }, 300)
     }
     
