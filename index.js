@@ -991,8 +991,9 @@ app.post('/submit', urlencodedParser, function (req, res) {
           id: cover_image_id,
           filename: cover_image_filename
         }
-      },
-      user_info: {
+      }, rating: {
+        likes: 0
+      }, user_info: {
         id: req.user._id,
         hidden: hidden
       }
@@ -1017,8 +1018,11 @@ app.post('/submit', urlencodedParser, function (req, res) {
           id: cover_image_id,
           filename: cover_image_filename
         }
-      },
-      user_info: {
+      }, rating: {
+        likes: 0,
+        votes: 0,
+        votes_sum: 0
+      }, user_info: {
         id: req.user._id,
         hidden: hidden
       }
@@ -1058,13 +1062,15 @@ app.post('/submit', urlencodedParser, function (req, res) {
           friday: req.body.friday,
           saturday: req.body.saturday,
           sunday: req.body.sunday
-        },
-        cover: {
+        }, cover: {
           id: cover_image_id,
           filename: cover_image_filename
         },
-      },
-      user_info: {
+      }, rating: {
+          likes: 0,
+          votes: 0,
+          votes_sum: 0
+      }, user_info: {
         id: req.user._id,
         hidden: hidden
       }
@@ -1093,8 +1099,11 @@ app.post('/submit', urlencodedParser, function (req, res) {
           id: cover_image_id,
           filename: cover_image_filename
         }
-      },
-      user_info: {
+      }, rating: {
+        likes: 0,
+        votes: 0,
+        votes_sum: 0
+      }, user_info: {
         id: req.user._id,
         hidden: hidden
       }
@@ -1135,8 +1144,11 @@ app.post('/submit', urlencodedParser, function (req, res) {
           id: cover_image_id,
           filename: cover_image_filename
         }
-      },
-      user_info: {
+      }, rating: {
+        likes: 0,
+        votes: 0,
+        votes_sum: 0
+      }, user_info: {
         id: req.user._id,
         hidden: hidden
       }
