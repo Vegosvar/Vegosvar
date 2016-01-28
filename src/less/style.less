@@ -619,7 +619,7 @@ input[type=checkbox], input[type=radio] {
 				padding: 5px 0;
 				img {
 					display: none;
-					z-index: 1;
+					z-index: 9;
 					position: absolute;
 					opacity: 0;
 					top: -25px;
@@ -997,6 +997,73 @@ nav {
 	to { transform: none; }
 }
 
+#like {
+	position: absolute;
+	z-index: 1;
+	right: 25px;
+	top: 10px;
+	&.xs {
+		right: 5px;
+		top: 5px;
+		.like {
+			padding: 1px 8px 2px 7px;
+			.glyphicon {
+				font-size: 11px;
+			}
+			.count {
+				margin-left: 0px;
+				font-size: 13px;
+			}
+		}
+	}
+	@media (max-width: @xs) {
+		right: 10px;
+	}
+	.hint {
+		opacity: 0.95;
+		position: absolute;
+		left: -250px;
+		border-radius: 3px;
+		background: #fff;
+		padding: 5px 10px;
+		opacity: 0;
+		transition: opacity .1s;
+		&.active {
+			opacity: 1;
+			animation: popup .3s forwards;
+		}
+	}
+	.like {
+		cursor: pointer;
+		display: inline-block;
+		border-radius: 3px;
+		background: @red;
+		color: #fff;
+		padding: 5px 10px;
+		user-select: none;
+		&:hover {
+			background: darken(@red, 3%);
+		}
+		&:active {
+			background: darken(@red, 8%);
+		}
+		.glyphicon {
+			font-size: 13px;
+			&.glyphicon-heart {
+				animation: heartbeat .5s forwards;
+			}
+		}
+		.count {
+			display: inline-block;
+			margin-left: 2px;
+			border-radius: 30px;
+			line-height: 1;
+			font-size: 15px;
+			font-weight: 600;
+		}
+	}
+}
+
 article {
 	padding: 50px 30px;
 	background: #fff;
@@ -1038,58 +1105,6 @@ article {
 			a {
 				color: #fff;
 				color: rgba(255, 255, 255, 0.9);
-			}
-		}
-	}
-	#like {
-		position: absolute;
-		z-index: 1;
-		right: 25px;
-		top: 10px;
-		@media (max-width: @xs) {
-			right: 10px;
-		}
-		.hint {
-			opacity: 0.95;
-			position: absolute;
-			left: -250px;
-			border-radius: 3px;
-			background: #fff;
-			padding: 5px 10px;
-			opacity: 0;
-			transition: opacity .1s;
-			&.active {
-				opacity: 1;
-				animation: popup .3s forwards;
-			}
-		}
-		.like {
-			cursor: pointer;
-			display: inline-block;
-			border-radius: 3px;
-			background: @red;
-			color: #fff;
-			padding: 5px 10px;
-			user-select: none;
-			&:hover {
-				background: darken(@red, 3%);
-			}
-			&:active {
-				background: darken(@red, 8%);
-			}
-			.glyphicon {
-				font-size: 13px;
-				&.glyphicon-heart {
-					animation: heartbeat .5s forwards;
-				}
-			}
-			.count {
-				display: inline-block;
-				margin-left: 2px;
-				border-radius: 30px;
-				line-height: 1;
-				font-size: 15px;
-				font-weight: 600;
 			}
 		}
 	}
