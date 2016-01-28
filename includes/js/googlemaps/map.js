@@ -136,18 +136,55 @@ $(document).bind('mapready', function(e) {
             break
         }
 
-        var entryContent = '<div class="infowindow-container">'
-        entryContent += '<div class="infowindow-header">'
-        entryContent += '<div class="infowindow-image">'
-        entryContent += '<img src="/uploads/' + entry.post.cover.filename + '.jpg">'
-        entryContent += '</div>'
-        entryContent +='<div class="infowindow-title"><a href="' + entry.url + '">' + entry.title + '</a></div>'
-        entryContent += '<div class="infowindow-stars-container"><div class="star">5 <span class="glyphicon glyphicon-star"></span></div></div>' //TODO add actual rating
-        entryContent += '</div>' // /.infowindow-header
-        entryContent += '<div class="infowindow-content">'
-        entryContent += (entry.post.content.length > 90) ? entry.post.content.substr(0, 90) + '...' : entry.post.content
-        entryContent += '</div>' // /.infowindow-content
-        entryContent += '</div>' // /.infowindow-container
+        var infoWindowContent = function(entry) {
+          var content = (entry.post.content.length > 90) ? entry.post.content.substr(0, 90) + '...' : entry.post.content
+          return $('<div>', {
+            class: 'infowindow-content'
+          })
+          .html(content)
+        }
+
+        var entryContent = $('<div>', {
+          class: 'infowindow-container'
+        })
+        .append(
+          $('<div>', {
+            class: 'infowindow-header'
+          })
+          .append(
+            $('<div>', {
+              class: 'infowindow-image'
+            })
+            .append(
+              $('<img>', {
+                src: '/uploads/' + entry.post.cover.filename + '.jpg'
+              })
+            ),
+            $('<div>', {
+              class: 'infowindow-title'
+            })
+            .append(
+              $('<a>', {
+                href: entry.url
+              })
+              .html(entry.title)
+            ),
+            $('<div>', {
+              class: 'infowindow-stars-container'
+            })
+            .append(
+              $('<div>', {
+                class: 'star'
+              })
+              .append(
+                $('<span>', {
+                  class: 'glyphicon glyphicon-star'
+                })
+              )
+            )
+          ),
+          infoWindowContent(entry)
+        )
 
         mapInstance.setMarker({
           position: {
@@ -155,7 +192,7 @@ $(document).bind('mapready', function(e) {
             lng: parseFloat(entry.post.coordinates.longitude)
           },
           title: entry.title,
-          content: entryContent,
+          content: entryContent.html(),
           icon: {
             url: iconUrl,
             size: new google.maps.Size(32, 32)
