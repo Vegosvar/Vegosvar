@@ -4,6 +4,7 @@ var del = require('del')
 var run_sequence = require('run-sequence')
 var util = require('util')
 var path = require('path')
+var config = require('./config')
 
 // TODO svg2png, favicons, etc. Look at Köttet!
 // TODO Unit tests!
@@ -112,9 +113,12 @@ gulp.task('watch', function () {
 gulp.task('serve', function () {
     var server = plugins.liveServer('index.js')
     server.start()
-    setTimeout(function () {
-      require('open')('http://local.vegosvar.se:8080')
-    }, 1000)
+
+    if( ! ('headless' in config) ) {
+      setTimeout(function () {
+        require('open')('http://local.vegosvar.se:8080')
+      }, 1000)
+    }
 
     gulp.watch(['views/**/*.ejs', 'views/**/*.html', 'public/**/*'], function () {
       server.notify.apply(server, arguments)
