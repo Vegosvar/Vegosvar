@@ -506,22 +506,52 @@ app.get('/ajax/map', function (req, res) {
   })
 })
 
+app.get('/ajax/admin/user/:user_id', function (req, res) {
+  var database = db.instance()
+  var usersdb = database.collection('users')
+
+  var user_id = req.params.user_id
+
+  usersdb.find({_id : new ObjectID(user_id)}).toArray(function(err, user) {
+    if(err) throw err
+    res.send(user[0])
+  })
+})
+
 app.get('/ajax/admin/block/:user_id', function (req, res) {
   var database = db.instance()
   var usersdb = database.collection('users')
 
   var user_id = req.params.user_id
 
-  usersdb.update(
-    {
+  usersdb.update({
       _id : new ObjectID(user_id)
     }, {
       $set: {
-       "info.blocked":true,
+       "info.blocked": true,
      }
     }, function(err, status) {
       if(err) throw err
-      console.log(status)
+      res.json(status)
+    }
+  )
+})
+
+app.get('/ajax/admin/unblock/:user_id', function (req, res) {
+  var database = db.instance()
+  var usersdb = database.collection('users')
+
+  var user_id = req.params.user_id
+
+  usersdb.update({
+      _id : new ObjectID(user_id)
+    }, {
+      $set: {
+       "info.blocked": false,
+     }
+    }, function(err, status) {
+      if(err) throw err
+      res.json(status)
     }
   )
 })
@@ -907,6 +937,12 @@ app.get('/ajax/revision/compare/:page_id/:revision_number', function (req, res, 
 
       var loop = (contentNow.length > contentUpdated.length) ? contentNow : contentUpdated
 
+      /* TODO: loop over contentNow and in that loop compare contentNow[i] inside another loop against contentUpdated[i],
+        if both array's string matches and the [i] is the same, show muted,
+        if contentUpdated string matches a string in contentNow and [i] is different, show warning,
+        if contentUpdated is not matched and [i] is >= contentNow.length show success,
+        if contentNow string is not matched and [i] exists within contentUpdated, show danger,
+      */
       var diffs = []
       for (var i = 0; i < loop.length; i++) {
         if(i < contentNow.length && i < contentUpdated.length) {
