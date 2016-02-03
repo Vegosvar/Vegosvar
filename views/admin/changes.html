@@ -1,0 +1,30 @@
+<% include ../includes/header %>
+    <!-- Ch-ch-ch-ch-changes! -->
+    <div class="container">
+        <section id="main">
+            <div class="row">
+                <div class="col-md-12">
+                    <article>
+                        <h1 class="no-margin-top">Nya och uppdaterade sidor</h1>
+                        <div class="list-group">
+                          <% if(typeof(changes) !== 'undefined') {
+                            if(changes.length > 0) {
+                                for(i=0;i < changes.length;i++) { %>
+                                  <div class="list-group-item">
+                                    <a href="/revisioner/<%= changes[i].url %>"><%= changes[i].title %></a>
+                                    <span class="date_updated"><%= changes[i].updated %></span>
+                                    <span class="date_created"><%= changes[i].created %></span>
+                                  </div>
+                                <% }
+                              } else { %>
+                                <h3>Alla sidor är modererade!</h3>
+                              <% }
+                          } %>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </div>
+
+<% include ../includes/footer %>
