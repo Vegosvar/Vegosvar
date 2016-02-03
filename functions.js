@@ -24,12 +24,20 @@ module.exports = {
         + pad(d.getUTCSeconds())+'Z'
 	},
 	getPrettyDate: function(date) {
+    if( ! (date instanceof Date) ) {
+      date = new Date(date)
+    }
+
 		var yyyy = date.getUTCFullYear().toString()
 		var mm = (date.getUTCMonth()()+1).toString()
 		var dd  = date.getUTCDate().toString()
 		return yyyy + '-' + (mm[1]?mm:"0"+mm[0]) + '-' + (dd[1]?dd:"0"+dd[0])
 	},
   getPrettyDateTime: function(date) {
+    if( ! (date instanceof Date) ) {
+      date = new Date(date)
+    }
+
     year = "" + date.getUTCFullYear();
     month = "" + (date.getUTCMonth() + 1); if (month.length == 1) { month = "0" + month; }
     day = "" + date.getUTCDate(); if (day.length == 1) { day = "0" + day; }
