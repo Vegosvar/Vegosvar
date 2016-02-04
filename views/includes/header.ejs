@@ -142,7 +142,6 @@
   <% if (settings.env === 'development') { %>
     <script src="//localhost:35729/livereload.js"></script>
   <% } %>
-</head>
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -154,6 +153,7 @@
   ga('send', 'pageview');
 </script>
 
+</head>
 <body>
   
   <div id="fb-root"></div>
@@ -175,7 +175,7 @@
         <div class="row">
           <% if (typeof startpage === 'undefined') { %>
             <div class="col-xs-12 col-sm-4 center-xs logo">
-              <a href="/"><img src="/assets/images/vegosvar.svg"></a>
+              <a href="/"><img alt="" src="/assets/images/vegosvar.svg"></a>
             </div>
 						<div class="col-xs-12 col-sm-8 hidden-xs">
 							<form class="search" action="/" method="get" role="search" _lpchecked="1">
@@ -184,7 +184,7 @@
 						</div>
           <% } else { %>
             <div class="col-xs-12 col-sm-4 center-xs logo startpage">
-              <a href="/"><img src="/assets/images/vegosvar.svg"></a>
+              <a href="/"><img alt="" src="/assets/images/vegosvar.svg"></a>
             </div>
 					<% } %>
 				</div>
@@ -265,7 +265,7 @@
                 Mitt konto
                 <span class="glyphicon glyphicon-triangle-bottom"></span>
               </span>
-              <img src="<%= user.photo %>">
+              <img alt="<%= user.name.display_name %>" src="<%= user.photo %>">
             </a>
             <ul class="dropdown-menu">
               <li><a href="/installningar">Inställningar</a></li>
@@ -358,7 +358,7 @@
           <a class="toggle-dropdown"><span class="glyphicon glyphicon-user"></span>Logga in</a>
           <ul class="dropdown">
             <li class="title">
-              <div><img src="/assets/images/no-picture.svg"></div>
+              <div><img alt="" src="/assets/images/no-picture.svg"></div>
               Konto
             </li>
             <li><a href="/auth/facebook">Logga in via Facebook</a>
@@ -373,7 +373,7 @@
           <a class="toggle-dropdown"><span class="glyphicon glyphicon-user"></span>Konto</a>
           <ul class="dropdown">
             <li class="title">
-              <div><img src="<%= user.photo %>"></div>
+              <div><img alt="" src="<%= user.photo %>"></div>
               <%= user.name.display_name %>
             </li>
             <li><a href="/ny">Skapa sida</a></li>

@@ -67,10 +67,20 @@ $(document).ready(function () {
 
   function setSearchFormState() {
     if ($('.searchForm').val() === '') {
-      $('#searchForm-btn-default').html('<i class="glyphicon glyphicon-search"></i>')
+      $('#searchForm-btn-default').html(
+        $('<i>', {
+          class: 'glyphicon glyphicon-search'
+        })
+      )
       $('#results').hide()
     } else {
-      $('#searchForm-btn-default').html('<img src="/assets/images/loading.svg" class="loading">')
+      $('#searchForm-btn-default').html(
+        $('<img>', {
+          alt: 'Laddar...',
+          src: '/assets/images/loading.svg',
+          class: 'loading'
+        })
+      )
     }
   }
 
