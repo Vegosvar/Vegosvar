@@ -47,7 +47,6 @@ function pagesPerMonth(obj) {
       area: {
         stacking: (obj.stacking) ? 'normal' : null,
         fillOpacity: 0.5,
-        stacking: 'percent',
         lineColor: '#ffffff',
         lineWidth: 1,
         marker: {
@@ -57,7 +56,7 @@ function pagesPerMonth(obj) {
       }
     },
     tooltip: {
-      shared: false,
+      shared: (obj.type !== 'area') ? false : true,
       valueSuffix: ' sidor'
     },
     legend: {
