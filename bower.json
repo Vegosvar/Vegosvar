@@ -35,7 +35,8 @@
         "bower_components/wysihtml/dist/wysihtml.min.js",
         "bower_components/wysihtml/dist/wysihtml-toolbar.min.js"
       ],
-      "markerclustererplus": "bower_components/markerclustererplus/dist/markerclusterer.min.js"
+      "markerclustererplus": "bower_components/markerclustererplus/dist/markerclusterer.min.js",
+      "highcharts": "bower_components/highcharts/highcharts.js"
     }
   }
 }
