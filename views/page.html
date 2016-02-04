@@ -216,7 +216,7 @@
                         </div>
                         <div class="filter">
                           <div class="vertical-center">
-                            <img src="/assets/images/map-icon.svg" style="width: 60px;">
+                            <img alt="" src="/assets/images/map-icon.svg" style="width: 60px;">
                             <h2><%= post.post.city %></h2>
                             <h3><%= post.post.street %></h3>
                             <div><a href="#" id="show-map" class="btn btn-hero">
@@ -330,6 +330,7 @@
                 <% } %>
               <% } %>
 
+            </div>
             <div class="row">
               <div class="col-sm-12">
                   <% if (typeof post.post.sources !== 'undefined') { %>
@@ -365,7 +366,7 @@
 
                     <% if (typeof post.user_info.hidden !== true && post.user_info.hidden == "") { %>
                       <div class="col-xs-3 col-xs-offset-0 col-sm-3 col-sm-offset-0 col-md-4 col-lg-3 avatar">
-                        <a href="#"><img src="<%= user_info.photo %>" class="avatar circle"></a>
+                        <a href="#"><img alt="" src="<%= user_info.photo %>" class="avatar circle"></a>
                       </div>
 
                       <div class="col-xs-9 col-sm-9 col-md-8 col-lg-9 info">
@@ -383,7 +384,7 @@
                       </div>
                     <% } else { %>
                       <div class="col-xs-3 col-xs-offset-0 col-sm-3 col-sm-offset-0 col-md-4 col-lg-3 avatar">
-                        <a href="#"><img src="/assets/images/no-picture.svg" class="avatar circle"></a>
+                        <a href="#"><img alt="" src="/assets/images/no-picture.svg" class="avatar circle"></a>
                       </div>
 
                       <div class="col-xs-9 col-sm-9 col-md-8 col-lg-9 info">
@@ -457,14 +458,14 @@
           <% if (post.type === '3' || post.type === '5') { %>
             <div id="instagram">
               <div class="images">
-                <img src="/uploads/bb404720a4e134c.jpg">
-                <img src="/uploads/aec7af9782f.jpg">
-                <img src="/uploads/063abb8cd89cb1353be4ec46f.jpg">
-                <img src="/uploads/bb404720a4e134c.jpg">
-                <img src="/uploads/aec7af9782f.jpg">
-                <img src="/uploads/aec7af9782f.jpg">
-                <img src="/uploads/063abb8cd89cb1353be4ec46f.jpg">
-                <img src="/uploads/bb404720a4e134c.jpg">
+                <img alt="" src="/uploads/bb404720a4e134c.jpg">
+                <img alt="" src="/uploads/aec7af9782f.jpg">
+                <img alt="" src="/uploads/063abb8cd89cb1353be4ec46f.jpg">
+                <img alt="" src="/uploads/bb404720a4e134c.jpg">
+                <img alt="" src="/uploads/aec7af9782f.jpg">
+                <img alt="" src="/uploads/aec7af9782f.jpg">
+                <img alt="" src="/uploads/063abb8cd89cb1353be4ec46f.jpg">
+                <img alt="" src="/uploads/bb404720a4e134c.jpg">
               </div>
               <small><p>Checka in på <%= post.title %> nästa gång du postar på <a href="https://instagram.com" target="_blank">Instagram</a> så delas dina bilder här.</p></small>
             </div>
@@ -482,7 +483,7 @@
                     <a href="<%= establishments[i].url %>" class="item">
                       <%= establishments[i].title %>
                       <% if (typeof establishments[i].post.cover !== 'undefined' && establishments[i].post.cover.filename !== null) { %>
-                        <img src="/uploads/<%= establishments[i].post.cover.filename %>_thumb.jpg">
+                        <img alt="" src="/uploads/<%= establishments[i].post.cover.filename %>_thumb.jpg">
                       <% } %>
                     </a>
                   </li>
@@ -501,7 +502,7 @@
               <div id="map" data-map-filter="restaurant" data-map-cluster="true" class="sidebar"></div>
               <div class="filter">
                 <div class="vertical-center">
-                  <img src="/assets/images/map-icon.svg" style="width: 60px;"> 
+                  <img alt="" src="/assets/images/map-icon.svg" style="width: 60px;"> 
                   <h2>Veganskt käk nära dig</h2>
                   <h3>Restauranger & butiker</h3>
                   <a href="#" id="show-map" class="btn btn-hero">
@@ -515,7 +516,7 @@
 
           <div class="card lg text-center">
             <div class="headerImage">
-              <img src="/assets/images/pages.svg">
+              <img alt="" src="/assets/images/pages.svg">
             </div>
             <h2>Skapa en sida</h2>
             <p>Skapa egna sidor på Vegosvar. Det kan vara allt ifrån fakta, restauranger, butiker, produkter och recept.</p>
