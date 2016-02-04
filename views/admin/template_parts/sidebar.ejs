@@ -14,7 +14,7 @@
                     <li class="list-group-item <% if(typeof page !== 'undefined' && page === 'changes') { %> active <% } %>">
                       <a href="/admin/changes">
                       	<span class="glyphicon glyphicon-time"></span> 
-                      	Revisioner <%= (revisions > 0) ? '(' + revisions + ')' : '' %>
+                      	Revisioner <%= (typeof revisions !== 'undefined' && revisions > 0)  ? '(' + revisions + ')' : '' %>
                       </a>
                     </li>
                   </ul>

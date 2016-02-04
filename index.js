@@ -749,10 +749,14 @@ app.get('/admin', function (req, res) {
 app.get('/admin/users', function (req, res) {
   var dbinstance = db.instance()
   var usersdb = dbinstance.collection('users')
+  var revisionsdb = dbinstance.collection('revisions')
 
   usersdb.find({}).toArray(function(err, users) {
     if (err) throw err
-    res.render('admin/users', { user: req.user, page: 'users', users: users })
+    revisionsdb.count({pending: { $gt: 0 } }, function(err, revisions) {
+      if (err) throw err
+      res.render('admin/users', { user: req.user, page: 'users', users: users, revisions: revisions })
+    })
   })
 })
 
@@ -798,10 +802,10 @@ app.get('/admin/changes', function (req, res) {
           }
         }
 
-        res.render('admin/changes', { user: req.user,  page: 'changes', changes: changes })
+        res.render('admin/changes', { user: req.user,  page: 'changes', changes: changes, revisions: revisions.length })
       })
     } else {
-      res.render('admin/changes', { user: req.user,  page: 'changes', changes: changes })
+      res.render('admin/changes', { user: req.user,  page: 'changes', changes: changes, revisions: revisions.length })
     }
   })
 })
@@ -810,6 +814,8 @@ app.get('/admin/profil/:user_id', function (req, res) {
   var dbinstance = db.instance()
   var usersdb = dbinstance.collection('users')
   var pagesdb = dbinstance.collection('pages')
+  var revisionsdb = dbinstance.collection('revisions')
+
   var user_id = req.params.user_id
 
   usersdb.find({_id: new ObjectID(user_id) }).toArray(function(err, user) {
@@ -817,7 +823,10 @@ app.get('/admin/profil/:user_id', function (req, res) {
 
     user = user[0]
     pagesdb.find( { "user_info.id": new ObjectID(user_id) }).toArray(function(err, pages) {
-      res.render('admin/profil', { user: req.user, current_user: user, page: 'users', pages: pages })
+      revisionsdb.count({pending: { $gt: 0 } }, function(err, revisions) {
+        if (err) throw err
+        res.render('admin/profil', { user: req.user, current_user: user, page: 'users', pages: pages, revisions: revisions })
+      })
     })
   })
 })
