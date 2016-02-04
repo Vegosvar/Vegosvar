@@ -210,8 +210,10 @@ $(document).ready(function () {
           var entryRating = function (entry) {
             var rating = (entry.hasOwnProperty('rating') ? (entry.rating.hasOwnProperty('votes_sum') ? entry.rating.votes_sum : false) : false)
             return $('<div>', {
-              class: 'stars',
-              id: entry._id
+              class: 'stars'
+            })
+            .attr({
+              'data-id': entry._id
             })
             .append(
               $.map(new Array(5), function (item, index) {
