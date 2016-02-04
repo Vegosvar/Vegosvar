@@ -176,7 +176,52 @@ function verifyPageRevision(page) {
             if (err) throw err
             if(doc.length <= 0) {
                 insertPageRevision(page)
+            } else {
+                for(i = 0; i < doc.length; i++) {
+                    var current = doc[i]
+                    var properties = {
+                        post_id: function() {
+                            return { post_id: null }
+                        },
+                        revision: function() {
+                            return { revision: Math.floor(Date.now() / 1000) }
+                        },
+                        revisions: function() {
+                            return { revision: {} }
+                        },
+                        modified: function() {
+                            return { modified: new Date() }
+                        },
+                        pending: function() {
+                            return { pending: 0 }
+                        }
+                    }
+
+                    for(var property in properties) {
+                        if( property in current ) {
+                            console.log('Verified property ' + property + ' of revision: ' + current._id)
+                        } else {
+                            //Update revision document with given property
+                            var update = properties[property]()
+                            updatePageRevisionProperty(current._id, update )
+                        }
+                    }
+                }
             }
+
+            db.close()
+        })
+    })
+}
+
+function updatePageRevisionProperty(id, object) {
+    client.connect(config.database.host+config.database.name, function(err, db){
+        if (err) throw err
+
+        db.collection('revisions').update({_id:id},{ $set: object }, function(err, result) {
+            if (err) throw err
+
+            console.log('Updated property ' + Object.keys(object) + ' for revision: ' + id)
 
             db.close()
         })
@@ -190,6 +235,8 @@ function insertPageRevision(page) {
         var timestamp = ( new Date(page.timestamp.created) / 1000 ) //Unix timestamp
         var revision = {
             post_id: page._id,
+            pending: 0,
+            modified: "2016-02-03T22:22:12Z",
             revision: timestamp,
             revisions: {}
         }
