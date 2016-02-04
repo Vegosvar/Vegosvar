@@ -689,15 +689,15 @@ app.get('/mina-sidor', function (req, res) {
 })
 
 app.get('/admin', function (req, res) {
-  res.render('admin/index', { user: req.user })
+  res.render('admin/index', { user: req.user, page: 'index' })
 })
 
-app.get('/admin/blockera', function (req, res) {
+app.get('/admin/users', function (req, res) {
   var dbinstance = db.instance()
   var usersdb = dbinstance.collection('users')
 
   usersdb.find({}).toArray(function(err, users) {
-    res.render('admin/block', { user: req.user, users: users })
+    res.render('admin/users', { user: req.user, page: 'users', users: users })
   })
 })
 
@@ -739,10 +739,10 @@ app.get('/admin/changes', function (req, res) {
           }
         }
 
-        res.render('admin/changes', { user: req.user, changes: changes })
+        res.render('admin/changes', { user: req.user,  page: 'changes', changes: changes })
       })
     } else {
-      res.render('admin/changes', { user: req.user, changes: changes })
+      res.render('admin/changes', { user: req.user,  page: 'changes', changes: changes })
     }
   })
 })
