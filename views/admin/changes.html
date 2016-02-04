@@ -20,6 +20,8 @@
                             <th>
                               Skapad
                             </th>
+                            <th>
+                            </th>
                           </thead>
                           <% if(typeof(changes) !== 'undefined') {
                             if(changes.length > 0) {
@@ -33,6 +35,9 @@
                                     </td>
                                     <td>
                                       <span class="date_created"><%= changes[i].created %></span>
+                                    </td>
+                                    <td>
+                                      <span class="label label-success">Ny</span>
                                     </td>
                                   </tr>
                                 <% }
