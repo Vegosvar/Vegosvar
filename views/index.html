@@ -125,7 +125,7 @@
 						<% for (var i=0; i < pages.length; i++) {%>
 						<div class="col-sm-4 col-md-6 col-lg-4">
 							<div class="result">
-								<% if (typeof pages[i].post.cover !== 'undefined' && pages[i].post.cover.filename !== null) { %>
+								<% if (typeof pages[i].post.cover !== 'undefined' && pages[i].post.cover.filename !== null && pages[i].post.cover.filename.length > 0) { %>
 								<a href="/<%= pages[i].url %>">
 									<div class="image" style="background-image: url(/uploads/<%= pages[i].post.cover.filename %>_thumb.jpg)"></div>
 								</a>

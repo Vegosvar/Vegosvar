@@ -120,8 +120,9 @@ $(document).ready(function () {
           $('#results').show()
 
           var entryImage = function (entry) {
-            var image = entry.post.cover.filename !== null ? '/uploads/' + entry.post.cover.filename + '_thumb.jpg'
-              : 'assets/images/placeholder-' + entry.type + '.svg'
+            var cover = entry.post.cover.filename
+            var image = cover !== null && cover.length > 0 ? '/uploads/' + cover + '_thumb.jpg'
+              : '/assets/images/placeholder-' + entry.type + '.svg'
             var imageSrc = 'background-image: url(' + image + ')'
 
             var entryImage = $('<a>', {
