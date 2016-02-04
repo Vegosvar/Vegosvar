@@ -791,7 +791,7 @@ app.get('/admin/profil/:user_id', function (req, res) {
 
     user = user[0]
     pagesdb.find( { "user_info.id": new ObjectID(user_id) }).toArray(function(err, pages) {
-      res.render('admin/profil', { user: req.user, current_user: user, pages: pages })
+      res.render('admin/profil', { user: req.user, current_user: user, page: 'users', pages: pages })
     })
   })
 })
