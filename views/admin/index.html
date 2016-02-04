@@ -1,5 +1,10 @@
 <% include ../includes/header %>
 
+<script src="/includes/js/highcharts/highcharts.js"></script>
+<script src="includes/js/admin/highcharts.js"></script>
+<script src="includes/js/admin/overview.js"></script>
+<script type="text/javascript">var pages_stats = <%- JSON.stringify(pages_stats) %></script>
+
     <div class="container">
         <section id="main">
 
@@ -15,6 +20,8 @@
                         </p>
                         <p class="statistics">
                             <div><%= pages_this_week %> nya sidor den här veckan</div>
+                            <h3>Statistik</h3>
+                            <div class="stats-container" style="height:400px"></div>
                         </p>
                         <p><a href="#" class="btn btn-warning"><%= revisions %> sidor väntar på granskning</a></p>
                     </article>
