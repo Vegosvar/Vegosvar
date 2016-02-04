@@ -689,7 +689,22 @@ app.get('/mina-sidor', function (req, res) {
 })
 
 app.get('/admin', function (req, res) {
-  res.render('admin/index', { user: req.user, page: 'index' })
+  var dbinstance = db.instance()
+  var usersdb = dbinstance.collection('users')
+  var pagesdb = dbinstance.collection('pages')
+  var revisionsdb = dbinstance.collection('revisions')
+
+  usersdb.count({}, function(err, users) {
+    if (err) throw err
+
+    pagesdb.count({}, function(err, pages) {
+      if (err) throw err
+
+      revisionsdb.count({pending: { $gt: 0 } }, function(err, revisions) {
+        res.render('admin/index', { user: req.user, page: 'index', users: users, pages: pages, revisions: revisions })
+      })
+    })
+  })
 })
 
 app.get('/admin/users', function (req, res) {
@@ -697,6 +712,7 @@ app.get('/admin/users', function (req, res) {
   var usersdb = dbinstance.collection('users')
 
   usersdb.find({}).toArray(function(err, users) {
+    if (err) throw err
     res.render('admin/users', { user: req.user, page: 'users', users: users })
   })
 })
@@ -707,9 +723,12 @@ app.get('/admin/changes', function (req, res) {
   var pagesdb = dbinstance.collection('pages')
 
   revisionsdb.find({pending: { $gt: 0 } }).toArray(function(err, revisions) {
+    if (err) throw err
+
     var updated = []
     var changes = []
     var revisionIds = []
+
     if(revisions.length > 0) {
       for (var i = 0; i < revisions.length; i++) {
         updated.push(new ObjectID(revisions[i].post_id))
@@ -717,6 +736,7 @@ app.get('/admin/changes', function (req, res) {
       }
 
       pagesdb.find({_id: { $in: updated}}).toArray(function(err, pages) {
+        if (err) throw err
 
         if(pages.length > 0) {
           for (var i = 0; i < pages.length; i++) {
@@ -754,6 +774,8 @@ app.get('/admin/profil/:user_id', function (req, res) {
   var user_id = req.params.user_id
 
   usersdb.find({_id: new ObjectID(user_id) }).toArray(function(err, user) {
+    if (err) throw err
+
     user = user[0]
     pagesdb.find( { "user_info.id": new ObjectID(user_id) }).toArray(function(err, pages) {
       res.render('admin/profil', { user: req.user, current_user: user, pages: pages })
