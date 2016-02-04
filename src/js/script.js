@@ -149,7 +149,7 @@ $(document).ready(function () {
           var entryDescription = function (entry) {
             var description = $('<p>')
             if (entry.type === '4') {
-              veg_type = entry.post.veg_type
+              var veg_type = entry.post.veg_type
 
               //TODO this info needs to be updated
               var veg_types = {
@@ -221,6 +221,44 @@ $(document).ready(function () {
             )
           }
 
+          var entryLikes = function (entry) {
+            var likes = (entry.hasOwnProperty('rating')) ? (entry.rating.hasOwnProperty('likes') ? entry.rating.likes : false) : false
+
+            if (likes) {
+              return $('<div>', {
+                id: 'like',
+                class: 'like-container xs'
+              })
+              .append(
+                $('<div>', {
+                  class: 'hint'
+                })
+                .append(
+                  $('<a>', {
+                    href: '/logga-in'
+                  })
+                  .text('Logga in'),
+                  $('<span>')
+                  .html('&nbsp;p&aring; Vegosvar f&ouml;r att gilla')
+                ),
+                $('<span>', {
+                  id: entry._id,
+                  class: 'like add-like'
+                })
+                .append(
+                  $('<span>', {
+                    id: 'heart-glyphicon',
+                    class: 'glyphicon glyphicon-heart'
+                  }),
+                  $('<span>', {
+                    class: 'count'
+                  })
+                  .html('&nbsp;' + likes)
+                )
+              )
+            }
+          }
+
           var createEntry = function (entry) {
             return $('<div>', {
               class: 'col-sm-6 col-md-4 col-lg-3',
@@ -232,6 +270,7 @@ $(document).ready(function () {
               })
               .append(
                 entryImage(entry),
+                entryLikes(entry),
                 $('<div>', {
                   class: 'content'
                 })
