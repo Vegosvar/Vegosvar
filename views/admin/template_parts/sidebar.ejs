@@ -1,7 +1,7 @@
                   <ul class="list-group">
                     <li class="list-group-item list-group-head <% if(typeof page !== 'undefined' && page === 'index') { %> active <% } %>">
                       <a href="/admin">
-                      	<span class="glyphicon glyphicon-sunglasses"></span> 
+                      	<span class="glyphicon glyphicon-dashboard"></span> 
                       	Översikt
                       </a>
                     </li>
@@ -14,7 +14,7 @@
                     <li class="list-group-item <% if(typeof page !== 'undefined' && page === 'changes') { %> active <% } %>">
                       <a href="/admin/changes">
                       	<span class="glyphicon glyphicon-time"></span> 
-                      	Revisioner
+                      	Revisioner <%= (revisions > 0) ? '(' + revisions + ')' : '' %>
                       </a>
                     </li>
                   </ul>
