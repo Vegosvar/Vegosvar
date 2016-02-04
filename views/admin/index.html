@@ -1,7 +1,7 @@
 <% include ../includes/header %>
 
-<script src="/includes/js/highcharts/highcharts.js"></script>
-<script src="includes/js/admin/highcharts.js"></script>
+<script src="https://github.highcharts.com/highcharts.src.js"></script>
+<!-- Replace above script with this when > 4.2.2 is released <script src="/includes/js/highcharts/highcharts.js"></script> -->
 <script src="includes/js/admin/overview.js"></script>
 <script type="text/javascript">var pages_stats = <%- JSON.stringify(pages_stats) %></script>
 
@@ -16,14 +16,48 @@
                     <article>
                         <h1 class="no-margin-top">Översikt</h1>
                         <p class="preamble">
-                            <div>Totalt finns det <strong><%= pages_total %> sidor</strong> och <strong><%= users %> användare</strong></div>
+                            <div class="alert alert-primary">
+                                <span>
+                                    <span class="glyphicon glyphicon-ok"></span>
+                                    <%= pages_total %> sidor totalt
+                                </span>
+                            </div>
+                            <div class="alert alert-success">
+                                <span class="glyphicon glyphicon-inbox"></span>
+                                <span>
+                                    <%= (pages_this_week > 0) ? + pages_this_week + ' den här veckan' : '' %>
+                                </span>
+                            </div>
+                            <div class="alert alert-primary">
+                                <span class="glyphicon glyphicon-user"></span>
+                                <span><%= users %> användare</span>
+                            </div>
                         </p>
                         <p class="statistics">
-                            <div><%= pages_this_week %> nya sidor den här veckan</div>
                             <h3>Statistik</h3>
-                            <div class="stats-container" style="height:400px"></div>
+
+                            <h4>Graftyp</h4>
+                            <select id="stats-type" class="form-control">
+                                <option value="line">Line</option>
+                                <option value="area">Area</option>
+                                <option value="bar">Bar</option>
+                                <option value="column">Column</option>
+                            </select>
+
+                            <h4>Stack?</h4>
+                            <label class="control-label">
+                                <input type="radio" class="form-control" name="stacking" value="true">
+                                Ja
+                            </label>
+                            <label class="control-label">
+                                <input type="radio" class="form-control" name="stacking" value="false" checked="checked">
+                                Nej
+                            </label>
+
+                            <div class="stats-container">
+                                <div id="stats" data-type="line" style="height:400px"></div>
+                            </div>
                         </p>
-                        <p><a href="#" class="btn btn-warning"><%= revisions %> sidor väntar på granskning</a></p>
                     </article>
                 </div>
             </div>

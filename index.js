@@ -708,16 +708,25 @@ app.get('/admin', function (req, res) {
       pagesdb.count({"timestamp.created":{ $gte : monday_this_week }}, function(err, pages_this_week) {
 
         //Pages per month
-        pagesdb.aggregate([{
+        pagesdb.aggregate([
+          {
             $group: {
-                _id: {
-                    $substr: ["$timestamp.created", 0, 10]
-                },
-                pages: {
-                    $sum: 1
-                }
+              _id: {
+                id: "$_id", type: "$type", date: "$timestamp.created"
+              }
             }
-        }], function(err, pages_stats) {
+          },
+          {
+            $group: {
+              _id: {
+                date: { $substr: ["$_id.date", 0, 10] }, type: "$_id.type"
+              },
+              pages: {
+                $sum: 1
+              }
+            }
+          }
+        ], function(err, pages_stats) {
           if (err) throw err
 
           revisionsdb.count({pending: { $gt: 0 } }, function(err, revisions) {
