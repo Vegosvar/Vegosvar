@@ -2,7 +2,10 @@
 <div class="container">
     <section id="main">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-2">
+              <% include template_parts/sidebar %>
+            </div>
+            <div class="col-md-10">
                 <article>
                     <h1 class="no-margin-top"><%= current_user.name.display_name %></h1>
                     <div class="panel panel-default">
