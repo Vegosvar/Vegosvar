@@ -506,22 +506,52 @@ app.get('/ajax/map', function (req, res) {
   })
 })
 
+app.get('/ajax/admin/user/:user_id', function (req, res) {
+  var database = db.instance()
+  var usersdb = database.collection('users')
+
+  var user_id = req.params.user_id
+
+  usersdb.find({_id : new ObjectID(user_id)}).toArray(function(err, user) {
+    if(err) throw err
+    res.send(user[0])
+  })
+})
+
 app.get('/ajax/admin/block/:user_id', function (req, res) {
   var database = db.instance()
   var usersdb = database.collection('users')
 
   var user_id = req.params.user_id
 
-  usersdb.update(
-    {
+  usersdb.update({
       _id : new ObjectID(user_id)
     }, {
       $set: {
-       "info.blocked":true,
+       "info.blocked": true,
      }
     }, function(err, status) {
       if(err) throw err
-      console.log(status)
+      res.json(status)
+    }
+  )
+})
+
+app.get('/ajax/admin/unblock/:user_id', function (req, res) {
+  var database = db.instance()
+  var usersdb = database.collection('users')
+
+  var user_id = req.params.user_id
+
+  usersdb.update({
+      _id : new ObjectID(user_id)
+    }, {
+      $set: {
+       "info.blocked": false,
+     }
+    }, function(err, status) {
+      if(err) throw err
+      res.json(status)
     }
   )
 })
@@ -671,6 +701,52 @@ app.get('/admin/blockera', function (req, res) {
   })
 })
 
+app.get('/admin/changes', function (req, res) {
+  var dbinstance = db.instance()
+  var revisionsdb = dbinstance.collection('revisions')
+  var pagesdb = dbinstance.collection('pages')
+
+  revisionsdb.find({pending: { $gt: 0 } }).toArray(function(err, revisions) {
+    var updated = []
+    var changes = []
+    var revisionIds = []
+    if(revisions.length > 0) {
+      for (var i = 0; i < revisions.length; i++) {
+        updated.push(new ObjectID(revisions[i].post_id))
+        revisionIds.push(String(revisions[i].post_id))
+      }
+
+      pagesdb.find({_id: { $in: updated}}).toArray(function(err, pages) {
+
+        if(pages.length > 0) {
+          for (var i = 0; i < pages.length; i++) {
+            var pId = String(pages[0]._id)
+
+            if( revisionIds.indexOf(pId) >= 0 ) {
+              for(var key in revisions) {
+                var revision = revisions[key]
+
+                if(String(revision.post_id) == pId) {
+                  changes.push({
+                    title: pages[i].title,
+                    url: pages[i].url,
+                    created: functions.getPrettyDateTime(pages[i].timestamp.created),
+                    updated: functions.getPrettyDateTime(revision.modified)
+                  })
+                }
+              }
+            }
+          }
+        }
+
+        res.render('admin/changes', { user: req.user, changes: changes })
+      })
+    } else {
+      res.render('admin/changes', { user: req.user, changes: changes })
+    }
+  })
+})
+
 app.get('/admin/profil/:user_id', function (req, res) {
   var dbinstance = db.instance()
   var usersdb = dbinstance.collection('users')
@@ -694,6 +770,14 @@ app.get('/ny/publicerad', function (req, res) {
     res.render('post/published', { user: req.user, type: "product", hideredirect:true })
   } else {
     res.render('post/published', { user: req.user, type: "product", post_url: req.query.newpost })
+  }
+})
+
+app.get('/ny/uppdaterad', function (req, res) {
+  if(typeof req.query.newpost === 'undefined') {
+    res.render('post/updated', { user: req.user, type: "product", hideredirect:true })
+  } else {
+    res.render('post/updated', { user: req.user, type: "product", post_url: req.query.newpost })
   }
 })
 
@@ -808,10 +892,15 @@ app.get('/ajax/revision/apply/:page_id/:revision_number', function (req, res, ne
       })
     }
 
-    var revisions = docs[0].revisions
+    var doc = docs[0]
+    var revisions = doc.revisions
     if(revision_number in revisions) {
+      
+      //If this has not been moderated before, decrease the number of revisions pending revision
+      var pending = (revisions[revision_number].meta.accepted === null) ? (doc.pending -1) : doc.pending
 
       var data = {
+        pending: pending,
         revision: revision_number,
         revisions: revisions
       }
@@ -882,6 +971,10 @@ app.get('/ajax/revision/apply/:page_id/:revision_number', function (req, res, ne
   })
 })
 
+app.get('/ajax/revision/deny/:page_id/:revision_number', function (req, res, next) {
+  //TODO write this route similar to the apply one
+})
+
 app.get('/ajax/revision/compare/:page_id/:revision_number', function (req, res, next) {
   var dbinstance = db.instance()
   var pagesdb = dbinstance.collection('pages')
@@ -907,6 +1000,12 @@ app.get('/ajax/revision/compare/:page_id/:revision_number', function (req, res, 
 
       var loop = (contentNow.length > contentUpdated.length) ? contentNow : contentUpdated
 
+      /* TODO: loop over contentNow and in that loop compare contentNow[i] inside another loop against contentUpdated[i],
+        if both array's string matches and the [i] is the same, show muted,
+        if contentUpdated string matches a string in contentNow and [i] is different, show warning,
+        if contentUpdated is not matched and [i] is >= contentNow.length show success,
+        if contentNow string is not matched and [i] exists within contentUpdated, show danger,
+      */
       var diffs = []
       for (var i = 0; i < loop.length; i++) {
         if(i < contentNow.length && i < contentUpdated.length) {
@@ -1170,6 +1269,8 @@ app.post('/submit', urlencodedParser, function (req, res) {
       revisionsdb.find({ post_id : id }).toArray(function(err, result) {
         if(result.length > 0) {
           var revision = result[0]
+          revision.modified = isodate //Update date modified
+          revision.pending += 1 //Update revisions pending moderation for this post
           revision_number = (new Date(isodate).getTime() / 1000) //This is a unix timestamp
           revision.revisions[revision_number] = data.post
 
@@ -1186,7 +1287,7 @@ app.post('/submit', urlencodedParser, function (req, res) {
           }
 
           revisionsdb.update({ post_id : id}, revision, function(err, result) {
-            res.redirect('/ny/publicerad/?newpost='+niceurl)
+            res.redirect('/ny/uppdaterad/?newpost='+niceurl)
           })
         } else {
           console.log('No entry for this page in revisions collection')
@@ -1198,7 +1299,7 @@ app.post('/submit', urlencodedParser, function (req, res) {
             }
 
             pagesdb.update({_id:id}, data, function(err, result) {
-              res.redirect('/ny/publicerad/?newpost='+niceurl)
+              res.redirect('/ny/uppdaterad/?newpost='+niceurl)
             })
           })
         }
@@ -1213,6 +1314,8 @@ app.post('/submit', urlencodedParser, function (req, res) {
         var revision_number = (new Date(isodate).getTime() / 1000) //This is a unix timestamp
         var revision = {
           post_id: doc.ops[0]._id,
+          pending: 1, //Represents total number of revisions that are awaiting moderation, at insertion, just this one
+          modified: isodate,
           revision: revision_number,
           revisions: {},
         }

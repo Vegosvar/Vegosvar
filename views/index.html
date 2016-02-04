@@ -110,7 +110,7 @@
 					<% } %>
 					</ul>
 					<div class="bottom-description">
-						Alltid garanterat veganskt på menyn
+						Alltid något veganskt!
 					</div>
 				</div>
 			</div>
@@ -134,6 +134,50 @@
 										<div class="image" style="background-image: url(/assets/images/placeholder-<%= pages[i].type %>.svg)"></div>
 									</a>
 								<% } %>
+					            <div id="like" class="xs">
+					                <div class="hint">
+					                  <a href="/logga-in">Logga in</a> på Vegosvar för att gilla
+					                </div>
+					                <% if (typeof user !== 'undefined') { %>
+					                  <% if (typeof pages[i].post.rating !== 'undefined' && pages[i].post.rating.likes !== "undefined") { %>
+					                    <% if (userLikes > 0) { %>
+					                      <span id="<%= pages[i].post._id %>" class="like add-like">
+					                        <span id="heart-glyphicon" class="glyphicon glyphicon-heart"></span>
+					                        <span class="count"><%= pages[i].post.rating.likes %></span>
+					                      </span>
+					                    <% } else { %>
+					                      <span id="<%= pages[i].post._id %>" class="like add-like">
+					                        <span id="heart-glyphicon" class="glyphicon glyphicon-heart-empty"></span>
+					                        <span class="count"><%= pages[i].post.rating.likes %></span>
+					                      </span>
+					                    <% } %>
+					                  <% } else { %>
+					                    <span href="#" id="<%= pages[i].post._id %>" class="like add-like">
+					                      <span id="heart-glyphicon" class="glyphicon glyphicon-heart-empty"></span>
+					                      <span class="count">0</span>
+					                    </span>
+					                  <% } %> 
+					                <% } else { %>
+					                  <% if (typeof pages[i].post.rating !== 'undefined' && pages[i].post.rating.likes !== "undefined") { %>
+					                    <% if (userLikes > 0) { %>
+					                      <span id="<%= pages[i].post._id %>" class="like toggle-hint">
+					                        <span id="heart-glyphicon" class="glyphicon glyphicon-heart"></span>
+					                        <span class="count"><%= pages[i].post.rating.likes %></span>
+					                      </span>
+					                    <% } else { %>
+					                      <span id="<%= pages[i].post._id %>" class="like toggle-hint">
+					                        <span id="heart-glyphicon" class="glyphicon glyphicon-heart-empty"></span>
+					                        <span class="count"><%= pages[i].post.rating.likes %></span>
+					                      </span>
+					                    <% } %>
+					                  <% } else { %>
+					                    <span id="<%= pages[i].post._id %>" class="like toggle-hint">
+					                      <span id="heart-glyphicon" class="glyphicon glyphicon-heart-empty"></span>
+					                      <span class="count">0</span>
+					                    </span>
+					                  <% } %> 
+					                <% } %>
+					            </div>
 								<div class="content">
 									<div class="text-overflow">
 										<a href="/<%= pages[i].url %>"><h3><%= pages[i].title %></h3></a>
@@ -239,7 +283,7 @@
 			<% } %>
 			</ul>
 			<div class="bottom-description">
-				Alltid garanterat veganskt på menyn
+				Alltid något veganskt!
 			</div>
 		</div>
 	</div>

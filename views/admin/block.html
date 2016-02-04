@@ -1,29 +1,242 @@
 <% include ../includes/header %>
 
+<script>
+var modalTitle = {
+    block: function(user) {
+      return $('<h4>', {
+        class: 'modal-title'
+      })
+      .append(
+        $('<span>')
+        .html('Blockera&nbsp;'),
+        $('<small>')
+        .append(
+          $('<span>', {
+            class: 'user-display-name'
+          })
+          .text(user.name.display_name)
+        )
+      )
+    },
+    unblock: function(user) {
+      return $('<h4>', {
+        class: 'modal-title'
+      })
+      .append(
+        $('<span>')
+        .html('Häv blockering av&nbsp;'),
+        $('<small>')
+        .append(
+          $('<span>', {
+            class: 'user-display-name'
+          })
+          .text(user.name.display_name)
+        )
+      )
+    }
+}
+
+var modalBody = {
+  block: function(user) {
+    return $('<div>')
+      .append(
+        $('<strong>')
+        .text('En blockering upphäver användarens rättigheter att:'),
+        $('<ul>')
+        .append(
+          $.map([
+            'Skapa nya sidor',
+            'Redigera sidor',
+            'Gilla/betygsätta sidor'
+            ], function(text) {
+            return $('<li>').text(text)
+          })
+        ),
+        $('<strong>')
+        .text('En blockerad användare kan fortfarande:'),
+        $('<ul>')
+        .append(
+          $.map([
+            'Logga in på Vegosvar',
+            'Begära borttagning av sidor den själv skapat',
+            'Ta bort sitt eget konto'
+            ], function(text) {
+            return $('<li>').text(text)
+          })
+        )
+      )
+  },
+  unblock: function(user) {
+    return $('<div>')
+    .append(
+      $('<strong>')
+      .text('Att häva blockeringen återställer användarens rättigheter att:'),
+      $('<ul>')
+      .append(
+        $.map([
+          'Skapa nya sidor',
+          'Redigera sidor',
+          'Gilla/betygsätta sidor'
+          ], function(text) {
+          return $('<li>').text(text)
+        })
+      )
+    )
+  }
+}
+
+var modalFooter = {
+  block: function(user) {
+    return $('<div>')
+    .append(
+      $('<button>', {
+        class: 'btn btn-primary'
+      })
+      .html('Blockera användare')
+      .on('click', function() {
+        ajaxBlock(user._id, function(result) {
+          var modalButton = $('#' + user._id).children('.btn-modal-action')
+          $(modalButton).toggleClass('btn-danger btn-success')
+          $(modalButton).html('Häv blockering')
+
+          $('#modal').modal('hide')
+        })
+      }),
+      $('<button>', {
+        class: 'btn btn-danger'
+      })
+      .attr('data-dismiss','modal')
+      .html('Avbryt')
+    )
+  },
+  unblock: function(user) {
+    return $('<div>')
+    .append(
+      $('<button>', {
+        class: 'btn btn-primary'
+      })
+      .html('Häv blockering')
+      .on('click', function() {
+        ajaxUnblock(user._id, function(result) {
+          var modalButton = $('#' + user._id).children('.btn-modal-action')
+          $(modalButton).toggleClass('btn-danger btn-success')
+          $(modalButton).html('Blockera')
+
+          $('#modal').modal('hide')
+        })
+      }),
+      $('<button>', {
+        class: 'btn btn-danger'
+      })
+      .html('Avbryt')
+      .attr('data-dismiss','modal')
+    )
+  }
+}
+
+var newModal = function(user) {
+  var blocked = (user.info.hasOwnProperty('blocked')) ? ( ( user.info.blocked === true ) ? 'unblock' : 'block' ) : 'block'
+
+  return $('<div>', {
+    id: 'modal',
+    class: 'modal fade'
+  })
+  .append(
+    $('<div>', {
+      class: 'modal-dialog'
+    })
+    .append(
+      $('<div>', {
+        class: 'modal-content'
+      })
+      .append(
+        $('<div>', {
+          class: 'modal-header'
+        })
+        .append(
+          $('<button>', {
+            class: 'close'
+          })
+          .data({
+            dismiss:'modal'
+          })
+          .html('&times;'),
+          modalTitle[blocked](user)
+        ),
+        $('<div>', {
+          class: 'modal-body'
+        })
+        .append(
+          modalBody[blocked](user)
+        ),
+        $('<div>', {
+          class: 'modal-footer'
+        })
+        .append(
+          modalFooter[blocked](user)
+        )
+      )
+    )
+  )
+}
+
+var ajaxBlock = function(userId, callback) {
+  $.ajax({
+    url: '/ajax/admin/block/' + userId
+  }).done(function(result) {
+    callback(result)
+  })
+}
+
+var ajaxUnblock = function(userId, callback) {
+  $.ajax({
+    url: '/ajax/admin/unblock/' + userId
+  }).done(function(result) {
+    callback(result)
+  })
+}
+
+$(document).ready(function() {
+  $('.btn-modal-action').on('click', function(e) {
+    e.preventDefault()
+
+    var data = $(this).data()
+    var userId = ('user' in data) ? data.user : false
+
+    if(userId) {
+      $.ajax({
+        url: '/ajax/admin/user/' + userId
+      }).done(function(result) {
+        //Create new modal
+        var modal = newModal(result)
+
+        $('#main').append( $(modal) )
+        $('#modal').modal('show')
+        $('#modal').on('hidden.bs.modal', function () {
+          $('#modal').remove(); //Remove modal after it closes
+        })
+      })
+    } else {
+      console.log('Nope')
+    }
+  })
+})
+
+</script>
+
     <div class="container">
         <section id="main">
-            <div id="user-block-modal" class="modal fade">
+            <div id="user-modal" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
                             <a class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </a>
-                            <h4 class="modal-title">Blockera <small><span class="user-block-display-name"></span></small>?</h4>
+                            <h4 class="modal-title"><span class="user-display-name"></span></h4>
                         </div>
                         <div class="modal-body">
-                            <strong>En blockering upphäver användarens rättigheter att:</strong>
-                            <ul>
-                                <li>Skapa nya sidor</li>
-                                <li>Redigera sidor</li>
-                                <li>Gilla/betygsätta sidor</li>
-                            </ul>
-                            <strong>En blockerad användare kan fortfarande:</strong>
-                            <ul>
-                                <li>Logga in på Vegosvar</li>
-                                <li>Radera sidor den själv skapat</li>
-                                <li>Radera sitt konto</li>
-                            </ul>
+
                         </div>
                         <div class="modal-footer">
                             <button id="user-block-confirm" class="btn btn-primary">Blockera användare</button>
@@ -33,33 +246,8 @@
                 </div><!-- /.modal-dialog -->
             </div><!-- /.modal -->
 
-            <div id="user-unblock-modal" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <a class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </a>
-                            <h4 class="modal-title">Upphäv blockering för <small><span class="user-unblock-display-name"></span></small>?</h4>
-                        </div>
-                        <div class="modal-body">
-                            <strong>Att häva blockeringen återställer användarens rättigheter att:</strong>
-                            <ul>
-                                <li>Skapa nya sidor</li>
-                                <li>Redigera sidor</li>
-                                <li>Gilla/betygsätta sidor</li>
-                            </ul>
-                        </div>
-                        <div class="modal-footer">
-                            <button id="user-unblock-confirm" class="btn btn-primary">Upphäv blockering</button>
-                            <button class="btn btn-danger" data-dismiss="modal">Avbryt</button>
-                        </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-            </div><!-- /.modal -->
-
             <div class="row">
-                <div class="col-md-6 col-sm-offset-3">
+                <div class="col-md-12">
                     <article>
                         <h1 class="no-margin-top">Blockera användare</h1>
                         <div class="list-group">
@@ -67,11 +255,16 @@
                             <% if(typeof(users) !== 'undefined') {
                                 for(var i = users.length -1; i >= 0; i--) { %>
                                     <div class="list-group-item">
-                                        <div class="user_name">
+                                        <div id="<%= users[i]._id %>">
                                             <a href="/admin/profil/<%= users[i]._id %>">
-                                            <img src="<%= users[i].photo %>" class="circle" style="width: 30px; margin-right: 5px;">
-                                            <%= users[i].name.display_name %></a>
-                                            <a href="" class="btn btn-danger btn-xs pull-right">Blockera</a>
+                                                <img src="<%= users[i].photo %>" class="circle" style="width: 30px; height: 30px; margin-right: 5px;">
+                                                <span class="user_name"><%= users[i].name.display_name %></span>
+                                            </a>
+                                            <% if( typeof(users[i].info.blocked) !== 'undefined' && users[i].info.blocked === true ) { %>
+                                                <button class="btn btn-success btn-xs btn-modal-action pull-right" data-user="<%= users[i]._id %>">Häv blockering</button>
+                                            <% } else { %>
+                                                <button class="btn btn-danger btn-xs btn-modal-action pull-right" data-user="<%= users[i]._id %>">Blockera</button>
+                                            <% } %>
                                         </div>
                                     </div>
                                 <% } %>

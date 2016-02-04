@@ -174,14 +174,19 @@ function setStreetCoordinates(prediction) {
     if(inputCity.val() !== city) {
         //Set bounds to new city
         limitBounds(city)
+        
+        if( ! inputCity.data('color') ) {
+            inputCity.data('color', inputCity.css('color'))
+        }
 
-        var originalColor = inputCity.css('color')
-        inputCity.animate({ color: 'rgb(255, 255, 255)' }, 300)
-        setTimeout(function() {
-            //Update inputCity value to the new city
-            inputCity.val(city)
-            inputCity.animate({ color: '#222' }, 300)
-        }, 300)
+        inputCity.animate({
+            color: 'rgb(255, 255, 255)'
+        }, 400, function() {
+            inputCity.val(city) //Update inputCity value to the new city
+            inputCity.animate({
+                color: inputCity.data('color')
+            }, 400)
+        })
     }
     
     requestStreet.meta = { address: address }
