@@ -1,17 +1,17 @@
                   <ul class="list-group">
-                    <li class="list-group-item list-group-head">
+                    <li class="list-group-item list-group-head <% if(typeof page !== 'undefined' && page === 'admin') { %> active <% } %>">
                       <a href="/admin">
                       	<span class="glyphicon glyphicon-sunglasses"></span> 
                       	Översikt
                       </a>
                     </li>
-                    <li class="list-group-item">
-                      <a href="/admin/blockera">
+                    <li class="list-group-item <% if(typeof page !== 'undefined' && page === 'users') { %> active <% } %>">
+                      <a href="/admin/users">
                       	<span class="glyphicon glyphicon-user"></span> 
                       	Användare
                       </a>
                     </li>
-                    <li class="list-group-item">
+                    <li class="list-group-item <% if(typeof page !== 'undefined' && page === 'changes') { %> active <% } %>">
                       <a href="/admin/changes">
                       	<span class="glyphicon glyphicon-time"></span> 
                       	Revisioner
