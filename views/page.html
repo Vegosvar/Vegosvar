@@ -473,7 +473,7 @@
 
           <% if (post.type === '3' || post.type === '5') { %>
             <div class="card lg hidden-xs">
-              <h2>Ställen i närheten</h2>
+              <h2><%= post.post.city %></h2>
               <h3 class="subtitle">Restauranger & butiker</h3>
               <ul class="page-menu">
               <% if(typeof(establishments) !== 'undefined') {
@@ -485,16 +485,15 @@
                         <img src="/uploads/<%= establishments[i].post.cover.filename %>_thumb.jpg">
                       <% } %>
                     </a>
-                    <a href="/?s=<%= establishments[i].post.city %>" 
-                       class="subitem">
-                      <%= establishments[i].post.city %>
-                    </a>
                   </li>
                 <% } %>
               <% } %>
               </ul>
               <div class="bottom-description">
-                Alltid garanterat veganskt på menyn
+                <a href="/?s=<%= post.post.city %>" class="pull-right">
+                  Fler vegoställen i <%= post.post.city %> 
+                  <span class="glyphicon glyphicon-chevron-right"></span>
+                </a>
               </div>
             </div>
           <% } else { %>
