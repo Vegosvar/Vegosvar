@@ -2,7 +2,8 @@ $(window).load(function () {
   $(document).on('click', '.star', function (e) {
     e.preventDefault()
     $(e.target).parent().addClass('push')
-    var article = $(e.target).parent().parent().attr('id')
+    var parent = $(e.target).parent().parent()
+    var article = $(parent).data('id')
     var content = $(e.target).parent().index() + 1
     if (!($(e.target).parent().hasClass('deactive'))) {
       $.get('/ajax/addVote?id=' + article + '&content=' + content, function (data) {
@@ -17,8 +18,10 @@ $(window).load(function () {
             $(e.target).removeClass('active')
           })
 
+          console.log(data[0])
+
           for (var i = 0; i <= data[0].avg; i++) {
-            $('#' + data[0]._id + '.stars > div:nth-child(' + i  + ')').addClass('active')
+            $(parent).find('.star:nth-child(' + i  + ')').addClass('active')
           }
         }
       })
