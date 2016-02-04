@@ -700,8 +700,21 @@ app.get('/admin', function (req, res) {
     pagesdb.count({}, function(err, pages) {
       if (err) throw err
 
-      revisionsdb.count({pending: { $gt: 0 } }, function(err, revisions) {
-        res.render('admin/index', { user: req.user, page: 'index', users: users, pages: pages, revisions: revisions })
+      var today = new Date( functions.getISOdate() )
+      var monday_this_week = today.setDate(today.getDate() - (today.getDay() + 6) % 7)
+      monday_this_week = functions.newISOdate( new Date( monday_this_week) )
+
+      pagesdb.count({"timestamp.created":{ $gte : monday_this_week }}, function(err, pages_this_week) {
+        revisionsdb.count({pending: { $gt: 0 } }, function(err, revisions) {
+          res.render('admin/index', {
+            user: req.user,
+            page: 'index',
+            users: users,
+            pages_total: pages,
+            pages_this_week: pages_this_week,
+            revisions: revisions
+          })
+        })
       })
     })
   })

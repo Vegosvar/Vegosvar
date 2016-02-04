@@ -1,22 +1,27 @@
 <% include ../includes/header %>
 
-	<div class="container">
-		<section id="main">
+    <div class="container">
+        <section id="main">
 
-			<div class="row">
+            <div class="row">
                 <div class="col-md-2">
                   <% include template_parts/sidebar %>
                 </div>
-				<div class="col-md-8">
-					<article>
-						<h1 class="no-margin-top">Översikt</h1>
-						<p class="preamble">Totalt finns det <strong><%= pages %> sidor</strong> och <strong><%= users %> användare</strong>
-						<p><a href="#" class="btn btn-warning"><%= revisions %> sidor väntar på granskning</a></p>
-					</article>
-				</div>
-			</div>
+                <div class="col-md-8">
+                    <article>
+                        <h1 class="no-margin-top">Översikt</h1>
+                        <p class="preamble">
+                            <div>Totalt finns det <strong><%= pages_total %> sidor</strong> och <strong><%= users %> användare</strong></div>
+                        </p>
+                        <p class="statistics">
+                            <div><%= pages_this_week %> nya sidor den här veckan</div>
+                        </p>
+                        <p><a href="#" class="btn btn-warning"><%= revisions %> sidor väntar på granskning</a></p>
+                    </article>
+                </div>
+            </div>
 
-		</section>
-	</div>
+        </section>
+    </div>
 
 <% include ../includes/footer %>
