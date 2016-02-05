@@ -1,18 +1,30 @@
 <h3>Ta bort</h3>
 <p>För att ta bort en sida måste du ange en anledning för borttagning och därefter tas sidan bort om anledningen accepteras. I din händelselogg under <a href="/mina-sidor">Mina sidor</a> ser du om ditt ärende är behandlat.</p>
 <button id="btn-delete" class="btn btn-secondary">Ta bort sida</button>
-<div id="post-delete-container" style="display:none;float:right;" class="hidden"><input type="text" style="width:400px;" /></div>
+<div id="post-delete-container" class="hidden">
+    <textarea name="delete" style="width:400px;" placeholder="Ange varför du vill radera sidan"></textarea>
+    <span class="tooltip">Anledningen måste vara minst 20 tecken</span>
+    <button id="btn-delete-confirm" class="btn btn-danger">Radera sida</button>
+</div>
 
 <script>
 $('#btn-delete').on('click', function (e) {
     e.preventDefault()
     if($('#post-delete-container').hasClass('hidden')) {
-        $('#btn-delete').html('X')
+        $('#btn-delete').text('Avbryt')
         $('#post-delete-container').removeClass('hidden')
         $('#post-delete-container').slideDown('fast')
     } else {
         $('#btn-delete').html('Ta bort sida')
         $('#post-delete-container').slideUp('fast')
-        setTimeout(function () { $('#post-delete-container').addClass('hidden') }, 210)
+        setTimeout(function () {
+            $('#post-delete-container').addClass('hidden')
+        }, 200)
     }
-})</script>
+})
+
+$('#btn-delete-confirm').on('click', function() {
+    var id = $('input[name="id"').val()
+    
+})
+</script>
