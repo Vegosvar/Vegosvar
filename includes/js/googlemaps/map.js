@@ -408,16 +408,32 @@ $(document).bind('mapready', function(e) {
   $('.showFullscreen').on('click', function(e) {
     e.preventDefault()
     if( fullscreenSupported() ) {
+      var element = document.getElementById('mapContainer')
 
       if( isFullscreen() ) {
         exitFullscreen()
+        $(element).css({
+          margin: '',
+          width: '',
+          height: '',
+          position: '',
+          top: ''
+        })
         return
       }
 
       var data = $('#map').data()
       data.center = mapInstance.getCenter()
 
-      enterFullscreen( document.getElementById('mapContainer') )
+      enterFullscreen( element )
+
+      $(element).css({
+        margin: '0',
+        width: '100%',
+        height: '100%',
+        position: 'absolute',
+        top: '0'
+      })
 
       $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(e) {
         mapInstance.triggerResize()
