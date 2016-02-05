@@ -17,48 +17,61 @@
                     <article>
                         <h1 class="no-margin-top">Översikt</h1>
                         <p class="preamble">
-                            <div class="alert alert-success">
-                                <span>
-                                    <span class="glyphicon glyphicon-ok"></span>
-                                    <%= pages_total %> sidor totalt
-                                </span>
-                            </div>
-                            <div class="alert alert-success">
-                                <span class="glyphicon glyphicon-inbox"></span>
-                                <span>
-                                    <%= (pages_this_week > 0) ? + pages_this_week + ' den här veckan' : '' %>
-                                </span>
-                            </div>
-                            <div class="alert alert-success">
-                                <span class="glyphicon glyphicon-user"></span>
-                                <span><%= users %> användare</span>
-                            </div>
+                			<div class="row">
+	                			<div class="col-md-4">
+		                            <div class="alert alert-info">
+		                                <span>
+		                                    <span class="glyphicon glyphicon-ok"></span>
+		                                    <%= pages_total %> sidor totalt
+		                                </span>
+		                            </div>
+								</div>
+	                			<div class="col-md-4">
+		                            <div class="alert alert-info">
+		                                <span class="glyphicon glyphicon-inbox"></span>
+		                                <span>
+		                                    <%= (pages_this_week > 0) ? + pages_this_week + ' den här veckan' : '' %>
+		                                </span>
+		                            </div>
+								</div>
+	                			<div class="col-md-4">
+		                            <div class="alert alert-info">
+		                                <span class="glyphicon glyphicon-user"></span>
+		                                <span><%= users %> användare</span>
+		                            </div>
+								</div>
+							</div>
                         </p>
-                        <p class="statistics">
-                            <h3>Statistik</h3>
 
-                            <h4>Graftyp</h4>
-                            <select id="stats-type" class="form-control">
-                                <option value="line">Line</option>
-                                <option value="area">Area</option>
-                                <option value="bar">Bar</option>
-                                <option value="column">Column</option>
-                            </select>
+                        <div class="stats-container">
+                            <div id="stats" data-type="line" style="height:400px"></div>
+                        </div>
 
-                            <h4>Stack?</h4>
-                            <label class="control-label">
-                                <input type="radio" class="form-control" name="stacking" value="true">
-                                Ja
-                            </label>
-                            <label class="control-label">
-                                <input type="radio" class="form-control" name="stacking" value="false" checked="checked">
-                                Nej
-                            </label>
+						<hr>
 
-                            <div class="stats-container">
-                                <div id="stats" data-type="line" style="height:400px"></div>
-                            </div>
-                        </p>
+	        			<div class="row">
+	            			<div class="col-md-4">
+	                            <h4>Graftyp</h4>
+	                            <select id="stats-type" class="form-control">
+	                                <option value="line">Line</option>
+	                                <option value="area">Area</option>
+	                                <option value="bar">Bar</option>
+	                                <option value="column">Column</option>
+	                            </select>
+	                        </div>
+	            			<div class="col-md-4">
+	                            <h4>Stack?</h4>
+	                            <label>
+	                                <input type="radio" name="stacking" value="true">
+	                                Ja
+	                            </label>
+	                            <label>
+	                                <input type="radio" name="stacking" value="false" checked="checked">
+	                                Nej
+	                            </label>
+							</div>
+						</div>
+
                     </article>
                 </div>
             </div>
