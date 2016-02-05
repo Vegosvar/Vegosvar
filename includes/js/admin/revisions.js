@@ -3,7 +3,7 @@ $(function(){
         var post_id = $('.content')[0].id;
 
         $.ajax({
-            url: '/ajax/revision/compare/' + post_id + '/' + revision
+            url: '/ajax/admin/revision/compare/' + post_id + '/' + revision
         }).done(function(result) {
             callback(result)
         })
@@ -49,7 +49,7 @@ $(function(){
         var post_id = $('.content')[0].id;
 
         $.ajax({
-          url: '/ajax/revision/apply/' + post_id + '/' + revision
+          url: '/ajax/admin/revision/apply/' + post_id + '/' + revision
         }).done(function(result) {
           var msg = $('.message')
           $(msg).hide();
@@ -57,13 +57,37 @@ $(function(){
 
             $(msg).removeClass('alert-danger').addClass('alert-success')
 
-            $(msg).html('<span class="glyphicon glyphicon-ok"></span>&nbsp;Sidan har uppdaterats till vald version')
+            $(msg).html(
+                $('<span>').append(
+                    $('<span>', {
+                        class: 'glyphicon glyphicon-ok'
+                    }),
+                    $('<span>')
+                    .html('&nbsp;Sidan har uppdaterats till vald version')
+                )
+            )
 
             //Move the label to the new revision
             $('.revision.active').append( $('.revisions').find('.current') )
           } else {
             $(msg).removeClass('alert-success').addClass('alert-danger')
-            $(msg).html('<span class="glyphicon glyphicon-warning-sign"></span>&nbsp;Oj! N&aring;got blev fel n&auml;r sidan skulle uppdateras!<br /><small>Felmeddelande: <code>' + result.message + '</code></small>')
+            $(msg).html(
+                $('<span>')
+                .append(
+                    $('<span>',{
+                        class: 'glyphicon glyphicon-warning-sign'
+                    }),
+                    $('<span>')
+                    .html(
+                        '&nbsp;Oj! N&aring;got blev fel n&auml;r sidan skulle uppdateras!',
+                        $('<small>').html(
+                            'Felmeddelande:',
+                            $('<code>')
+                            .text(result.message)
+                        )
+                    )
+                )
+            )
           }
 
           $(msg).fadeIn()
