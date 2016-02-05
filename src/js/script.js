@@ -253,9 +253,9 @@ $(document).ready(function () {
                   .html('&nbsp;p&aring; Vegosvar f&ouml;r att gilla')
                 ),
                 $('<span>', {
-                  id: entry._id,
                   class: 'like add-like'
                 })
+                .attr('data-id',entry._id)
                 .append(
                   $('<span>', {
                     id: 'heart-glyphicon',
