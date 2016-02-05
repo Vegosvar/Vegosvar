@@ -134,31 +134,16 @@
                                         <div class="image" style="background-image: url(/assets/images/placeholder-<%= pages[i].type %>.svg)"></div>
                                     </a>
                                 <% } %>
-                                <div id="like" class="xs">
+                                <% var likes = ('rating' in pages[i] && 'likes' in pages[i].rating) ? pages[i].rating.likes : 0
+                                var classNames = (likes) ? 'glyphicon glyphicon-heart' : 'glyphicon glyphicon-heart-empty' %>
+                                <div class="likes xs <%= (likes > 0) ? '' : 'hidden' %>">
                                     <div class="hint">
                                       <a href="/logga-in">Logga in</a> på Vegosvar för att gilla
                                     </div>
-                                    <% if (typeof user !== 'undefined') { %>
-                                      <% if (typeof pages[i].rating !== 'undefined' && pages[i].rating.likes !== "undefined") {
-                                       %>
-                                        <% if (pages[i].rating.likes > 0) { %>
-                                          <span id="<%= pages[i]._id %>" class="like add-like">
-                                            <span id="heart-glyphicon" class="glyphicon glyphicon-heart"></span>
-                                            <span class="count"><%= pages[i].rating.likes %></span>
-                                          </span>
-                                        <% } %>
-                                      <% } %>
-                                    <% } else { %>
-                                      <% if (typeof pages[i].rating !== 'undefined' && pages[i].rating.likes !== "undefined") {
-                                        %>
-                                        <% if (pages[i].rating.likes > 0) { %>
-                                          <span id="<%= pages[i]._id %>" class="like toggle-hint">
-                                            <span id="heart-glyphicon" class="glyphicon glyphicon-heart"></span>
-                                            <span class="count"><%= pages[i].rating.likes %></span>
-                                          </span>
-                                        <% } %>
-                                      <% } %> 
-                                    <% } %>
+                                    <span class="like <%= (typeof user !== 'undefined') ? 'add-like' : 'toggle-hint' %>" data-id="<%= pages[i]._id %>">
+                                      <span id="heart-glyphicon" class="<%= classNames %>"></span>
+                                      <span class="count"><%= likes %></span>
+                                    </span>
                                 </div>
                                 <div class="content">
                                     <div class="text-overflow">

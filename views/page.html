@@ -12,9 +12,9 @@
                 <div class="hint">
                   <a href="/logga-in">Logga in</a> på Vegosvar för att gilla
                 </div>
-                <% var likes = ('rating' in post && 'likes' in post.rating && post.rating.likes > 0) ? post.rating.likes : false
-                var classNames = (likes !== false) ? 'glyphicon glyphicon-heart' : 'glyphicon-heart-empty' %>
-                <span id="<%= post._id %>" class="like <%= (typeof user !== 'undefined') ? 'add-like' : 'toggle-hint' %>">
+                <% var likes = ('rating' in post && 'likes' in post.rating) ? post.rating.likes : 0
+                var classNames = (likes) ? 'glyphicon glyphicon-heart' : 'glyphicon glyphicon-heart-empty' %>
+                <span class="like <%= (typeof user !== 'undefined') ? 'add-like' : 'toggle-hint' %>" data-id="<%= post._id %>">
                   <span id="heart-glyphicon" class="<%= classNames %>"></span>
                   <span class="count"><%= parseInt(likes) %></span>
                 </span>
