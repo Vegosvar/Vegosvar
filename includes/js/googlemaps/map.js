@@ -344,14 +344,21 @@ function setSingleOpenMarker(obj) {
 }
 
 function fullscreenSupported() {
-  return ( document.fullscreenEnabled || 
+  return (document.fullscreenEnabled || 
     document.webkitFullscreenEnabled || 
     document.mozFullScreenEnabled ||
     document.msFullscreenEnabled
   )
 }
 
-function elementFullscreen(element) {
+function isFullscreen() {
+  return ( document.fullscreenElement ||
+    document.webkitFullscreenElement ||
+    document.mozFullScreenElement ||
+    document.msFullscreenElement ) ? true : false
+}
+
+function enterFullscreen(element) {
   if (element.requestFullscreen) {
     element.requestFullscreen()
   } else if (element.webkitRequestFullscreen) {
@@ -360,6 +367,18 @@ function elementFullscreen(element) {
     element.mozRequestFullScreen()
   } else if (element.msRequestFullscreen) {
     element.msRequestFullscreen()
+  }
+}
+
+function exitFullscreen() {
+  if (document.exitFullscreen) {
+    document.exitFullscreen();
+  } else if (document.webkitExitFullscreen) {
+    document.webkitExitFullscreen();
+  } else if (document.mozCancelFullScreen) {
+    document.mozCancelFullScreen();
+  } else if (document.msExitFullscreen) {
+    document.msExitFullscreen();
   }
 }
 
@@ -389,10 +408,16 @@ $(document).bind('mapready', function(e) {
   $('.showFullscreen').on('click', function(e) {
     e.preventDefault()
     if( fullscreenSupported() ) {
+
+      if( isFullscreen() ) {
+        exitFullscreen()
+        return
+      }
+
       var data = $('#map').data()
       data.center = mapInstance.getCenter()
 
-      elementFullscreen( document.getElementById('mapContainer') )
+      enterFullscreen( document.getElementById('mapContainer') )
 
       $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(e) {
         mapInstance.triggerResize()
