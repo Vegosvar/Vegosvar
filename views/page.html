@@ -89,39 +89,14 @@
               </p>
 
               <% if (post.type === '3' || post.type === '5' || post.type === '4' && post.post.veg_type !== 'animal') { %>
-              <div class="stars" id="<%= post._id %>">
-                <% if (typeof post.rating !== 'undefined' && post.rating.votes_sum !== 'undefined') { %>
-                <div class="star<%if(post.rating.votes_sum > 0){ %> active<%}%>" id="1">
-                  <span class="glyphicon glyphicon-star"></span>
-                </div>
-                <div class="star<%if(post.rating.votes_sum > 1){ %> active<%}%>" id="2">
-                  <span class="glyphicon glyphicon-star"></span>
-                </div>
-                <div class="star<%if(post.rating.votes_sum > 2){ %> active<%}%>" id="3">
-                  <span class="glyphicon glyphicon-star"></span>
-                </div>
-                <div class="star<%if(post.rating.votes_sum > 3){ %> active<%}%>" id="4">
-                  <span class="glyphicon glyphicon-star"></span>
-                </div>
-                <div class="star<%if(post.rating.votes_sum > 4){ %> active<%}%>" id="5">
-                  <span class="glyphicon glyphicon-star"></span>
-                </div>
-               <% } else { %>
-                <div class="star" id="1">
-                  <span class="glyphicon glyphicon-star"></span>
-                </div>
-                <div class="star" id="2">
-                  <span class="glyphicon glyphicon-star"></span>
-                </div>
-                <div class="star" id="3">
-                  <span class="glyphicon glyphicon-star"></span>
-                </div>
-                <div class="star" id="4">
-                  <span class="glyphicon glyphicon-star"></span>
-                </div>
-                <div class="star" id="5">
-                  <span class="glyphicon glyphicon-star"></span>
-                </div>
+              <div class="stars" data-id="<%= post._id %>">
+              <% console.log(post.rating.votes_sum) %>
+                <% if (typeof post.rating !== 'undefined' && post.rating.votes_sum !== 'undefined') {
+                  for(i = 1; i < 6; i++) { %>
+                    <div class="star <%= (i <= post.rating.votes_sum) ? 'active' : '' %> ">
+                      <span class="glyphicon glyphicon-star"></span>
+                    </div>
+                  <% } %>
                <% } %>
                <% if (typeof post.rating !== 'undefined' && post.rating.votes !== 'undefined') { %>
                   <span class="votes"><%= post.rating.votes %></span>
