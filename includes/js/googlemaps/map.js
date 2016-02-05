@@ -101,6 +101,15 @@
       },
       getSettings: function() {
         return settings
+      },
+      getBounds: function() {
+        return settings.google.map.getBounds()
+      },
+      getCenter: function() {
+        return settings.google.map.getCenter()
+      },
+      triggerResize: function() {
+        google.maps.event.trigger(settings.google.map, 'resize');
       }
     }
 
@@ -113,230 +122,250 @@
   }
 }(jQuery))
 
-$(document).bind('mapready', function(e) {
-  //Initialize map
-  mapInstance = $('#map').googleMap()
+//Place markers on map
+function setMarkers(data, settings) {
+  for (var i = 0; i < data.length; i++) {
+    entry = data[i]
+    if(typeof(entry.post.coordinates) !== 'undefined') {
+      var iconUrl = '/assets/images/'
 
-  //Place markers on map
-  function setMarkers(data, settings) {
-    for (var i = 0; i < data.length; i++) {
-      entry = data[i]
-      if(typeof(entry.post.coordinates) !== 'undefined') {
-        var iconUrl = '/assets/images/'
+      switch(entry.type) {
+        case '3':
+          iconUrl += 'pin-restaurant.png'
+          break
+        case '5':
+          iconUrl += 'pin-store.png'
+          break
+        default:
+          iconUrl = false //use default google marker
+          break
+      }
 
-        switch(entry.type) {
-          case '3':
-            iconUrl += 'pin-restaurant.png'
-            break
-          case '5':
-            iconUrl += 'pin-store.png'
-            break
-          default:
-            iconUrl = false //use default google marker
-            break
-        }
+      var infoWindowContent = function(entry) {
+        var content = (entry.post.content.length > 90) ? entry.post.content.substr(0, 90) + '...' : entry.post.content
+        return $('<div>', {
+          class: 'infowindow-content'
+        })
+        .html(content)
+      }
 
-        var infoWindowContent = function(entry) {
-          var content = (entry.post.content.length > 90) ? entry.post.content.substr(0, 90) + '...' : entry.post.content
-          return $('<div>', {
-            class: 'infowindow-content'
-          })
-          .html(content)
-        }
-
-        var entryContent = $('<div>', {
-          class: 'infowindow-container'
+      var entryContent = $('<div>', {
+        class: 'infowindow-container'
+      })
+      .append(
+        $('<div>', {
+          class: 'infowindow-header'
         })
         .append(
           $('<div>', {
-            class: 'infowindow-header'
+            class: 'infowindow-image'
+          })
+          .append(
+            $('<img>', {
+              src: '/uploads/' + entry.post.cover.filename + '.jpg'
+            })
+          ),
+          $('<div>', {
+            class: 'infowindow-title'
+          })
+          .append(
+            $('<a>', {
+              href: entry.url
+            })
+            .html(entry.title)
+          ),
+          $('<div>', {
+            class: 'infowindow-stars-container'
           })
           .append(
             $('<div>', {
-              class: 'infowindow-image'
+              class: 'star'
             })
             .append(
-              $('<img>', {
-                src: '/uploads/' + entry.post.cover.filename + '.jpg'
+              $('<span>', {
+                class: 'glyphicon glyphicon-star'
               })
-            ),
-            $('<div>', {
-              class: 'infowindow-title'
-            })
-            .append(
-              $('<a>', {
-                href: entry.url
-              })
-              .html(entry.title)
-            ),
-            $('<div>', {
-              class: 'infowindow-stars-container'
-            })
-            .append(
-              $('<div>', {
-                class: 'star'
-              })
-              .append(
-                $('<span>', {
-                  class: 'glyphicon glyphicon-star'
-                })
-              )
             )
-          ),
-          infoWindowContent(entry)
-        )
+          )
+        ),
+        infoWindowContent(entry)
+      )
 
-        mapInstance.setMarker({
-          position: {
-            lat: parseFloat(entry.post.coordinates.latitude),
-            lng: parseFloat(entry.post.coordinates.longitude)
-          },
-          title: entry.title,
-          content: entryContent.html(),
-          icon: {
-            url: iconUrl,
-            size: new google.maps.Size(32, 32)
-          }
-        })
-      } else {
-        console.log(entry.title + ' has no coordinates!')
-      }
-    }
-    if(typeof(settings) !== 'undefined' && settings.hasOwnProperty('cluster')) {
-      if(settings.cluster === true) {
-        mapInstance.clusterMarkers()
-      }
+      mapInstance.setMarker({
+        position: {
+          lat: parseFloat(entry.post.coordinates.latitude),
+          lng: parseFloat(entry.post.coordinates.longitude)
+        },
+        title: entry.title,
+        content: entryContent.html(),
+        icon: {
+          url: iconUrl,
+          size: new google.maps.Size(32, 32)
+        }
+      })
+    } else {
+      console.log(entry.title + ' has no coordinates!')
     }
   }
+  if(typeof(settings) !== 'undefined' && settings.hasOwnProperty('cluster')) {
+    if(settings.cluster === true) {
+      mapInstance.clusterMarkers()
+    }
+  }
+}
 
-  function zoomToUserLocation() {
-    $.fn.geoLocation(function(result) {
-      if (result.success === true) {
-        mapInstance.setMarker({
-          position: {
-            lat: parseFloat(result.position.latitude),
-            lng: parseFloat(result.position.longitude)
-          },
-          title: 'Din plats',
-          content: 'Du är här!',
-          icon: '/assets/images/pin-my-position.png'
-        })
-        mapInstance.setCenter({
+function zoomToUserLocation() {
+  $.fn.geoLocation(function(result) {
+    if (result.success === true) {
+      mapInstance.setMarker({
+        position: {
           lat: parseFloat(result.position.latitude),
           lng: parseFloat(result.position.longitude)
+        },
+        title: 'Din plats',
+        content: 'Du är här!',
+        icon: '/assets/images/pin-my-position.png'
+      })
+      mapInstance.setCenter({
+        lat: parseFloat(result.position.latitude),
+        lng: parseFloat(result.position.longitude)
+      })
+      mapInstance.setZoom(11)
+    } else {
+      //TODO display error
+    }
+  })
+}
+
+function getMarkerData(options, callback) {
+  var settings = $.extend({
+    url: '/ajax/map'
+  }, options)
+
+  $.ajax(settings)
+  .done(function(data) {
+    callback(data)
+  })
+}
+
+function getMapOptions(element) {
+  var options = {}
+  var mapData = $('#map').data()
+
+  //Check if map is configured to auto initialize
+  if(mapData.hasOwnProperty('mapInit')) {
+    options.init = mapData.mapInit
+  }
+
+  if(mapData.hasOwnProperty('mapCluster')) {
+    options.cluster = mapData.mapCluster
+  }
+
+  if(mapData.hasOwnProperty('mapFilter')) {
+    var filters = {
+      single: function() {
+        return {
+          id: $('.content')[0].id
+        }
+      },
+      restaurant: function() {
+        return {
+          type: '3'
+        }
+      },
+      butik: function() {
+        return {
+          type: '5'
+        }
+      }
+    }
+
+    if(mapData.mapFilter in filters) {
+      options.data = {
+        filter: filters[mapData.mapFilter](),
+        filterName: mapData.mapFilter
+      }
+    }
+  }
+
+  if(mapData.hasOwnProperty('markerLatitude')) {
+    options.markerLatitude = mapData.markerLatitude
+  }
+
+  if(mapData.hasOwnProperty('markerLongitude')) {
+    options.markerLongitude = mapData.markerLongitude
+  }
+
+  if(mapData.hasOwnProperty('markerTitle')) {
+    options.markerTitle = mapData.markerTitle
+  }
+
+  return options
+}
+
+function applyMarkerData(data, options) {
+  if(options.hasOwnProperty('data')) {
+    if(options.data.filterName === 'single') {
+      if(data.length > 0 && data[0].post.hasOwnProperty('coordinates')) {
+        mapInstance.setCenter({
+          lat: parseFloat(data[0].post.coordinates.latitude),
+          lng: parseFloat(data[0].post.coordinates.longitude)
         })
+
         mapInstance.setZoom(11)
       } else {
-        //TODO display error
-      }
-    })
-  }
-
-  function getMarkerData(options, callback) {
-    var settings = $.extend({
-      url: '/ajax/map'
-    }, options)
-
-    $.ajax(settings)
-    .done(function(data) {
-      callback(data)
-    })
-  }
-
-  function getMapOptions(element) {
-    var options = {}
-    var mapData = $('#map').data()
-
-    //Check if map is configured to auto initialize
-    if(mapData.hasOwnProperty('mapInit')) {
-      options.init = mapData.mapInit
-    }
-
-    if(mapData.hasOwnProperty('mapCluster')) {
-      options.cluster = mapData.mapCluster
-    }
-
-    if(mapData.hasOwnProperty('mapFilter')) {
-      var filters = {
-        single: function() {
-          return {
-            id: $('.content')[0].id
-          }
-        },
-        restaurant: function() {
-          return {
-            type: '3'
-          }
-        },
-        butik: function() {
-          return {
-            type: '5'
-          }
-        }
-      }
-
-      if(mapData.mapFilter in filters) {
-        options.data = {
-          filter: filters[mapData.mapFilter](),
-          filterName: mapData.mapFilter
-        }
+        return
       }
     }
-
-    if(mapData.hasOwnProperty('markerLatitude')) {
-      options.markerLatitude = mapData.markerLatitude
-    }
-
-    if(mapData.hasOwnProperty('markerLongitude')) {
-      options.markerLongitude = mapData.markerLongitude
-    }
-
-    if(mapData.hasOwnProperty('markerTitle')) {
-      options.markerTitle = mapData.markerTitle
-    }
-
-    return options
   }
 
-  function applyMarkerData(data, options) {
-    if(options.hasOwnProperty('data')) {
-      if(options.data.filterName === 'single') {
-        if(data.length > 0 && data[0].post.hasOwnProperty('coordinates')) {
-          mapInstance.setCenter({
-            lat: parseFloat(data[0].post.coordinates.latitude),
-            lng: parseFloat(data[0].post.coordinates.longitude)
-          })
+  setMarkers(data, options)
+}
 
-          mapInstance.setZoom(11)
-        } else {
-          return
-        }
-      }
-    }
-
-    setMarkers(data, options)
-  }
-
-  function setSingleOpenMarker(obj) {
-    mapInstance.setMarker({
-      position: {
-        lat: parseFloat(obj.coordinates.latitude),
-        lng: parseFloat(obj.coordinates.longitude)
-      },
-      content: obj.content
-    })
-
-    mapInstance.setZoom(11)
-
-    mapInstance.setCenter({
+function setSingleOpenMarker(obj) {
+  mapInstance.setMarker({
+    position: {
       lat: parseFloat(obj.coordinates.latitude),
       lng: parseFloat(obj.coordinates.longitude)
-    })
+    },
+    content: obj.content
+  })
 
-    settings = mapInstance.getSettings()
-    marker = settings.google.markers[0]
-    marker.infowindow.open(settings.google.map, marker)
+  mapInstance.setZoom(11)
+
+  mapInstance.setCenter({
+    lat: parseFloat(obj.coordinates.latitude),
+    lng: parseFloat(obj.coordinates.longitude)
+  })
+
+  settings = mapInstance.getSettings()
+  marker = settings.google.markers[0]
+  marker.infowindow.open(settings.google.map, marker)
+}
+
+function fullscreenSupported() {
+  return ( document.fullscreenEnabled || 
+    document.webkitFullscreenEnabled || 
+    document.mozFullScreenEnabled ||
+    document.msFullscreenEnabled
+  )
+}
+
+function elementFullscreen(element) {
+  if (element.requestFullscreen) {
+    element.requestFullscreen()
+  } else if (element.webkitRequestFullscreen) {
+    element.webkitRequestFullscreen()
+  } else if (element.mozRequestFullScreen) {
+    element.mozRequestFullScreen()
+  } else if (element.msRequestFullscreen) {
+    element.msRequestFullscreen()
   }
+}
+
+$(document).bind('mapready', function(e) {
+  //Initialize map
+  mapInstance = $('#map').googleMap()
 
   $('#show-map').on('click', function(e) {
     e.preventDefault()
@@ -355,6 +384,24 @@ $(document).bind('mapready', function(e) {
   $('.showMyLocation').on('click', function(e) {
     e.preventDefault()
     zoomToUserLocation()
+  })
+
+  $('.showFullscreen').on('click', function(e) {
+    e.preventDefault()
+    if( fullscreenSupported() ) {
+      var data = $('#map').data()
+      data.center = mapInstance.getCenter()
+
+      elementFullscreen( document.getElementById('mapContainer') )
+
+      $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(e) {
+        mapInstance.triggerResize()
+        mapInstance.setCenter( data.center )
+      })
+    } else {
+      console.log('no fullscreen support')
+      //TODO notify user
+    }
   })
 
   if($('#map').length > 0) {
