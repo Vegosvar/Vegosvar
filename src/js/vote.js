@@ -18,8 +18,6 @@ $(window).load(function () {
             $(e.target).removeClass('active')
           })
 
-          console.log(data[0])
-
           for (var i = 0; i <= data[0].avg; i++) {
             $(parent).find('.star:nth-child(' + i  + ')').addClass('active')
           }
@@ -33,7 +31,7 @@ $(window).load(function () {
     var id = $(this).data('id')
     $.get('/ajax/like?id=' + id, function (data) {
       var element = $(container).find('#heart-glyphicon')
-      if (data.new_value == 0) {
+      if (data.new_value === 0) {
         $(element).addClass('glyphicon-heart-empty').removeClass('glyphicon-heart')
       } else {
         $(element).addClass('glyphicon-heart').removeClass('glyphicon-heart-empty')
