@@ -253,7 +253,7 @@ $(document).bind('mapready', function(e) {
     }
 
     if(mapData.hasOwnProperty('mapCluster')) {
-      options.cluster = mapData.cluster
+      options.cluster = mapData.mapCluster
     }
 
     if(mapData.hasOwnProperty('mapFilter')) {
