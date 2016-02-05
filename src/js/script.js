@@ -238,8 +238,7 @@ $(document).ready(function () {
 
             if (likes) {
               return $('<div>', {
-                id: 'like',
-                class: 'like-container xs'
+                class: 'likes xs'
               })
               .append(
                 $('<div>', {
