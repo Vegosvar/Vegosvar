@@ -99,11 +99,14 @@
   </script>
 
   <% if (typeof loadPageResources !== 'undefined') {
-    if( typeof loadPageResources.revisions !== 'undefined' && loadPageResources.revisions === true) { %>
-      <script src="/includes/js/pages/revisions.js"></script>
-    <% }
     if( typeof loadPageResources.page !== 'undefined' && loadPageResources.page === true) { %>
       <script src="/includes/js/pages/page.js"></script>
+    <% }
+  } %>
+
+  <% if (typeof loadAdminResources !== 'undefined') {
+    if( typeof loadAdminResources.revisions !== 'undefined' && loadAdminResources.revisions === true ) { %>
+      <script src="/includes/js/admin/revisions.js"></script>
     <% }
   } %>
 
