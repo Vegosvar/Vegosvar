@@ -28,23 +28,23 @@ $(window).load(function () {
     }
   })
 
-  $('#like .add-like').on('click', function (e) {
-    e.preventDefault()
-    var id = $(this).attr('id')
+  $('.like.add-like').on('click', function () {
+    var container = this
+    var id = $(this).data('id')
     $.get('/ajax/like?id=' + id, function (data) {
-      if (data.action === 0) {
-        $('#heart-glyphicon').removeClass('glyphicon glyphicon-heart')
-        $('#heart-glyphicon').addClass('glyphicon glyphicon-heart-empty')
-      } else if (data.action === 1) {
-        $('#heart-glyphicon').removeClass('glyphicon glyphicon-heart-empty')
-        $('#heart-glyphicon').addClass('glyphicon glyphicon-heart')
+      var element = $(container).find('#heart-glyphicon')
+      if (data.new_value == 0) {
+        $(element).addClass('glyphicon-heart-empty').removeClass('glyphicon-heart')
+      } else {
+        $(element).addClass('glyphicon-heart').removeClass('glyphicon-heart-empty')
       }
-      $('.count').html(data.new_value)
+
+      $(container).find('.count').html(data.new_value)
     })
   })
 
-  $('#like .toggle-hint').on('click', function (e) {
-    $('#like .hint').toggleClass('active')
+  $('.like.toggle-hint').on('click', function (e) {
+    $(this).parent().find('.hint').toggleClass('active')
   })
 
 })
