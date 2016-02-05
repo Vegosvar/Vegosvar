@@ -427,15 +427,25 @@ $(document).bind('mapready', function(e) {
 
       enterFullscreen( element )
 
-      $(element).css({
-        margin: '0',
-        width: '100%',
-        height: '100%',
-        position: 'absolute',
-        top: '0'
-      })
-
       $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function(e) {
+        if( isFullscreen() ) {
+          $(element).css({
+            margin: '0',
+            width: '100%',
+            height: '100%',
+            position: 'absolute',
+            top: '0'
+          })
+        } else {
+          $(element).css({
+            margin: '',
+            width: '',
+            height: '',
+            position: '',
+            top: ''
+          })
+        }
+
         mapInstance.triggerResize()
         mapInstance.setCenter( data.center )
       })
