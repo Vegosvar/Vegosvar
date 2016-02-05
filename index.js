@@ -466,6 +466,53 @@ app.get('/ajax/like', function (req, res) {
   }
 })
 
+app.get('/ajax/remove/:post_id', function(req, res) {
+  var post_id = req.params.post_id
+  var dbinstance = db.instance()
+  var pagesdb = dbinstance.collection('pages')
+  var usersdb = dbinstance.collection('users')
+
+  if(typeof(req.user) !== 'undefined') {
+    //Make sure user exists
+    usersdb.find({_id: new ObjectID(req.user._id)}).toArray(function(err, users) {
+      if (err) throw err
+      if(users.length > 0) {
+        var user = users[0]
+
+        var pageQuery = {
+          _id: new ObjectID(post_id)
+        }
+
+        var privileged = ['admin','moderator']
+        if( privileged.indexOf(user.info.permission) == -1 ) {
+          //Lacking privileges, check that the user is the creator of the page
+          pageQuery["user_info.id"] = new ObjectID(user._id)
+        }
+
+        pagesdb.update( pageQuery, { $set: { remove: true, "timestamp.updated": functions.getISOdate() } }, function(err, status) {
+          if (err) throw err
+          if(status.result.n > 0) {
+            res.json({
+              success: status.result.nModified,
+              message: (status.result.nModified) ? 'Page has already been scheduled for deletion' : 'Page has been scheduled for deletion'
+            })
+          } else {
+            res.json({
+              success: false,
+              message: 'No page in database matched'
+            })
+          }
+        })
+      } else {
+        res.json({
+          success: false,
+          message: 'Unable to locate user in database'
+        })
+      }
+    })
+  }
+})
+
 app.get('/ajax/map', function (req, res) {
   var filter = {
     $or: [
@@ -554,6 +601,174 @@ app.get('/ajax/admin/unblock/:user_id', function (req, res) {
       res.json(status)
     }
   )
+})
+
+app.get('/ajax/admin/revision/apply/:page_id/:revision_number', function (req, res, next) {
+  var dbinstance = db.instance()
+  var pagesdb = dbinstance.collection('pages')
+  var revisionsdb = dbinstance.collection('revisions')
+
+  var page_id = req.params.page_id
+  var revision_number = req.params.revision_number
+
+  revisionsdb.find({ post_id: new ObjectID(page_id)}).toArray(function(err, docs) {
+    if(err) {
+      res.json({
+        success:false,
+        post: page_id,
+        message: 'Could not find an entry for the page\'s revisions in the database'
+      })
+    }
+
+    var doc = docs[0]
+    var revisions = doc.revisions
+    if(revision_number in revisions) {
+      
+      //If this has not been moderated before, decrease the number of revisions pending revision
+      var pending = (revisions[revision_number].meta.accepted === null) ? (doc.pending -1) : doc.pending
+
+      var data = {
+        pending: pending,
+        revision: revision_number,
+        revisions: revisions
+      }
+
+      data.revisions[revision_number].meta.accepted = true
+
+      revisionsdb.findAndModify({
+          post_id: new ObjectID(page_id)
+        },
+        ['_id','asc'], // sort order
+        {
+          $set: data
+        }, {
+          new: true,
+          upsert: true
+        },
+        function (err, result) {
+          if(err) {
+            res.json({
+              success:false,
+              post: page_id,
+              message:'Failed to update the page\'s revision'
+            })
+          }
+
+          var new_post = data.revisions[revision_number]
+          delete(new_post['meta'])
+
+          var isodate = functions.newISOdate(new Date(revision_number * 1000))
+
+          pagesdb.findAndModify({
+              _id: new ObjectID(page_id)
+            },
+            ['_id','asc'], // sort order
+            {
+              $set: {
+                post: new_post,
+                "timestamp.updated": isodate
+              }
+            }, {
+              new: true,
+              upsert: true
+            }, function (err, result) {
+              if(err) {
+                res.json({
+                  success:false,
+                  post: page_id,
+                  message: 'Failed to update the page\'s content'
+                })
+              }
+
+              res.json({
+                success:true,
+                post: page_id,
+                message: 'Successfully updated page to approved revision'
+              })
+            }
+          )
+        }
+      )
+    } else {
+      res.json({
+        success:false,
+        post: page_id,
+        message:'Could not find a revision with supplied id among the page\'s revisions'
+      })
+    }
+  })
+})
+
+app.get('/ajax/admin/revision/deny/:page_id/:revision_number', function (req, res, next) {
+  //TODO write this route similar to the apply one
+})
+
+app.get('/ajax/admin/revision/compare/:page_id/:revision_number', function (req, res, next) {
+  var dbinstance = db.instance()
+  var pagesdb = dbinstance.collection('pages')
+  var revisionsdb = dbinstance.collection('revisions')
+
+  var page_id = req.params.page_id
+  var revision_number = req.params.revision_number
+
+  pagesdb.find({_id : new ObjectID(page_id)}).toArray(function(err, doc) {
+    var post = doc[0]
+
+    revisionsdb.find({ post_id : new ObjectID(page_id) }).toArray(function(err, docs) {
+      if(err) throw err
+      var revisions = docs[0].revisions
+      var contentPost = post.post.content
+      var contentRevision = revisions[revision_number].content
+
+      //Find <br> tags ("line breaks" - kind of) and compare line by line
+      var regex = /<br\s*[\/]?>/gi
+
+      var contentNow = contentPost.split(regex) ? contentPost.split(regex) : [contentPost]
+      var contentUpdated = contentRevision.split(regex) ? contentRevision.split(regex) : [contentRevision]
+
+      var loop = (contentNow.length > contentUpdated.length) ? contentNow : contentUpdated
+
+      /* TODO: loop over contentNow and in that loop compare contentNow[i] inside another loop against contentUpdated[i],
+        if both array's string matches and the [i] is the same, show muted,
+        if contentUpdated string matches a string in contentNow and [i] is different, show warning,
+        if contentUpdated is not matched and [i] is >= contentNow.length show success,
+        if contentNow string is not matched and [i] exists within contentUpdated, show danger,
+      */
+      var diffs = []
+      for (var i = 0; i < loop.length; i++) {
+        if(i < contentNow.length && i < contentUpdated.length) {
+          if(contentNow[i] == contentUpdated[i]) {
+            diffs.push({status: 'muted', value: contentNow[i] + '<br>' })
+          } else {
+            diffs.push({status: 'success', value: contentUpdated[i] })
+            diffs.push({status: 'danger', value: contentNow[i] + '<br>' })
+          }
+        } else {
+          if(i < contentNow.length) {
+            diffs.push({status: 'danger', value: contentNow[i] + '<br>' })
+          } else if (i < contentUpdated.length) {
+            diffs.push({status: 'success', value: contentUpdated[i] + '<br>' })
+          }
+        }
+      }
+
+      var output = {
+        post: {
+          id: page_id,
+          created: post.created,
+          updated: post.updated
+        },
+        revision: {
+          number: revision_number,
+          created: revisions[revision_number].meta.timestamp.created,
+          accepted: revisions[revision_number].meta.accepted
+        },
+        diffs: diffs
+      }
+
+      res.json(output);
+    })
+  })
 })
 
 app.get('/:url', function (req, res, next) {
@@ -729,15 +944,29 @@ app.get('/admin', function (req, res) {
         ], function(err, pages_stats) {
           if (err) throw err
 
-          revisionsdb.count({pending: { $gt: 0 } }, function(err, revisions) {
-            res.render('admin/index', {
-              user: req.user,
-              page: 'index',
-              users: users,
-              pages_total: pages,
-              pages_this_week: pages_this_week,
-              pages_stats: pages_stats,
-              revisions: revisions
+          revisionsdb.find({pending: { $gt: 0 } }).toArray(function(err, revisions) {
+            pagesdb.find({remove: true}).toArray(function(err, removals) {
+              var changes = []
+              //Check if any of the removed pages has new revisions
+              for (var i = 0; i < removals.length; i++) {
+                changes.push( String(removals[i]._id) )
+              }
+
+              for (var i = 0; i < revisions.length; i++) {
+                if( changes.indexOf( String(revisions[i].post_id ) ) == -1 ) {
+                  changes.push( String(revisions[i].post_id ) )
+                }
+              }
+
+              res.render('admin/index', {
+                user: req.user,
+                active_page: 'index',
+                users: users,
+                pages_total: pages,
+                pages_this_week: pages_this_week,
+                pages_stats: pages_stats,
+                changes: changes
+              })
             })
           })
         })
@@ -746,21 +975,19 @@ app.get('/admin', function (req, res) {
   })
 })
 
-app.get('/admin/users', function (req, res) {
+app.get('/admin/borttagning/:post_id', function (req, res) {
   var dbinstance = db.instance()
   var usersdb = dbinstance.collection('users')
-  var revisionsdb = dbinstance.collection('revisions')
+  var pagesdb = dbinstance.collection('pages')
 
-  usersdb.find({}).toArray(function(err, users) {
-    if (err) throw err
-    revisionsdb.count({pending: { $gt: 0 } }, function(err, revisions) {
-      if (err) throw err
-      res.render('admin/users', { user: req.user, page: 'users', users: users, revisions: revisions })
-    })
+  pagesdb.find({_id: new ObjectID(req.params.post_id)}).toArray(function(err, doc) {
+    var page = doc[0]
+
+    res.render('admin/remove', { user: req.user, active_page: 'remove', page: page })
   })
 })
 
-app.get('/admin/changes', function (req, res) {
+app.get('/admin/uppdateringar', function (req, res) {
   var dbinstance = db.instance()
   var revisionsdb = dbinstance.collection('revisions')
   var pagesdb = dbinstance.collection('pages')
@@ -772,41 +999,53 @@ app.get('/admin/changes', function (req, res) {
     var changes = []
     var revisionIds = []
 
-    if(revisions.length > 0) {
-      for (var i = 0; i < revisions.length; i++) {
-        updated.push(new ObjectID(revisions[i].post_id))
-        revisionIds.push(String(revisions[i].post_id))
-      }
+    for (var i = 0; i < revisions.length; i++) {
+      updated.push(new ObjectID(revisions[i].post_id))
+      revisionIds.push(String(revisions[i].post_id))
+    }
 
-      pagesdb.find({_id: { $in: updated}}).toArray(function(err, pages) {
-        if (err) throw err
+    pagesdb.find({ $or: [ { _id: { $in: updated } }, { remove: true } ] } ).toArray(function(err, pages) {
+      if (err) throw err
 
-        if(pages.length > 0) {
-          for (var i = 0; i < pages.length; i++) {
-            var pId = String(pages[0]._id)
+      if(pages.length > 0) {
+        for (var i = 0; i < pages.length; i++) {
+          var page_id = String(pages[i]._id)
 
-            if( revisionIds.indexOf(pId) >= 0 ) {
-              for(var key in revisions) {
-                var revision = revisions[key]
+          if( revisionIds.indexOf(page_id) >= 0 ) {
+            for(var key in revisions) {
+              var revision = revisions[key]
+              var revision_id = String(revision.post_id)
 
-                if(String(revision.post_id) == pId) {
-                  changes.push({
-                    title: pages[i].title,
-                    url: pages[i].url,
-                    created: functions.getPrettyDateTime(pages[i].timestamp.created),
-                    updated: functions.getPrettyDateTime(revision.modified)
-                  })
-                }
+              if(revision_id == page_id) {
+                changes.push({
+                  title: pages[i].title,
+                  url: pages[i].url,
+                  id: pages[i]._id,
+                  created: functions.getPrettyDateTime(pages[i].timestamp.created),
+                  updated: functions.getPrettyDateTime(revision.modified),
+                  revisions: Object.keys(revision.revisions).length,
+                  remove: pages[i].hasOwnProperty('remove') ? pages[i].remove : false
+                })
               }
+            }
+          } else {
+            if('remove' in pages[i]) {
+              changes.push({
+                title: pages[i].title,
+                url: pages[i].url,
+                id: pages[i]._id,
+                created: functions.getPrettyDateTime(pages[i].timestamp.created),
+                updated: pages[i].timestamp.hasOwnProperty('updated') ? functions.getPrettyDateTime(pages[i].timestamp.updated) : 0,
+                revisions: 0,
+                remove: pages[i].remove
+              })
             }
           }
         }
+      }
 
-        res.render('admin/changes', { user: req.user,  page: 'changes', changes: changes, revisions: revisions.length })
-      })
-    } else {
-      res.render('admin/changes', { user: req.user,  page: 'changes', changes: changes, revisions: revisions.length })
-    }
+      res.render('admin/changes', { user: req.user,  active_page: 'changes', changes: changes })
+    })
   })
 })
 
@@ -823,11 +1062,61 @@ app.get('/admin/profil/:user_id', function (req, res) {
 
     user = user[0]
     pagesdb.find( { "user_info.id": new ObjectID(user_id) }).toArray(function(err, pages) {
-      revisionsdb.count({pending: { $gt: 0 } }, function(err, revisions) {
-        if (err) throw err
-        res.render('admin/profil', { user: req.user, current_user: user, page: 'users', pages: pages, revisions: revisions })
-      })
+      res.render('admin/profil', { user: req.user, current_user: user, active_page: 'users', pages: pages })
     })
+  })
+})
+
+app.get('/admin/revisioner/:url', function (req, res, next) {
+  var dbinstance = db.instance()
+  var pagesdb = dbinstance.collection('pages')
+  var revisionsdb = dbinstance.collection('revisions')
+
+  var url = req.params.url
+
+  pagesdb.find({url:url}).toArray(function(err, doc) {
+    var post = doc[0]
+
+    revisionsdb.find({ post_id : new ObjectID(post._id) }).toArray(function(err, docs) {
+      if(err) throw err
+      if(docs.length > 0) {
+        var revisions = docs[0].revisions
+        var current = docs[0].revision
+
+        var revisions_available = []
+        for(var revision in revisions) {
+          revisions_available.push({
+            id: revision,
+            accepted: revisions[revision].meta.accepted,
+            created: functions.getPrettyDateTime(new Date(revision * 1000))
+          })
+        }
+
+        res.render('admin/revisions', {
+          user: req.user,
+          post: post,
+          revisions: revisions_available,
+          current: current,
+          loadAdminResources: { revisions: true }
+        })
+      } else {
+        console.log(post.title + ' saknar document i revisions collection')
+        return next()
+      }
+    })
+  })
+})
+
+app.get('/admin/users', function (req, res) {
+  var dbinstance = db.instance()
+  var usersdb = dbinstance.collection('users')
+  var revisionsdb = dbinstance.collection('revisions')
+
+  usersdb.find({}).toArray(function(err, users) {
+    if (err) throw err
+
+
+    res.render('admin/users', { user: req.user, active_page: 'users', users: users })
   })
 })
 
@@ -908,208 +1197,6 @@ app.get('/redigera/:url', function (req, res, next) {
     } else {
       next()
     }
-  })
-})
-
-app.get('/revisioner/:url', function (req, res, next) {
-  var dbinstance = db.instance()
-  var pagesdb = dbinstance.collection('pages')
-  var revisionsdb = dbinstance.collection('revisions')
-
-  var url = req.params.url
-
-  pagesdb.find({url:url}).toArray(function(err, doc) {
-    var post = doc[0]
-
-    revisionsdb.find({ post_id : new ObjectID(post._id) }).toArray(function(err, docs) {
-      if(err) throw err
-      if(docs.length > 0) {
-        var revisions = docs[0].revisions
-        var current = docs[0].revision
-
-        var revisions_available = []
-        for(var revision in revisions) {
-          revisions_available.push({
-            id: revision,
-            accepted: revisions[revision].meta.accepted,
-            created: functions.getPrettyDateTime(new Date(revision * 1000))
-          })
-        }
-
-        res.render('revisions', { user: req.user, post: post, revisions: revisions_available, current: current, loadPageResources: { revisions: true } })
-      } else {
-        console.log(post.title + ' saknar document i revisions collection')
-        return next()
-      }
-    })
-  })
-})
-
-app.get('/ajax/revision/apply/:page_id/:revision_number', function (req, res, next) {
-  var dbinstance = db.instance()
-  var pagesdb = dbinstance.collection('pages')
-  var revisionsdb = dbinstance.collection('revisions')
-
-  var page_id = req.params.page_id
-  var revision_number = req.params.revision_number
-
-  revisionsdb.find({ post_id: new ObjectID(page_id)}).toArray(function(err, docs) {
-    if(err) {
-      res.json({
-        success:false,
-        post: page_id,
-        message: 'Could not find an entry for the page\'s revisions in the database'
-      })
-    }
-
-    var doc = docs[0]
-    var revisions = doc.revisions
-    if(revision_number in revisions) {
-      
-      //If this has not been moderated before, decrease the number of revisions pending revision
-      var pending = (revisions[revision_number].meta.accepted === null) ? (doc.pending -1) : doc.pending
-
-      var data = {
-        pending: pending,
-        revision: revision_number,
-        revisions: revisions
-      }
-
-      data.revisions[revision_number].meta.accepted = true
-
-      revisionsdb.findAndModify({
-          post_id: new ObjectID(page_id)
-        },
-        ['_id','asc'], // sort order
-        {
-          $set: data
-        }, {
-          new: true,
-          upsert: true
-        },
-        function (err, result) {
-          if(err) {
-            res.json({
-              success:false,
-              post: page_id,
-              message:'Failed to update the page\'s revision'
-            })
-          }
-
-          var new_post = data.revisions[revision_number]
-          delete(new_post['meta'])
-
-          var isodate = functions.newISOdate(new Date(revision_number * 1000))
-
-          pagesdb.findAndModify({
-              _id: new ObjectID(page_id)
-            },
-            ['_id','asc'], // sort order
-            {
-              $set: {
-                post: new_post,
-                "timestamp.updated": isodate
-              }
-            }, {
-              new: true,
-              upsert: true
-            }, function (err, result) {
-              if(err) {
-                res.json({
-                  success:false,
-                  post: page_id,
-                  message: 'Failed to update the page\'s content'
-                })
-              }
-
-              res.json({
-                success:true,
-                post: page_id,
-                message: 'Successfully updated page to approved revision'
-              })
-            }
-          )
-        }
-      )
-    } else {
-      res.json({
-        success:false,
-        post: page_id,
-        message:'Could not find a revision with supplied id among the page\'s revisions'
-      })
-    }
-  })
-})
-
-app.get('/ajax/revision/deny/:page_id/:revision_number', function (req, res, next) {
-  //TODO write this route similar to the apply one
-})
-
-app.get('/ajax/revision/compare/:page_id/:revision_number', function (req, res, next) {
-  var dbinstance = db.instance()
-  var pagesdb = dbinstance.collection('pages')
-  var revisionsdb = dbinstance.collection('revisions')
-
-  var page_id = req.params.page_id
-  var revision_number = req.params.revision_number
-
-  pagesdb.find({_id : new ObjectID(page_id)}).toArray(function(err, doc) {
-    var post = doc[0]
-
-    revisionsdb.find({ post_id : new ObjectID(page_id) }).toArray(function(err, docs) {
-      if(err) throw err
-      var revisions = docs[0].revisions
-      var contentPost = post.post.content
-      var contentRevision = revisions[revision_number].content
-
-      //Find <br> tags ("line breaks" - kind of) and compare line by line
-      var regex = /<br\s*[\/]?>/gi
-
-      var contentNow = contentPost.split(regex) ? contentPost.split(regex) : [contentPost]
-      var contentUpdated = contentRevision.split(regex) ? contentRevision.split(regex) : [contentRevision]
-
-      var loop = (contentNow.length > contentUpdated.length) ? contentNow : contentUpdated
-
-      /* TODO: loop over contentNow and in that loop compare contentNow[i] inside another loop against contentUpdated[i],
-        if both array's string matches and the [i] is the same, show muted,
-        if contentUpdated string matches a string in contentNow and [i] is different, show warning,
-        if contentUpdated is not matched and [i] is >= contentNow.length show success,
-        if contentNow string is not matched and [i] exists within contentUpdated, show danger,
-      */
-      var diffs = []
-      for (var i = 0; i < loop.length; i++) {
-        if(i < contentNow.length && i < contentUpdated.length) {
-          if(contentNow[i] == contentUpdated[i]) {
-            diffs.push({status: 'muted', value: contentNow[i] + '<br>' })
-          } else {
-            diffs.push({status: 'success', value: contentUpdated[i] })
-            diffs.push({status: 'danger', value: contentNow[i] + '<br>' })
-          }
-        } else {
-          if(i < contentNow.length) {
-            diffs.push({status: 'danger', value: contentNow[i] + '<br>' })
-          } else if (i < contentUpdated.length) {
-            diffs.push({status: 'success', value: contentUpdated[i] + '<br>' })
-          }
-        }
-      }
-
-      var output = {
-        post: {
-          id: page_id,
-          created: post.created,
-          updated: post.updated
-        },
-        revision: {
-          number: revision_number,
-          created: revisions[revision_number].meta.timestamp.created,
-          accepted: revisions[revision_number].meta.accepted
-        },
-        diffs: diffs
-      }
-
-      res.json(output);
-    })
   })
 })
 
