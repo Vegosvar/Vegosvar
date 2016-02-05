@@ -863,7 +863,7 @@ app.get('/installningar/ta-bort/submit', function (req, res) {
   if(req.isAuthenticated()) {
     var dbinstance = db.instance()
     var users = dbinstance.collection('users')
-    users.remove({ "_id": ObjectID(req.user._id) }, function(err, doc) {
+    users.remove({ "_id": new ObjectID(req.user._id) }, function(err, doc) {
       if (err) throw err
       res.send('1')
     })
@@ -882,7 +882,7 @@ app.post('/installningar/submit', urlencodedParser, function (req, res) {
   var usersdb = dbinstance.collection('users')
 
   usersdb.update(
-    { _id : id },
+    { _id : new ObjectID(id) },
     { $set:
       { "name.display_name": display_name,
        "info.website":website,
@@ -895,11 +895,55 @@ app.post('/installningar/submit', urlencodedParser, function (req, res) {
 app.get('/mina-sidor', function (req, res) {
   var dbinstance = db.instance()
   var pagesdb = dbinstance.collection('pages')
-
+  var likesdb = dbinstance.collection('likes')
+  var votesdb = dbinstance.collection('votes')
   var userid = new ObjectID(req.user._id)
 
-  pagesdb.find( { "user_info.id": userid }).toArray(function(err, doc) {
-    res.render('pages', { user: req.user, pages:doc })
+  pagesdb.find( { "user_info.id": userid }).toArray(function(err, pages) {
+    if (err) throw err
+    votesdb.find( {"user.id": userid }).toArray(function(err, votes) {
+      if (err) throw err
+
+      var pages_voted_on = []
+      var pages_voted_on_str = []
+      var pages_votes = []
+      for (var i = 0; i < votes.length; i++) {
+        pages_voted_on.push( votes[i].post.id )
+        pages_voted_on_str.push( String(votes[i].post.id ) )
+        pages_votes.push( votes[i].content )
+      }
+
+      pagesdb.find( { _id: { $in: pages_voted_on } } ).toArray(function(err, voted) {
+        if (err) throw err
+
+        var voted_pages = []
+        for (var i = 0; i < voted.length; i++) {
+          var position = pages_voted_on_str.indexOf( String(voted[i]._id) )
+          if( position !== -1 ) {
+            voted_pages.push({
+              url: voted[i].url,
+              title: voted[i].title,
+              content: pages_votes[position]
+            })
+          }
+        }
+
+        likesdb.find( { "user.id": userid }).toArray(function(err, likes) {
+          if (err) throw err
+
+          var pages_liked = []
+          for (var i = 0; i < likes.length; i++) {
+            pages_liked.push( likes[i].post.id )
+          }
+
+          pagesdb.find( { _id: { $in: pages_liked } }).toArray(function(err, liked) {
+            if (err) throw err
+
+            res.render('pages', { user: req.user, pages: pages, votes: voted_pages, likes: liked })
+          })
+        })
+      })
+    })
   })
 })
 
