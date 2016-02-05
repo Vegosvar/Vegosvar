@@ -37,8 +37,8 @@
                       <td>
                         <span class="disqus-comment-count" data-disqus-identifier="<%= pages[i]._id %>"></span>
                       </td>
-                      <td><%= ('rating' in pages[i]) ? pages[i].votes_sum : '' %></td>
-                      <td><%= ('rating' in pages[i] && 'likes' in pages[i].rating) ? pages[i].rating.likes : '' %></td>
+                      <td><%= ('rating' in pages[i] && 'likes' in pages[i].rating && pages[i].rating.likes > 0) ? pages[i].rating.likes : '' %></td>
+                      <td><%= ('rating' in pages[i] && 'votes' in pages[i].rating) ? pages[i].rating.votes_sum + ' (' + pages[i].rating.votes + ')' : '' %></td>
                       <td>
                         <a href="/redigera/<%= pages[i].url %>" class="btn btn-primary btn-xs pull-right">
                           Redigera
@@ -90,7 +90,6 @@
                 </thead>
                 <tbody>
                 <% if(typeof votes !== 'undefined') {
-                  console.log(votes[0])
                   for(var i=0; i < votes.length; i++) { %>
                   <tr>
                     <td>
