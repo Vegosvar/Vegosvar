@@ -1,7 +1,8 @@
 function pagesPerMonth(obj) {
   $(obj.element).highcharts({
     chart: {
-        type: obj.type
+        type: obj.type,
+        zoomType: 'xy'
     },
     title: {
       text: 'Sidor per månad',
