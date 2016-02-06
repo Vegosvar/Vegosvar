@@ -255,7 +255,7 @@ $(document).ready(function () {
                 $('<span>', {
                   class: 'like add-like'
                 })
-                .attr('data-id',entry._id)
+                .attr('data-id', entry._id)
                 .append(
                   $('<span>', {
                     id: 'heart-glyphicon',
