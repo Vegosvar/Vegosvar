@@ -939,7 +939,13 @@ app.get('/mina-sidor', function (req, res) {
           pagesdb.find( { _id: { $in: pages_liked } }).toArray(function(err, liked) {
             if (err) throw err
 
-            res.render('pages', { user: req.user, pages: pages, votes: voted_pages, likes: liked })
+            res.render('pages', {
+              user: req.user,
+              pages: pages,
+              votes: voted_pages,
+              likes: liked,
+              loadPageResources: { datatables: true }
+            })
           })
         })
       })
@@ -1088,7 +1094,12 @@ app.get('/admin/uppdateringar', function (req, res) {
         }
       }
 
-      res.render('admin/changes', { user: req.user,  active_page: 'changes', changes: changes })
+      res.render('admin/changes', {
+        user: req.user,
+        active_page: 'changes',
+        changes: changes,
+        loadPageResources: { datatables: true }
+      })
     })
   })
 })
