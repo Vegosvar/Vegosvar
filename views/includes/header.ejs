@@ -102,6 +102,14 @@
     if( typeof loadPageResources.page !== 'undefined' && loadPageResources.page === true) { %>
       <script src="/includes/js/pages/page.js"></script>
     <% }
+    if( typeof loadPageResources.datatables !== 'undefined' && loadPageResources.datatables === true ) { %>
+      <link rel="stylesheet" href="/includes/css/datatables/dataTables.bootstrap.min.css">
+
+      <script src="/includes/js/datatables/jquery.dataTables.min.js"></script>
+      <script src="/includes/js/datatables-plugins/dataTables.conditionalPaging.js"></script>
+      <script src="/includes/js/datatables/dataTables.bootstrap.min.js"></script>
+      <script src="/includes/js/pages/datatables.js"></script>
+    <% }
   } %>
 
   <% if (typeof loadAdminResources !== 'undefined') {
