@@ -507,10 +507,20 @@ button {
 	border: none;
 	background: #FCFCFC;
 	.panel-heading {
-		background: @blue;
+		background: #333;
 		padding: 10px 15px;
 		border: none;
 		color: #fff;
+	}
+	&.panel-danger {
+		.panel-heading {
+			background: @red;
+		}
+	}
+	&.panel-warning {
+		.panel-heading {
+			background: @orange;
+		}
 	}
 }
 
@@ -518,6 +528,9 @@ button {
 	thead tr th {
 		border: none;
 		background: rgba(0, 0, 0, 0.05);
+	}
+	.btn {
+		margin: -5px 0px;
 	}
 }
 
