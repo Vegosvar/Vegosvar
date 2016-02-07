@@ -15,7 +15,7 @@ $(document).ready(function() {
               "sLengthMenu": "Visa _MENU_ sidor",
               "sLoadingRecords": "Laddar...",
               "sProcessing": "Bearbetar...",
-              "sSearch": "S&ouml;k:",
+              "sSearch": "S&ouml;k",
               "sZeroRecords": "Hittade inga matchande sidor",
               "oPaginate": {
                 "sFirst": "F&ouml;rsta",
