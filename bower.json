@@ -48,6 +48,10 @@
       ],
       "datatables-plugins": [
         "bower_components/datatables-plugins/features/conditionalPaging/dataTables.conditionalPaging.js"
+      ],
+      "chosen": [
+        "bower_components/chosen/chosen.jquery.min.js",
+        "bower_components/chosen/chosen.min.css"
       ]
     }
   }
