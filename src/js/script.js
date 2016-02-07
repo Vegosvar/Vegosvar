@@ -171,7 +171,7 @@ $(document).ready(function () {
                     $('<span>', {
                       class: 'fa fa-check-circle'
                     }),
-                    $('<span>').html('Veganskt&nbsp;')
+                    $('<span>').html(' Veganskt&nbsp;')
                   )
                 },
                 lacto_ovo: function () {
@@ -179,7 +179,7 @@ $(document).ready(function () {
                     class: 'text-warning'
                   })
                   .append(
-                    $('<span>').html('Lakto-Ovo&nbsp;')
+                    $('<span>').html(' Lakto-Ovo&nbsp;')
                   )
                 },
                 animal: function () {
@@ -187,7 +187,7 @@ $(document).ready(function () {
                     class: 'text-danger'
                   })
                   .append(
-                    $('<span>').html('Animaliskt&nbsp;')
+                    $('<span>').html(' Animaliskt&nbsp;')
                   )
                 }
               }

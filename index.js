@@ -256,6 +256,10 @@ app.get('/press', function (req, res) {
   res.render('press', { user: req.user })
 })
 
+app.get('/505', function (req, res) {
+  res.render('505', { user: req.user })
+})
+
 app.get('/recensera', function (req, res) {
   if (req.isAuthenticated()) {
     return req.session.returnTo
