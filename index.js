@@ -925,6 +925,7 @@ app.get('/mina-sidor', function (req, res) {
           var position = pages_voted_on_str.indexOf( String(voted[i]._id) )
           if( position !== -1 ) {
             voted_pages.push({
+              page_id: voted[i]._id,
               url: voted[i].url,
               title: voted[i].title,
               content: pages_votes[position]

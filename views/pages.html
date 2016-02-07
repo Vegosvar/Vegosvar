@@ -117,7 +117,7 @@
                     <a href="<%= votes[i].url %>"><%= votes[i].title %></a>
                   </td>
                   <td data-order="<%= votes[i].content %>">
-                    <div class="stars">
+                    <div class="stars" data-id="<%= votes[i].page_id %>">
                       <% for(s = 1; s < 6; s++) { %>
                         <div class="star <%= (s <= votes[i].content) ? 'active' : '' %> ">
                           <span class="glyphicon glyphicon-star"></span>
