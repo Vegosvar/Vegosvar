@@ -1,5 +1,5 @@
 /** post.js
-* @file: /routes/post.js
+* @file: /src/app/routes/post.js
 * @description: Handles express routing for the POST routes
 * @parameters: Object(app), Object(resources)
 * @exports: Express routes

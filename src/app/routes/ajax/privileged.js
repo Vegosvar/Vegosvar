@@ -1,5 +1,5 @@
 /** privileged.js
-* @file: /routes/ajax/privileged.js
+* @file: /src/app/routes/ajax/privileged.js
 * @description: Handles express routing for the privileged ajax routes
 * @parameters: Object(app), Object(resources)
 * @returns: Express routes

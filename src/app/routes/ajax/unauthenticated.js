@@ -1,5 +1,5 @@
-/** authenticated.js
-* @file: authenticated.js
+/** unauthenticated.js
+* @file: /src/app/routes/ajax/unauthenticated.js
 * @description: Handles express routing for the unathenticated ajax routes
 * @parameters: Object(app), Object(resources)
 * @returns: Express routes

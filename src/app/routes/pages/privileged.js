@@ -1,5 +1,5 @@
-/** authenticated.js
-* @file: /routes/pages/privileged.js
+/** privileged.js
+* @file: /src/app/routes/pages/privileged.js
 * @description: Handles express routing for the privileged page routes
 * @parameters: Object(app), Object(resources)
 * @exports: Express routes

@@ -1,7 +1,7 @@
 /** authenticated.js
-* @file: /routes/pages/authenticated.js
+* @file: /src/app/routes/pages/authenticated.js
 * @description: Handles express routing for the authenticated page routes
-* @parameters: Object(app), Object(configuration)
+* @parameters: Object(app), Object(resources)
 * @exports: Express routes
 */
 
@@ -9,10 +9,9 @@ var ObjectID = require('mongodb').ObjectID
 var body_parser = require('body-parser')
 var urlencodedParser = body_parser.urlencoded({ extended: false })
 
-module.exports = function (app, config) {
-  var functions = config.functions
-  var dbinstance = config.dbinstance
-  var cities = config.collections.cities
+module.exports = function (app, resources) {
+  var functions = resources.functions
+  var cities = resources.collections.cities
 
   //Have to be at least a logged in user at this point
   app.use(function ensure_authenticated (req, res, next) {
@@ -33,7 +32,7 @@ module.exports = function (app, config) {
 
   app.get('/installningar/ta-bort/submit', function (req, res) {
     if(req.isAuthenticated()) {
-      var users = dbinstance.collection('users')
+      var users = resources.collections.users
       users.remove({ "_id": new ObjectID(req.user._id) }, function(err, doc) {
         if (err) throw err
         res.send('1')
@@ -49,7 +48,7 @@ module.exports = function (app, config) {
     var website = req.body.website
     var description = req.body.description
 
-    var usersdb = dbinstance.collection('users')
+    var usersdb = resources.collections.users
 
     usersdb.update(
       { _id : new ObjectID(id) },
@@ -63,9 +62,9 @@ module.exports = function (app, config) {
   })
 
   app.get('/mina-sidor', function (req, res) {
-    var pagesdb = dbinstance.collection('pages')
-    var likesdb = dbinstance.collection('likes')
-    var votesdb = dbinstance.collection('votes')
+    var pagesdb = resources.collections.pages
+    var likesdb = resources.collections.likes
+    var votesdb = resources.collections.votes
     var userid = new ObjectID(req.user._id)
 
     pagesdb.find( { "user_info.id": userid }).toArray(function(err, pages) {
@@ -160,7 +159,7 @@ module.exports = function (app, config) {
   })
 
   app.get('/redigera/:url', function (req, res, next) {
-    var pagesdb = dbinstance.collection('pages')
+    var pagesdb = resources.collections.pages
 
     pagesdb.find({url:req.params.url}).toArray(function(err, doc) {
       if(doc !== null && doc.length > 0) {

@@ -1,5 +1,5 @@
 /** index.js
-* @file: /routes/index.js
+* @file: /src/app/routes/index.js
 * @description: Main file for loading express routes
 * @parameters: Object(app), Object(resources)
 * @returns: Express routes

@@ -1,7 +1,7 @@
 /** error.js
-* @file: /config/error.js
+* @file: /src/app/routes/error.js
 * @description: Express routes for error pages
-* @parameters: Object(app), Object(passport)
+* @parameters: Object(app), Object(resources)
 * @exports: Express routes
 */
 

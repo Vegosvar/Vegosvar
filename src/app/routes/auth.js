@@ -1,5 +1,5 @@
 /** auth.js
-* @file: /routes/auth.js
+* @file: /src/app/routes/auth.js
 * @description: Handles express routing for authentication routes
 * @parameters: Object(app), Object(passport)
 * @returns: Express routes

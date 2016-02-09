@@ -1,6 +1,6 @@
 /** authenticated.js
-* @file: /routes/pages/authenticated.js
-* @description: Handles express routing for the unauthenticated page routes
+* @file: /src/app/routes/ajax/authenticated.js
+* @description: Handles express routing for the authenticated ajax routes
 * @parameters: Object(app), Object(resources)
 * @exports: Express routes
 */
@@ -17,6 +17,7 @@ module.exports = function (app, resources) {
      if (req.isAuthenticated()) {
         var votesdb = resources.collections.votes
         var pagesdb = resources.collections.pages
+
         votesdb.count({ "post.id": new ObjectID(req.query.id), "user.id": req.user._id }, function(err, count) {
           if(count < 1) { // Användaren har inte röstat
             var isodate = resources.functions.getISOdate()

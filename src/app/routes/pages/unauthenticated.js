@@ -1,6 +1,6 @@
-/** ajax.js
-* @file: ajax.js
-* @description: Handles express routing for the athenticated ajax routes
+/** unauthenticated.js
+* @file: /src/app/routes/pages/unauthenticated.js
+* @description: Handles express routing for the athenticated page routes
 * @parameters: Object(app), Object(resources)
 * @returns: Express routes
 */
@@ -10,7 +10,6 @@ var striptags = require('striptags')
 
 module.exports = function (app, resources) {
   var functions = resources.functions
-  var dbinstance = resources.dbinstance
 
   app.get('/', function (req, res) {
     req.session.returnTo = '/'
