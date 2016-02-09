@@ -108,6 +108,9 @@
       getCenter: function() {
         return settings.google.map.getCenter()
       },
+      getMarkers: function() {
+        return settings.google.markers
+      },
       triggerResize: function() {
         google.maps.event.trigger(settings.google.map, 'resize');
       }
@@ -213,6 +216,17 @@ function setMarkers(data, settings) {
           size: new google.maps.Size(32, 32)
         }
       })
+
+      if('infoWindowOpen' in settings && settings.infoWindowOpen === true) {
+        //Open the newly added infowindow by default
+        var settings = mapInstance.getSettings()
+        var marker = settings.google.markers
+
+        marker[marker.length -1].infowindow.open(settings.google.map, marker[marker.length -1])
+
+        //TODO recalculate bounds to fit infowindow
+        // See this thread: http://stackoverflow.com/questions/21002001/include-open-infowindows-within-bounds-of-map-when-using-fitbounds
+      }
     } else {
       console.log(entry.title + ' has no coordinates!')
     }
@@ -323,7 +337,14 @@ function applyMarkerData(data, options) {
         })
 
         mapInstance.setZoom(11)
+
+        setMarkers(data, {infoWindowOpen: true})
+
+        getMarkerData({}, function(data) {
+          applyMarkerData(data, {})
+        })
       } else {
+        console.log('Page is missing map coordinates')
         return
       }
     }
