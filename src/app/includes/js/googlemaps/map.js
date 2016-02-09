@@ -149,46 +149,56 @@ function setMarkers(data, settings) {
         .html(content)
       }
 
-      var entryContent = $('<div>', {
-        class: 'infowindow-container'
-      })
+      var entryContent = $('<div>')
       .append(
         $('<div>', {
-          class: 'infowindow-header'
+          id: 'infowindow-' + entry._id,
+          class: 'infowindow-container'
         })
         .append(
           $('<div>', {
-            class: 'infowindow-image'
-          })
-          .append(
-            $('<img>', {
-              src: '/uploads/' + entry.post.cover.filename + '.jpg'
-            })
-          ),
-          $('<div>', {
-            class: 'infowindow-title'
-          })
-          .append(
-            $('<a>', {
-              href: entry.url
-            })
-            .html(entry.title)
-          ),
-          $('<div>', {
-            class: 'infowindow-stars-container'
+            class: 'infowindow-header'
           })
           .append(
             $('<div>', {
-              class: 'star'
+              class: 'infowindow-image'
             })
             .append(
-              $('<span>', {
-                class: 'glyphicon glyphicon-star'
+              $('<img>', {
+                src: '/uploads/' + entry.post.cover.filename + '.jpg'
               })
+            ),
+            $('<div>', {
+              class: 'infowindow-title'
+            })
+            .append(
+              $('<a>', {
+                href: entry.url
+              })
+              .html(entry.title)
+            ),
+            $('<div>', {
+              class: 'infowindow-stars-container'
+            })
+            .append(
+              $('<div>', {
+                class: 'stars'
+              })
+              .append(
+                $.map(new Array(5), function(value, i) {
+                  return $('<div>', {
+                    class: ('rating' in entry && 'votes_sum' in entry.rating && (i + 1) <= entry.rating.votes_sum) ? 'star active' : 'star'
+                  }).append(
+                    $('<span>', {
+                      class: 'glyphicon glyphicon-star'
+                    })
+                  )
+                })
+              )
             )
-          )
-        ),
-        infoWindowContent(entry)
+          ),
+          infoWindowContent(entry)
+        )
       )
 
       mapInstance.setMarker({
