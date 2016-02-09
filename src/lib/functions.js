@@ -83,8 +83,8 @@ module.exports = {
           message: 'Access denied'
         })
       } else {
-        //Redirect to front page for browsers
-        res.redirect('/')
+        //Redirect to login for browsers
+        res.redirect('/logga-in')
       }
     }
   },
