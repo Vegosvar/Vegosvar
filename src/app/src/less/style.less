@@ -1691,6 +1691,72 @@ section {
 				margin: 0;
 			}
 		}
+		#filterSelect_chosen {
+			padding: 0;
+			border: none;
+			box-shadow: none;
+			background: none;
+			min-width: 100px;
+			top: -2px;
+			ul.chosen-choices {
+				border-radius: 3px !important;
+				padding: 7px 10px;
+				height: auto;
+				font-size: 14px;
+				box-shadow: none;
+				background: none;
+				border: 1px solid #888;
+				cursor: pointer;
+				@media (max-width: @xs) {
+					padding: 4px 8px;
+					font-size: 13px;
+					top: -2px;
+				}
+				&:hover {
+					border: 1px solid #555;
+					color: #555;
+				}
+				input {
+					height: auto;
+					cursor: pointer;
+				}
+				.search-choice {
+					margin: -4px 4px -4px 0;
+					border: none;
+					background: @blue;
+					color: #fff;
+					box-shadow: none;
+					padding: 7px 10px;
+					@media (max-width: @xs) {
+						padding: 5px 8px;
+						margin: -2px 4px -2px 0;
+					}
+				}
+			}
+			.chosen-drop {
+				border: none;
+				border-radius: 0 0 3px 3px;
+				overflow: hidden;
+				background: @blue;
+				ul {
+					li {
+						background: @blue;
+						color: #fff;
+						padding: 7px 10px;
+						font-size: 14px;
+						&:hover {
+							background: darken(@blue, 5%);
+						}
+						&.result-selected {
+							display: none;
+						}
+						&:last-child {
+							border-radius: 0 0 3px 3px;
+						}
+					}
+				}
+			}
+		}
 		/*ul {
 			background: @blue;
 			border: none;
