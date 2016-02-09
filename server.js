@@ -39,6 +39,7 @@ db.connect(config, function (dbinstance) {
   }
 
   require('./src/config')(app, resources)
+  require('./src/app/routes')(app, resources)
 
   app.listen(process.env.PORT || config.port, config.address)
 })
