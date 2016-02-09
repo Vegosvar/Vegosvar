@@ -6,35 +6,77 @@ var collections = [
         name: 'categories',
         exists: false,
         data: [{
-            name: 'chips'
+            name: 'annat',
+            type: '4',
+            subcategory: 'övrigt'
         },{
-            name: 'glass'
+            name: 'chips',
+            type: '4',
+            subcategory: 'livsmedel'
         },{
-            name: 'godis'
+            name: 'e-nummer',
+            type: '4',
+            subcategory: 'övrigt'
         },{
-            name: 'hudvård'
+            name: 'glass',
+            type: '4',
+            subcategory: 'livsmedel'
         },{
-            name: 'kosttillskott'
+            name: 'godis',
+            type: '4',
+            subcategory: 'livsmedel'
         },{
-            name: 'makeup'
+            name: 'hudvård',
+            type: '4',
+            subcategory: 'kropp'
         },{
-            name: 'ost'
+            name: 'kosttillskott',
+            type: '4',
+            subcategory: 'övrigt'
         },{
-            name: 'schampoo'
+            name: 'makeup',
+            type: '4',
+            subcategory: 'kropp'
         },{
-            name: 'tandkräm'
+            name: 'margarin',
+            type: '4',
+            subcategory: 'livsmedel'
         },{
-            name: 'vegokött'
+            name: 'ost',
+            type: '4',
+            subcategory: 'livsmedel'
         },{
-            name: 'vin'
+            name: 'schampo',
+            type: '4',
+            subcategory: 'kropp'
         },{
-            name: 'växtdryck'
+            name: 'tandkräm',
+            type: '4',
+            subcategory: 'kropp'
         },{
-            name: 'växtgrädde'
+            name: 'vegokött',
+            type: '4',
+            subcategory: 'livsmedel'
         },{
-            name: 'öl'
+            name: 'vin',
+            type: '4',
+            subcategory: 'alkohol'
         },{
-            name: 'sprit'
+            name: 'växtdryck',
+            type: '4',
+            subcategory: 'livsmedel'
+        },{
+            name: 'växtgrädde',
+            type: '4',
+            subcategory: 'livsmedel'
+        },{
+            name: 'öl',
+            type: '4',
+            subcategory: 'alkohol'
+        },{
+            name: 'sprit',
+            type: '4',
+            subcategory: 'alkohol'
         }]
     },
     {

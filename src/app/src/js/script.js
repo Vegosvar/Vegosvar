@@ -327,7 +327,6 @@ $(document).ready(function () {
                 .append(
                   $('<select>', {
                     id: 'filterSelect',
-                    class: 'form-control',
                     multiple: 'multiple'
                   })
                   .append(

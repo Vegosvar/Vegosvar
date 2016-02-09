@@ -1,10 +1,9 @@
-var config = require('./config')
 var client = require('mongodb').MongoClient
 
 var instance = false
 
 module.exports = {
-    connect: function() {
+    connect: function(config, callback) {
         client.connect(config.database.host+config.database.name, function(err, db){
             //Make db instance available to the rest of the module
             instance = db
@@ -25,6 +24,8 @@ module.exports = {
                 },
                 "default_language": "swedish"
             })
+
+            callback(db)
 
         })
     },

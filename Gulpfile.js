@@ -4,7 +4,7 @@ var del = require('del')
 var run_sequence = require('run-sequence')
 var util = require('util')
 var path = require('path')
-var config = require('./config')
+var config = require('./src/config/config')
 
 // TODO svg2png, favicons, etc. Look at Köttet!
 // TODO Unit tests!
@@ -111,7 +111,7 @@ gulp.task('watch', function () {
 })
 
 gulp.task('serve', function () {
-    var server = plugins.liveServer('index.js')
+    var server = plugins.liveServer('server.js')
     server.start()
 
     if( ! ('headless' in config) ) {

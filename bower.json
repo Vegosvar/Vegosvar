@@ -24,7 +24,7 @@
     "wysihtml": "wysihtml5x#~0.5.4"
   },
   "install": {
-    "base": "includes",
+    "base": "src/app/includes",
     "path": {
       "css": "css",
       "js": "js"

@@ -1,6 +1,3 @@
-var config = require('./config')
-var client = require('mongodb').MongoClient
-
 var instance = false
 
 module.exports = {
@@ -74,5 +71,38 @@ module.exports = {
     }
 
     return url
+  },
+  isAuthenticated: function(req, res, next) {
+    if (req.isAuthenticated()) {
+      return next()
+    } else {
+      //Check if this was an ajax request
+      if(req.xhr || req.headers.accept.indexOf('json') >= 0) {
+        res.json({
+          success: false,
+          message: 'Access denied'
+        })
+      } else {
+        //Redirect to front page for browsers
+        res.redirect('/')
+      }
+    }
+  },
+  isPrivileged: function(req, res, next) {
+    var privileged = ['admin','moderator']
+    if(privileged.indexOf(req.user.info.permission) >= 0 ) {
+      return next() //User is privileged, continue
+    } else {
+      //Check if this was an ajax request
+      if(req.xhr || req.headers.accept.indexOf('json') >= 0) {
+        res.json({
+          success: false,
+          message: 'Access denied'
+        })
+      } else {
+        //Redirect to front page for browsers
+        res.redirect('/')
+      }
+    }
   }
 }
