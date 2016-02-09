@@ -8,5 +8,4 @@
 module.exports = function (app, resources) {
     require('./express')(app, resources)
     require('./passport')(app, resources)
-    require('./routes')(app, resources)
 }
