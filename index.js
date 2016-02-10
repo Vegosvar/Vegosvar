@@ -69,7 +69,8 @@ passport.use(new facebook_strategy({
           description: null,
         },
 
-        photo: profile.photos ? profile.photos[0].value : '/unknown_user.png'
+        active_photo: 'facebook',
+        fb_photo: profile.photos ? profile.photos[0].value : '/unknown_user.png'
       }
     }, {
       new: true,
@@ -120,6 +121,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(express.static(__dirname + '/public'))
   app.use('/includes', express.static(__dirname + '/includes'))
   app.use('/uploads', express.static(__dirname + '/uploads'))
+  app.use('/avatar', express.static(__dirname + '/uploads/avatar'))
 }
 
 passport.serializeUser(function (user, done) {
@@ -132,7 +134,7 @@ passport.deserializeUser(function (id, done) {
   var dbinstance = db.instance()
   var usersdb = dbinstance.collection('users')
 
-  usersdb.find({_id: new ObjectID(id)}, ['_id', 'name', 'photo', 'info']).toArray(function (error, result) {
+  usersdb.find({_id: new ObjectID(id)}, ['_id', 'name', 'active_photo', 'fb_photo', 'vegosvar_photo', 'info']).toArray(function (error, result) {
     done(error, result[0])
   })
 })
@@ -856,7 +858,7 @@ app.get('/konto', function (req, res) {
 })
 
 app.get('/installningar', function (req, res) {
-  res.render('settings', { user: req.user, loadEditorResources: true })
+  res.render('settings', { user: req.user, loadEditorResources: true, loadDropzoneResources: true })
 })
 
 app.get('/installningar/ta-bort', function (req, res) {
@@ -1581,6 +1583,35 @@ app.post('/submit/file', function(req, res) {
           })
         })
     })
+})
+
+app.post('/submit/file/avatar', function(req, res) {
+  var fstream
+  req.pipe(req.busboy)
+  req.busboy.on('file', function (fieldname, file, filname) {
+    fstream = fs.createWriteStream(__dirname + '/uploads/avatar/' + req.user._id + '_raw.jpg')
+    file.pipe(fstream)
+    fstream.on('finish', function() {
+      var dbinstance = db.instance()
+      var usersdb = dbinstance.collection('users')
+      var resize = image_processer.avatar(req.user._id)
+      if(resize == true) {
+        fstream.on('close', function () {
+          usersdb.update({
+            _id : new ObjectID(req.user._id)
+          }, {
+            $set: {
+              "active_photo": 'vegosvar', // This can be fb or vegosvar, later gr. For easy switching later on
+              "vegosvar_photo": '/avatar/' + req.user._id + '.jpg'
+           }
+          }, function(err, status) {
+            if(err) throw err
+            res.send(req.user._id)
+          })
+        })
+      }
+    })
+  })
 })
 
 app.use(function (req, res) {
