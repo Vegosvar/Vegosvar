@@ -1601,7 +1601,7 @@ app.post('/submit/file/avatar', function(req, res) {
             _id : new ObjectID(req.user._id)
           }, {
             $set: {
-              "active_photo": 'vegosvar', // This can be fb or vegosvar, later gr. For easy switching later on
+              "active_photo": 'vegosvar', // This can be facebook or vegosvar, later gr. For easy switching later on
               "vegosvar_photo": '/avatar/' + req.user._id + '.jpg'
            }
           }, function(err, status) {
