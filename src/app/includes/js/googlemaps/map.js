@@ -10,6 +10,7 @@
     google: {
       map: null,
       markers: [],
+      overlay: null,
       cluster: null
     },
     autorun: true
@@ -30,6 +31,11 @@
             zoom: settings.zoom,
             center: settings.center
           })
+
+          settings.google.overlay = new google.maps.OverlayView()
+          settings.google.overlay.draw = function() {}
+          settings.google.overlay.setMap(settings.google.map)
+
           return true
         } catch (err) {
           throw err
@@ -108,8 +114,38 @@
       getCenter: function() {
         return settings.google.map.getCenter()
       },
+      getMap: function() {
+        return settings.google.map
+      },
       getMarkers: function() {
         return settings.google.markers
+      },
+      getOverlay: function() {
+        return settings.google.overlay
+      },
+      getZoom: function() {
+        return settings.google.map.getZoom()
+      },
+      panBy: function(point) {
+        try {
+          settings.google.map.panBy(point)
+        } catch(err) {
+          throw err
+        }
+      },
+      panTo: function(bounds) {
+        try {
+          settings.google.map.panTo(bounds)
+        } catch(err) {
+          throw err
+        }
+      },
+      panToBounds: function(bounds) {
+        try {
+          settings.google.map.panToBounds(bounds)
+        } catch(err) {
+          throw err
+        }
       },
       triggerResize: function() {
         google.maps.event.trigger(settings.google.map, 'resize');
@@ -219,13 +255,17 @@ function setMarkers(data, settings) {
 
       if('infoWindowOpen' in settings && settings.infoWindowOpen === true) {
         //Open the newly added infowindow by default
-        var settings = mapInstance.getSettings()
-        var marker = settings.google.markers
+        var mapSettings = mapInstance.getSettings()
+        var markers = mapSettings.google.markers
 
-        marker[marker.length -1].infowindow.open(settings.google.map, marker[marker.length -1])
-
-        //TODO recalculate bounds to fit infowindow
-        // See this thread: http://stackoverflow.com/questions/21002001/include-open-infowindows-within-bounds-of-map-when-using-fitbounds
+        if( $('.filter:visible').length <= 0) {
+          ///show open infowindow only if filter is not visible
+          var marker = markers[markers.length -1]
+          marker.infowindow.open(mapInstance.getMap(), marker)
+          google.maps.event.addListenerOnce(marker.infowindow, 'domready', function () {
+            panToFit()
+          })
+        }
       }
     } else {
       console.log(entry.title + ' has no coordinates!')
@@ -235,6 +275,39 @@ function setMarkers(data, settings) {
     if(settings.cluster === true) {
       mapInstance.clusterMarkers()
     }
+  }
+}
+
+function panToFit() {
+  var projection = mapInstance.getMap().getProjection()
+
+  var bounds = mapInstance.getBounds()
+  var center = bounds.getCenter()
+
+  var latLng = projection.fromLatLngToPoint(center)
+  var scale = 1 << mapInstance.getZoom()
+
+  var position = null
+
+  if ( $(window).height() > 640 ) {
+    var offset = ( ( ( $(window).height() * 256 ) ) / scale )
+
+    position = new google.maps.Point(
+      ( (latLng.x * scale) - 1 ) / scale,
+      ( (latLng.y * scale) - offset ) / scale
+    )
+  } else {
+    var offset = ( ( ( $(window).height() * 256 ) * 2.5 ) / scale )
+
+    position = new google.maps.Point(
+      ( (latLng.x * scale) + 15 ) / scale,
+      ( (latLng.y * scale) - offset ) / scale
+    )
+  }
+
+  if(position) {
+    var newCenter = projection.fromPointToLatLng(position)
+    mapInstance.setCenter( newCenter )
   }
 }
 
@@ -248,13 +321,14 @@ function zoomToUserLocation() {
         },
         title: 'Din plats',
         content: 'Du är här!',
-        icon: '/assets/images/pin-my-position.png'
+        icon: '/assets/images/pin-my-position.png',
       })
       mapInstance.setCenter({
         lat: parseFloat(result.position.latitude),
         lng: parseFloat(result.position.longitude)
       })
       mapInstance.setZoom(11)
+      openLastMarkerInfowindow()
     } else {
       //TODO display error
     }
@@ -353,6 +427,12 @@ function applyMarkerData(data, options) {
   setMarkers(data, options)
 }
 
+function openLastMarkerInfowindow() {
+  settings = mapInstance.getSettings()
+  marker = settings.google.markers[settings.google.markers.length -1]
+  marker.infowindow.open(mapInstance.getMap(), marker)
+}
+
 function setSingleOpenMarker(obj) {
   mapInstance.setMarker({
     position: {
@@ -369,9 +449,7 @@ function setSingleOpenMarker(obj) {
     lng: parseFloat(obj.coordinates.longitude)
   })
 
-  settings = mapInstance.getSettings()
-  marker = settings.google.markers[0]
-  marker.infowindow.open(settings.google.map, marker)
+  openLastMarkerInfowindow()
 }
 
 function fullscreenSupported() {
@@ -506,8 +584,6 @@ $(document).bind('mapready', function(e) {
           applyMarkerData(data, options)
         })
       }
-
-      $('.filter').addClass('visible-xs') //Remove overlay filter
     }
   }
 })
