@@ -307,7 +307,7 @@
 
                     <% if (typeof post.user_info.hidden !== true && post.user_info.hidden == "") { %>
                       <div class="col-xs-3 col-xs-offset-0 col-sm-3 col-sm-offset-0 col-md-4 col-lg-3 avatar">
-                        <a href="#"><img alt="" src="<%= user_info.photo %>" class="avatar circle"></a>
+                        <a href="#"><img alt="" src="<% include includes/functions/getUserinfoAvatar %>" class="avatar circle"></a>
                       </div>
 
                       <div class="col-xs-9 col-sm-9 col-md-8 col-lg-9 info">
