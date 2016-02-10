@@ -30,15 +30,15 @@ var sequence_error = function (callback, error) {
 
 var paths = {
   js: [
-    'src/js/**/*.js'
+    'src/app/src/**/*.js'
   ],
 
   less: [
-    'src/less/**/*.less'
+    'src/app/src/less/**/*.less'
   ],
 
   images: [
-    'src/images/**/*',
+    'src/app/src/images/**/*',
   ],
 }
 
@@ -55,7 +55,7 @@ gulp.task('build', function (callback) {
 })
 
 gulp.task('clean', function (callback) {
-  del(['public'], callback)
+  del(['src/public'], callback)
 })
 
 var watch
@@ -75,7 +75,7 @@ gulp.task('js', function () {
         .pipe(plugins.concat('app.js'))
         .pipe(plugins.uglify())
         .pipe(plugins.sourcemaps.write('maps'))
-        .pipe(gulp.dest('public/assets/js'))
+        .pipe(gulp.dest('src/public/assets/js'))
 })
 
 gulp.task('less', function () {
@@ -96,12 +96,12 @@ gulp.task('less', function () {
         .pipe(plugins.concat('style.css'))
         .pipe(plugins.minifyCss())
         .pipe(plugins.sourcemaps.write('maps'))
-        .pipe(gulp.dest('public/assets/css'))
+        .pipe(gulp.dest('src/public/assets/css'))
 })
   
 gulp.task('images', function () {
   return gulp.src(paths.images)
-        .pipe(gulp.dest('public/assets/images'))
+        .pipe(gulp.dest('src/public/assets/images'))
 })
 
 gulp.task('watch', function () {
