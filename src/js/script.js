@@ -171,7 +171,7 @@ $(document).ready(function () {
                     $('<span>', {
                       class: 'fa fa-check-circle'
                     }),
-                    $('<span>').html('Veganskt&nbsp;')
+                    $('<span>').html(' Veganskt&nbsp;')
                   )
                 },
                 lacto_ovo: function () {
@@ -179,7 +179,7 @@ $(document).ready(function () {
                     class: 'text-warning'
                   })
                   .append(
-                    $('<span>').html('Lakto-Ovo&nbsp;')
+                    $('<span>').html(' Lakto-Ovo&nbsp;')
                   )
                 },
                 animal: function () {
@@ -187,7 +187,7 @@ $(document).ready(function () {
                     class: 'text-danger'
                   })
                   .append(
-                    $('<span>').html('Animaliskt&nbsp;')
+                    $('<span>').html(' Animaliskt&nbsp;')
                   )
                 }
               }
@@ -253,9 +253,9 @@ $(document).ready(function () {
                   .html('&nbsp;p&aring; Vegosvar f&ouml;r att gilla')
                 ),
                 $('<span>', {
-                  id: entry._id,
                   class: 'like add-like'
                 })
+                .attr('data-id', entry._id)
                 .append(
                   $('<span>', {
                     id: 'heart-glyphicon',
@@ -272,9 +272,10 @@ $(document).ready(function () {
 
           var createEntry = function (entry) {
             return $('<div>', {
-              class: 'col-sm-6 col-md-4 col-lg-3',
+              class: 'col-sm-6 col-md-4 col-lg-3 entryResult',
               id: 'searchResult-' + entry._id
             })
+            .attr('data-type', entry.type)
             .append(
               $('<div>', {
                 class: 'result'
@@ -309,17 +310,81 @@ $(document).ready(function () {
             )
           }
 
+          var createFilters = function (entry) {
+            var typeNames = {
+              '1': 'Fakta',
+              '2': 'Recept',
+              '3': 'Restaurang',
+              '4': 'Produkt',
+              '5': 'Butik'
+            }
+
+            if ($('#searchFilter').index() === -1) {
+              $('#results').children('.container').prepend(
+                $('<div>', {
+                  id: 'searchFilter'
+                })
+                .append(
+                  $('<select>', {
+                    id: 'filterSelect',
+                    class: 'form-control',
+                    multiple: 'multiple'
+                  })
+                  .append(
+                    $.map(typeNames, function (type, key) {
+                      return $('<option>', {
+                          disabled: 'disabled' //Set all disabled initially
+                        })
+                        .val(key)
+                        .text(type)
+                    })
+                  )
+                )
+              )
+            }
+
+            //Enable current entry type
+            $('#filterSelect option[value="' + entry.type + '"]').prop('disabled', false)
+          }
+
           var resultContainer = $('<div>', {
             id: 'searchResultsContainer'
           })
 
           $.each(data, function (i, entry) {
+            createFilters(entry)
+
             $(resultContainer).append(
               createEntry(entry)
             )
           })
 
           $(container).html(resultContainer)
+
+          if ($('#filterSelect').index() !== -1) { //Filter exists, great, lets enable chosen on it
+            $('#filterSelect').chosen({
+              inherit_select_classes: true,
+              placeholder_text_multiple: 'Filter',
+              display_disabled_options: false,
+              width: '100%'
+            })
+            .on('change', function (e) { //When it updates, apply filter to hide results not matching current filter
+              var values = $(this).val()
+
+              if (values) {
+                $('.entryResult.show').removeClass('show') //Remove show class from each entryResult
+
+                $.each(values, function (i, val) {
+                  $('.entryResult[data-type="' + val + '"]').addClass('show') //Add show class to each result matching filter
+                })
+
+                $('.entryResult.show').show() //Show results matching filter
+                $('.entryResult').not('show').hide() //Hide results not matching filter
+              } else {
+                $('.entryResult').show()
+              }
+            })
+          }
 
           $('#searchEngine-noResults').hide()
         } else { // No results

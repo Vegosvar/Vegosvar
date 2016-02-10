@@ -5,106 +5,132 @@
 
       <div class="row">
         <div class="col-sm-8">
-          <article>
+          <h1>Mina sidor</h1>
 
-            <h1>Mina sidor</h1>
-
-            <div class="panel panel-default">
-              <!-- No table heading, h1 is enough? -->
-              <div class="panel-heading">
-                  <h3 class="panel-title">Skapade sidor</h3>
-              </div>
-
-              <table class="table table-striped table-bordered">
-                <thead>
-                  <tr>
-                    <th>Sida</th>
-                    <th><span class="glyphicon glyphicon-comment"></span></th>
-                    <th><span class="glyphicon glyphicon-heart"></span></th>
-                    <th><span class="glyphicon glyphicon-star"></span></th>
-                    <th>Redigera</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% if(typeof pages !== 'undefined') {
-                    for(var i=0; i < pages.length; i++) { %>
-                    <tr>
-                      <td>
-                        <a href="/<%= pages[i].url %>">
-                          <%= pages[i].title %>
-                        </a>
-                      </td>
-                      <td>
-                        <span class="disqus-comment-count" data-disqus-identifier="<%= pages[i]._id %>"></span>
-                      </td>
-                      <td><%= ('rating' in pages[i] && 'likes' in pages[i].rating && pages[i].rating.likes > 0) ? pages[i].rating.likes : '' %></td>
-                      <td><%= ('rating' in pages[i] && 'votes' in pages[i].rating) ? pages[i].rating.votes_sum + ' (' + pages[i].rating.votes + ')' : '' %></td>
-                      <td>
-                        <a href="/redigera/<%= pages[i].url %>" class="btn btn-primary btn-xs pull-right">
-                          Redigera
-                        </a>
-                      </td>
-                    </tr>
-                    <% }
-                  } %>
-                </tbody>
-              </table>
+          <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Skapade sidor</h3>
             </div>
 
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                  <h3 class="panel-title">Gillade sidor</h3>
-              </div>
-
-              <table class="table table-striped table-bordered">
-                <thead>
-                  <tr>
-                    <th>Sida</th>
-                  </tr>
-                </thead>
-                <tbody>
-                <% if(typeof likes !== 'undefined') {
-                  for(var i=0; i < likes.length; i++) { %>
+            <table class="table table-striped table-bordered datatable">
+              <thead>
+                <tr>
+                  <th>Sida</th>
+                  <th class="text-center">
+                    <span class="glyphicon glyphicon-comment"></span>
+                  </th>
+                  <th class="text-center">
+                    <span class="glyphicon glyphicon-heart"></span>
+                  </th>
+                  <th class="text-center">
+                    <span class="glyphicon glyphicon-star"></span>
+                  </th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if(typeof pages !== 'undefined') {
+                  for(var i=0; i < pages.length; i++) { %>
                   <tr>
                     <td>
-                      <a href="<%= likes[i].url %>"><%= likes[i].title %></a>
+                      <a href="/<%= pages[i].url %>">
+                        <%= pages[i].title %>
+                      </a>
+                    </td>
+                    <td>
+                      <span class="disqus-comment-count" data-disqus-identifier="<%= pages[i]._id %>"></span>
+                    </td>
+                    <td><%= ('rating' in pages[i] && 'likes' in pages[i].rating && pages[i].rating.likes > 0) ? pages[i].rating.likes : '' %></td>
+                    <% if('rating' in pages[i] && 'votes' in pages[i].rating && pages[i].rating.votes > 0) { %>
+                      <td data-order="<%= pages[i].rating.votes_sum %>">
+                        <div class="stars">
+                          <% for(s = 1; s < 6; s++) { %>
+                            <div class="star <%= (s <= pages[i].rating.votes_sum) ? 'active' : '' %> ">
+                              <span class="glyphicon glyphicon-star"></span>
+                            </div>
+                          <% } %>
+                          <span class="votes"><%= pages[i].rating.votes %></span>
+                        </div>
+                      <td>
+                    <% } else { %>
+                      <td data-order="0"><td>
+                    <% } %>
+                      <a href="/redigera/<%= pages[i].url %>" class="btn btn-primary btn-xs pull-right">
+                        Redigera
+                      </a>
                     </td>
                   </tr>
-                <% }
+                  <% }
                 } %>
-                </tbody>
-              </table>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                  <span class="glyphicon glyphicon-heart"></span> 
+                  Gillade sidor
+                </h3>
             </div>
 
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                  <h3 class="panel-title">Betygsatta sidor</h3>
-              </div>
+            <table class="table table-striped table-bordered datatable">
+              <thead>
+                <tr>
+                  <th>Sida</th>
+                </tr>
+              </thead>
+              <tbody>
+              <% if(typeof likes !== 'undefined') {
+                for(var i=0; i < likes.length; i++) { %>
+                <tr>
+                  <td>
+                    <a href="<%= likes[i].url %>"><%= likes[i].title %></a>
+                  </td>
+                </tr>
+              <% }
+              } %>
+              </tbody>
+            </table>
+          </div>
 
-              <table class="table table-striped table-bordered">
-                <thead>
-                  <tr>
-                    <th>Sida</th>
-                    <th>Betyg</th>
-                  </tr>
-                </thead>
-                <tbody>
-                <% if(typeof votes !== 'undefined') {
-                  for(var i=0; i < votes.length; i++) { %>
-                  <tr>
-                    <td>
-                      <a href="<%= votes[i].url %>"><%= votes[i].title %></a>
-                    </td>
-                    <td>
-                      <%= votes[i].content %>
-                    </td>
-                  </tr>
-                <% }
-                } %>
-                </tbody>
-              </table>
+          <div class="panel panel-warning">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                  <span class="glyphicon glyphicon-star"></span> 
+                  Betygsatta sidor
+                </h3>
             </div>
-          </article>
+
+            <table class="table table-striped table-bordered datatable">
+              <thead>
+                <tr>
+                  <th>Sida</th>
+                  <th>Betyg</th>
+                </tr>
+              </thead>
+              <tbody>
+              <% if(typeof votes !== 'undefined') {
+                for(var i=0; i < votes.length; i++) { %>
+                <tr>
+                  <td>
+                    <a href="<%= votes[i].url %>"><%= votes[i].title %></a>
+                  </td>
+                  <td data-order="<%= votes[i].content %>">
+                    <div class="stars" data-id="<%= votes[i].page_id %>">
+                      <% for(s = 1; s < 6; s++) { %>
+                        <div class="star <%= (s <= votes[i].content) ? 'active' : '' %> ">
+                          <span class="glyphicon glyphicon-star"></span>
+                        </div>
+                      <% } %>
+                    </div>
+                  </td>
+                </tr>
+              <% }
+              } %>
+              </tbody>
+            </table>
+          </div>
         </div>
         <% include includes/sidebar %>
       </div>

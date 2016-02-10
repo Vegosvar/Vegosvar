@@ -1,0 +1,11 @@
+<% if (typeof user.active_photo === 'undefined') { %>
+	/assets/images/no-picture.svg
+<% } else {
+	if(user.active_photo === 'vegosvar') { %>
+		http://local.vegosvar.se:8080<%= user.vegosvar_photo %>
+	<% } else if (user.active_photo === 'facebook') { %>
+		<%= user.fb_photo %>
+	<% } else { %>
+		/assets/images/no-picture.svg
+	<% }
+} %>

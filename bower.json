@@ -29,6 +29,9 @@
       "css": "css",
       "js": "js"
     },
+    "ignore": [
+      "jquery"
+    ],
     "sources": {
       "wysihtml": [
         "bower_components/wysihtml/parser_rules/advanced_and_extended.js",
@@ -36,7 +39,20 @@
         "bower_components/wysihtml/dist/wysihtml-toolbar.min.js"
       ],
       "markerclustererplus": "bower_components/markerclustererplus/dist/markerclusterer.min.js",
-      "highcharts": "bower_components/highcharts/highcharts.js"
+      "highcharts": "bower_components/highcharts/highcharts.js",
+      "datatables": [
+        "bower_components/datatables/media/js/jquery.dataTables.min.js",
+        "bower_components/datatables/media/js/dataTables.bootstrap.min.js",
+        "bower_components/datatables/media/css/dataTables.bootstrap.min.css",
+        "bower_components/datatables/media/css/jquery.dataTables.min.css"
+      ],
+      "datatables-plugins": [
+        "bower_components/datatables-plugins/features/conditionalPaging/dataTables.conditionalPaging.js"
+      ],
+      "chosen": [
+        "bower_components/chosen/chosen.jquery.min.js",
+        "bower_components/chosen/chosen.min.css"
+      ]
     }
   }
 }
