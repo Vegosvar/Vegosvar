@@ -25,3 +25,14 @@ success: function(object, response) {
 	}, 500)
 	}
 })
+
+$("div#avatar").dropzone({ url: "/submit/file/avatar", 
+paramName: "image",
+method: "post",
+maxFile: 1,
+success: function(object, response) {
+	setTimeout(function () {
+		alert(response)
+	})
+}
+})

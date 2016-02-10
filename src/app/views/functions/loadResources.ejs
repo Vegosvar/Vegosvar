@@ -1,0 +1,55 @@
+<% if (typeof loadPageResources !== 'undefined') {
+if( typeof loadPageResources.page !== 'undefined' && loadPageResources.page === true) { %>
+	<script src="/includes/js/pages/page.js"></script>
+<% }
+if( typeof loadPageResources.datatables !== 'undefined' && loadPageResources.datatables === true ) { %>
+	<link rel="stylesheet" href="/includes/css/datatables/dataTables.bootstrap.min.css">
+
+	<script src="/includes/js/datatables/jquery.dataTables.min.js"></script>
+	<script src="/includes/js/datatables-plugins/dataTables.conditionalPaging.js"></script>
+	<script src="/includes/js/datatables/dataTables.bootstrap.min.js"></script>
+	<script src="/includes/js/pages/datatables.js"></script>
+<% }
+} %>
+
+<% if (typeof loadAdminResources !== 'undefined') {
+if( typeof loadAdminResources.revisions !== 'undefined' && loadAdminResources.revisions === true ) { %>
+	<script src="/includes/js/admin/revisions.js"></script>
+<% }
+} %>
+
+<% if (typeof loadGeoLocation !== 'undefined' && loadGeoLocation === true) { %>
+	<script src="/includes/js/geolocation/geolocation.js"></script>
+<% } %>
+
+<% if (typeof loadMapResources !== 'undefined') { %>
+	<script src="//maps.googleapis.com/maps/api/js?libraries=places&region=SE&language=sv_SE&callback=mapReady" async defer></script>
+	<script>function mapReady() { $(document).ready(function() { $(document).trigger('mapready') }) }</script>
+<% if (typeof loadMapResources.autocomplete !== 'undefined' && loadMapResources.autocomplete === true) { %>
+	<script src="/includes/js/googlemaps/input.js"></script>
+<% } %>
+<% if (typeof loadMapResources.map !== 'undefined' && loadMapResources.map === true) { %>
+ 	<script src="/includes/js/googlemaps/map.js"></script>
+<% } %>
+<% if (typeof loadMapResources.mapCluster !== 'undefined' && loadMapResources.mapCluster === true) { %>
+	<script src="/includes/js/markerclustererplus/markerclusterer.min.js"></script>
+<% } %>
+<% } %>
+
+<% if (typeof loadEditorResources !== 'undefined' && loadEditorResources === true) { %>
+	<script src="/includes/js/wysihtml/wysihtml.min.js"></script>
+	<script src="/includes/js/wysihtml/wysihtml-toolbar.min.js"></script>
+	<script src="/includes/js/wysihtml/advanced_and_extended.js"></script>
+	<script src="/includes/js/editor/controller.js"></script>
+	<script src="/includes/js/editor/editor.js"></script>
+<% } %>
+
+<% if (typeof loadDropzoneResources !== 'undefined' && loadDropzoneResources === true) { %>
+	<link rel="stylesheet" href="/includes/css/dropzone.css">
+	<script src="/includes/js/dropzone.js"></script>
+<% } %>
+
+<!-- TODO Fix this so it doesn't appear in prod! -->
+<% if (settings.env === 'development') { %>
+	<script src="//localhost:35729/livereload.js"></script>
+<% } %>
