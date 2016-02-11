@@ -21,7 +21,8 @@
   "dependencies": {
     "fastclick": "~1.0.6",
     "markerclustererplus": "~2.1.4",
-    "wysihtml": "wysihtml5x#~0.5.4"
+    "wysihtml": "wysihtml5x#~0.5.4",
+    "bootstrap-multiselect": "^0.9.13"
   },
   "install": {
     "base": "src/app/includes",
@@ -30,7 +31,8 @@
       "js": "js"
     },
     "ignore": [
-      "jquery"
+      "jquery",
+      "bootstrap"
     ],
     "sources": {
       "wysihtml": [
@@ -49,9 +51,10 @@
       "datatables-plugins": [
         "bower_components/datatables-plugins/features/conditionalPaging/dataTables.conditionalPaging.js"
       ],
-      "chosen": [
-        "bower_components/chosen/chosen.jquery.min.js",
-        "bower_components/chosen/chosen.min.css"
+      "bootstrap-multiselect": [
+        "bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css",
+        "bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect.js",
+        "bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect-collapsible-groups.js"
       ]
     }
   }
