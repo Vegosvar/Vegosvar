@@ -326,7 +326,7 @@ $(document).ready(function () {
                 })
                 .append(
                   $('<select>', {
-                    id: 'filterSelect',
+                    class: 'filterSelect',
                     multiple: 'multiple'
                   })
                   .append(
@@ -343,7 +343,7 @@ $(document).ready(function () {
             }
 
             //Enable current entry type
-            $('#filterSelect option[value="' + entry.type + '"]').prop('disabled', false)
+            $('.filterSelect option[value="' + entry.type + '"]').prop('disabled', false)
           }
 
           var resultContainer = $('<div>', {
@@ -424,9 +424,10 @@ $(document).ready(function () {
 
           $(container).html(resultContainer)
 
-          if ($('#filterSelect').index() !== -1) { //Filter exists, great, lets enable chosen on it
-            $('#filterSelect').multiselect({
+          if ($('.filterSelect').index() !== -1) { //Filter exists, great, lets enable chosen on it
+            $('.filterSelect').multiselect({
               nonSelectedText: 'Filter',
+              inheritClass: true,
               onChange: function (element, checked) {
                 var values = []
 
