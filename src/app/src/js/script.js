@@ -425,12 +425,33 @@ $(document).ready(function () {
           $(container).html(resultContainer)
 
           if ($('#filterSelect').index() !== -1) { //Filter exists, great, lets enable chosen on it
-            $('#filterSelect').chosen({
-              inherit_select_classes: true,
-              placeholder_text_multiple: 'Filter',
-              display_disabled_options: false,
-              width: '100%'
+            $('#filterSelect').multiselect({
+              nonSelectedText: 'Filter',
+              onChange: function (element, checked) {
+                var values = []
+
+                $(element).parent().find('option:selected').each(function (a, item) {
+                  values.push(item.value)
+                })
+
+                console.log(values)
+
+                if (values.length > 0) {
+                  $('.entryResult.showResult').removeClass('showResult') //Remove show class from each entryResult
+
+                  $.each(values, function (i, value) {
+                    $('.entryResult[data-type="' + value + '"]').addClass('showResult') //Add show class to each result matching filter
+                  })
+
+                  $('.entryResult.showResult').hide().fadeIn() //Show results matching filter
+                  $('.entryResult').not('.showResult').hide() //Hide results not matching filter
+                } else {
+                  $('.entryResult').show()
+                }
+              }
             })
+
+            /*
             .on('change', function (e) { //When it updates, apply filter to hide results not matching current filter
               var values = $(this).val()
 
@@ -446,7 +467,7 @@ $(document).ready(function () {
               } else {
                 $('.entryResult').show()
               }
-            })
+            })*/
           }
 
           $('#searchEngine-noResults').hide()
