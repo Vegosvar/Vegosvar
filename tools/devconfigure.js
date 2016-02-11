@@ -22,7 +22,7 @@ client.connect(config.database.host+'vegodev', function(err, db){
       }
 
       //Copy uploads folder
-      var source = '/var/www/beta.vegosvar.se/src/uploads'
+      var source = '/var/www/beta.vegosvar.se/uploads'
       var destination = '/var/www/dev.vegosvar.se/src/uploads'
 
       //assume this directory has a lot of files and folders
