@@ -38,6 +38,22 @@ module.exports = function (app, resources) {
           return {
             type: String(type)
           }
+        },
+        ids: function(ids) {
+          var objIds = ids.map(function(id) {
+            return new ObjectID(id)
+          })
+
+          return {
+            _id: {
+              $in: objIds
+            }
+          }
+        },
+        city: function(city) {
+          return {
+            "post.city": String(city).toLowerCase()
+          }
         }
       }
 
