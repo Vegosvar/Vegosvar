@@ -1,4 +1,4 @@
-var config = require('./config')
+var config = require('../src/config/config')
 var client = require('mongodb').MongoClient
 
 var collections = [
