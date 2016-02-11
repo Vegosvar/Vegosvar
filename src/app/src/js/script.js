@@ -350,13 +350,77 @@ $(document).ready(function () {
             id: 'searchResultsContainer'
           })
 
+          var showMap = []
+
           $.each(data, function (i, entry) {
             createFilters(entry)
+            if (entry.type === '5' || entry.type === '3') {
+              showMap.push(entry._id)
+            }
 
             $(resultContainer).append(
               createEntry(entry)
             )
           })
+
+          //TODO create a function of this and integrate with chosen filter
+          //Also, reuse the functions in map.js, will have to modularize it
+          if (showMap.length > 0) {
+            $('.showSearchMap').one('click', function () { //Trigger only once, for now..
+              $('.searchMapContainer').fadeIn(400, function () {
+                var mapInstance = $('#mapResults').googleMap()
+                mapInstance.setZoom(13)
+
+                var settings = {
+                  url: '/ajax/map',
+                  data: {
+                    filter: {
+                      ids: showMap
+                    }
+                  }
+                }
+
+                $.ajax(settings)
+                .done(function (data) {
+                  var bounds = mapInstance.getBounds()
+
+                  $.each(data, function (i, entry) {
+
+                    var iconUrl = '/assets/images/'
+
+                    //Get icon
+                    switch (entry.type) {
+                      case '3':
+                        iconUrl += 'pin-restaurant.png'
+                        break
+                      case '5':
+                        iconUrl += 'pin-store.png'
+                        break
+                      default:
+                        iconUrl = false //use default google marker
+                        break
+                    }
+
+                    var position = {
+                      lat: parseFloat(entry.post.coordinates.latitude),
+                      lng: parseFloat(entry.post.coordinates.longitude)
+                    }
+
+                    bounds.extend(new google.maps.LatLng(position))
+
+                    //Place marker on map
+                    mapInstance.setMarker({
+                      position: position,
+                      title: entry.title,
+                      icon: iconUrl
+                    })
+                  })
+
+                  mapInstance.setBounds(bounds)
+                })
+              })
+            })
+          }
 
           $(container).html(resultContainer)
 
