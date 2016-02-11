@@ -9,37 +9,51 @@ var db = require('./src/lib/db')
 
 var express = require('express')
 
-db.connect(config, function (dbinstance) {
-  var app = express()
+var numCores = require('os').cpus().length
+var cluster = require('cluster')
 
-  var categoriesdb = dbinstance.collection('categories')
-  var citiesdb = dbinstance.collection('cities')
-  var usersdb = dbinstance.collection('users')
-  var votesdb = dbinstance.collection('votes')
-  var likesdb = dbinstance.collection('likes')
-  var imagesdb = dbinstance.collection('images')
-  var pagesdb = dbinstance.collection('pages')
-  var revisionsdb = dbinstance.collection('revisions')
-
-  var resources = {
-    dbinstance: dbinstance,
-    functions: functions,
-    image_processer: image_processer,
-    config: config,
-    collections: {
-      cities: citiesdb,
-      categories: categoriesdb,
-      images: imagesdb,
-      likes: likesdb,
-      pages: pagesdb,
-      revisions: revisionsdb,
-      users: usersdb,
-      votes: votesdb
-    }
+if (cluster.isMaster) {
+  // Fork workers.
+  for (var i = 0; i < numCores; i++) {
+    cluster.fork()
   }
 
-  require('./src/config')(app, resources)
-  require('./src/app/routes')(app, resources)
+  cluster.on('exit', function (worker, code, signal) {
+    console.log('worker' + worker.process.pid + 'died')
+  })
+} else {
+  db.connect(config, function (dbinstance) {
+    var app = express()
 
-  app.listen(process.env.PORT || config.port, config.address)
-})
+    var categoriesdb = dbinstance.collection('categories')
+    var citiesdb = dbinstance.collection('cities')
+    var usersdb = dbinstance.collection('users')
+    var votesdb = dbinstance.collection('votes')
+    var likesdb = dbinstance.collection('likes')
+    var imagesdb = dbinstance.collection('images')
+    var pagesdb = dbinstance.collection('pages')
+    var revisionsdb = dbinstance.collection('revisions')
+
+    var resources = {
+      dbinstance: dbinstance,
+      functions: functions,
+      image_processer: image_processer,
+      config: config,
+      collections: {
+        cities: citiesdb,
+        categories: categoriesdb,
+        images: imagesdb,
+        likes: likesdb,
+        pages: pagesdb,
+        revisions: revisionsdb,
+        users: usersdb,
+        votes: votesdb
+      }
+    }
+
+    require('./src/config')(app, resources)
+    require('./src/app/routes')(app, resources)
+
+    app.listen(process.env.PORT || config.port, config.address)
+  })
+}
