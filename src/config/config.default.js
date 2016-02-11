@@ -19,4 +19,5 @@ module.exports = {
   },
 
   root: path.join(__dirname, '..'),
+  uploads: path.join(__dirname, '../uploads')
 }

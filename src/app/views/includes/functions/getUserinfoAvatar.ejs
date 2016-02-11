@@ -1,0 +1,11 @@
+<% if (typeof user_info.active_photo === 'undefined') { %>
+	/assets/images/no-picture.svg
+<% } else {
+	if(user_info.active_photo === 'vegosvar') { %>
+		<%= user_info.vegosvar_photo %>
+	<% } else if (user_info.active_photo === 'facebook') { %>
+		<%= user_info.fb_photo %>
+	<% } else { %>
+		/assets/images/no-picture.svg
+	<% }
+} %>
