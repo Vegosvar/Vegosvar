@@ -120,7 +120,7 @@ gulp.task('serve', function () {
       }, 1000)
     }
 
-    gulp.watch(['views/**/*.ejs', 'views/**/*.html', 'public/**/*'], function () {
+    gulp.watch(['src/app/views/**/*.ejs', 'src/app/views/**/*.html', 'src/public/**/*'], function () {
       server.notify.apply(server, arguments)
     })
 
