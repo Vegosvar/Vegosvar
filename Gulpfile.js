@@ -124,7 +124,7 @@ gulp.task('serve', function () {
       server.notify.apply(server, arguments)
     })
 
-    gulp.watch('*.js', function () {
+    gulp.watch(['*.js','src/app/routes/**/*.js', 'src/app/lib/**/*.js'], function () {
       server.start()
     })
 })
