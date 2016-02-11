@@ -369,7 +369,7 @@ $(document).ready(function () {
             $('.showSearchMap').one('click', function () { //Trigger only once, for now..
               $('.searchMapContainer').fadeIn(400, function () {
                 var mapInstance = $('#mapResults').googleMap()
-                mapInstance.setZoom(13)
+                mapInstance.setZoom(20)
 
                 var settings = {
                   url: '/ajax/map',
