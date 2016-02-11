@@ -368,8 +368,8 @@ $(document).ready(function () {
           if (showMap.length > 0) {
             $('.showSearchMap').one('click', function () { //Trigger only once, for now..
               $('.searchMapContainer').fadeIn(400, function () {
-                var mapInstance = $('#mapResults').googleMap()
-                mapInstance.setZoom(20)
+                var searchMapInstance = $('#mapResults').googleMap()
+                searchMapInstance.setZoom(14)
 
                 var settings = {
                   url: '/ajax/map',
@@ -382,7 +382,7 @@ $(document).ready(function () {
 
                 $.ajax(settings)
                 .done(function (data) {
-                  var bounds = mapInstance.getBounds()
+                  var bounds = searchMapInstance.getBounds()
 
                   $.each(data, function (i, entry) {
 
@@ -409,14 +409,14 @@ $(document).ready(function () {
                     bounds.extend(new google.maps.LatLng(position))
 
                     //Place marker on map
-                    mapInstance.setMarker({
+                    searchMapInstance.setMarker({
                       position: position,
                       title: entry.title,
                       icon: iconUrl
                     })
                   })
 
-                  mapInstance.setBounds(bounds)
+                  searchMapInstance.setBounds(bounds)
                 })
               })
             })
