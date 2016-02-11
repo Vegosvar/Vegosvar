@@ -314,9 +314,9 @@ $(document).ready(function () {
             var typeNames = {
               '1': 'Fakta',
               '2': 'Recept',
-              '3': 'Restaurang',
-              '4': 'Produkt',
-              '5': 'Butik'
+              '3': 'Restauranger',
+              '4': 'Produkter',
+              '5': 'Butiker'
             }
 
             if ($('#searchFilter').index() === -1) {
