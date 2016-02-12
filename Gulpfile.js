@@ -111,7 +111,7 @@ gulp.task('watch', function () {
 })
 
 gulp.task('serve', function () {
-    var server = plugins.liveServer('server.js', undefined, 12345)
+    var server = plugins.liveServer('server.js')
     server.start()
 
     if( ! ('headless' in config) ) {

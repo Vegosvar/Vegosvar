@@ -10,7 +10,8 @@
 						<p><img src="/assets/images/butterfly.svg" class="circle" style="width: 200px;"></p>
 						<h1><span class="fa fa-check-circle text-success"></span> Great success!</h1>
 						<p class="preamble">Nu är sidan publicerad</p><br>
-						<% if (typeof hideredirect === 'undefined') { %>
+						<% console.log(hideredirect) %>
+						<% if (typeof hideredirect !== 'undefined' && hideredirect !== true) { %>
 						<a href="/<%= post_url %>" class="btn btn-primary lg">Besök sida</a> 
 						<% } %>
 						<a href="/ny" class="btn btn-secondary lg">Skapa en till</a>
