@@ -27,7 +27,7 @@ module.exports = function (app, utils) {
   passport.deserializeUser(function (id, done) {
     var usersdb = utils.dbinstance.collection('users')
 
-    usersdb.find({_id: new ObjectID(id)}, ['_id', 'name', 'photo', 'info']).toArray(function (error, result) {
+    usersdb.find({_id: new ObjectID(id)}, ['_id', 'name', 'fb_photo', 'vegosvar_photo', 'active_photo', 'info']).toArray(function (error, result) {
       done(error, result[0])
     })
   })

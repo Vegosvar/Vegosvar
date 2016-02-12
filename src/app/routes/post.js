@@ -331,7 +331,7 @@ module.exports = function (app, resources) {
           fstream = fs.createWriteStream(fileNameOriginal)
           file.pipe(fstream)
           fstream.on('finish', function() {
-            var resize = image_processer.resize(filePath, uFilename, 1200, 630)
+            var resize = image_processer.resize(uFilename)
             if(resize == true) {
               fstream.on('close', function () {
                 res.send(doc.ops[0]._id)
@@ -342,4 +342,33 @@ module.exports = function (app, resources) {
       })
     })
   })
+
+  app.post('/submit/file/avatar', function(req, res) {
+  var fstream
+  req.pipe(req.busboy)
+  req.busboy.on('file', function (fieldname, file, filname) {
+    fstream = fs.createWriteStream(resources.config.uploads + '/avatar/' + req.user._id + '_raw.jpg')
+    file.pipe(fstream)
+    fstream.on('finish', function() {
+      var usersdb = resources.collections.users
+      var resize = image_processer.avatar(req.user._id)
+      if(resize == true) {
+        fstream.on('close', function () {
+          usersdb.update({
+              _id : new ObjectID(req.user._id)
+            }, {
+            $set: {
+              "active_photo": 'vegosvar', // This can be fb or vegosvar, later gr. For easy switching later on
+              "vegosvar_photo": '/avatar/' + req.user._id + '.jpg'
+            }
+            }, function(err, status) {
+              if(err) throw err
+              res.send(req.user._id)
+            })
+          })
+        }
+      })
+    })
+  })
+
 }
