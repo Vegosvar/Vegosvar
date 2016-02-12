@@ -28,7 +28,8 @@ module.exports = function(config) {
           website: null,
           description: null,
         },
-        photo: (profile.photos) ? profile.photos[0].value : '/unknown_user.png'
+        fb_photo: (profile.photos) ? profile.photos[0].value : '/unknown_user.png',
+        active_photo: 'facebook'
       }
     }, {
       new: true,
@@ -37,7 +38,8 @@ module.exports = function(config) {
       done(error, {
         id: result.value._id,
         display_name: result.value.name.display_name,
-        photo: result.value.photo
+        fb_photo: result.value.photo,
+        active_photo: 'facebook'
       })
     })
   })

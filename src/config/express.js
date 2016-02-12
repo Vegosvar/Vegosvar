@@ -52,5 +52,6 @@ module.exports = function (app, resources) {
       app.use('/includes', express.static(resources.config.root + '/app/includes'))
       app.use(express.static(resources.config.root + '/public'))
       app.use('/uploads', express.static(resources.config.root + '/uploads'))
+      app.use('/avatar', express.static(resources.config.root + '/uploads/avatar'))
     }
 }
