@@ -23,7 +23,7 @@ module.exports = function (app, resources) {
   })
 
   app.get('/installningar', function (req, res) {
-    res.render('settings', { user: req.user, loadEditorResources: true })
+    res.render('settings', { user: req.user, loadEditorResources: true, loadDropzoneResources: true })
   })
 
   app.get('/installningar/ta-bort', function (req, res) {
