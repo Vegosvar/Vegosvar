@@ -147,15 +147,61 @@ module.exports = function (app, resources) {
   })
 
   app.get('/ny/:type', function (req, res) {
-    var mapResources = (req.params.type === 'restaurang' || req.params.type === 'butik') ? { autocomplete: true, map: true } : false
-    res.render('post/'+req.params.type, {
-      user: req.user,
-      type: req.params.type,
-      loadEditorResources: true,
-      loadDropzoneResources: true,
-      loadMapResources: mapResources,
-      loadPageResources: { page: true },
-    })
+    var type = req.params.type
+    var mapResources = false
+
+    var types = {
+      'fakta': '1',
+      'recept': '2',
+      'restaurang': '3',
+      'produkt': '4',
+      'butik': '5'
+    }
+
+    if(type in types) {
+      var pageType = types[type]
+      var mapResources = (pageType === '3' || pageType === '5') ? { autocomplete: true, map: true } : false
+      var categoriesdb = resources.collections.categories
+
+      categoriesdb.aggregate([
+        {
+          $match: { type: "4" }
+        }, {
+          $group: {
+             _id: { id: "$_id", name: "$name", subcategory: "$subcategory" }
+          }
+        }, {
+          $group: {
+            "_id": "$_id.subcategory",
+            "names": {
+              "$push": {
+                name: "$_id.name"
+              }
+            },
+            count: {
+              $sum: 1
+            }
+          }
+        }, {
+          $sort: {
+            _id: 1
+          }
+        }
+      ], function(err, categories) {
+        if (err) throw err
+
+        res.render('post/'+type, {
+          user: req.user,
+          type: type,
+          loadEditorResources: true,
+          loadDropzoneResources: true,
+          loadMapResources: mapResources,
+          loadPageResources: { page: true },
+          categories: categories
+        })
+
+      })
+    }
   })
 
   app.get('/redigera/:url', function (req, res, next) {
