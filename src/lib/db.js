@@ -9,6 +9,7 @@ module.exports = {
             instance = db
             //Set up db index on pages collection
             instance.collection('pages').ensureIndex({
+                "url": "text",
                 "title": "text",
                 "post.city": "text",
                 "post.content": "text",
@@ -17,6 +18,7 @@ module.exports = {
             }, {
                 "weights": {
                     "title": 20,
+                    "url": 18,
                     "post.city": 15,
                     "post.food": 10,
                     "post.product_type": 5,
