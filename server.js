@@ -1,8 +1,7 @@
-if (process.env.NODE_ENV !== 'development') {
-  process.env.NODE_ENV = 'production'
-}
-
 var config = require('./src/config/config')
+
+process.env.NODE_ENV = (config.environment) ? config.environment : 'development'
+
 var functions = require('./src/lib/functions.js')
 var image_processer = require('./src/lib/imageProcesser.js')
 var db = require('./src/lib/db')
