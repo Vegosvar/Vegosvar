@@ -266,35 +266,65 @@
 
 <% include includes/promotion %>
 
-    <div id="stats">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="stat">
-                        <span class="counter">130</span> 
-                        <span class="object">Veganvänliga<br> platser</span>
+    <% if(typeof pageStats !== 'undefined') {
+        var stats = {
+            places: 0,
+            facts: 0,
+            products: 0,
+            recipes: 0
+        }
+
+        for(var group in pageStats) {
+            var groupType = pageStats[group]._id.type
+            var groupCount = pageStats[group].count
+            switch(groupType) {
+                case "1":
+                    stats.facts += groupCount
+                    break
+                case "2":
+                    stats.recipes += groupCount
+                    break
+                case "4":
+                    stats.products += groupCount
+                    break
+                case "3":
+                case "5":
+                    stats.places += groupCount
+                    break
+            }
+        } %>
+        <div id="stats">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <div class="stat">
+                            <span class="counter"><%= stats.places %></span> 
+                            <span class="object">Veganvänliga<br> platser</span>
+                        </div>
                     </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="stat">
-                        <span class="counter">43</span> 
-                        <span class="object">Matnyttiga<br> faktasidor</span>
+                    <div class="col-sm-3">
+                        <div class="stat">
+                            <span class="counter"><%= stats.facts %></span> 
+                            <span class="object">Matnyttiga<br> faktasidor</span>
+                        </div>
                     </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="stat">
-                        <span class="counter">57</span> 
-                        <span class="object">Fantastiska<br> produkter</span>
+                    <div class="col-sm-3">
+                        <div class="stat">
+                            <span class="counter"><%= stats.products %></span> 
+                            <span class="object">Fantastiska<br> produkter</span>
+                        </div>
                     </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="stat">
-                        <span class="counter">3</span> 
-                        <span class="object">Riktigt goda<br> recept</span>
+                    <div class="col-sm-3">
+                        <div class="stat">
+                            <span class="counter"><%= stats.recipes %></span> 
+                            <span class="object">Riktigt goda<br> recept</span>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
+
+    <% } %>
+
 
 <% include includes/footer %>

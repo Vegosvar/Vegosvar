@@ -25,32 +25,45 @@ module.exports = function (app, resources) {
       sort: [ ['rating.likes', 'desc'] ]
     }
 
-    //Get pages
-    pagesdb.find({}, options).toArray(function(err, pages) {
-      pagesdb.find({
-        $or:[
-          {type:'3'},
-          {type:'5'}
-          ]
-      }).sort({_id:-1}).limit(12).toArray(function(err, establishments) {
+    //Get page stats
+    pagesdb.aggregate([{
+        $group: {
+            _id: {
+                type: "$type"
+            },
+            count: {
+                $sum: 1
+            }
+        }
+    }], function(err, pageStats) {
+      //Get pages for front page
+      pagesdb.find({}, options).toArray(function(err, pages) {
         pagesdb.find({
           $or:[
-            {type:'2'}
+            {type:'3'},
+            {type:'5'}
             ]
-        }).sort({_id:-1}).limit(3).toArray(function(err, recipes) {
-          res.render('index', {
-            user: req.user,
-            pages: pages,
-            establishments: establishments,
-            recipes: recipes,
-            loadGeoLocation: true,
-            loadMapResources: {
-              map: true,
-              mapCluster: true
-            },
-            startpage: false,
-            searchString: req.query.s,
-            striptags: striptags
+        }).sort({_id:-1}).limit(12).toArray(function(err, establishments) {
+          pagesdb.find({
+            $or:[
+              {type:'2'}
+              ]
+          }).sort({_id:-1}).limit(3).toArray(function(err, recipes) {
+            res.render('index', {
+              user: req.user,
+              pageStats: pageStats,
+              pages: pages,
+              establishments: establishments,
+              recipes: recipes,
+              loadGeoLocation: true,
+              loadMapResources: {
+                map: true,
+                mapCluster: true
+              },
+              startpage: false,
+              searchString: req.query.s,
+              striptags: striptags
+            })
           })
         })
       })
