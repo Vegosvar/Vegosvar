@@ -110,9 +110,9 @@ gulp.task('bower-dependencies', function (callback) {
 
   bowerConfig.filter = function(path) {
     var srcDir = 'bower_components/'
-    var dirStart = path.indexOf(srcDir) + srcDir.length
-    var dirTmp = path.substr(dirStart)
+    var dirTmp = path.substr(path.indexOf(srcDir) + srcDir.length)
     var dirName = dirTmp.substr(0, dirTmp.indexOf('/'))
+
     var fileType = path.substr(path.lastIndexOf('.') + 1)
     var destDir = fileType + '/' + dirName
 
