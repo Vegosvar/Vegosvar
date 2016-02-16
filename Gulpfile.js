@@ -4,6 +4,8 @@ var del = require('del')
 var run_sequence = require('run-sequence')
 var util = require('util')
 var path = require('path')
+var mainBowerFiles = require('main-bower-files')
+var bower = require('gulp-bower')
 var config = require('./src/config/config')
 
 // TODO svg2png, favicons, etc. Look at Köttet!
@@ -39,13 +41,85 @@ var paths = {
 
   images: [
     'src/app/src/images/**/*',
-  ],
+  ]
 }
 
 gulp.task('pre-build', function (callback) {
-  return run_sequence('clean', function (error) {
+ return run_sequence('clean', function (error) {
     sequence_error(callback, error)
   })
+})
+
+gulp.task('bower-install', function (callback) {
+  return bower({
+    verbosity: 1
+  })
+})
+
+gulp.task('bower-dependencies', function (callback) {
+  var bowerConfig = {
+    "overrides": {
+      "datatables": {
+        "main": [
+          "media/js/jquery.dataTables.min.js",
+          "media/js/dataTables.bootstrap.min.js",
+          "media/css/dataTables.bootstrap.min.css",
+          "media/css/jquery.dataTables.min.css"
+        ]
+      },
+      "datatables-plugins": {
+        "main": [
+          "features/conditionalPaging/dataTables.conditionalPaging.js"
+        ]
+      },
+      "dropzone": {
+        "main": [
+          "dist/min/dropzone.min.js",
+          "dist/min/dropzone.min.css"
+        ]
+      },
+      "fastclick": {
+        "main": "lib/fastclick.js",
+      },
+      "markerclustererplus": {
+        "main": "dist/markerclusterer.min.js"
+      },
+      "highcharts": {
+        "main": [
+          "highcharts.js",
+          "highcharts-more.js"
+        ]
+      },
+      "bootstrap-multiselect": {
+        "main": [
+          "dist/css/bootstrap-multiselect.css",
+          "dist/js/bootstrap-multiselect.js",
+          "dist/js/bootstrap-multiselect-collapsible-groups.js"
+        ],
+        "dependencies": null
+      },
+      "wysihtml": {
+        "main": [
+          "parser_rules/advanced_and_extended.js",
+          "dist/wysihtml.min.js",
+          "dist/wysihtml-toolbar.min.js"
+        ]
+      }
+    }
+  }
+
+  bowerConfig.filter = function(path) {
+    var srcDir = 'bower_components/'
+    var dirStart = path.indexOf(srcDir) + srcDir.length
+    var dirTmp = path.substr(dirStart)
+    var dirName = dirTmp.substr(0, dirTmp.indexOf('/'))
+    var fileType = path.substr(path.lastIndexOf('.') + 1)
+    var destDir = fileType + '/' + dirName
+
+    gulp.src(path).pipe(gulp.dest('src/public/assets/' + destDir))
+  }
+
+  mainBowerFiles(bowerConfig, callback)
 })
 
 gulp.task('build', function (callback) {
@@ -131,13 +205,13 @@ gulp.task('serve', function () {
 
 gulp.task('default', function (callback) {
   watch = true
-  return run_sequence('pre-build', 'build', ['watch', 'serve'], function (error) {
+  return run_sequence('pre-build', 'build', 'bower-install', 'bower-dependencies', ['watch', 'serve'], function (error) {
     sequence_error(callback, error)
   })
 })
 
 gulp.task('prod', function (callback) {
-  return run_sequence('pre-build', 'build', function (error) {
+  return run_sequence('pre-build', 'build', 'bower-install', 'bower-dependencies', function (error) {
     sequence_error(callback, error)
   })
 })
