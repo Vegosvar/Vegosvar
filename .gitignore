@@ -5,5 +5,3 @@ bower_components
 uploads
 .travis.yml
 travis_deploy/deploy.sh
-src/app/views/includes/functions/loadLiveReload.ejs
-Gulpfile.js
