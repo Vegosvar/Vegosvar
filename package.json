@@ -49,6 +49,6 @@
     "less-plugin-autoprefix": "^1.4.1",
     "open": "0.0.5",
     "postcss-url": "^4.0.0",
-    "run-sequence": "^1.1.0",
+    "run-sequence": "^1.1.0"
   }
 }
