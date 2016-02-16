@@ -1,4 +1,7 @@
 <!-- TODO Fix this so it doesn't appear in prod! -->
+<% console.log(settings) %>
 <% if (settings.env === 'development') { %>
         <script src="//localhost:12345/livereload.js"></script>
+<% } else if (settings.env === 'beta') { %>
+        <script src="//localhost:35729/livereload.js"></script>
 <% } %>
