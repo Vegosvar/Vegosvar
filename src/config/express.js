@@ -50,6 +50,7 @@ module.exports = function (app, resources) {
 
     if (process.env.NODE_ENV === 'development') {
       app.use(express.static(resources.config.root + '/public'))
+      app.use('/includes', express.static(resources.config.root + '/app/includes'))
       app.use('/uploads', express.static(resources.config.root + '/uploads'))
       app.use('/avatar', express.static(resources.config.root + '/uploads/avatar'))
     }
