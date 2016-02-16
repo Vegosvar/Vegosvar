@@ -1,7 +1,5 @@
 <% include ../includes/header %>
 
-<script src="/includes/js/highcharts/highcharts.js"></script>
-<script src="/includes/js/admin/overview.js"></script>
 <script type="text/javascript">
     var pages_stats = <%- JSON.stringify(pages_stats) %>
 </script>
@@ -30,7 +28,7 @@
 		                            <div class="alert alert-info">
 		                                <span class="glyphicon glyphicon-inbox"></span>
 		                                <span>
-		                                    <%= (pages_this_week > 0) ? + pages_this_week + ' den här veckan' : '' %>
+		                                    <%= (pages_this_week > 0) ? + pages_this_week + ' den här veckan' : 'Inga nya sidor den här veckan' %>
 		                                </span>
 		                            </div>
 								</div>

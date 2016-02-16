@@ -41,121 +41,24 @@
 
                             <h2>Typ av produkt</h2>
                             <div class="row">
-                                <div class="col-xs-12 col-sm-4">
-                                    <h3>Livsmedel</h3>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="product_type" value="chips" <%= (typeof(post) !== 'undefined' && post.post.veg_type == 'chips') ? 'checked=checked' : '' %>>
-                                            Chips
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="product_type" value="glass" <%= (typeof(post) !== 'undefined' && post.post.veg_type == 'glass') ? 'checked=checked' : '' %>>
-                                            Glass
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="product_type" value="godis" <%= (typeof(post) !== 'undefined' && post.post.veg_type == 'godis') ? 'checked=checked' : '' %>>
-                                            Godis
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="product_type" value="margarin" <%= (typeof(post) !== 'undefined' && post.post.veg_type == 'margarin') ? 'checked=checked' : '' %>>
-                                            Margarin
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="product_type" value="ost" <%= (typeof(post) !== 'undefined' && post.post.veg_type == 'ost') ? 'checked=checked' : '' %>>
-                                            Ost
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="product_type" value="vegokött" <%= (typeof(post) !== 'undefined' && post.post.veg_type == 'vegokött') ? 'checked=checked' : '' %>>
-                                            Vegokött
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="product_type" value="växtdryck" <%= (typeof(post) !== 'undefined' && post.post.veg_type == 'växtdryck') ? 'checked=checked' : '' %>>
-                                            Växtdryck
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="product_type" value="växtgrädde" <%= (typeof(post) !== 'undefined' && post.post.veg_type == 'växtgrädde') ? 'checked=checked' : '' %>>
-                                            Växtgrädde
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="col-xs-6 col-sm-4">
-                                    <h3>Kropp</h3>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="product_type" value="hudvård" <%= (typeof(post) !== 'undefined' && post.post.veg_type == 'hudvård') ? 'checked=checked' : '' %>>
-                                            Hudvård
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="product_type" value="makeup" <%= (typeof(post) !== 'undefined' && post.post.veg_type == 'makeup') ? 'checked=checked' : '' %>>
-                                            Makeup
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="product_type" value="schampo" <%= (typeof(post) !== 'undefined' && post.post.veg_type == 'schampo') ? 'checked=checked' : '' %>>
-                                            Schampo
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="product_type" value="tandkräm" <%= (typeof(post) !== 'undefined' && post.post.veg_type == 'tandkräm') ? 'checked=checked' : '' %>>
-                                            Tandkräm
-                                        </label>
-                                    </div>
-
-                                    <h3>Alkohol</h3>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="product_type" value="vin" <%= (typeof(post) !== 'undefined' && post.post.veg_type == 'vin') ? 'checked=checked' : '' %>>
-                                            Vin
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="product_type" value="alkohol" <%= (typeof(post) !== 'undefined' && post.post.veg_type == 'e-nummer') ? 'checked=checked' : '' %>>
-                                            Öl
-                                        </label>
-                                    </div>
-                                </div>
-
-                                <div class="col-xs-6 col-sm-4">
-                                    <h3>Övrigt</h3>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="product_type" value="e-nummer" <%= (typeof(post) !== 'undefined' && post.post.veg_type == 'e-nummer') ? 'checked=checked' : '' %>>
-                                            E-nummer
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="product_type" value="kosttillskott" <%= (typeof(post) !== 'undefined' && post.post.veg_type == 'kosttillskott') ? 'checked=checked' : '' %>>
-                                            Kosttillskott
-                                        </label>
-                                    </div>
-                                    <div class="radio">
-                                        <label>
-                                            <input type="radio" name="product_type" value="other" <%= (typeof(post) !== 'undefined') ? ( (post.post.veg_type == 'other') ? 'checked=checked' : '' ) : 'checked=checked' %>>
-                                            Annat
-                                        </label>
-                                    </div>
-                                </div>
+                                <% if(typeof(categories) !== 'undefined') {
+                                    for(var key in categories) {
+                                        var category = categories[key] %>
+                                        <div class="col-xs-12 col-sm-4">
+                                            <h3 style="text-transform:capitalize"><%= category._id %></h3>
+                                            <% for(i=0;i<category.names.length;i++) {
+                                                var isChecked = (typeof(post) !== 'undefined') ? ( (post.post.product_type == category.names[i].name) ? 'checked=checked' : '' ) : (category.names[i].name == 'annat') ? 'checked=checked' : ''
+                                                %>
+                                                <div class="radio">
+                                                    <label>
+                                                        <input type="radio" name="product_type" value="<%= category.names[i].name %>" <%= isChecked %> />
+                                                        <span class="product_name" style="text-transform:capitalize"><%= category.names[i].name %></span>
+                                                    </label>
+                                                </div>
+                                            <% } %>
+                                        </div>
+                                    <% }
+                                } %>
                             </div>
 
                             <h2>Tillverkare</h2>

@@ -59,8 +59,8 @@
   <script src="//cdnjs.cloudflare.com/ajax/libs/fastclick/1.0.6/fastclick.min.js"></script>
   <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
   
-  <link rel="stylesheet" href="/includes/css/bootstrap-multiselect/bootstrap-multiselect.css">
-  <script src="/includes/js/bootstrap-multiselect/bootstrap-multiselect.js"></script>
+  <link rel="stylesheet" href="/assets/css/bootstrap-multiselect/bootstrap-multiselect.css">
+  <script src="/assets/js/bootstrap-multiselect/bootstrap-multiselect.js"></script>
 
   <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
   
@@ -68,7 +68,7 @@
   <script src="/assets/js/app.js"></script>
 
   <!-- TODO: Add fastclick to compressed JS build instead -->
-  <script src="/includes/js/fastclick/fastclick.js"></script>
+  <script src="/assets/js/fastclick/fastclick.js"></script>
   <script>
     $(function() {
         FastClick.attach(document.body);
@@ -76,6 +76,7 @@
   </script>
 
   <% include functions/loadResources %>
+  <% include functions/loadLiveReload %>
   <% include functions/loadAnalytics %>
 
 </head>

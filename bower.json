@@ -5,7 +5,7 @@
   "authors": [
     "Tobias Järvelöv <tobias@jarvelov.se>"
   ],
-  "license": "Unlicense",
+  "license": "CC0",
   "homepage": "https://github.com/Vegosvar/Vegosvar",
   "moduleType": [
     "node"
@@ -21,41 +21,11 @@
   "dependencies": {
     "fastclick": "~1.0.6",
     "markerclustererplus": "~2.1.4",
-    "wysihtml": "wysihtml5x#~0.5.4",
-    "bootstrap-multiselect": "^0.9.13"
-  },
-  "install": {
-    "base": "src/app/includes",
-    "path": {
-      "css": "css",
-      "js": "js"
-    },
-    "ignore": [
-      "jquery",
-      "bootstrap"
-    ],
-    "sources": {
-      "wysihtml": [
-        "bower_components/wysihtml/parser_rules/advanced_and_extended.js",
-        "bower_components/wysihtml/dist/wysihtml.min.js",
-        "bower_components/wysihtml/dist/wysihtml-toolbar.min.js"
-      ],
-      "markerclustererplus": "bower_components/markerclustererplus/dist/markerclusterer.min.js",
-      "highcharts": "bower_components/highcharts/highcharts.js",
-      "datatables": [
-        "bower_components/datatables/media/js/jquery.dataTables.min.js",
-        "bower_components/datatables/media/js/dataTables.bootstrap.min.js",
-        "bower_components/datatables/media/css/dataTables.bootstrap.min.css",
-        "bower_components/datatables/media/css/jquery.dataTables.min.css"
-      ],
-      "datatables-plugins": [
-        "bower_components/datatables-plugins/features/conditionalPaging/dataTables.conditionalPaging.js"
-      ],
-      "bootstrap-multiselect": [
-        "bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css",
-        "bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect.js",
-        "bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect-collapsible-groups.js"
-      ]
-    }
+    "datatables": "^1.10.11",
+    "datatables-plugins": "^1.10.11",
+    "wysihtml": "^0.5.5",
+    "bootstrap-multiselect": "^0.9.13",
+    "highcharts": "^4.2.3",
+    "dropzone": "^4.3.0"
   }
 }

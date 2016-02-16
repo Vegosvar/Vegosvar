@@ -77,6 +77,66 @@ var collections = [
             name: 'sprit',
             type: '4',
             subcategory: 'alkohol'
+        },{
+            name: 'cider',
+            type: '4',
+            subcategory: 'alkohol'
+        },{
+            name: 'indiskt',
+            type: '3',
+            subcategory: 'asiatiskt'
+        },{
+            name: 'kinesiskt',
+            type: '3',
+            subcategory: 'asiatiskt'
+        },{
+            name: 'thailändskt',
+            type: '3',
+            subcategory: 'asiatiskt'
+        },{
+            name: 'japanskt',
+            type: '3',
+            subcategory: 'asiatiskt'
+        },{
+            name: 'grekiskt',
+            type: '3',
+            subcategory: 'europeiskt'
+        },{
+            name: 'libanesiskt',
+            type: '3',
+            subcategory: 'mellanöstern'
+        },{
+            name: 'italienskt',
+            type: '3',
+            subcategory: 'europeiskt'
+        },{
+            name: 'vietnamesiskt',
+            type: '3',
+            subcategory: 'asiatiskt'
+        },{
+            name: 'persiskt',
+            type: '3',
+            subcategory: 'mellanöstern'
+        },{
+            name: 'mexikanskt',
+            type: '3',
+            subcategory: 'amerikanskt'
+        },{
+            name: 'franskt',
+            type: '3',
+            subcategory: 'europeiskt'
+        },{
+            name: 'svenskt',
+            type: '3',
+            subcategory: 'europeiskt'
+        },{
+            name: 'brittiskt',
+            type: '3',
+            subcategory: 'europeiskt'
+        },{
+            name: 'tyskt',
+            type: '3',
+            subcategory: 'asiatiskt'
         }]
     },
     {

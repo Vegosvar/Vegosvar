@@ -71,7 +71,9 @@ module.exports = function (app, resources) {
                   pages_total: pages,
                   pages_this_week: pages_this_week,
                   pages_stats: pages_stats,
-                  changes: changes
+                  changes: changes,
+                  loadPageResources: { highcharts: true },
+                  loadAdminResources: { overview: true }
                 })
               })
             })
