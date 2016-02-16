@@ -1,2 +1,3 @@
 Gulpfile.js merge=ours
 src/app/views/includes/functions/loadLiveReload.ejs merge=ours
+travis_deploy/deploy.sh merge=ours
