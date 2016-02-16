@@ -54,8 +54,3 @@ if( typeof loadAdminResources.overview !== 'undefined' && loadAdminResources.ove
 	<link rel="stylesheet" href="/assets/css/dropzone/dropzone.min.css">
 	<script src="/assets/js/dropzone/dropzone.min.js"></script>
 <% } %>
-
-<!-- TODO Fix this so it doesn't appear in prod! -->
-<% if (settings.env === 'development') { %>
-	<script src="//localhost:35729/livereload.js"></script>
-<% } %>
