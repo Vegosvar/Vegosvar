@@ -1,6 +1,6 @@
 <% if (typeof loadPageResources !== 'undefined') {
 if( typeof loadPageResources.page !== 'undefined' && loadPageResources.page === true) { %>
-	<script src="/assets/js/pages/page.js"></script>
+	<script src="/includes/js/pages/page.js"></script>
 <% }
 if( typeof loadPageResources.datatables !== 'undefined' && loadPageResources.datatables === true ) { %>
 	<link rel="stylesheet" href="/assets/css/datatables/dataTables.bootstrap.min.css">
@@ -8,28 +8,34 @@ if( typeof loadPageResources.datatables !== 'undefined' && loadPageResources.dat
 	<script src="/assets/js/datatables/jquery.dataTables.min.js"></script>
 	<script src="/assets/js/datatables-plugins/dataTables.conditionalPaging.js"></script>
 	<script src="/assets/js/datatables/dataTables.bootstrap.min.js"></script>
-	<script src="/assets/js/pages/datatables.js"></script>
+	<script src="/includes/js/pages/datatables.js"></script>
+<% }
+if( typeof loadPageResources.highcharts !== 'undefined' && loadPageResources.highcharts === true ) { %>
+	<script src="/assets/js/highcharts/highcharts.js"></script>
 <% }
 } %>
 
 <% if (typeof loadAdminResources !== 'undefined') {
 if( typeof loadAdminResources.revisions !== 'undefined' && loadAdminResources.revisions === true ) { %>
-	<script src="/assets/js/admin/revisions.js"></script>
+	<script src="/includes/js/admin/revisions.js"></script>
+<% }
+if( typeof loadAdminResources.overview !== 'undefined' && loadAdminResources.overview === true ) { %>
+	<script src="/includes/js/admin/overview.js"></script>
 <% }
 } %>
 
 <% if (typeof loadGeoLocation !== 'undefined' && loadGeoLocation === true) { %>
-	<script src="/assets/js/geolocation/geolocation.js"></script>
+	<script src="/includes/js/geolocation/geolocation.js"></script>
 <% } %>
 
 <% if (typeof loadMapResources !== 'undefined') { %>
 	<script src="//maps.googleapis.com/maps/api/js?libraries=places&region=SE&language=sv_SE&callback=mapReady" async defer></script>
 	<script>function mapReady() { $(document).ready(function() { $(document).trigger('mapready') }) }</script>
 <% if (typeof loadMapResources.autocomplete !== 'undefined' && loadMapResources.autocomplete === true) { %>
-	<script src="/assets/js/googlemaps/input.js"></script>
+	<script src="/includes/js/googlemaps/input.js"></script>
 <% } %>
 <% if (typeof loadMapResources.map !== 'undefined' && loadMapResources.map === true) { %>
- 	<script src="/assets/js/googlemaps/map.js"></script>
+ 	<script src="/includes/js/googlemaps/map.js"></script>
 <% } %>
 <% if (typeof loadMapResources.mapCluster !== 'undefined' && loadMapResources.mapCluster === true) { %>
 	<script src="/assets/js/markerclustererplus/markerclusterer.min.js"></script>
@@ -40,13 +46,13 @@ if( typeof loadAdminResources.revisions !== 'undefined' && loadAdminResources.re
 	<script src="/assets/js/wysihtml/wysihtml.min.js"></script>
 	<script src="/assets/js/wysihtml/wysihtml-toolbar.min.js"></script>
 	<script src="/assets/js/wysihtml/advanced_and_extended.js"></script>
-	<script src="/assets/js/editor/controller.js"></script>
-	<script src="/assets/js/editor/editor.js"></script>
+	<script src="/includes/js/editor/controller.js"></script>
+	<script src="/includes/js/editor/editor.js"></script>
 <% } %>
 
 <% if (typeof loadDropzoneResources !== 'undefined' && loadDropzoneResources === true) { %>
-	<link rel="stylesheet" href="/assets/css/dropzone.css">
-	<script src="/assets/js/dropzone.js"></script>
+	<link rel="stylesheet" href="/assets/css/dropzone/dropzone.min.css">
+	<script src="/assets/js/dropzone/dropzone.min.js"></script>
 <% } %>
 
 <!-- TODO Fix this so it doesn't appear in prod! -->
