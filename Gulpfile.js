@@ -8,6 +8,8 @@ var mainBowerFiles = require('main-bower-files')
 var bower = require('gulp-bower')
 var config = require('./src/config/config')
 
+process.env.NODE_ENV = config.environment
+
 // TODO svg2png, favicons, etc. Look at Köttet!
 // TODO Unit tests!
 
@@ -185,7 +187,8 @@ gulp.task('watch', function () {
 })
 
 gulp.task('serve', function () {
-    var server = plugins.liveServer('server.js', undefined, 35729)
+    process.env.port = (process.env.NODE_ENV === 'production') ? false : (process.env.NODE_ENV === 'beta') ? 35729 : 12345
+    var server = plugins.liveServer('server.js', undefined, process.env.port)
     server.start()
 
     if( ! ('headless' in config) ) {
