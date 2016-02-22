@@ -239,4 +239,23 @@ module.exports = function (app, resources) {
       })
     })
   })
+
+  app.get('/admin/installningar', functions.isPrivileged, function (req, res) {
+    var settingsdb = resources.collections.settings
+
+    settingsdb.find({
+      'instagram.access_token': {
+        $exists:true
+      }
+    }).toArray(function(err, instagram) {
+      if (err) throw err
+
+      var instagram_timestamp = (instagram.length > 0 && 'timestamp' in instagram[0]) ? resources.functions.getPrettyDateTime(instagram[0].timestamp) : undefined
+
+      res.render('admin/settings', {
+        active_page: 'settings',
+        instagram: instagram_timestamp
+      })
+    })
+  })
 }
