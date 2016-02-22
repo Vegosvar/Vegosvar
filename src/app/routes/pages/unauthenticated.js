@@ -1,6 +1,6 @@
 /** unauthenticated.js
 * @file: /src/app/routes/pages/unauthenticated.js
-* @description: Handles express routing for the athenticated page routes
+* @description: Handles express routing for the unauthenticated page routes
 * @parameters: Object(app), Object(resources)
 * @returns: Express routes
 */
@@ -72,31 +72,6 @@ module.exports = function (app, resources) {
 
   app.get('/logga-in', function (req, res) {
     res.render('login')
-  })
-
-  app.get('/*', function (req, res, next) {
-    var noRedirect = ['logga-in','logga-ut', 'ajax', 'recensera', 'auth']
-    var canRedirectTo = true
-    var path = req.originalUrl.split("?").shift()
-
-    if(path !== '/') {
-      path = path.split('/')[1]
-      for (var i = noRedirect.length - 1; i >= 0; i--) {
-        if(noRedirect[i].indexOf(path) !== -1) {
-          canRedirectTo = false
-        }
-      }
-
-      if( canRedirectTo ) {
-        req.session.returnTo = functions.returnUrl(req)
-      } else {
-        req.session.returnTo = '/'
-      }
-    } else {
-      req.session.returnTo = '/'
-    }
-
-    next()
   })
 
   app.get('/om', function(req, res) {
