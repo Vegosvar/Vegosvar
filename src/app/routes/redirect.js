@@ -33,8 +33,6 @@ module.exports = function (app, resources) {
       req.session.returnTo = '/'
     }
 
-    console.log(req.session.returnTo)
-
     next()
   })
 }
