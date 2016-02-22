@@ -18,6 +18,13 @@ module.exports = {
     callback: 'http://local.vegosvar.se:8080/auth/facebook/callback'
   },
 
+  instagram: {
+    client_id: '',
+    client_secret: '',
+    callback: 'http://local.vegosvar.se/admin/auth/instagram/callback',
+    scope: 'public_content '
+  },
+
   root: path.join(__dirname, '..'),
   uploads: path.join(__dirname, '../uploads')
 }
