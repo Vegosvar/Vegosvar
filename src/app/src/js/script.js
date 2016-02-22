@@ -351,6 +351,7 @@ $(document).ready(function () {
           })
 
           var showMap = []
+          $('#searchFilter').remove()
 
           $.each(data, function (i, entry) {
             createFilters(entry)
@@ -427,7 +428,8 @@ $(document).ready(function () {
 
           $(container).html(resultContainer)
 
-          if ($('.filterSelect').index() !== -1) { //Filter exists, great, lets enable chosen on it
+          if ($('.filterSelect').index() !== -1) { //Filter exists
+            $('.filterSelect').multiselect('destroy')
             $('.filterSelect').multiselect({
               nonSelectedText: 'Filter',
               inheritClass: true,
