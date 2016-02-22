@@ -250,7 +250,10 @@ module.exports = function (app, resources) {
     }).toArray(function(err, instagram) {
       if (err) throw err
 
-      var instagram_timestamp = (instagram.length > 0 && 'timestamp' in instagram[0]) ? resources.functions.getPrettyDateTime(instagram[0].timestamp) : undefined
+      var instagram_timestamp
+      if(instagram.length > 0 && 'timestamp' in instagram[0]) {
+        instagram_timestamp = resources.functions.getPrettyDateTime(instagram[0].timestamp)
+      }
 
       res.render('admin/settings', {
         active_page: 'settings',
