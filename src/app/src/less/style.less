@@ -2128,35 +2128,39 @@ section {
 		@media (max-width: @xs) {
 			margin-bottom: 15px;
 		}
-		.title {
+		.label {
 			position: absolute;
-			bottom: 0;
+			top: 0;
 			left: 0;
-			.label {
-				position: relative;
-				background: #fff;
-				color: @pink;
-				display: inline-block;
-				padding: 5px 8px 5px 15px;
-				border-radius: 0;
-				.glyphicon {
-					margin-right: 2px;
-				}
+			background: @pink;
+			color: #fff;
+			display: inline-block;
+			padding: 6px 8px;
+			border-radius: 0;
+			.glyphicon {
+				margin-right: 2px;
+			}
+		}
+		.title {
+			padding: 10px 15px;
+			background: #fff;
+			font-size: 12px;
+			@media (max-width: @sm) {
+				padding: 10px 0;
+				text-align: center;
+				background: #222;
+				color: #fff;
 			}
 			h3 {
-				margin: 0;
-				display: inline-block;
-				background: @pink;
-				color: #fff;
-				padding: 10px 15px;
-				&:hover {
-					background: darken(@pink, 3%);
-				}
+				margin: 0 0 3px 0;
+				display: block;
+				color: #222;
 				@media (max-width: @md) {
 					font-size: 15px;
 				}
 				@media (max-width: @sm) {
-					font-size: 14px;
+					font-size: 16px;
+					color: #fff;
 				}
 			}
 		}
