@@ -218,16 +218,26 @@
                     for (var i = recipes.length - 1; i >= 0; i--) { %>
                         <div class="col-sm-4">
                             <div class="recipe">
-                                <a href="<%= recipes[i].url %>" class="item">
-                                    <% if (typeof recipes[i].post.cover !== 'undefined' && recipes[i].post.cover.filename !== null) { %>
-                                        <img alt="" src="/uploads/<%= recipes[i].post.cover.filename %>.jpg">
-                                    <% } %>
-                                    <div class="title">
-                                        <div><span class="label">
+                                    <div class="label">
                                         <span class="glyphicon glyphicon-heart"></span>
                                         Populärt recept
-                                        </span></div>
-                                        <h3><%= recipes[i].title %></h3>
+                                    </div>
+                                    <% if (typeof recipes[i].post.cover !== 'undefined' && recipes[i].post.cover.filename !== null) { %>
+                                        <a href="<%= recipes[i].url %>">
+                                            <img alt="" src="/uploads/<%= recipes[i].post.cover.filename %>.jpg">
+                                        </a>
+                                    <% } %>
+                                    <div class="title">
+                                        
+                                        <a href="<%= recipes[i].url %>">
+                                            <h3><%= recipes[i].title %></h3>
+                                        </a>
+
+                                        <% if (typeof recipes[i].user_info.hidden !== true && recipes[i].user_info.hidden == "") { %>
+                                            Recept från Per
+                                        <% } else { %>
+                                            Recept från Anonym
+                                        <% } %>
                                     </div>
                                 </a>
                             </div>

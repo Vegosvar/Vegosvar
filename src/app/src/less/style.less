@@ -1150,29 +1150,6 @@ article {
 		@media (max-width: @xs) {
 			font-size: 15px;
 		}
-		.stars {
-			margin-top: 0;
-			display: inline-block;
-			.star {
-				font-size: 16px;
-				@media (max-width: @xs) {
-					font-size: 24px;
-					line-height: 1;
-				}
-				&:before {
-					top: -6px;
-					margin-left: 1px;
-					border-radius: 5px;
-				}
-			}
-			.votes {
-				top: -4px;
-				.additional {
-					display: inline-block;
-					margin-left: 3px;
-				}
-			}
-		}
 		.contact {
 			.website {
 				.fa {
@@ -1516,9 +1493,9 @@ section {
 
 .stars {
 	&:hover .star.active {
-		color: #EC960B;
+		color: #FAB000;
 		&:hover {
-			color: #EC960B;
+			color: #FAB000;
 		}
 		&:active {
 			color: #F1AE00;
@@ -1549,7 +1526,7 @@ section {
 		&:nth-child(4):before { content: 'Bra'; 	left: -1px; }
 		&:nth-child(5):before { content: 'Superbra';left: -9px; }
 		&.active {
-			color: #EC960B;
+			color: #FAB000;
 		}
 		@keyframes star-push {
 			0% {
@@ -1584,7 +1561,7 @@ section {
 		}
 		&:hover {
 			transform: scale(1.5);
-			color: #EC960B;
+			color: #FAB000;
 			&:before {
 				opacity: 1;
 				@media (max-width: @xs) {
@@ -1605,13 +1582,36 @@ section {
 		position: relative;
 		margin-left: 3px;
 		font-size: 11px;
-		color: #C9C9C9;
+		color: #9D9D9D;
 		border: 1px solid #C9C9C9;
 		border-radius: 50px;
 		padding: 1px 7px 2px 7px;
 		.additional {
 			display: none;
 			@media (max-width: @xs) {
+				display: inline-block;
+				margin-left: 3px;
+			}
+		}
+	}
+	&.lg {
+		margin-top: 0;
+		display: inline-block;
+		.star {
+			font-size: 16px;
+			@media (max-width: @xs) {
+				font-size: 24px;
+				line-height: 1;
+			}
+			&:before {
+				top: -6px;
+				margin-left: 1px;
+				border-radius: 5px;
+			}
+		}
+		.votes {
+			top: -6px;
+			.additional {
 				display: inline-block;
 				margin-left: 3px;
 			}
@@ -1880,6 +1880,12 @@ section {
 			}
 		}
 	}
+	.hint {
+		left: -183px;
+		font-size: 11px;
+		padding: 4px 7px;
+		box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+	}
 	.more {	
 		position: absolute;
 		right: 0;
@@ -2128,35 +2134,39 @@ section {
 		@media (max-width: @xs) {
 			margin-bottom: 15px;
 		}
-		.title {
+		.label {
 			position: absolute;
-			bottom: 0;
+			top: 0;
 			left: 0;
-			.label {
-				position: relative;
-				background: #fff;
-				color: @pink;
-				display: inline-block;
-				padding: 5px 8px 5px 15px;
-				border-radius: 0;
-				.glyphicon {
-					margin-right: 2px;
-				}
+			background: @pink;
+			color: #fff;
+			display: inline-block;
+			padding: 6px 8px;
+			border-radius: 0;
+			.glyphicon {
+				margin-right: 2px;
+			}
+		}
+		.title {
+			padding: 10px 15px;
+			background: #fff;
+			font-size: 12px;
+			@media (max-width: @sm) {
+				padding: 10px 0;
+				text-align: center;
+				background: #222;
+				color: #fff;
 			}
 			h3 {
-				margin: 0;
-				display: inline-block;
-				background: @pink;
-				color: #fff;
-				padding: 10px 15px;
-				&:hover {
-					background: darken(@pink, 3%);
-				}
+				margin: 0 0 3px 0;
+				display: block;
+				color: #222;
 				@media (max-width: @md) {
 					font-size: 15px;
 				}
 				@media (max-width: @sm) {
-					font-size: 14px;
+					font-size: 16px;
+					color: #fff;
 				}
 			}
 		}
@@ -2517,7 +2527,7 @@ section {
 	}
 	.socialt {
 		@media (max-width: @xs) {
-			margin: -15px -30px 30px -30px;
+			margin: 0 -30px 30px -30px;
 			padding: 0;
 			background: #23252F;
 			a {

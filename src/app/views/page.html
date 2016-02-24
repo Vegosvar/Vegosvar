@@ -89,7 +89,7 @@
               </p>
 
               <% if (post.type === '3' || post.type === '5' || post.type === '4' && post.post.veg_type !== 'animal') { %>
-              <div class="stars" data-id="<%= post._id %>">
+              <div class="stars lg" data-id="<%= post._id %>">
                 <% if (typeof post.rating !== 'undefined' && post.rating.votes_sum !== 'undefined') {
                   for(i = 1; i < 6; i++) { %>
                     <div class="star <%= (i <= post.rating.votes_sum) ? 'active' : '' %> ">
@@ -98,9 +98,9 @@
                   <% } %>
                <% } %>
                <% if (typeof post.rating !== 'undefined' && post.rating.votes !== 'undefined') { %>
-                  <span class="votes"><%= post.rating.votes %></span>
+                  <span class="votes"><%= post.rating.votes %> har röstat</span>
                 <% } else { %>
-                  <span class="votes">0</span>
+                  <span class="votes">Bli först att rösta</span>
                 <% } %>  
               </div>
               <% } %>
@@ -136,8 +136,8 @@
 
                 <hr class="lg hidden-xs">
                 <div class="row">
-                  <div class="col-lg-6 text-center-xs" id="location">
-                    <div class="hidden-xs">
+                  <div class="col-lg-6" id="location">
+                    <div class="hidden-xs text-center-xs">
                       <h2><%= post.post.city %></h2>
                       <div class="street">
                         <%= post.post.street %>
