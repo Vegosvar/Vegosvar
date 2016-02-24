@@ -67,8 +67,11 @@ module.exports = function (app, resources) {
     var votesdb = resources.collections.votes
     var userid = new ObjectID(req.user._id)
 
+    //Get pages user has created
     pagesdb.find( { "user_info.id": userid }).toArray(function(err, pages) {
       if (err) throw err
+
+      //Find votes from this user
       votesdb.find( {"user.id": userid }).toArray(function(err, votes) {
         if (err) throw err
 
@@ -81,6 +84,7 @@ module.exports = function (app, resources) {
           pages_votes.push( votes[i].content )
         }
 
+        //Find pages user voted on
         pagesdb.find( { _id: { $in: pages_voted_on } } ).toArray(function(err, voted) {
           if (err) throw err
 
@@ -97,6 +101,7 @@ module.exports = function (app, resources) {
             }
           }
 
+          //Get likes from this user
           likesdb.find( { "user.id": userid }).toArray(function(err, likes) {
             if (err) throw err
 
@@ -105,15 +110,33 @@ module.exports = function (app, resources) {
               pages_liked.push( likes[i].post.id )
             }
 
+            //Pages user has liked
             pagesdb.find( { _id: { $in: pages_liked } }).toArray(function(err, liked) {
               if (err) throw err
 
-              res.render('pages', {
-                user: req.user,
-                pages: pages,
-                votes: voted_pages,
-                likes: liked,
-                loadPageResources: { datatables: true },
+              //Pages user has contributed to (but not created)
+              pagesdb.find({
+                "user_info.id": {
+                  $ne: new ObjectID(req.user._id)
+                },
+                "user_info.contributors": {
+                  $elemMatch: {
+                    id: new ObjectID(req.user._id)
+                  }
+                }
+              }).toArray(function(err, contributions) {
+                if(err) throw err
+
+                console.log(contributions)
+
+                res.render('pages', {
+                  user: req.user,
+                  pages: pages,
+                  votes: voted_pages,
+                  likes: liked,
+                  contributions: contributions,
+                  loadPageResources: { datatables: true }
+                })
               })
             })
           })
