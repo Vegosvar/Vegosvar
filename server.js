@@ -18,7 +18,7 @@ if (cluster.isMaster) {
   }
 
   cluster.on('exit', function (worker, code, signal) {
-    console.log('worker' + worker.process.pid + 'died')
+    console.log('worker ' + worker.process.pid + ' died')
     cluster.fork() //Initialize a new worker to replace the one that died
   })
 } else {
