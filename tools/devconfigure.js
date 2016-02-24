@@ -33,7 +33,7 @@ client.connect(config.database.host+'vegodev', function(err, db){
          
           console.log('Uploads folder copied successfully')
 
-          if(config.environment === 'development') {
+          if('environment' in config && config.environment === 'development') {
             //Set all pages to published
             db.collection('pages').update({}, {
               $set: {
@@ -41,6 +41,8 @@ client.connect(config.database.host+'vegodev', function(err, db){
               }
             }, {
               multi: true
+            }, function(err, result) {
+              db.close()
             })
           } else {
             db.close()
