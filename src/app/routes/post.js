@@ -231,8 +231,34 @@ module.exports = function (app, resources) {
       res.redirect('/ny')
     }
 
+    data.accepted = null
+
     if(id) {
       id = new ObjectID(id) //If editing the post, the id will be provided as a string and we need to convert it to an objectid
+      if('contributors' in data.user_info) {
+        //Check if this user has already contributed to the post, otherwise add the user to the array
+        var alreadyContributed = false
+
+        for(var userObj in data.user_info.contributors) {
+          var userObjId = data.user_info.contributors[userObj].id
+          if(req.user._id == userObjId) {
+            alreadyContributed = true
+          }
+        }
+
+        if(!alreadyContributed) {
+          data.user_info.contributors.push({
+            id: req.user._id,
+            hidden: hidden
+          })
+        }
+      }
+    } else {
+      //This is the first revision, add the user creating it to the list of contributors
+      data.user_info.contributors = [{
+        id: req.user._id,
+        hidden: hidden
+      }]
     }
 
     pagesdb.count({ _id : id }, function(err, count) {
