@@ -12,7 +12,7 @@ module.exports = function (app, resources) {
   var functions = resources.functions
 
   app.get('/*', function (req, res, next) {
-    var noRedirect = ['logga-in','logga-ut', 'ajax', 'recensera', 'auth']
+    var noRedirect = ['logga-in','logga-ut', 'ajax', 'recensera', 'auth', 'uploads']
     var canRedirectTo = true
     var path = req.originalUrl.split("?").shift()
 
@@ -27,7 +27,8 @@ module.exports = function (app, resources) {
       if( canRedirectTo ) {
         req.session.returnTo = functions.returnUrl(req)
       } else {
-        req.session.returnTo = '/'
+        //Either reuse previous value or redirect to front page
+        req.session.returnTo = (req.session.returnTo) ? req.session.returnTo : '/'
       }
     } else {
       req.session.returnTo = '/'
