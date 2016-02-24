@@ -9,13 +9,13 @@ var passport = require('passport')
 
 module.exports = function (app, resources) {
   var FacebookStrategy = require('./facebook')(resources)
-  var InstagramStrategy = require('./instagram')(resources)
+  //var InstagramStrategy = require('./instagram')(resources)
 
   /* Facebook */
   passport.use(FacebookStrategy)
 
   /* Instagram (for admin) */
-  passport.use(InstagramStrategy)
+  //passport.use(InstagramStrategy)
 
   passport.serializeUser(function (req, user, done) {
     done(null, user.id)
@@ -29,5 +29,4 @@ module.exports = function (app, resources) {
       done(error, result[0])
     })
   })
-
 }
