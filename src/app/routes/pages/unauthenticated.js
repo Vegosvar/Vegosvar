@@ -18,6 +18,7 @@ module.exports = function (app, resources) {
     var citiesdb = resources.collections.cities
     var categoriesdb = resources.collections.categories
     var likesdb = resources.collections.likes
+    var usersdb = resources.collections.users
 
     var pages = {}
     var options = {
@@ -49,20 +50,38 @@ module.exports = function (app, resources) {
               {type:'2'}
               ]
           }).sort({_id:-1}).limit(3).toArray(function(err, recipes) {
-            res.render('index', {
-              user: req.user,
-              pageStats: pageStats,
-              pages: pages,
-              establishments: establishments,
-              recipes: recipes,
-              loadGeoLocation: true,
-              loadMapResources: {
-                map: true,
-                mapCluster: true
-              },
-              startpage: false,
-              searchString: req.query.s,
-              striptags: striptags
+
+            var recipeUsers = []
+            for (var i = recipes.length -1; i >= 0; i--) {
+              recipeUsers.push( recipes[i].user_info.id)
+            }
+
+            usersdb.find({_id: { $in: recipeUsers } }).toArray(function(err, users) {
+              for (var i = recipes.length - 1; i >= 0; i--) {
+                for (var u = users.length - 1; u >= 0; u--) {
+                  if(recipes[i].user_info.hidden) {
+                    if(String(recipes[i].user_info.id) == String(users[u]._id) ) {
+                      recipes[i].user_info.display_name = users[u].name.display_name
+                    }
+                  }
+                }
+              }
+
+              res.render('index', {
+                user: req.user,
+                pageStats: pageStats,
+                pages: pages,
+                establishments: establishments,
+                recipes: recipes,
+                loadGeoLocation: true,
+                loadMapResources: {
+                  map: true,
+                  mapCluster: true
+                },
+                startpage: false,
+                searchString: req.query.s,
+                striptags: striptags
+              })
             })
           })
         })
