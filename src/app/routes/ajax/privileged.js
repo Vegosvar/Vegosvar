@@ -101,7 +101,7 @@ module.exports = function (app, resources) {
           function (err, result) {
             if(err) {
               res.json({
-                success:false,
+                success: false,
                 post: page_id,
                 message:'Failed to update the page\'s revision'
               })
@@ -120,6 +120,7 @@ module.exports = function (app, resources) {
               {
                 $set: {
                   post: new_post,
+                  accepted: true,
                   "user_info.contributors": contributors,
                   "timestamp.updated": isodate
                 }
