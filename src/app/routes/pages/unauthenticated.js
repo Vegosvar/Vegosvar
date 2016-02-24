@@ -59,7 +59,7 @@ module.exports = function (app, resources) {
             usersdb.find({_id: { $in: recipeUsers } }).toArray(function(err, users) {
               for (var i = recipes.length - 1; i >= 0; i--) {
                 for (var u = users.length - 1; u >= 0; u--) {
-                  if(recipes[i].user_info.hidden) {
+                  if(!recipes[i].user_info.hidden) {
                     if(String(recipes[i].user_info.id) == String(users[u]._id) ) {
                       recipes[i].user_info.display_name = users[u].name.display_name
                     }
