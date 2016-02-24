@@ -127,8 +127,6 @@ module.exports = function (app, resources) {
               }).toArray(function(err, contributions) {
                 if(err) throw err
 
-                console.log(contributions)
-
                 res.render('pages', {
                   user: req.user,
                   pages: pages,
