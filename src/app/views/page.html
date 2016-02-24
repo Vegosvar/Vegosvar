@@ -8,6 +8,10 @@
 
           <article>
 
+            <% if('accepted' in post && post.accepted !== true) { %>
+              <div class="alert alert-danger"><span class="glyphicon glyphicon-asterisk"></span> <strong>Ej publicerad</strong> Sidan kan bara visas av dig tills en moderator godkänner den.</div>
+            <% } %>
+
             <div class="likes">
                 <div class="hint">
                   <a href="/logga-in">Logga in</a> på Vegosvar för att gilla
