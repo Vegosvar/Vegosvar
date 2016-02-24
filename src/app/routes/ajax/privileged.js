@@ -108,6 +108,7 @@ module.exports = function (app, resources) {
             }
 
             var new_post = data.revisions[revision_number]
+            var contributors = (new_post['meta'].user_info instanceof Array) ? new_post['meta'].user_info : [new_post['meta'].user_info]
             delete(new_post['meta'])
 
             var isodate = functions.newISOdate(new Date(revision_number * 1000))
@@ -119,6 +120,7 @@ module.exports = function (app, resources) {
               {
                 $set: {
                   post: new_post,
+                  "user_info.contributors": contributors,
                   "timestamp.updated": isodate
                 }
               }, {
