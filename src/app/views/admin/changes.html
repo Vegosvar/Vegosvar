@@ -30,7 +30,7 @@
                                 for(i=0;i < changes.length;i++) { %>
                                   <tr>
                                     <td>
-                                      <a href="<%= (changes[i].remove === true) ? '/admin/borttagning/' + changes[i].id : '/admin/revisioner/' + changes[i].url %>"><%= changes[i].title %></a>
+                                      <a href="<%= (changes[i].delete === true) ? '/admin/borttagning/' + changes[i].id : '/admin/revisioner/' + changes[i].url %>"><%= changes[i].title %></a>
                                     </td>
                                     <td>
                                       <span class="date_updated"><%= changes[i].updated %></span>
@@ -39,7 +39,7 @@
                                       <span class="date_created"><%= changes[i].created %></span>
                                     </td>
                                     <td>
-                                      <% if(changes[i].remove === true) { %>
+                                      <% if(changes[i].delete === true) { %>
                                           <span class="label label-danger">Radera</span>
                                         <% } else {
                                           if(changes[i].revisions == 1) { %>
