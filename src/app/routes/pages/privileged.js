@@ -51,7 +51,7 @@ module.exports = function (app, resources) {
             if (err) throw err
 
             revisionsdb.find({pending: { $gt: 0 } }).toArray(function(err, revisions) {
-              pagesdb.find({remove: true}).toArray(function(err, removals) {
+              pagesdb.find({delete: true}).toArray(function(err, removals) {
                 var changes = []
                 //Check if any of the removed pages has new revisions
                 for (var i = 0; i < removals.length; i++) {
@@ -114,7 +114,7 @@ module.exports = function (app, resources) {
         revisionIds.push(String(revisions[i].post_id))
       }
 
-      pagesdb.find({ $or: [ { _id: { $in: updated } }, { remove: true } ] } ).toArray(function(err, pages) {
+      pagesdb.find({ $or: [ { _id: { $in: updated } }, { delete: true } ] } ).toArray(function(err, pages) {
         if (err) throw err
 
         if(pages.length > 0) {
@@ -134,12 +134,12 @@ module.exports = function (app, resources) {
                     created: functions.getPrettyDateTime(pages[i].timestamp.created),
                     updated: functions.getPrettyDateTime(revision.modified),
                     revisions: Object.keys(revision.revisions).length,
-                    remove: pages[i].hasOwnProperty('remove') ? pages[i].remove : false
+                    delete: pages[i].hasOwnProperty('delete') ? pages[i].delete : false
                   })
                 }
               }
             } else {
-              if('remove' in pages[i]) {
+              if('delete' in pages[i]) {
                 changes.push({
                   title: pages[i].title,
                   url: pages[i].url,
@@ -147,7 +147,7 @@ module.exports = function (app, resources) {
                   created: functions.getPrettyDateTime(pages[i].timestamp.created),
                   updated: pages[i].timestamp.hasOwnProperty('updated') ? functions.getPrettyDateTime(pages[i].timestamp.updated) : 0,
                   revisions: 0,
-                  remove: pages[i].remove
+                  delete: pages[i].delete
                 })
               }
             }
