@@ -130,6 +130,7 @@
 
                   <% if (typeof post.post.email !== 'undefined' && post.post.email !== "") { %>
                     <div><a href="mailto:<%= post.post.email %>" target="_blank" class="text-muted email">
+                      <span class="fa fa-envelope small"></span> 
                       <%= post.post.email %>
                     </a></div>
                   <% } %>
