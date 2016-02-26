@@ -226,7 +226,7 @@ module.exports = function (app, resources) {
     })
   })
 
-  app.get('/ajax/admin/delete/:page_id', functions.isPrivileged, function (req, res, next) {
+  app.get('/ajax/admin/delete/approve/:page_id', functions.isPrivileged, function (req, res, next) {
     var page_id = req.params.page_id
     var pagesdb = resources.collections.pages
 
@@ -235,12 +235,42 @@ module.exports = function (app, resources) {
     }, {
       $set: {
         url: page_id,
-        accepted: false
+        accepted: false,
+        removed: true
       }
     }, function(err, result) {
       if(err) {
         res.json({
+          success: false
+        })
+      }
+
+      if(result.result.ok == true) {
+        res.json({
           success: true
+        })
+      } else {
+        res.json({
+          success: false
+        })
+      }
+    })
+  })
+
+  app.get('/ajax/admin/delete/reject/:page_id', functions.isPrivileged, function (req, res, next) {
+    var page_id = req.params.page_id
+    var pagesdb = resources.collections.pages
+
+    pagesdb.update({
+      _id: new ObjectID(page_id)
+    }, {
+      $unset: {
+        delete: ''
+      }
+    }, function(err, result) {
+      if(err) {
+        res.json({
+          success: false
         })
       }
 
