@@ -233,4 +233,53 @@ module.exports = function (app, resources) {
       }
     })
   })
+
+  app.get('/sitemap.xml', function(req, res) {
+    var sitemap = resources.sitemap
+    var pagesdb = resources.collections.pages
+    var hostname = resources.config.hostname
+
+    //Add static pages
+
+    var staticPages = ['logga-in', 'om','licens','riktlinjer', 'villkor','vanliga-fragor','press','mina-sidor']
+
+    for (var i = staticPages.length - 1; i >= 0; i--) {
+      sitemap.add({
+        url: hostname + '/' + staticPages[i],
+        priority: 0.8
+      })
+    }
+
+    //Add dynamic pages
+    pagesdb.find({accepted:true}).toArray(function(err, pages) {
+      if(err) throw err
+
+      for (var i = pages.length - 1; i >= 0; i--) {
+        var obj = {
+          url: hostname + '/' + pages[i].url
+        }
+
+        if('post' in pages[i]) {
+          if('cover' in pages[i].post) {
+            if('filename' in pages[i].post.cover) {
+              if(pages[i].post.cover.filename !== null || pages[i].post.cover.filename !== "") {
+                obj.img = hostname + '/uploads/' + pages[i].post.cover.filename + '.jpg'
+              }
+            }
+          }
+        }
+
+        sitemap.add(obj)
+      }
+
+      sitemap.toXML( function (err, xml) {
+        if (err) {
+          return res.status(500).end()
+        }
+
+        res.header('Content-Type', 'application/xml')
+        res.send( xml )
+      })
+    })
+  })
 }
