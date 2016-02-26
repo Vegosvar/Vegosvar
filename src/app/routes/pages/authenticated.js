@@ -18,10 +18,6 @@ module.exports = function (app, resources) {
     functions.isAuthenticated(req, res, next)
   })
 
-  app.get('/konto', function (req, res) {
-    res.render('konto', { user: req.user })
-  })
-
   app.get('/installningar', function (req, res) {
     res.render('settings', { user: req.user, loadEditorResources: true, loadDropzoneResources: true })
   })
