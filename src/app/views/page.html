@@ -9,7 +9,7 @@
           <article>
 
             <% if('accepted' in post && post.accepted !== true) { %>
-              <div class="alert alert-danger"><span class="glyphicon glyphicon-asterisk"></span> <strong>Ej publicerad</strong> Sidan kan bara visas av dig tills en moderator godkänner den.</div>
+              <div class="label label-warning page-status"><span class="glyphicon glyphicon-asterisk"></span> <strong>Ej publicerad</strong> – Inväntar granskning</div>
             <% } %>
 
             <div class="likes">
