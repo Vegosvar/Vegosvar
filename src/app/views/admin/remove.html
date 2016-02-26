@@ -8,7 +8,7 @@
             </div>
             <div class="col-md-10">
                 <article>
-                    <% if(!page.delete) { %>
+                    <% if('removed' in page && page.removed === true) { %>
                         <h2 class="no-margin-top"><a href="/<%= page.url %>"><%= page.title %></a> är redan borttagen</h2>
                     <% } else { %>
                         <h2 class="no-margin-top">Ta bort sida <a href="/<%= page.url %>"><%= page.title %></a></h2>
