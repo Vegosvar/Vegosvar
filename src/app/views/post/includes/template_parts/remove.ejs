@@ -1,4 +1,4 @@
-<% if(typeof post !== 'undefined' && post.remove !== true) { %>
+<% if(typeof post !== 'undefined' && post.delete !== true) { %>
     <div id="delete-container">
         <h3>Ta bort</h3>
         <p>För att ta bort en sida måste du ange en anledning för borttagning och därefter tas sidan bort om anledningen accepteras. I din händelselogg under <a href="/mina-sidor">Mina sidor</a> ser du om ditt ärende är behandlat.</p>
@@ -10,7 +10,7 @@
             <button id="btn-delete-confirm" class="btn btn-danger">Radera sida</button>
         </div>
     </div>
-<% } else if(typeof post !== 'undefined' && post.remove === true) { %>
+<% } else if(typeof post !== 'undefined' && post.delete === true) { %>
     <div class="alert alert-danger"><span class="glyphicon glyphicon-remove"></span> En begäran att ta bort den här sidan har skapats</div>
 <% } %>
 
