@@ -8,16 +8,32 @@
             </div>
             <div class="col-md-10">
                 <article>
-                    <h2>Ta bort sida <a href="/<%= page.url %>"><%= page.title %></a></h2>
+                    <h2 class="no-margin-top">Ta bort sida <a href="/<%= page.url %>"><%= page.title %></a></h2>
 
                     <div>
-                        <button class="btn btn-success">Neka begäran</button>
-                        <button class="btn btn-danger">Bekräfta</button>
+                        <button id="reject" class="btn btn-success" data-id="<%= page._id %>">Neka begäran</button>
+                        <button id="delete" class="btn btn-danger" data-id="<%= page._id %>">Bekräfta</button>
                     </div>
                 </article>
             </div>
         </div>
     </section>
 </div>
+
+<script>
+    $(document).ready(function() {
+        $('#delete').on('click', function(e) {
+            var id = $(e.target).data('id')
+            console.log('/admin/ajax/admin/delete/' + id)
+
+            $.ajax({
+                url: '/ajax/admin/delete/' + id
+            })
+            .done(function(result) {
+                console.log(result)
+            })
+        })
+    })
+</script>
 
 <% include ../includes/footer %>
