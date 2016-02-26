@@ -21,6 +21,7 @@ module.exports = function (app, resources) {
   */
   app.get('/ajax/map', function (req, res) {
     var filter = {
+      accepted: true, //Only published pages
       $or: [
         { type: '3' },
         { type: '5' }
@@ -82,6 +83,7 @@ module.exports = function (app, resources) {
 
     //The default query
     var query = {
+      accepted: true, //Only published pages
       $text: {
         $search: searchString
       }
