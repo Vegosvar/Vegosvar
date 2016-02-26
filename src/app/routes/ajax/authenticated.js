@@ -139,7 +139,7 @@ module.exports = function (app, resources) {
             pageQuery["user_info.id"] = new ObjectID(user._id)
           }
 
-          pagesdb.update( pageQuery, { $set: { remove: true, "timestamp.updated": functions.getISOdate() } }, function(err, status) {
+          pagesdb.update( pageQuery, { $set: { delete: true, "timestamp.updated": functions.getISOdate() } }, function(err, status) {
             if (err) throw err
             if(status.result.n > 0) {
               res.json({
