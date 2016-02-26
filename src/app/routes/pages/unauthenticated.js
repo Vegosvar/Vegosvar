@@ -262,7 +262,7 @@ module.exports = function (app, resources) {
         if('post' in pages[i]) {
           if('cover' in pages[i].post) {
             if('filename' in pages[i].post.cover) {
-              if(pages[i].post.cover.filename !== null || pages[i].post.cover.filename !== "") {
+              if(pages[i].post.cover.filename !== null && pages[i].post.cover.filename !== "") {
                 obj.img = hostname + '/uploads/' + pages[i].post.cover.filename + '.jpg'
               }
             }
