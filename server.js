@@ -6,6 +6,8 @@ var functions = require('./src/lib/functions.js')
 var image_processer = require('./src/lib/imageProcesser.js')
 var db = require('./src/lib/db')
 
+var sitemap = require('sitemap')
+
 var express = require('express')
 
 var numCores = require('os').cpus().length
@@ -40,6 +42,10 @@ if (cluster.isMaster) {
       functions: functions,
       image_processer: image_processer,
       config: config,
+      sitemap: sitemap.createSitemap ({
+        hostname: 'http://' + config.address,
+        cacheTime: 600000
+      }),
       collections: {
         cities: citiesdb,
         categories: categoriesdb,
