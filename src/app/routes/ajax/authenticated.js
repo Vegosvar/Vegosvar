@@ -8,6 +8,7 @@
 var ObjectID = require('mongodb').ObjectID
 
 module.exports = function (app, resources) {
+  var functions = resources.functions
   /** /ajax/addVote
   * @type: GET
   * @description: Ajax route for handling user votes.
@@ -115,7 +116,7 @@ module.exports = function (app, resources) {
 
   app.get('/ajax/remove/:post_id', function(req, res) {
     var post_id = req.params.post_id
-    var userid = req.params.user._id
+    var userid = req.user._id
 
     var pagesdb = resources.collections.pages
     var usersdb = resources.collections.users
