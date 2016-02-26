@@ -101,13 +101,14 @@ module.exports = function (app, resources) {
           function (err, result) {
             if(err) {
               res.json({
-                success:false,
+                success: false,
                 post: page_id,
                 message:'Failed to update the page\'s revision'
               })
             }
 
             var new_post = data.revisions[revision_number]
+            var contributors = (new_post['meta'].user_info instanceof Array) ? new_post['meta'].user_info : [new_post['meta'].user_info]
             delete(new_post['meta'])
 
             var isodate = functions.newISOdate(new Date(revision_number * 1000))
@@ -119,6 +120,8 @@ module.exports = function (app, resources) {
               {
                 $set: {
                   post: new_post,
+                  accepted: true,
+                  "user_info.contributors": contributors,
                   "timestamp.updated": isodate
                 }
               }, {

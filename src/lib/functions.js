@@ -1,5 +1,3 @@
-var instance = false
-
 module.exports = {
 	newISOdate: function(d) {
 		function pad(n) {return n<10 ? '0'+n : n}
@@ -89,8 +87,7 @@ module.exports = {
     }
   },
   isPrivileged: function(req, res, next) {
-    var privileged = ['admin','moderator']
-    if(privileged.indexOf(req.user.info.permission) >= 0 ) {
+    if(module.exports.userCheckPrivileged(req.user)) {
       return next() //User is privileged, continue
     } else {
       //Check if this was an ajax request
@@ -104,5 +101,13 @@ module.exports = {
         res.redirect('/')
       }
     }
+  },
+  userCheckPrivileged: function(user) {
+    var privileged = ['admin','moderator']
+    return (typeof(user) !== 'undefined') ? (privileged.indexOf(user.info.permission) >= 0) : false
+  },
+  userCheckAdmin: function(user) {
+    var admin = ['admin']
+    return (typeof(user) !== 'undefined') ? (admin.indexOf(user.info.permission) >= 0) : false
   }
 }

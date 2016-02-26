@@ -1,10 +1,10 @@
 $(document).ready(function() {
 
     function checkLicenseVal(value) {
-        if(value !== 'CC0') {
-            $('#license_info').fadeIn()
+        if(value === 'CC BY') {
+            $('.cc-version').fadeIn()
         } else {
-            $('#license_info').hide()
+            $('.cc-version').hide()
         }
     }
 

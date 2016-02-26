@@ -8,6 +8,10 @@
 
           <article>
 
+            <% if('accepted' in post && post.accepted !== true) { %>
+              <div class="alert alert-danger"><span class="glyphicon glyphicon-asterisk"></span> <strong>Ej publicerad</strong> Sidan kan bara visas av dig tills en moderator godkänner den.</div>
+            <% } %>
+
             <div class="likes">
                 <div class="hint">
                   <a href="/logga-in">Logga in</a> på Vegosvar för att gilla
@@ -127,7 +131,7 @@
                   <% } %>
 
                   <% if (typeof post.post.website !== 'undefined' && post.post.website !== "") { %>
-                    <div><a href="<%= post.post.website %>" target="_blank" rel="nofollow" class="website">
+                    <div><a href="<%= post.post.website %>" target="_blank" rel="nofollow" class="website text-muted">
                       <span class="fa fa-external-link"></span> 
                       Besök hemsida
                     </a></div>
@@ -266,9 +270,6 @@
                     </div>
                   </div>
                 </div>
-                <% if (typeof post.post.website !== 'undefined' && post.post.website !== "") { %>
-                  <a href="<%= post.post.website %>" class="btn btn-third btn-block visible-xs" target="_blank">Besök deras hemsida</a>
-                <% } %>
               <% } %>
 
             </div>
@@ -397,24 +398,7 @@
         <div class="col-sm-6 col-md-4 sidebar">
 
           <% if (post.type === '3' || post.type === '5') { %>
-            <div id="instagram">
-              <div class="images">
-                <img alt="" src="/uploads/bb404720a4e134c.jpg">
-                <img alt="" src="/uploads/aec7af9782f.jpg">
-                <img alt="" src="/uploads/063abb8cd89cb1353be4ec46f.jpg">
-                <img alt="" src="/uploads/bb404720a4e134c.jpg">
-                <img alt="" src="/uploads/aec7af9782f.jpg">
-                <img alt="" src="/uploads/aec7af9782f.jpg">
-                <img alt="" src="/uploads/063abb8cd89cb1353be4ec46f.jpg">
-                <img alt="" src="/uploads/bb404720a4e134c.jpg">
-              </div>
-              <small><p>Checka in på <%= post.title %> nästa gång du postar på <a href="https://instagram.com" target="_blank">Instagram</a> så delas dina bilder här.</p></small>
-            </div>
-          <% } %>
-
-
-          <% if (post.type === '3' || post.type === '5') { %>
-            <div class="card lg hidden-xs">
+            <div class="card lg">
               <h2><%= post.post.city %></h2>
               <h3 class="subtitle">Restauranger & butiker</h3>
               <ul class="page-menu">
@@ -455,19 +439,18 @@
             </div>
           <% } %>
 
-          <div class="card lg text-center">
-            <div class="headerImage">
-              <img alt="" src="/assets/images/pages.svg">
-            </div>
-            <h2>Skapa en sida</h2>
-            <p>Skapa egna sidor på Vegosvar. Det kan vara allt ifrån fakta, restauranger, butiker, produkter och recept.</p>
+          <div class="card lg text-center hidden-xs">
+              <p><img alt="" src="/assets/images/promote.svg" style="width: 100px"></p>
+            <h3>Skapa en sida på Vegosvar</h3>
+            <p>Det kan vara allt ifrån fakta, restauranger, butiker, produkter och recept.</p>
             <a href="/ny" target="_blank" class="btn btn-secondary">Skapa en sida</a>
           </div>
 
           <div class="card lg text-center">
-            <h2>Facebookgrupp</h2>
-            <p>Funderar du på något? Gå med i Facebookgruppen för Vegetarianer & Veganer i Sverige.</p>
-            <a href="https://www.facebook.com/groups/840104332722635/?fref=ts" target="_blank" class="btn btn-fb btn-secondary">Gå med i Facebookgruppen</a>
+            <p><img src="/assets/images/fb-color.svg" class="circle" style="width: 50px;"></p>
+            <h3>Facebookgrupp</h3>
+            <p>Hittar du inte det du söker? Gå med i Facebookgruppen för vegetarianer & veganer i Sverige.</p>
+            <a href="https://www.facebook.com/groups/840104332722635/?fref=ts" target="_blank" class="btn btn-fb btn-secondary">Gå med i gruppen</a>
           </div>
 
         </div>

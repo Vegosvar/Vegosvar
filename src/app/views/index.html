@@ -31,22 +31,6 @@
     <section id="results">
         <div class="container">
 
-        <!--
-            <div id="searchFilter">
-                <div class="dropdown">
-                    <button class="btn btn-third dropdown-toggle" type="button" id="filterOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        Filter
-                        <span class="fa fa-angle-down"></span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="filterOptions">
-                        <li><a href="#">Restauranger</a></li>
-                        <li><a href="#">Butiker</a></li>
-                        <li><a href="#">Fakta</a></li>
-                        <li><a href="#">Produkter</a></li>
-                    </ul>
-                </div>
-            </div> -->
-
             <div id="searchMap">
                 <button class="showSearchMap btn btn-third">
                     <span class="fa fa-map-o"></span>
@@ -233,10 +217,10 @@
                                             <h3><%= recipes[i].title %></h3>
                                         </a>
 
-                                        <% if (typeof recipes[i].user_info.hidden !== true && recipes[i].user_info.hidden == "") { %>
-                                            Recept från Per
+                                        <% if (typeof recipes[i].user_info.hidden !== true && 'display_name' in recipes[i].user_info) { %>
+                                            Recept av <%= recipes[i].user_info.display_name %>
                                         <% } else { %>
-                                            Recept från Anonym
+                                            Recept av Anonym
                                         <% } %>
                                     </div>
                                 </a>

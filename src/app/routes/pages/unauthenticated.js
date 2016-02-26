@@ -1,6 +1,6 @@
 /** unauthenticated.js
 * @file: /src/app/routes/pages/unauthenticated.js
-* @description: Handles express routing for the athenticated page routes
+* @description: Handles express routing for the unauthenticated page routes
 * @parameters: Object(app), Object(resources)
 * @returns: Express routes
 */
@@ -18,6 +18,7 @@ module.exports = function (app, resources) {
     var citiesdb = resources.collections.cities
     var categoriesdb = resources.collections.categories
     var likesdb = resources.collections.likes
+    var usersdb = resources.collections.users
 
     var pages = {}
     var options = {
@@ -49,20 +50,38 @@ module.exports = function (app, resources) {
               {type:'2'}
               ]
           }).sort({_id:-1}).limit(3).toArray(function(err, recipes) {
-            res.render('index', {
-              user: req.user,
-              pageStats: pageStats,
-              pages: pages,
-              establishments: establishments,
-              recipes: recipes,
-              loadGeoLocation: true,
-              loadMapResources: {
-                map: true,
-                mapCluster: true
-              },
-              startpage: false,
-              searchString: req.query.s,
-              striptags: striptags
+
+            var recipeUsers = []
+            for (var i = recipes.length -1; i >= 0; i--) {
+              recipeUsers.push( recipes[i].user_info.id)
+            }
+
+            usersdb.find({_id: { $in: recipeUsers } }).toArray(function(err, users) {
+              for (var i = recipes.length - 1; i >= 0; i--) {
+                for (var u = users.length - 1; u >= 0; u--) {
+                  if(!recipes[i].user_info.hidden) {
+                    if(String(recipes[i].user_info.id) == String(users[u]._id) ) {
+                      recipes[i].user_info.display_name = users[u].name.display_name
+                    }
+                  }
+                }
+              }
+
+              res.render('index', {
+                user: req.user,
+                pageStats: pageStats,
+                pages: pages,
+                establishments: establishments,
+                recipes: recipes,
+                loadGeoLocation: true,
+                loadMapResources: {
+                  map: true,
+                  mapCluster: true
+                },
+                startpage: false,
+                searchString: req.query.s,
+                striptags: striptags
+              })
             })
           })
         })
@@ -72,31 +91,6 @@ module.exports = function (app, resources) {
 
   app.get('/logga-in', function (req, res) {
     res.render('login')
-  })
-
-  app.get('/*', function (req, res, next) {
-    var noRedirect = ['logga-in','logga-ut', 'ajax', 'recensera', 'auth']
-    var canRedirectTo = true
-    var path = req.originalUrl.split("?").shift()
-
-    if(path !== '/') {
-      path = path.split('/')[1]
-      for (var i = noRedirect.length - 1; i >= 0; i--) {
-        if(noRedirect[i].indexOf(path) !== -1) {
-          canRedirectTo = false
-        }
-      }
-
-      if( canRedirectTo ) {
-        req.session.returnTo = functions.returnUrl(req)
-      } else {
-        req.session.returnTo = '/'
-      }
-    } else {
-      req.session.returnTo = '/'
-    }
-
-    next()
   })
 
   app.get('/om', function(req, res) {
@@ -156,60 +150,83 @@ module.exports = function (app, resources) {
     var usersdb = resources.collections.users
     var likesdb = resources.collections.likes
 
-    pagesdb.count({ url: url }, function (err, count) {
+    var query = {
+      url: url
+    }
+
+    pagesdb.count(query, function (err, count) {
       if(count > 0) {
-        pagesdb.find({ url : url }).toArray(function (err, result) {
-          var mapResources = {
-            map: true,
-            mapCluster: !(result[0].type === '3' || result[0].type === '5')
+
+        if(typeof(req.user) !== 'undefined') {
+          if( ! functions.userCheckPrivileged(req.user) ) { //If user is not privileged
+            query['$or'] = [{
+              accepted: true //Either page must be published
+            }, {
+              "user_info.id": req.user._id //Or the current user is the user that created the page
+            }]
           }
+        } else {
+          query.accepted = true //If anonymous user then the page must be published
+        }
 
-          pagesdb.find({
-            $and: [
-              {
-                $or:[
-                  {type:'3'},
-                  {type:'5'}
-                ]
-              },
-              {"post.city":result[0].post.city}
-            ]
-          }).sort({_id:-1}).limit(10).toArray(function(err, establishments) {
+        pagesdb.find(query).toArray(function (err, result) {
+          if(result.length > 0) {
+            var mapResources = {
+              map: true,
+              mapCluster: !(result[0].type === '3' || result[0].type === '5')
+            }
 
-            usersdb.find({ _id : result[0].user_info.id }).toArray(function(err, user_info) {
-              if (req.isAuthenticated ()) {
-                likesdb.count({ "post.id": new ObjectID(result[0]._id), "user.id": req.user._id }, function (err, is_liked) {
+            //Show places in the same city
+            pagesdb.find({
+              $and: [
+                {
+                  $or:[
+                    {type:'3'},
+                    {type:'5'}
+                  ]
+                },
+                {"post.city":result[0].post.city}
+              ]
+            }).sort({_id:-1}).limit(10).toArray(function(err, establishments) {
+
+              usersdb.find({ _id : result[0].user_info.id }).toArray(function(err, user_info) {
+                if (req.isAuthenticated ()) {
+                  likesdb.count({ "post.id": new ObjectID(result[0]._id), "user.id": req.user._id }, function (err, is_liked) {
+                    if(typeof(user_info[0]) == 'undefined') {
+                      result[0].user_info.hidden = true
+                      user_info[0] = { id: '', photo: ''}
+                    }
+                      res.render('page', {
+                          user: req.user,
+                          post: result[0],
+                          user_info: user_info[0],
+                          userLikes: is_liked,
+                          establishments: establishments,
+                          loadGeoLocation: true,
+                          loadMapResources: mapResources,
+                      })
+                  })
+                } else {
                   if(typeof(user_info[0]) == 'undefined') {
                     result[0].user_info.hidden = true
                     user_info[0] = { id: '', photo: ''}
                   }
                     res.render('page', {
-                        user: req.user,
-                        post: result[0],
-                        user_info: user_info[0],
-                        userLikes: is_liked,
-                        establishments: establishments,
-                        loadGeoLocation: true,
-                        loadMapResources: mapResources,
-                    })
-                })
-              } else {
-                if(typeof(user_info[0]) == 'undefined') {
-                  result[0].user_info.hidden = true
-                  user_info[0] = { id: '', photo: ''}
+                      user: req.user,
+                      post: result[0],
+                      user_info: user_info[0],
+                      userLikes: 0,
+                      establishments: establishments,
+                      loadGeoLocation: true,
+                      loadMapResources: mapResources,
+                  })
                 }
-                  res.render('page', {
-                    user: req.user,
-                    post: result[0],
-                    user_info: user_info[0],
-                    userLikes: 0,
-                    establishments: establishments,
-                    loadGeoLocation: true,
-                    loadMapResources: mapResources,
-                })
-              }
+              })
             })
-          })
+          } else {
+            //TODO, maybe we should use the logic of another function here, or throw an error to render 404 page
+            res.render('404', { user: req.user })
+          }
         })
       } else {
         return next()

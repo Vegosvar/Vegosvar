@@ -11,6 +11,12 @@
                       	Användare
                       </a>
                     </li>
+                    <li class="list-group-item <% if(typeof active_page !== 'undefined' && active_page === 'settings') { %> active <% } %>">
+                      <a href="/admin/installningar">
+                        <span class="glyphicon glyphicon-cog"></span> 
+                        Inställningar
+                      </a>
+                    </li>
                     <li class="list-group-item <% if(typeof active_page !== 'undefined' && active_page === 'changes') { %> active <% } %>">
                       <a href="/admin/uppdateringar">
                       	<span class="glyphicon glyphicon-time"></span> 

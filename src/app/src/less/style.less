@@ -1211,6 +1211,12 @@ article {
 
 #cred {
 	margin-bottom: 25px;
+	@media (max-width: @xs) {
+		background: #292929;
+		margin: -30px -15px 0 -15px;
+		padding: 30px 15px;
+		color: #fff;
+	}
 	.card {
 		margin-bottom: 15px;
 	}
@@ -1610,10 +1616,9 @@ section {
 			}
 		}
 		.votes {
-			top: -6px;
-			.additional {
-				display: inline-block;
-				margin-left: 3px;
+			top: -3px;
+			@media (max-width: @xs) {
+				top: -6px;
 			}
 		}
 	}

@@ -1,13 +1,21 @@
+/** facebook.js
+* @file: /config/passport/facebook.js
+* @description: Handles passport authentication for Facebook strategy
+* @parameters: Object(config)
+* @exports: Facebook authentication for Passport
+*/
+
 var FacebookStrategy = require('passport-facebook').Strategy
 
-module.exports = function(config) {
+module.exports = function(resources) {
   return new FacebookStrategy({
-    clientID: config.facebook.app_id,
-    clientSecret: config.facebook.app_secret,
-    callbackURL: config.facebook.callback,
-    profileFields: ['id', 'name', 'displayName', 'picture.type(large)']
+    clientID: resources.config.facebook.app_id,
+    clientSecret: resources.config.facebook.app_secret,
+    callbackURL: resources.config.facebook.callback,
+    profileFields: ['id', 'name', 'displayName', 'picture.type(large)'],
   }, function (access_token, refresh_token, profile, done) {
-    var usersdb = config.dbinstance.collection('users')
+    var usersdb = resources.collections.users
+
     usersdb.findAndModify({
       auth: {
         facebook: profile.id

@@ -351,6 +351,7 @@ $(document).ready(function () {
           })
 
           var showMap = []
+          $('#searchFilter').remove()
 
           $.each(data, function (i, entry) {
             createFilters(entry)
@@ -366,6 +367,7 @@ $(document).ready(function () {
           //TODO create a function of this and integrate with chosen filter
           //Also, reuse the functions in map.js, will have to modularize it
           if (showMap.length > 0) {
+            $('.showSearchMap').show() //Make sure button is visible when we have results that can be displayed on a map
             $('.showSearchMap').one('click', function () { //Trigger only once, for now..
               $('.searchMapContainer').fadeIn(400, function () {
                 var searchMapInstance = $('#mapResults').googleMap()
@@ -420,11 +422,14 @@ $(document).ready(function () {
                 })
               })
             })
+          } else {
+            $('.showSearchMap').hide()
           }
 
           $(container).html(resultContainer)
 
-          if ($('.filterSelect').index() !== -1) { //Filter exists, great, lets enable chosen on it
+          if ($('.filterSelect').index() !== -1) { //Filter exists
+            $('.filterSelect').multiselect('destroy')
             $('.filterSelect').multiselect({
               nonSelectedText: 'Filter',
               inheritClass: true,
@@ -434,8 +439,6 @@ $(document).ready(function () {
                 $(element).parent().find('option:selected').each(function (a, item) {
                   values.push(item.value)
                 })
-
-                console.log(values)
 
                 if (values.length > 0) {
                   $('.entryResult.showResult').removeClass('showResult') //Remove show class from each entryResult
@@ -451,24 +454,6 @@ $(document).ready(function () {
                 }
               }
             })
-
-            /*
-            .on('change', function (e) { //When it updates, apply filter to hide results not matching current filter
-              var values = $(this).val()
-
-              if (values) {
-                $('.entryResult.show').removeClass('show') //Remove show class from each entryResult
-
-                $.each(values, function (i, val) {
-                  $('.entryResult[data-type="' + val + '"]').addClass('show') //Add show class to each result matching filter
-                })
-
-                $('.entryResult.show').show() //Show results matching filter
-                $('.entryResult').not('show').hide() //Hide results not matching filter
-              } else {
-                $('.entryResult').show()
-              }
-            })*/
           }
 
           $('#searchEngine-noResults').hide()

@@ -18,7 +18,7 @@ if (cluster.isMaster) {
   }
 
   cluster.on('exit', function (worker, code, signal) {
-    console.log('worker' + worker.process.pid + 'died')
+    console.log('worker ' + worker.process.pid + ' died')
     cluster.fork() //Initialize a new worker to replace the one that died
   })
 } else {
@@ -33,6 +33,7 @@ if (cluster.isMaster) {
     var imagesdb = dbinstance.collection('images')
     var pagesdb = dbinstance.collection('pages')
     var revisionsdb = dbinstance.collection('revisions')
+    var settingsdb = dbinstance.collection('settings')
 
     var resources = {
       dbinstance: dbinstance,
@@ -47,7 +48,8 @@ if (cluster.isMaster) {
         pages: pagesdb,
         revisions: revisionsdb,
         users: usersdb,
-        votes: votesdb
+        votes: votesdb,
+        settings: settingsdb
       }
     }
 
