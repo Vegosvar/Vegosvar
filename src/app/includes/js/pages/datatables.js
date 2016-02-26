@@ -1,10 +1,12 @@
 $(document).ready(function() {
     $('.datatable').each(function() {
-        var index = $(this).find('.sort-default').index()
-        var sortDefault = (index > 0) ? index : 0;
+        var sortDefault = $(this).find('.sort-default')
+        var defaultColumn = (sortDefault.index() > 0) ? sortDefault.index() : 0;
+        var defaultOrder = (sortDefault.index() > 0) ? ( (sortDefault.data('order')) ? sortDefault.data('order') : 'asc' ) : 'asc'
+
         $(this).DataTable({
             conditionalPaging: true,
-            order: [[ sortDefault, "asc" ]],
+            order: [[ defaultColumn, defaultOrder ]],
             language: {
               "sEmptyTable": "Tabellen inneh&aring;ller ingen data",
               "sInfo": "Visar _START_ till _END_ av totalt _TOTAL_ sidor",
