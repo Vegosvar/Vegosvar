@@ -225,4 +225,34 @@ module.exports = function (app, resources) {
       })
     })
   })
+
+  app.get('/ajax/admin/delete/:page_id', functions.isPrivileged, function (req, res, next) {
+    var page_id = req.params.page_id
+    var pagesdb = resources.collections.pages
+
+    pagesdb.update({
+      _id: new ObjectID(page_id)
+    }, {
+      $set: {
+        url: page_id,
+        accepted: false
+      }
+    }, function(err, result) {
+      if(err) {
+        res.json({
+          success: true
+        })
+      }
+
+      if(result.result.ok == true) {
+        res.json({
+          success: true
+        })
+      } else {
+        res.json({
+          success: false
+        })
+      }
+    })
+  })
 }
