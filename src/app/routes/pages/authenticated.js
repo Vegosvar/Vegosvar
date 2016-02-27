@@ -213,7 +213,7 @@ module.exports = function (app, resources) {
           loadEditorResources: true,
           loadDropzoneResources: true,
           loadMapResources: mapResources,
-          loadPageResources: { page: true },
+          loadPageResources: { create_page: true },
           categories: categories
         })
 
@@ -259,7 +259,7 @@ module.exports = function (app, resources) {
             loadEditorResources: true,
             loadDropzoneResources: true,
             loadMapResources: mapResources,
-            loadPageResources: { page: true },
+            loadPageResources: { create_page: true },
           })
         }
       } else {
