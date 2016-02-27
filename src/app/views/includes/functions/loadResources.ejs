@@ -14,7 +14,7 @@ if( typeof loadPageResources.datatables !== 'undefined' && loadPageResources.dat
 	<script src="/includes/js/pages/datatables.js" defer></script>
 <% }
 if( typeof loadPageResources.highcharts !== 'undefined' && loadPageResources.highcharts === true ) { %>
-	<script src="/assets/js/highcharts/highcharts.js" defer async></script>
+	<script src="/assets/js/highcharts/highcharts.js" defer></script>
 <% }
 } %>
 
@@ -32,7 +32,7 @@ if( typeof loadAdminResources.overview !== 'undefined' && loadAdminResources.ove
 <% } %>
 
 <% if (typeof loadMapResources !== 'undefined') { %>
-	<script src="//maps.googleapis.com/maps/api/js?libraries=places&region=SE&language=sv_SE&callback=mapReady" async defer></script>
+	<script src="//maps.googleapis.com/maps/api/js?libraries=places&region=SE&language=sv_SE&callback=mapReady" defer></script>
 <% if (typeof loadMapResources.autocomplete !== 'undefined' && loadMapResources.autocomplete === true) { %>
 	<script src="/includes/js/googlemaps/input.js" defer></script>
 <% } %>
@@ -55,5 +55,5 @@ if( typeof loadAdminResources.overview !== 'undefined' && loadAdminResources.ove
 <% if (typeof loadDropzoneResources !== 'undefined' && loadDropzoneResources === true) { %>
 	<link rel="stylesheet" href="/assets/css/dropzone/dropzone.min.css">
 	<script src="/assets/js/dropzone/dropzone.min.js" defer></script>
-	<script type="text/javascript" src="/includes/js/dropzone/dropzone-script.js" defer async></script>
+	<script type="text/javascript" src="/includes/js/dropzone/dropzone-script.js" defer></script>
 <% } %>
