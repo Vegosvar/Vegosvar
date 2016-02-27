@@ -13,11 +13,13 @@ var session_store = require('connect-mongo')(session)
 var cookie_parser = require('cookie-parser')
 var passport = require('passport')
 var consolidate = require('consolidate')
+var compress = require('compression')
 
 var util = require('util') //Is this even used?
 
 module.exports = function (app, resources) {
     // TODO Replace this with streaming json parser
+    app.use(compress())
     app.engine('html', consolidate.ejs)
     app.set('view engine', 'html')
     app.set('views', resources.config.root + '/app/views')
