@@ -204,6 +204,7 @@ module.exports = function (app, resources) {
                           establishments: establishments,
                           loadGeoLocation: true,
                           loadMapResources: mapResources,
+                          loadPageResources: { public_page: true }
                       })
                   })
                 } else {
@@ -219,6 +220,7 @@ module.exports = function (app, resources) {
                       establishments: establishments,
                       loadGeoLocation: true,
                       loadMapResources: mapResources,
+                      loadPageResources: { public_page: true }
                   })
                 }
               })
