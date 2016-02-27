@@ -52,10 +52,8 @@
       </div>
     </div>
   </div>
-  
-<script id="dsq-count-scr" src="//vegosvar.disqus.com/count.js" async></script>
+
+<% include functions/getScripts %>
+<% include functions/loadResources %>
 </body>
-  <% if (typeof loadDropzoneResources !== 'undefined' && loadDropzoneResources === true) { %>
-    <script type="text/javascript" src="/includes/js/dropzone/dropzone-script.js"></script>
-  <% } %>
 </html>
