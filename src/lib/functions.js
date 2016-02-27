@@ -75,7 +75,7 @@ module.exports = {
       return next()
     } else {
       //Check if this was an ajax request
-      if(req.xhr || req.headers.accept.indexOf('json') >= 0) {
+      if(req.xhr || 'accept' in req.headers && req.headers.accept.indexOf('json') >= 0) {
         res.json({
           success: false,
           message: 'Access denied'
