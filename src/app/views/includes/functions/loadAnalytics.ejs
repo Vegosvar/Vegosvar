@@ -5,5 +5,11 @@
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
   ga('create', 'UA-55653281-5', 'auto');
-  ga('send', 'pageview');
+
+  var pageUrl = (location.search.length > 0) ? 'Sökresult ' + location.search.substr(3) : location.pathname
+  var pageTitle = (document.title)
+  ga('send', {
+    hitType: 'pageview',
+    page: pageUrl
+  });
 </script>
