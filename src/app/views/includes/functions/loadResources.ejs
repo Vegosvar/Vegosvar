@@ -18,12 +18,22 @@ if( typeof loadPageResources.highcharts !== 'undefined' && loadPageResources.hig
 <% }
 } %>
 
+<% if( typeof loadEmailScramble !== 'undefined' && loadEmailScramble === true ) { %>
+	<script src="/assets/js/email-scramble/email-scramble.js"></script>
+<% } %>
+
 <% if (typeof loadAdminResources !== 'undefined') {
 if( typeof loadAdminResources.revisions !== 'undefined' && loadAdminResources.revisions === true ) { %>
 	<script src="/includes/js/admin/revisions.js" defer></script>
 <% }
 if( typeof loadAdminResources.overview !== 'undefined' && loadAdminResources.overview === true ) { %>
 	<script src="/includes/js/admin/overview.js" defer></script>
+<% }
+if( typeof loadAdminResources.remove !== 'undefined' && loadAdminResources.remove === true ) { %>
+	<script src="/includes/js/admin/remove.js" defer></script>
+<% }
+if( typeof loadAdminResources.users !== 'undefined' && loadAdminResources.users === true ) { %>
+	<script src="/includes/js/admin/users.js" defer></script>
 <% }
 } %>
 
