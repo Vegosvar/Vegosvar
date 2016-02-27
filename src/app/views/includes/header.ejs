@@ -7,10 +7,6 @@
   <% include functions/getTitle %>
 
   <meta name="robots" content="noindex,nofollow"> <!-- Remove before release -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-  <meta property="og:site_name" content="Vegosvar">
-  <meta name="keywords" content="vegan,vegetarian,restauranger,produkter">
 
   <% include functions/getMeta %>
 
@@ -20,11 +16,6 @@
   <link rel="dns-prefetch" href="//www.google-analytics.com">
   <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="//cdn.socket.io">
-
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <meta name="apple-mobile-web-app-title" content="Vegosvar">
 
   <link rel="apple-touch-startup-image" href="/assets/images/favicon/startup-image.png">
   <link rel="apple-touch-icon" sizes="57x57" href="/assets/images/favicon/apple-touch-icon-57x57.png">
@@ -44,31 +35,8 @@
   <link rel="manifest" href="/assets/images/favicon/manifest.json">
   <link rel="mask-icon" href="/assets/images/favicon/safari-pinned-tab.svg" color="#0aa650">
   <link rel="shortcut icon" href="/assets/images/favicon/favicon.ico">
-  <meta name="msapplication-TileColor" content="#da532c">
-  <meta name="msapplication-TileImage" content="/assets/images/favicon/mstile-144x144.png">
-  <meta name="msapplication-config" content="/assets/images/favicon/browserconfig.xml">
-  <meta name="theme-color" content="#ffffff">
 
-  <link href='//fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,600,400,700' rel='stylesheet' type='text/css'>
-  <link href='//fonts.googleapis.com/css?family=Fenix' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" integrity="sha512-dTfge/zgoMYpP7QbHy4gWMEGsbsdZeCXz7irItjcC3sPUFtf0kuFbDz/ixG7ArTxmDjLXDmezHubeNikyKGVyQ==" crossorigin="anonymous">
-
-  <script src="//code.jquery.com/jquery-1.9.1.min.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js" integrity="sha512-K1qjQ+NcF2TYO/eI3M6v8EiNYZfA95pQumfvcVrTHtwQVDG+aHRqLi/ETn2uB+1JqwYqVG3LIvdm9lj6imS/pQ==" crossorigin="anonymous"></script>
-  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.min.js"></script>
-  
-  <link rel="stylesheet" href="/assets/css/bootstrap-multiselect/bootstrap-multiselect.css">
-  <script src="/assets/js/bootstrap-multiselect/bootstrap-multiselect.js"></script>
-
-  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  
-  <link rel="stylesheet" href="/assets/css/style.css">
-  <script src="/assets/js/fastclick/fastclick.js"></script>
-  <script src="/assets/js/app.js"></script>
-
-
-  <% include functions/loadResources %>
+  <% include functions/getStyles %>
   <% include functions/loadLiveReload %>
   <% include functions/loadAnalytics %>
 
