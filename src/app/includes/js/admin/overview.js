@@ -90,21 +90,24 @@ $(function() {
         var date = id.date
         var type = parseInt( id.type ) -1
 
+
         var dateObj = new Date(date).getTime()
-        var name = typeNames[type]
-        var slug = name.toLowerCase()
+        if (type in typeNames) {
+          var name = typeNames[type]
+          var slug = name.toLowerCase()
 
-        if( ! (slug in stats) ) {
-            stats[slug] = {
-                name: name,
-                data: []
-            }
+          if( ! (slug in stats) ) {
+              stats[slug] = {
+                  name: name,
+                  data: []
+              }
+          }
+
+          stats[slug]['data'].push([
+              dateObj,
+              entry.pages
+          ])
         }
-
-        stats[slug]['data'].push([
-            dateObj,
-            entry.pages
-        ])
     }
 
     for(var key in stats) {
