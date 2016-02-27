@@ -16,39 +16,48 @@ module.exports = function (app, resources) {
   app.get('/ajax/addVote', function (req, res) {
     if(req.query.id != undefined && req.query.content != undefined) {
      if (req.isAuthenticated()) {
+        var usersdb = resources.collections.users
         var votesdb = resources.collections.votes
         var pagesdb = resources.collections.pages
 
-        votesdb.count({ "post.id": new ObjectID(req.query.id), "user.id": req.user._id }, function(err, count) {
-          if(count < 1) { // Användaren har inte röstat
-            var isodate = resources.functions.getISOdate()
-            var data = {
-              content: parseInt(req.query.content),
-              timestamp: isodate,
-              post: { id: new ObjectID(req.query.id) },
-              user: { id: req.user._id }
-            }
-
-            votesdb.insert(data, function (err) {
-              if(err) throw err
-              votesdb.aggregate(
-              [ { $match: { "post.id": new ObjectID(req.query.id) } },
-                { $group: {
-                  _id: new ObjectID(req.query.id),
-                  avg: { $avg: "$content" },
+        usersdb.find({ _id: new ObjectID(req.user._id), blocked: false }).toArray(function(err, result) {
+          if(err) throw err
+          if(result.length > 0) {
+            //Proceed as normal
+            votesdb.count({ "post.id": new ObjectID(req.query.id), "user.id": req.user._id }, function(err, count) {
+              if(count < 1) { // Användaren har inte röstat
+                var isodate = resources.functions.getISOdate()
+                var data = {
+                  content: parseInt(req.query.content),
+                  timestamp: isodate,
+                  post: { id: new ObjectID(req.query.id) },
+                  user: { id: req.user._id }
                 }
-              } ], function(err, result) {
-                votesdb.count({ "post.id": new ObjectID(req.query.id) }, function (err, total_count) {
-                  result[0].count = total_count
-                  pagesdb.update({ "_id": new ObjectID(req.query.id) }, {$set: { "rating.votes_sum": result[0].avg}, $inc: { "rating.votes": 1 }}, function (err) {
-                    if(err) throw err
-                    res.send(result)
+
+                votesdb.insert(data, function (err) {
+                  if(err) throw err
+                  votesdb.aggregate(
+                  [ { $match: { "post.id": new ObjectID(req.query.id) } },
+                    { $group: {
+                      _id: new ObjectID(req.query.id),
+                      avg: { $avg: "$content" },
+                    }
+                  } ], function(err, result) {
+                    votesdb.count({ "post.id": new ObjectID(req.query.id) }, function (err, total_count) {
+                      result[0].count = total_count
+                      pagesdb.update({ "_id": new ObjectID(req.query.id) }, {$set: { "rating.votes_sum": result[0].avg}, $inc: { "rating.votes": 1 }}, function (err) {
+                        if(err) throw err
+                        res.send(result)
+                      })
+                    })
                   })
                 })
-              })
+              } else { // Användaren har röstat
+                res.send('3') // Vote already found!
+              }
             })
-          } else { // Användaren har röstat
-            res.send('3') // Vote already found!
+          } else {
+            res.send('5') //User is blocked
           }
         })
       } else {
