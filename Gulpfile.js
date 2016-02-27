@@ -38,7 +38,8 @@ var paths = {
   ],
 
   less: [
-    'src/app/src/less/**/*.less'
+    'src/app/src/less/**/*.less',
+    'bower_components/bootstrap-multiselect/dist/less/bootstrap-multiselect.less'
   ],
 
   images: [
@@ -116,9 +117,18 @@ gulp.task('bower-dependencies', function (callback) {
     var dirName = dirTmp.substr(0, dirTmp.indexOf('/'))
 
     var fileType = path.substr(path.lastIndexOf('.') + 1)
-    var destDir = fileType + '/' + dirName
+    var destDir = 'src/public/assets/' + fileType + '/' + dirName
 
-    gulp.src(path).pipe(gulp.dest('src/public/assets/' + destDir))
+
+    if(fileType === 'js') {
+      gulp.src(path)
+      .pipe(plugins.uglify())
+      .pipe(gulp.dest(destDir))
+    } else if(fileType === 'css') {
+      gulp.src(path)
+      .pipe(plugins.minifyCss())
+      .pipe(gulp.dest(destDir))
+    }
   }
 
   mainBowerFiles(bowerConfig, callback)
@@ -208,13 +218,13 @@ gulp.task('serve', function () {
 
 gulp.task('default', function (callback) {
   watch = true
-  return run_sequence('pre-build', 'build', 'bower-install', 'bower-dependencies', ['watch', 'serve'], function (error) {
+  return run_sequence('pre-build', 'bower-install', 'bower-dependencies', 'build', ['watch', 'serve'], function (error) {
     sequence_error(callback, error)
   })
 })
 
 gulp.task('prod', function (callback) {
-  return run_sequence('pre-build', 'build', 'bower-install', 'bower-dependencies', function (error) {
+  return run_sequence('pre-build', 'bower-install', 'bower-dependencies', 'build', function (error) {
     sequence_error(callback, error)
   })
 })
