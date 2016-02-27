@@ -26,6 +26,7 @@
     "wysihtml": "^0.5.5",
     "bootstrap-multiselect": "^0.9.13",
     "highcharts": "^4.2.3",
-    "dropzone": "^4.3.0"
+    "dropzone": "^4.3.0",
+    "email-scramble": "^2.0.0"
   }
 }

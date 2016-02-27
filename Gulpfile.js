@@ -107,6 +107,11 @@ gulp.task('bower-dependencies', function (callback) {
           "dist/wysihtml.min.js",
           "dist/wysihtml-toolbar.min.js"
         ]
+      },
+      "email-scramble": {
+        "main": [
+          "email-scramble.js"
+        ]
       }
     }
   }
