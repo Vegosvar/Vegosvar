@@ -93,7 +93,8 @@ module.exports = function (app, resources) {
       res.render('admin/remove', {
         user: req.user,
         active_page: 'remove',
-        page: page
+        page: page,
+        loadAdminResources: { remove: true }
       })
     })
   })
@@ -235,7 +236,8 @@ module.exports = function (app, resources) {
       res.render('admin/users', {
         user: req.user,
         active_page: 'users',
-        users: users
+        users: users,
+        loadAdminResources: { users: true }
       })
     })
   })
