@@ -476,3 +476,9 @@ $(document).ready(function () {
     }
   }
 })
+
+function mapReady () {
+  $(document).ready(function () {
+    $(document).trigger('mapready')
+  })
+}
