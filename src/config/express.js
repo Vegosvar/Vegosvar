@@ -54,6 +54,6 @@ module.exports = function (app, resources) {
 
     app.use(express.static(resources.config.root + '/public'))
     app.use('/includes', express.static(resources.config.root + '/app/includes'))
-    app.use('/uploads', express.static(resources.config.root + '/uploads'))
-    app.use('/avatar', express.static(resources.config.root + '/uploads/avatar'))
+    app.use('/uploads', express.static(resources.config.root + '/uploads', { maxAge: 2592000000 })) //Set cache-control expiry headers to 30 days
+    app.use('/avatar', express.static(resources.config.root + '/uploads/avatar', { maxAge: 604800000 })) //Set cache-control expiry headers to 1 week
 }
