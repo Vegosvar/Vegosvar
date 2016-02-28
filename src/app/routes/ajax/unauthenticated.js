@@ -189,7 +189,7 @@ module.exports = function (app, resources) {
     //As the searchString has been manipulated it might not even be anything at all anymore
     if(searchString.length > 0) {
       regexArray = searchString.split(' ').map(function(text) {
-        return new RegExp(text, 'i')
+        return new RegExp(text, 'gi')
       })
     }
 
@@ -271,14 +271,14 @@ module.exports = function (app, resources) {
         for (var i = 0; i < pages.length; i++) {
           //Look up weights for each field and reorder array of results accordingly
           var searchWeights = {
-            "title": 20,
-            "url": 18,
-            "post.city": 15,
-            "post.food": 10,
-            "post.product_type": 10,
-            "post.content": 5,
-            "post.veg_type": 3,
-            "post.veg_offer": 1
+            'title': 20,
+            'url': 18,
+            'post.city': 15,
+            'post.food': 10,
+            'post.product_type': 10,
+            'post.content': 5,
+            'post.veg_type': 3, //Maybe adjust this to be higher, since it can only match 'vegan', 'lacto_ovo' and 'animal'
+            'post.veg_offer': 1
           }
 
           //Calculate the weight of each result
@@ -287,7 +287,7 @@ module.exports = function (app, resources) {
             var weight = searchWeights[key]
             var value
 
-            //TODO This should really be replaced with a loop that supports deeper structures, will do for now
+            //TODO This should really be replaced with a loop that supports deeper structures, will do for now though
             if(key.indexOf('.') >= 0) {
               subKey = key.substr( key.indexOf('.') +1 )
               parentKey = key.substr(0, key.indexOf('.') )
@@ -303,20 +303,20 @@ module.exports = function (app, resources) {
             }
 
             if(value) { //If value was found, check which fields it matched in the db query
-              var matches = 0
+              var matches = 0 //No matches = no points
 
               //Count the matched regex cases against the search query string
               for(var index in regexArray) {
-                regex = regexArray[index]
-                if(value.match(regex) !== null) {
-                  matches++
+                var regex = regexArray[index]
+                var match = value.match(regex)
+                if(match !== null) {
+                  //No more than 2 "bonus points"
+                  var points = (match.length > 3) ? 3 : match.length
+                  matches += points
                 }
               }
 
               totalWeight += (matches * weight) //Add the new weight to the totalWeight, more matches = better match
-            } else {
-              //TODO to fix this we need to replace above loop with one that supports a deeper structure
-              console.log('Failed to find value for key: ', key)
             }
           }
 
