@@ -23,8 +23,9 @@ module.exports = function (app, resources) {
     var hidden = (req.body.hidden) ? true : false;
     var isodate = functions.getISOdate()
 
-    //Prevent speakingurl from converting swedish characters to ae and oe by replacing them with what we want 
-    var tamperedTitle = String(req.body.title).toLowerCase().replace(/å|ä/g, 'a').replace(/ö/g, 'o')
+    //Prevent speakingurl from converting swedish characters to ae and oe by replacing them with what we want
+    //also remove any non alphanumeric characters in url
+    var tamperedTitle = String(req.body.title).toLowerCase().replace(/å|ä/g, 'a').replace(/ö/g, 'o').replace(/[^\w\s]/gi, '')
     var niceurl = getSlug(tamperedTitle, {
       // URL Settings
       separator: '-',
