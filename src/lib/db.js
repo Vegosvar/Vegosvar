@@ -14,15 +14,19 @@ module.exports = {
                 "post.city": "text",
                 "post.content": "text",
                 "post.food": "text",
-                "post.product_type": "text"
+                "post.product_type": "text",
+                "post.veg_type": "text",
+                "post.veg_offer": "text"
             }, {
                 "weights": {
                     "title": 20,
                     "url": 18,
                     "post.city": 15,
                     "post.food": 10,
-                    "post.product_type": 5,
-                    "post.content": 3
+                    "post.product_type": 10,
+                    "post.content": 5,
+                    "post.veg_type": 3
+                    "post.veg_offer": 1,
                 },
                 "default_language": "swedish"
             })
