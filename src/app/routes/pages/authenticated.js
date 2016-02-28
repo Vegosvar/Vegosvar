@@ -163,62 +163,74 @@ module.exports = function (app, resources) {
     })
   })
 
-  app.get('/ny/:type', function (req, res) {
+  app.get('/ny/:type', function (req, res, next) {
     var type = req.params.type
     var mapResources = false
 
-    var types = {
-      'fakta': '1',
-      'recept': '2',
-      'restaurang': '3',
-      'produkt': '4',
-      'butik': '5'
-    }
+    var usersdb = resources.collections.users
 
-    if(type in types) {
-      var pageType = types[type]
-      var mapResources = (pageType === '3' || pageType === '5') ? { autocomplete: true, map: true } : false
-      var categoriesdb = resources.collections.categories
-
-      categoriesdb.aggregate([
-        {
-          $match: { type: "4" }
-        }, {
-          $group: {
-             _id: { id: "$_id", name: "$name", subcategory: "$subcategory" }
-          }
-        }, {
-          $group: {
-            "_id": "$_id.subcategory",
-            "names": {
-              "$push": {
-                name: "$_id.name"
-              }
-            },
-            count: {
-              $sum: 1
-            }
-          }
-        }, {
-          $sort: {
-            _id: 1
-          }
+    usersdb.find({ _id: new ObjectID(req.user._id), "info.blocked": false }).toArray(function(err, result) {
+      console.log(req.user._id)
+      if(result.length > 0) {
+        var types = {
+          'fakta': '1',
+          'recept': '2',
+          'restaurang': '3',
+          'produkt': '4',
+          'butik': '5'
         }
-      ], function(err, categories) {
-        if (err) throw err
 
-        res.render('post/'+type, {
-          user: req.user,
-          type: type,
-          loadEditorResources: true,
-          loadDropzoneResources: true,
-          loadMapResources: mapResources,
-          loadPageResources: { create_page: true },
-          categories: categories
-        })
+        if(type in types) {
+          var pageType = types[type]
+          var mapResources = (pageType === '3' || pageType === '5') ? { autocomplete: true, map: true } : false
+          var categoriesdb = resources.collections.categories
 
-      })
-    }
+          categoriesdb.aggregate([
+            {
+              $match: { type: "4" }
+            }, {
+              $group: {
+                 _id: { id: "$_id", name: "$name", subcategory: "$subcategory" }
+              }
+            }, {
+              $group: {
+                "_id": "$_id.subcategory",
+                "names": {
+                  "$push": {
+                    name: "$_id.name"
+                  }
+                },
+                count: {
+                  $sum: 1
+                }
+              }
+            }, {
+              $sort: {
+                _id: 1
+              }
+            }
+          ], function(err, categories) {
+            if (err) throw err
+
+            res.render('post/'+type, {
+              user: req.user,
+              type: type,
+              loadEditorResources: true,
+              loadDropzoneResources: true,
+              loadMapResources: mapResources,
+              loadPageResources: { create_page: true },
+              categories: categories
+            })
+
+          })
+        } else {
+          next()
+        }
+      } else {
+        console.log('blocked')
+        //TODO notify user that it is blocked
+      }
+    })
   })
 
   app.get('/redigera/:url', function (req, res, next) {
