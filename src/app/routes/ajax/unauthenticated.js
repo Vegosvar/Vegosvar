@@ -184,11 +184,11 @@ module.exports = function (app, resources) {
     }
 
     //Build general query
-    var regexTitleArray = []
+    var regexArray = []
 
     //As the searchString has been manipulated it might not even be anything at all anymore
     if(searchString.length > 0) {
-      regexTitleArray = searchString.split(' ').map(function(text) {
+      regexArray = searchString.split(' ').map(function(text) {
         return new RegExp(text, 'i')
       })
     }
@@ -205,7 +205,7 @@ module.exports = function (app, resources) {
         }
       } else {
         obj[searchFields[i]] = {
-          $in: regexTitleArray
+          $in: regexArray
         }
       }
 
@@ -261,33 +261,95 @@ module.exports = function (app, resources) {
       })
       */
 
-      //TODO build aggregate query better, utilizing $meta: "textScore"
-      //Maybe rebuild results with projection or just use group
-
       //Find pages
       var pagesdb = resources.collections.pages
       pagesdb.aggregate([filteredQuery], function (err, pages) {
         if(err) throw err
 
+        var weightedResult = [] //To hold the page results with their newly calculated weights
+
         for (var i = 0; i < pages.length; i++) {
-          if('post' in pages[i]) {
-            if('content' in pages[i].post) {
-              pages[i].post.content = striptags(pages[i].post.content, ['br','p','a','span','i','b'])
+          //Look up weights for each field and reorder array of results accordingly
+          var searchWeights = {
+            "title": 20,
+            "url": 18,
+            "post.city": 15,
+            "post.food": 10,
+            "post.product_type": 10,
+            "post.content": 5,
+            "post.veg_type": 3,
+            "post.veg_offer": 1
+          }
+
+          //Calculate the weight of each result
+          var totalWeight = 0
+          for(var key in searchWeights) {
+            var weight = searchWeights[key]
+            var value
+
+            //TODO This should really be replaced with a loop that supports deeper structures, will do for now
+            if(key.indexOf('.') >= 0) {
+              subKey = key.substr( key.indexOf('.') +1 )
+              parentKey = key.substr(0, key.indexOf('.') )
+              if(parentKey in pages[i]) {
+                if(subKey in pages[i][parentKey]) {
+                    value = pages[i][parentKey][subKey]
+                }
+              }
             } else {
-              delete(pages[i])
+              if(key in pages[i]) {
+                value = pages[i][key]
+              }
             }
-          } else {
-            delete(pages[i])
+
+            if(value) { //If value was found, check which fields it matched in the db query
+              var matches = 0
+
+              //Count the matched regex cases against the search query string
+              for(var index in regexArray) {
+                regex = regexArray[index]
+                if(value.match(regex) !== null) {
+                  matches++
+                }
+              }
+
+              totalWeight += (matches * weight) //Add the new weight to the totalWeight, more matches = better match
+            } else {
+              //TODO to fix this we need to replace above loop with one that supports a deeper structure
+              console.log('Failed to find value for key: ', key)
+            }
+          }
+
+          if('post' in pages[i]) {
+            if('content' in pages[i].post) { //All pages should have content, if not, then something is wrong with document in db
+              //Strip html tags of content
+              pages[i].post.content = striptags(pages[i].post.content, ['br','p','a','span','i','b'])
+
+              //Add the page with its new weight
+              weightedResult.push({
+                page: pages[i],
+                weight: totalWeight
+              })
+            }
           }
         }
 
-        //Reindex array
-        pages = pages.filter(function(page) {
-          return page
+        //Sort the weighted results based on the weight value
+        weightedResult.sort(function(a,b) {
+          if (a.weight < b.weight)
+            return 1
+          else if (a.weight > b.weight)
+            return -1
+          else
+            return 0
         })
 
+        //Get the final result array of just the pages
+        var finalResult = weightedResult.map(function(obj) {
+          return obj.page
+        })
 
-        res.json(pages)
+        res.json(finalResult)
       })
     })
   })
