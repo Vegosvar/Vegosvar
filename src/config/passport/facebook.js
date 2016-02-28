@@ -35,9 +35,10 @@ module.exports = function(resources) {
         info: {
           website: null,
           description: null,
+          blocked: false
         },
         fb_photo: (profile.photos) ? profile.photos[0].value : '/unknown_user.png',
-        active_photo: 'facebook'
+        active_photo: 'facebook',
       }
     }, {
       new: true,
