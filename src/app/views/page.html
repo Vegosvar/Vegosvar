@@ -92,6 +92,14 @@
                 <% } %>
               <% } %>
 
+              <% if (post.type === '2') {
+                  if ('video' in post.post) { %>
+                    <div id="player-container">
+                        <div id="player" data-video="<%= post.post.video %>"></div>
+                    </div>
+                  <% }
+              } %>
+
               <p>
                 <%- post.post.content %>
               </p>
