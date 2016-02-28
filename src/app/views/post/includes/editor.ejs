@@ -180,9 +180,6 @@
         </div>
     </div>
     <div id="sources-container" class="col-sm-12">
-        <% if (typeof(post) === 'undefined') { %>
-            <div id="sources-reminder" class="alert alert-info"><span class="glyphicon glyphicon-superscript"></span>Glöm inte att källhänvisa</div>
-        <% } %>
         <ul id="sources-list" class="list-group">
             <% if (typeof(post) !== 'undefined' && typeof(post.post.sources) !== 'undefined') {
                 if (typeof(post.post.sources.name !== 'undefined') && post.post.sources.name !== null) {
