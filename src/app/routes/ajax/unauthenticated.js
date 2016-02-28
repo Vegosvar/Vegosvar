@@ -68,11 +68,12 @@ module.exports = function (app, resources) {
 
     var pagesdb = resources.collections.pages
 
-    pagesdb.find(filter).toArray(function(err, doc) {
-      for (var i = 0; i < doc.length; i++) {
-        doc[i].post.content = striptags(doc[i].post.content, ['br'])
+    pagesdb.find(filter).toArray(function(err, pages) {
+      for (var i = 0; i < pages.length; i++) {
+        pages[i].post.content = striptags(pages[i].post.content, ['br'])
       }
-      res.json(doc)
+
+      res.json(pages)
     })
   })
 
