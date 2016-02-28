@@ -170,7 +170,6 @@ module.exports = function (app, resources) {
     var usersdb = resources.collections.users
 
     usersdb.find({ _id: new ObjectID(req.user._id), "info.blocked": false }).toArray(function(err, result) {
-      console.log(req.user._id)
       if(result.length > 0) {
         var types = {
           'fakta': '1',
@@ -183,11 +182,15 @@ module.exports = function (app, resources) {
         if(type in types) {
           var pageType = types[type]
           var mapResources = (pageType === '3' || pageType === '5') ? { autocomplete: true, map: true } : false
-          var categoriesdb = resources.collections.categories
+          var pageResources = {
+            create_page: true,
+            youtube: (pageType === '2') ? true : false
+          }
 
+          var categoriesdb = resources.collections.categories
           categoriesdb.aggregate([
             {
-              $match: { type: "4" }
+              $match: { type: "4" } //TODO, this should be checking with pageType later on
             }, {
               $group: {
                  _id: { id: "$_id", name: "$name", subcategory: "$subcategory" }
@@ -218,7 +221,7 @@ module.exports = function (app, resources) {
               loadEditorResources: true,
               loadDropzoneResources: true,
               loadMapResources: mapResources,
-              loadPageResources: { create_page: true },
+              loadPageResources: pageResources,
               categories: categories
             })
 
@@ -241,28 +244,34 @@ module.exports = function (app, resources) {
         var post = doc[0]
         var type = parseInt(post.type)
         var page = null
+
         var mapResources = false
-          switch(type) {
-            case 1:
-              page = 'fakta'
-              break
-            case 2:
-              page = 'recept'
-              break
-            case 3:
-              page = 'restaurang'
-              mapResources = { autocomplete: true, map: true }
-              break
-            case 4:
-              page = 'produkt'
-              break
-            case 5:
-              page = 'butik'
-              mapResources = { autocomplete: true, map: true }
-              break
-            default:
-              return next()
-          }
+        var pageResources = {
+          create_page: true
+        }
+
+        switch(type) {
+          case 1:
+            page = 'fakta'
+            break
+          case 2:
+            page = 'recept'
+            pageResources.youtube = true
+            break
+          case 3:
+            page = 'restaurang'
+            mapResources = { autocomplete: true, map: true }
+            break
+          case 4:
+            page = 'produkt'
+            break
+          case 5:
+            page = 'butik'
+            mapResources = { autocomplete: true, map: true }
+            break    
+          default:
+            return next()
+        }
 
         if(page !== null) {
           res.render('post/' + page, {
@@ -271,7 +280,7 @@ module.exports = function (app, resources) {
             loadEditorResources: true,
             loadDropzoneResources: true,
             loadMapResources: mapResources,
-            loadPageResources: { create_page: true },
+            loadPageResources: pageResources,
           })
         }
       } else {

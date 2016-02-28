@@ -180,6 +180,11 @@ module.exports = function (app, resources) {
               mapCluster: !(result[0].type === '3' || result[0].type === '5')
             }
 
+            var pageResources = {
+              public_page: true,
+              youtube: (result[0].type === '2') ? true : false
+            }
+
             //Show places in the same city
             pagesdb.find({
               $and: [
@@ -200,31 +205,33 @@ module.exports = function (app, resources) {
                       result[0].user_info.hidden = true
                       user_info[0] = { id: '', photo: ''}
                     }
-                      res.render('page', {
-                          user: req.user,
-                          post: result[0],
-                          user_info: user_info[0],
-                          userLikes: is_liked,
-                          establishments: establishments,
-                          loadGeoLocation: true,
-                          loadMapResources: mapResources,
-                          loadPageResources: { public_page: true }
-                      })
+
+                    res.render('page', {
+                      user: req.user,
+                      post: result[0],
+                      user_info: user_info[0],
+                      userLikes: is_liked,
+                      establishments: establishments,
+                      loadGeoLocation: true,
+                      loadMapResources: mapResources,
+                      loadPageResources: pageResources
+                    })
                   })
                 } else {
                   if(typeof(user_info[0]) == 'undefined') {
                     result[0].user_info.hidden = true
                     user_info[0] = { id: '', photo: ''}
                   }
-                    res.render('page', {
-                      user: req.user,
-                      post: result[0],
-                      user_info: user_info[0],
-                      userLikes: 0,
-                      establishments: establishments,
-                      loadGeoLocation: true,
-                      loadMapResources: mapResources,
-                      loadPageResources: { public_page: true }
+
+                  res.render('page', {
+                    user: req.user,
+                    post: result[0],
+                    user_info: user_info[0],
+                    userLikes: 0,
+                    establishments: establishments,
+                    loadGeoLocation: true,
+                    loadMapResources: mapResources,
+                    loadPageResources: pageResources
                   })
                 }
               })
