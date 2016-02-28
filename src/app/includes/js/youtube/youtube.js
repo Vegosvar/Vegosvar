@@ -65,8 +65,6 @@ function onYouTubePlayerAPIReady() {
     getVideoId()
   })
 
-  console.log('ready')
-
   if($('#player').length > 0) {
     var videoUrl = $('#player').data('video')
     if(videoUrl) {
