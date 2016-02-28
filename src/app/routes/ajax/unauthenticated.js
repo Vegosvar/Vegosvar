@@ -86,6 +86,13 @@ module.exports = function (app, resources) {
     //The default query object
     var query = {}
 
+    //General query object
+    var filteredQuery = {
+      $match: {
+        accepted: true //Only published pages
+      }
+    }
+
     //The default fields we search
     var searchFields = ['url','title','post.content','post.food','post.product_type','post.city']
 
@@ -183,7 +190,15 @@ module.exports = function (app, resources) {
       queryTypes(searchArray[i])
     }
 
-    //Build general query
+    //Go over all the keys
+    for(var key in query) {
+      if( ! (key in filteredQuery.$match) ) {
+        filteredQuery.$match[key] = query[key]
+      }
+    }
+
+
+    //Array to hold regex objects of search strings
     var regexArray = []
 
     //As the searchString has been manipulated it might not even be anything at all anymore
@@ -191,38 +206,28 @@ module.exports = function (app, resources) {
       regexArray = searchString.split(' ').map(function(text) {
         return new RegExp(text, 'gi')
       })
-    }
 
-    var orFields = []
-    for (var i = searchFields.length - 1; i >= 0; i--) {
-      var obj = {}
+      var orFields = []
+      for (var i = searchFields.length - 1; i >= 0; i--) {
+        var obj = {}
 
-      if(typeof searchFields[i] === 'object') {
-        if('property' in searchFields[i] && 'value' in searchFields[i]) {
-          obj[searchFields[i].property] = {
-            $in: [searchFields[i].value]
+        if(typeof searchFields[i] === 'object') {
+          if('property' in searchFields[i] && 'value' in searchFields[i]) {
+            obj[searchFields[i].property] = {
+              $in: [searchFields[i].value]
+            }
+          }
+        } else {
+          obj[searchFields[i]] = {
+            $in: regexArray
           }
         }
-      } else {
-        obj[searchFields[i]] = {
-          $in: regexArray
-        }
+
+        orFields.push(obj)
       }
 
-      orFields.push(obj)
-    }
-
-    var filteredQuery = {
-      $match: {
-        accepted: true, //Only published pages
-        $or: orFields
-      }
-    }
-
-    for(var key in query) {
-      if( ! (key in filteredQuery.$match) ) {
-        filteredQuery.$match[key] = query[key]
-      }
+      //Add $or matches with the regex strings
+      filteredQuery.$match.$or = orFields
     }
 
     //Check if query matches a city
@@ -270,24 +275,27 @@ module.exports = function (app, resources) {
 
         for (var i = 0; i < pages.length; i++) {
           //Look up weights for each field and reorder array of results accordingly
+
+          //The order is important, not just the weights.
+          //If a match is made later that value can not match against another key in searchWeights, choose carefully
           var searchWeights = {
-            'title': 20,
-            'url': 18,
+            'post.veg_type': 30, //This is very high, since it can only match 'vegan', 'lacto_ovo' and 'animal'
+            'title': 25,
+            'post.product_type': 18,
+            'post.content': 15,
             'post.city': 15,
             'post.food': 10,
-            'post.product_type': 10,
-            'post.content': 5,
-            'post.veg_type': 3, //Maybe adjust this to be higher, since it can only match 'vegan', 'lacto_ovo' and 'animal'
             'post.veg_offer': 1
           }
 
           //Calculate the weight of each result
           var totalWeight = 0
+          var matchedValues = []
           for(var key in searchWeights) {
             var weight = searchWeights[key]
             var value
 
-            //TODO This should really be replaced with a loop that supports deeper structures, will do for now though
+            //TODO This should really be replaced with a loop that supports deeper structures, will do for now though considering our weights are only 2 levels max
             if(key.indexOf('.') >= 0) {
               subKey = key.substr( key.indexOf('.') +1 )
               parentKey = key.substr(0, key.indexOf('.') )
@@ -309,26 +317,45 @@ module.exports = function (app, resources) {
               for(var index in regexArray) {
                 var regex = regexArray[index]
                 var match = value.match(regex)
-                if(match !== null) {
-                  //No more than 2 "bonus points"
-                  var points = (match.length > 3) ? 3 : match.length
-                  matches += points
+                if(match !== null && match.length > 0) {
+                  var matchedValue = match[0].toLowerCase()
+                  if(matchedValues.indexOf(matchedValue) === -1) {
+                    var points = 1
+
+                    //If this was an "exact" case insensitive match, half a bonus point is given
+                    var exactRegex = new RegExp('^'+matchedValue+'$', 'i')
+                    var exactMatch = value.match(exactRegex)
+
+                    if(exactMatch !== null) {
+                      points += .5
+                    }
+
+                    matches += points
+                    matchedValues.push(matchedValue)
+                  }
                 }
               }
 
-              totalWeight += (matches * weight) //Add the new weight to the totalWeight, more matches = better match
+              totalWeight += Math.abs(matches * weight) //Add the new weight to the totalWeight
             }
           }
 
+          //Give bonus points if several matches were made
+          if(matchedValues.length > 1) {
+            totalWeight += (totalWeight * Math.floor(matchedValues.length * .5) )
+          }
+
           if('post' in pages[i]) {
-            if('content' in pages[i].post) { //All pages should have content, if not, then something is wrong with document in db
+            if('content' in pages[i].post) {
+              //All pages should have content, if not, then something is wrong with document in db, anyway make sure this is not cause of failure
               //Strip html tags of content
               pages[i].post.content = striptags(pages[i].post.content, ['br','p','a','span','i','b'])
 
               //Add the page with its new weight
               weightedResult.push({
                 page: pages[i],
-                weight: totalWeight
+                weight: totalWeight,
+                keywords: matchedValues
               })
             }
           }
@@ -346,6 +373,7 @@ module.exports = function (app, resources) {
 
         //Get the final result array of just the pages
         var finalResult = weightedResult.map(function(obj) {
+          //console.log(obj.page.title, obj.weight) //This is really useful info for debugging search result weights
           return obj.page
         })
 
