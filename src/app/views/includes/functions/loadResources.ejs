@@ -1,69 +1,73 @@
 <% if (typeof loadPageResources !== 'undefined') {
 if( typeof loadPageResources.create_page !== 'undefined' && loadPageResources.create_page === true) { %>
-	<script src="/includes/js/pages/create_page.js" defer></script>
+    <script src="/includes/js/pages/create_page.js" defer></script>
 <% }
 if( typeof loadPageResources.public_page !== 'undefined' && loadPageResources.public_page === true) { %>
-	<script src="/includes/js/pages/public_page.js" defer></script>
+    <script src="/includes/js/pages/public_page.js" defer></script>
 <% }
 if( typeof loadPageResources.datatables !== 'undefined' && loadPageResources.datatables === true ) { %>
-	<link rel="stylesheet" href="/assets/css/datatables/dataTables.bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/datatables/dataTables.bootstrap.min.css">
 
-	<script src="/assets/js/datatables/jquery.dataTables.min.js" defer></script>
-	<script src="/assets/js/datatables-plugins/dataTables.conditionalPaging.js" defer></script>
-	<script src="/assets/js/datatables/dataTables.bootstrap.min.js" defer></script>
-	<script src="/includes/js/pages/datatables.js" defer></script>
+    <script src="/assets/js/datatables/jquery.dataTables.min.js" defer></script>
+    <script src="/assets/js/datatables-plugins/dataTables.conditionalPaging.js" defer></script>
+    <script src="/assets/js/datatables/dataTables.bootstrap.min.js" defer></script>
+    <script src="/includes/js/pages/datatables.js" defer></script>
 <% }
 if( typeof loadPageResources.highcharts !== 'undefined' && loadPageResources.highcharts === true ) { %>
-	<script src="/assets/js/highcharts/highcharts.js" defer></script>
+    <script src="/assets/js/highcharts/highcharts.js" defer></script>
+<% }
+if( typeof loadPageResources.youtube !== 'undefined' && loadPageResources.youtube === true ) { %>
+    <script src="//www.youtube.com/player_api" defer async></script>
+    <script src="/includes/js/youtube/youtube.js" defer></script>
 <% }
 } %>
 
 <% if( typeof loadEmailScramble !== 'undefined' && loadEmailScramble === true ) { %>
-	<script src="/assets/js/email-scramble/email-scramble.js"></script>
+    <script src="/assets/js/email-scramble/email-scramble.js"></script>
 <% } %>
 
 <% if (typeof loadAdminResources !== 'undefined') {
 if( typeof loadAdminResources.revisions !== 'undefined' && loadAdminResources.revisions === true ) { %>
-	<script src="/includes/js/admin/revisions.js" defer></script>
+    <script src="/includes/js/admin/revisions.js" defer></script>
 <% }
 if( typeof loadAdminResources.overview !== 'undefined' && loadAdminResources.overview === true ) { %>
-	<script src="/includes/js/admin/overview.js" defer></script>
+    <script src="/includes/js/admin/overview.js" defer></script>
 <% }
 if( typeof loadAdminResources.remove !== 'undefined' && loadAdminResources.remove === true ) { %>
-	<script src="/includes/js/admin/remove.js" defer></script>
+    <script src="/includes/js/admin/remove.js" defer></script>
 <% }
 if( typeof loadAdminResources.users !== 'undefined' && loadAdminResources.users === true ) { %>
-	<script src="/includes/js/admin/users.js" defer></script>
+    <script src="/includes/js/admin/users.js" defer></script>
 <% }
 } %>
 
 <% if (typeof loadGeoLocation !== 'undefined' && loadGeoLocation === true) { %>
-	<script src="/includes/js/geolocation/geolocation.js" defer></script>
+    <script src="/includes/js/geolocation/geolocation.js" defer></script>
 <% } %>
 
 <% if (typeof loadMapResources !== 'undefined') { %>
-	<script src="//maps.googleapis.com/maps/api/js?libraries=places&region=SE&language=sv_SE&callback=mapReady" defer></script>
+    <script src="//maps.googleapis.com/maps/api/js?libraries=places&region=SE&language=sv_SE&callback=mapReady" defer></script>
 <% if (typeof loadMapResources.autocomplete !== 'undefined' && loadMapResources.autocomplete === true) { %>
-	<script src="/includes/js/googlemaps/input.js" defer></script>
+    <script src="/includes/js/googlemaps/input.js" defer></script>
 <% } %>
 <% if (typeof loadMapResources.map !== 'undefined' && loadMapResources.map === true) { %>
- 	<script src="/includes/js/googlemaps/map.js" defer></script>
+    <script src="/includes/js/googlemaps/map.js" defer></script>
 <% } %>
 <% if (typeof loadMapResources.mapCluster !== 'undefined' && loadMapResources.mapCluster === true) { %>
-	<script src="/assets/js/markerclustererplus/markerclusterer.min.js" defer></script>
+    <script src="/assets/js/markerclustererplus/markerclusterer.min.js" defer></script>
 <% } %>
 <% } %>
 
 <% if (typeof loadEditorResources !== 'undefined' && loadEditorResources === true) { %>
-	<script src="/assets/js/wysihtml/wysihtml.min.js" defer></script>
-	<script src="/assets/js/wysihtml/wysihtml-toolbar.min.js" defer></script>
-	<script src="/assets/js/wysihtml/advanced_and_extended.js" defer></script>
-	<script src="/includes/js/editor/controller.js"></script>
-	<script src="/includes/js/editor/editor.js"></script>
+    <script src="/assets/js/wysihtml/wysihtml.min.js" defer></script>
+    <script src="/assets/js/wysihtml/wysihtml-toolbar.min.js" defer></script>
+    <script src="/assets/js/wysihtml/advanced_and_extended.js" defer></script>
+    <script src="/includes/js/editor/controller.js"></script>
+    <script src="/includes/js/editor/editor.js"></script>
 <% } %>
 
 <% if (typeof loadDropzoneResources !== 'undefined' && loadDropzoneResources === true) { %>
-	<link rel="stylesheet" href="/assets/css/dropzone/dropzone.min.css">
-	<script src="/assets/js/dropzone/dropzone.min.js" defer></script>
-	<script type="text/javascript" src="/includes/js/dropzone/dropzone-script.js" defer></script>
+    <link rel="stylesheet" href="/assets/css/dropzone/dropzone.min.css">
+    <script src="/assets/js/dropzone/dropzone.min.js" defer></script>
+    <script type="text/javascript" src="/includes/js/dropzone/dropzone-script.js" defer></script>
 <% } %>
