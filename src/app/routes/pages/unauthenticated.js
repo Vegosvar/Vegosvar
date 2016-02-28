@@ -129,6 +129,10 @@ module.exports = function (app, resources) {
     res.render('report', { user: req.user })
   })
 
+  app.get('/sekretesspolicy', function (req, res) {
+    res.render('privacypolicy', { user: req.user })
+  })
+
   app.get('/logga-ut', function (req, res) {
     req.logout()
     res.redirect('/')
