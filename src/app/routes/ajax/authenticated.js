@@ -20,7 +20,7 @@ module.exports = function (app, resources) {
         var votesdb = resources.collections.votes
         var pagesdb = resources.collections.pages
 
-        usersdb.find({ _id: new ObjectID(req.user._id), blocked: false }).toArray(function(err, result) {
+        usersdb.find({ _id: new ObjectID(req.user._id), "info.blocked": false }).toArray(function(err, result) {
           if(err) throw err
           if(result.length > 0) {
             //Proceed as normal
