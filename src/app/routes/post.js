@@ -18,27 +18,26 @@ module.exports = function (app, resources) {
   var image_processer = resources.image_processer
 
   app.post('/submit', urlencodedParser, function (req, res, next) {
-    // Controller for handling page inputs.
-    // ## TODO ######################################################
-    // # Add error handling, check and sanitize inputs              #
-    // ##############################################################
-
     var id = req.body.id
     var type = req.body.type
     var hidden = (req.body.hidden) ? true : false;
     var isodate = functions.getISOdate()
-    var niceurl = getSlug(req.body.title, {
+
+    //Prevent speakingurl from converting swedish characters to ae and oe by replacing them with what we want 
+    var tamperedTitle = String(req.body.title).toLowerCase().replace(/å|ä/g, 'a').replace(/ö/g, 'o')
+    var niceurl = getSlug(tamperedTitle, {
       // URL Settings
       separator: '-',
       maintainCase: false,
       symbols: false
     })
+    var simpleSlug = getSlug(tamperedTitle, {separator: ''})
 
     var usersdb = resources.collections.users
     var pagesdb = resources.collections.pages
     var revisionsdb = resources.collections.revisions
 
-    usersdb.find({ _id: new ObjectID(req.user._id), blocked: false }).toArray(function(err, result) {
+    usersdb.find({ _id: new ObjectID(req.user._id), "info.blocked": false }).toArray(function(err, result) {
       if(result.length > 0) {
         //Proceed as normal
         if(req.body.cover_image_id == 'undefined' || req.body.cover_image_filename == 'undefined') {
@@ -236,6 +235,7 @@ module.exports = function (app, resources) {
         }
 
         data.accepted = null
+        data.slug = simpleSlug
 
         if(id) {
           id = new ObjectID(id) //If editing the post, the id will be provided as a string and we need to convert it to an objectid
