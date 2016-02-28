@@ -25,8 +25,8 @@ module.exports = {
                     "post.food": 10,
                     "post.product_type": 10,
                     "post.content": 5,
-                    "post.veg_type": 3
-                    "post.veg_offer": 1,
+                    "post.veg_type": 3,
+                    "post.veg_offer": 1
                 },
                 "default_language": "swedish"
             })

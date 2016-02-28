@@ -193,8 +193,6 @@ module.exports = function (app, resources) {
       })
     }
 
-    console.log(regexTitleArray)
-
     var orFields = []
     for (var i = searchFields.length - 1; i >= 0; i--) {
       var obj = {}
@@ -265,8 +263,6 @@ module.exports = function (app, resources) {
 
       //TODO build aggregate query better, utilizing $meta: "textScore"
       //Maybe rebuild results with projection or just use group
-
-      console.log(filteredQuery.$match)
 
       //Find pages
       var pagesdb = resources.collections.pages
