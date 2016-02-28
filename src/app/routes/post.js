@@ -94,7 +94,8 @@ module.exports = function (app, resources) {
               cover: {
                 id: cover_image_id,
                 filename: cover_image_filename
-              }
+              },
+              video: req.body.video
             }, rating: {
               likes: 0,
               votes: 0,
