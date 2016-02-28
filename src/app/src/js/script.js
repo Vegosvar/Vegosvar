@@ -482,19 +482,3 @@ $(document).ready(function () {
     }
   }
 })
-
-window.cookieconsent_options = {
-  message: 'Vegosvar använder sig av kakor. Genom att använda Vegosvar godkänner du detta',
-  dismiss: 'Det är okej, jag gillar kakor!',
-  learnMore: 'Mer info',
-  link: '/sekretesspolicy',
-  theme: false,
-  markup: [
-    '<div class="cc_banner-wrapper {{containerClasses}}">',
-    '<div class="cc_banner cc_container cc_container--open">',
-    '<p class="cc_message">{{options.message}} <a data-cc-if="options.link" class="cc_more_info" href="{{options.link || "#null"}}">{{options.learnMore}}</a></p>',
-    '<a href="#null" data-cc-event="click:dismiss" class="cc_btn cc_btn_accept_all">{{options.dismiss}}</a>',
-    '</div>',
-    '</div>'
-  ]
-}

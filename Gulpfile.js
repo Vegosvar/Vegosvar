@@ -112,11 +112,6 @@ gulp.task('bower-dependencies', function (callback) {
         "main": [
           "email-scramble.js"
         ]
-      },
-      "cookieconsent2": {
-        "main": [
-          "cookieconsent.js"
-        ]
       }
     }
   }

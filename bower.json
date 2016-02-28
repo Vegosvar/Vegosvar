@@ -27,7 +27,6 @@
     "bootstrap-multiselect": "^0.9.13",
     "highcharts": "^4.2.3",
     "dropzone": "^4.3.0",
-    "email-scramble": "^2.0.0",
-    "cookieconsent2": "^1.0.10"
+    "email-scramble": "^2.0.0"
   }
 }
