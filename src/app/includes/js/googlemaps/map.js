@@ -125,6 +125,12 @@
       getZoom: function () {
         return settings.google.map.getZoom()
       },
+      getLatLng: function (obj) {
+        return new google.maps.LatLng(obj)
+      },
+      getLatLngBounds: function (obj) {
+        return new google.maps.LatLngBounds(obj)
+      },
       panBy: function (point) {
         try {
           settings.google.map.panBy(point)
@@ -132,9 +138,9 @@
           throw err
         }
       },
-      panTo: function (bounds) {
+      panTo: function (latLng) {
         try {
-          settings.google.map.panTo(bounds)
+          settings.google.map.panTo(latLng)
         } catch (err) {
           throw err
         }
@@ -148,6 +154,11 @@
       },
       triggerResize: function () {
         google.maps.event.trigger(settings.google.map, 'resize')
+      },
+      removeMarkers: function () {
+        settings.google.markers = settings.google.markers.filter(function (marker) {
+          marker.setMap(null)
+        })
       }
     }
 
