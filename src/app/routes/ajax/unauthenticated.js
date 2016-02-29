@@ -173,9 +173,9 @@ module.exports = function (app, resources) {
           //Perform the operations on the search query
           if(queryOperations[key]()) {
             //Update the search string to remove the key from the search, otherwise might result in unwanted results
+            var tmpArray = searchString.toLowerCase().split(' ')
 
-            var tmpArray = searchString.split(' ')
-
+            //Filter out the current key from the search query
             searchString = tmpArray.filter(function(text) {
               var isKey = text.match(key)
               if(isKey === null) {
