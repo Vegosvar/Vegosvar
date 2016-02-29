@@ -495,6 +495,8 @@ $(document).ready(function () {
             } else {
               $('.showSearchMapText').html('Se karta')
             }
+          } else {
+            $('.showSearchMap').hide()
           }
 
           $(container).html(resultContainer)
