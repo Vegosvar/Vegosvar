@@ -304,14 +304,14 @@ function panToFit() {
 
     position = new google.maps.Point(
       ((latLng.x * scale) - 1) / scale,
-      ((latLng.y * scale) - offset) / scale
+      ((latLng.y * scale) - offset - 100) / scale
    )
   } else {
     var offset = ((($(window).height() * 256) * 2.5) / scale)
 
     position = new google.maps.Point(
-      ((latLng.x * scale) + 15) / scale,
-      ((latLng.y * scale) - offset) / scale
+      ((latLng.x * scale)) / scale,
+      ((latLng.y * scale) - offset - 30) / scale
    )
   }
 
@@ -420,7 +420,7 @@ function applyMarkerData(data, options) {
           lng: parseFloat(data[0].post.coordinates.longitude)
         })
 
-        mapInstance.setZoom(11)
+        mapInstance.setZoom(15)
 
         setMarkers(data, { infoWindowOpen: true })
 
@@ -579,7 +579,7 @@ $(document).bind('mapready', function (e) {
 
     if ('init' in options && options.init === true) {
       if ('markerLatitude' in options && 'markerLongitude' in options) {
-        //Map provides it's own coordinates
+        //Map provides its own coordinates
         setSingleOpenMarker({
           coordinates: {
             latitude: options.markerLatitude,
