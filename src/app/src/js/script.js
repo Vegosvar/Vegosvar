@@ -456,17 +456,25 @@ $(document).ready(function () {
             )
           })
 
+          //TODO clean up all the duplicate code in the filter -> map integration, like seriously, use an event listener to show/hide/change text
+
+          //Set up markers on map
           if (markerIds.length > 0) {
             if($('.searchMapContainer').is(':visible')) {
               //The user has already searched for something and pulled up the map, time to repopulate it
               setMapMarkers(markerIds)
             } else {
               $('.showSearchMap').on('click', function () { //Trigger only once, for now..
-                $('.showSearchMapText').html('D&ouml;lj karta')
-                $('.searchMapContainer').fadeIn(400, function () {
-                  searchMapInstance = $('#mapResults').googleMap()
-                  setMapMarkers(markerIds)
-                })
+                if($('.searchMapContainer').is(':visible')) {
+                  $('.showSearchMapText').html('Se karta')
+                  $('.searchMapContainer').hide()
+                } else {
+                  $('.showSearchMapText').html('D&ouml;lj karta')
+                  $('.searchMapContainer').fadeIn(400, function () {
+                    searchMapInstance = $('#mapResults').googleMap()
+                    setMapMarkers(markerIds)
+                  })
+                }
               })
             }
           } else {
