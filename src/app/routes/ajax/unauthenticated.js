@@ -294,7 +294,7 @@ module.exports = function (app, resources) {
           var matchedValues = []
           for(var key in searchWeights) {
             var weight = searchWeights[key]
-            var value
+            var value = ''
 
             //TODO This should really be replaced with a loop that supports deeper structures, will do for now though considering our weights are only 2 levels max
             if(key.indexOf('.') >= 0) {
