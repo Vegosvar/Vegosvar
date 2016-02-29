@@ -1,3 +1,4 @@
+var searchMapInstance //Todo, figure out a way to skip this global var
 function mapReady () {
   $(document).ready(function () {
     $(document).trigger('mapready')
@@ -281,7 +282,10 @@ $(document).ready(function () {
               class: 'col-sm-6 col-md-4 col-lg-3 entryResult',
               id: 'searchResult-' + entry._id
             })
-            .attr('data-type', entry.type)
+            .attr({
+              'data-id':  entry._id,
+              'data-type': entry.type
+            })
             .append(
               $('<div>', {
                 class: 'result'
@@ -352,46 +356,22 @@ $(document).ready(function () {
             $('.filterSelect option[value="' + entry.type + '"]').prop('disabled', false)
           }
 
-          var resultContainer = $('<div>', {
-            id: 'searchResultsContainer'
-          })
-
-          var showMap = []
-          $('#searchFilter').remove()
-
-          $.each(data, function (i, entry) {
-            createFilters(entry)
-            if (entry.type === '5' || entry.type === '3') {
-              showMap.push(entry._id)
-            }
-
-            $(resultContainer).append(
-              createEntry(entry)
-            )
-          })
-
-          //TODO create a function of this and integrate with chosen filter
-          //Also, reuse the functions in map.js, will have to modularize it
-          if (showMap.length > 0) {
-            $('.showSearchMap').show() //Make sure button is visible when we have results that can be displayed on a map
-            $('.showSearchMap').one('click', function () { //Trigger only once, for now..
-              $('.searchMapContainer').fadeIn(400, function () {
-                var searchMapInstance = $('#mapResults').googleMap()
-                searchMapInstance.setZoom(14)
+          var setMapMarkers = function (markerIds) {
+            if(markerIds.length > 0) {
+              if(searchMapInstance) {
+                searchMapInstance.removeMarkers() //Remove all markers before adding new ones
 
                 var settings = {
                   url: '/ajax/map',
                   data: {
                     filter: {
-                      ids: showMap
+                      ids: markerIds
                     }
                   }
                 }
 
                 $.ajax(settings)
                 .done(function (data) {
-                  var bounds = searchMapInstance.getBounds()
-
                   $.each(data, function (i, entry) {
 
                     var iconUrl = '/assets/images/'
@@ -405,16 +385,13 @@ $(document).ready(function () {
                         iconUrl += 'pin-store.png'
                         break
                       default:
-                        iconUrl = false //use default google marker
-                        break
+                        return false //invalid entry type
                     }
 
                     var position = {
                       lat: parseFloat(entry.post.coordinates.latitude),
                       lng: parseFloat(entry.post.coordinates.longitude)
                     }
-
-                    bounds.extend(new google.maps.LatLng(position))
 
                     //Place marker on map
                     searchMapInstance.setMarker({
@@ -424,12 +401,77 @@ $(document).ready(function () {
                     })
                   })
 
-                  searchMapInstance.setBounds(bounds)
+                  var bounds = searchMapInstance.getLatLngBounds()
+                  var markers = searchMapInstance.getMarkers()
+
+                  if(markers.length > 0) {
+                    $.each(markers, function (i, marker) {
+                      var position = marker.getPosition()
+                      if(!bounds.contains(position)) {
+                        bounds.extend(position)
+                      }
+                    })
+
+                    //Prevent map to zoom in too much
+                    searchMapInstance.getMap().setOptions({
+                        maxZoom: 15
+                    });
+
+                    searchMapInstance.setBounds(bounds)
+
+                    //Set max zoom available again
+                    searchMapInstance.getMap().setOptions({
+                        maxZoom: 20
+                    });
+
+                    return true
+                  } else {
+                    return false
+                  }
+                })
+              } else {
+                return false
+              }
+            } else {
+              return false
+            }
+          }
+
+          var resultContainer = $('<div>', {
+            id: 'searchResultsContainer'
+          })
+
+          var markerIds = []
+          $('#searchFilter').remove()
+
+          $.each(data, function (i, entry) {
+            createFilters(entry)
+            if (entry.type === '5' || entry.type === '3') {
+              //Check if any of the results can be placed on a map
+              markerIds.push(entry._id)
+            }
+
+            $(resultContainer).append(
+              createEntry(entry)
+            )
+          })
+
+          if (markerIds.length > 0) {
+            if($('.searchMapContainer').is(':visible')) {
+              //The user has already searched for something and pulled up the map, time to repopulate it
+              setMapMarkers(markerIds)
+            } else {
+              $('.showSearchMap').on('click', function () { //Trigger only once, for now..
+                $('.showSearchMapText').html('D&ouml;lj karta')
+                $('.searchMapContainer').fadeIn(400, function () {
+                  searchMapInstance = $('#mapResults').googleMap()
+                  setMapMarkers(markerIds)
                 })
               })
-            })
+            }
           } else {
-            $('.showSearchMap').hide()
+            $('.showSearchMapText').html('D&ouml;lj karta')
+            $('.searchMapContainer').hide()
           }
 
           $(container).html(resultContainer)
@@ -442,21 +484,50 @@ $(document).ready(function () {
               onChange: function (element, checked) {
                 var values = []
 
-                $(element).parent().find('option:selected').each(function (a, item) {
+                $(element).parent().find('option:selected').each(function (i, item) {
                   values.push(item.value)
                 })
 
+                var mapFilterIds = [] //Used to tell map which markers it should place
                 if (values.length > 0) {
                   $('.entryResult.showResult').removeClass('showResult') //Remove show class from each entryResult
 
                   $.each(values, function (i, value) {
-                    $('.entryResult[data-type="' + value + '"]').addClass('showResult') //Add show class to each result matching filter
+                    $('.entryResult[data-type="' + value + '"]').each(function () {
+                      $(this).addClass('showResult') //Add show class to each result matching filter
+
+                      var entryId = $(this).data('id')
+                      var type = $(this).data('type')
+                      if(entryId && (type === 5 || type === 3)) {
+                        mapFilterIds.push(entryId)
+                      }
+                    })
                   })
 
                   $('.entryResult.showResult').hide().fadeIn() //Show results matching filter
                   $('.entryResult').not('.showResult').hide() //Hide results not matching filter
                 } else {
+                  $('.entryResult').each(function () {
+                    var entryId = $(this).data('id')
+                    var type = $(this).data('type')
+                    if(entryId && (type === 5 || type === 3)) {
+                      mapFilterIds.push(entryId)
+                    }
+                  })
                   $('.entryResult').show()
+                }
+
+                if(mapFilterIds.length > 0) {
+                  if($('.searchMapContainer').is(':visible')) {
+                    $('.showSearchMapText').html('D&ouml;lj karta')
+                    setMapMarkers(mapFilterIds)
+                  } else {
+                    $('.showSearchMapText').html('Se karta')
+                  }
+                } else {
+                  //No markers available
+                  $('.showSearchMapText').html('D&ouml;lj karta')
+                  $('.searchMapContainer').fadeOut('fast')
                 }
               }
             })
