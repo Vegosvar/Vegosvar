@@ -344,16 +344,18 @@ function zoomToUserLocation () {
           if(marker.title === locationObj.title) {
             setNew = false
             marker.setPosition(position)
+            marker.infowindow.open(mapInstance.getMap(), marker)
           }
         }
       })
 
       if(setNew) {
         mapInstance.setMarker(locationObj)
-        mapInstance.setCenter(position)
-        mapInstance.setZoom(11)
         openLastMarkerInfowindow()
       }
+
+      mapInstance.setCenter(position)
+      mapInstance.setZoom(11)
     } else {
       //TODO display error
     }
