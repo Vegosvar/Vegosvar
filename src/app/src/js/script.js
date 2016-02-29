@@ -357,8 +357,8 @@ $(document).ready(function () {
           }
 
           var setMapMarkers = function (markerIds) {
-            if(markerIds.length > 0) {
-              if(searchMapInstance) {
+            if (markerIds.length > 0) {
+              if (searchMapInstance) {
                 searchMapInstance.removeMarkers() //Remove all markers before adding new ones
 
                 var settings = {
@@ -404,25 +404,25 @@ $(document).ready(function () {
                   var bounds = searchMapInstance.getLatLngBounds()
                   var markers = searchMapInstance.getMarkers()
 
-                  if(markers.length > 0) {
+                  if (markers.length > 0) {
                     $.each(markers, function (i, marker) {
                       var position = marker.getPosition()
-                      if(!bounds.contains(position)) {
+                      if (!bounds.contains(position)) {
                         bounds.extend(position)
                       }
                     })
 
                     //Prevent map to zoom in too much
                     searchMapInstance.getMap().setOptions({
-                        maxZoom: 15
-                    });
+                      maxZoom: 15
+                    })
 
                     searchMapInstance.setBounds(bounds)
 
                     //Set max zoom available again
                     searchMapInstance.getMap().setOptions({
-                        maxZoom: 20
-                    });
+                      maxZoom: 20
+                    })
 
                     return true
                   } else {
@@ -460,12 +460,12 @@ $(document).ready(function () {
 
           //Set up markers on map
           if (markerIds.length > 0) {
-            if($('.searchMapContainer').is(':visible')) {
+            if ($('.searchMapContainer').is(':visible')) {
               //The user has already searched for something and pulled up the map, time to repopulate it
               setMapMarkers(markerIds)
             } else {
               $('.showSearchMap').on('click', function () { //Trigger only once, for now..
-                if($('.searchMapContainer').is(':visible')) {
+                if ($('.searchMapContainer').is(':visible')) {
                   $('.showSearchMapText').html('Se karta')
                   $('.searchMapContainer').hide()
                 } else {
@@ -506,7 +506,7 @@ $(document).ready(function () {
 
                       var entryId = $(this).data('id')
                       var type = $(this).data('type')
-                      if(entryId && (type === 5 || type === 3)) {
+                      if (entryId && (type === 5 || type === 3)) {
                         mapFilterIds.push(entryId)
                       }
                     })
@@ -518,15 +518,15 @@ $(document).ready(function () {
                   $('.entryResult').each(function () {
                     var entryId = $(this).data('id')
                     var type = $(this).data('type')
-                    if(entryId && (type === 5 || type === 3)) {
+                    if (entryId && (type === 5 || type === 3)) {
                       mapFilterIds.push(entryId)
                     }
                   })
                   $('.entryResult').show()
                 }
 
-                if(mapFilterIds.length > 0) {
-                  if($('.searchMapContainer').is(':visible')) {
+                if (mapFilterIds.length > 0) {
+                  if ($('.searchMapContainer').is(':visible')) {
                     $('.showSearchMapText').html('D&ouml;lj karta')
                     setMapMarkers(mapFilterIds)
                   } else {
