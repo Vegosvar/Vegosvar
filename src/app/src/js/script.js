@@ -441,7 +441,8 @@ $(document).ready(function () {
             id: 'searchResultsContainer'
           })
 
-          var markerIds = []
+          var markerIds = [] //Array to hold all the posts ids, used with search map and filter to some extent
+
           $('#searchFilter').remove()
 
           $.each(data, function (i, entry) {
@@ -456,30 +457,44 @@ $(document).ready(function () {
             )
           })
 
+          var getMarkerIds = function () {
+            return markerIds
+          }
+
+          var updateMapMarkers = function () {
+            var markers = getMarkerIds()
+            setMapMarkers(markers)
+          }
+
           //TODO clean up all the duplicate code in the filter -> map integration, like seriously, use an event listener to show/hide/change text
+
+          $('.showSearchMap').unbind('click') //Unbind any previously bound listeners
+          $('.showSearchMap').bind('click', function () {
+            if ($('.searchMapContainer').is(':visible')) {
+              $('.showSearchMapText').html('Se karta')
+              $('.searchMapContainer').hide()
+            } else {
+              $('.showSearchMapText').html('D&ouml;lj karta')
+              $('.searchMapContainer').fadeIn(400, function () {
+                if (!searchMapInstance) {
+                  searchMapInstance = $('#mapResults').googleMap()
+                }
+
+                updateMapMarkers()
+              })
+            }
+          })
 
           //Set up markers on map
           if (markerIds.length > 0) {
+            $('.showSearchMap').show()
             if ($('.searchMapContainer').is(':visible')) {
-              //The user has already searched for something and pulled up the map, time to repopulate it
-              setMapMarkers(markerIds)
+              //The user has already searched for something and pulled up the map, time to repopulate it with new results
+              updateMapMarkers()
+              $('.showSearchMapText').html('D&ouml;lj karta')
             } else {
-              $('.showSearchMap').on('click', function () { //Trigger only once, for now..
-                if ($('.searchMapContainer').is(':visible')) {
-                  $('.showSearchMapText').html('Se karta')
-                  $('.searchMapContainer').hide()
-                } else {
-                  $('.showSearchMapText').html('D&ouml;lj karta')
-                  $('.searchMapContainer').fadeIn(400, function () {
-                    searchMapInstance = $('#mapResults').googleMap()
-                    setMapMarkers(markerIds)
-                  })
-                }
-              })
+              $('.showSearchMapText').html('Se karta')
             }
-          } else {
-            $('.showSearchMapText').html('D&ouml;lj karta')
-            $('.searchMapContainer').hide()
           }
 
           $(container).html(resultContainer)
@@ -491,12 +506,12 @@ $(document).ready(function () {
               inheritClass: true,
               onChange: function (element, checked) {
                 var values = []
+                markerIds = [] //Always act as if there were no markerIds to start with before filtering
 
                 $(element).parent().find('option:selected').each(function (i, item) {
                   values.push(item.value)
                 })
 
-                var mapFilterIds = [] //Used to tell map which markers it should place
                 if (values.length > 0) {
                   $('.entryResult.showResult').removeClass('showResult') //Remove show class from each entryResult
 
@@ -507,7 +522,7 @@ $(document).ready(function () {
                       var entryId = $(this).data('id')
                       var type = $(this).data('type')
                       if (entryId && (type === 5 || type === 3)) {
-                        mapFilterIds.push(entryId)
+                        markerIds.push(entryId)
                       }
                     })
                   })
@@ -519,22 +534,23 @@ $(document).ready(function () {
                     var entryId = $(this).data('id')
                     var type = $(this).data('type')
                     if (entryId && (type === 5 || type === 3)) {
-                      mapFilterIds.push(entryId)
+                      markerIds.push(entryId)
                     }
                   })
                   $('.entryResult').show()
                 }
 
-                if (mapFilterIds.length > 0) {
+                if (markerIds.length > 0) {
+                  $('.showSearchMap').show()
                   if ($('.searchMapContainer').is(':visible')) {
                     $('.showSearchMapText').html('D&ouml;lj karta')
-                    setMapMarkers(mapFilterIds)
+                    updateMapMarkers()
                   } else {
                     $('.showSearchMapText').html('Se karta')
                   }
                 } else {
                   //No markers available
-                  $('.showSearchMapText').html('D&ouml;lj karta')
+                  $('.showSearchMap').hide()
                   $('.searchMapContainer').fadeOut('fast')
                 }
               }
@@ -550,6 +566,8 @@ $(document).ready(function () {
           $('#searchFilter').hide()
           $('#results').show()
           $('#searchResultsContainer').html('')
+          $('.searchMapContainer').hide()
+          $('.showSearchMap').hide()
         }
 
         $('#searchForm-btn-default').html(
