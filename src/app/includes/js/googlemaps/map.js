@@ -324,21 +324,36 @@ function panToFit() {
 function zoomToUserLocation () {
   $.fn.geoLocation(function (result) {
     if (result.success === true) {
-      mapInstance.setMarker({
-        position: {
-          lat: parseFloat(result.position.latitude),
-          lng: parseFloat(result.position.longitude)
-        },
+      var position = {
+        lat: parseFloat(result.position.latitude),
+        lng: parseFloat(result.position.longitude)
+      }
+
+      var locationObj = {
+        position: position,
         title: 'Din plats',
         content: 'Du är här!',
         icon: '/assets/images/pin-my-position.png',
+      }
+
+      var markers = mapInstance.getMarkers()
+
+      var setNew = true
+      $.each(markers, function(i, marker) {
+        if('title' in marker) {
+          if(marker.title === locationObj.title) {
+            setNew = false
+            marker.setPosition(position)
+          }
+        }
       })
-      mapInstance.setCenter({
-        lat: parseFloat(result.position.latitude),
-        lng: parseFloat(result.position.longitude)
-      })
-      mapInstance.setZoom(11)
-      openLastMarkerInfowindow()
+
+      if(setNew) {
+        mapInstance.setMarker(locationObj)
+        mapInstance.setCenter(position)
+        mapInstance.setZoom(11)
+        openLastMarkerInfowindow()
+      }
     } else {
       //TODO display error
     }
