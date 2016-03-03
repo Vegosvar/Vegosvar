@@ -2,12 +2,6 @@
   $.fn.vegosvar = {}
 }(jQuery))
 
-function mapReady () {
-  $(document).ready(function () {
-    $(document).trigger('mapready')
-  })
-}
-
 $(window).load(function () {
 
   $(document).on('change', '.btn-file :file', function () {
@@ -121,3 +115,9 @@ $(document).ready(function () {
     }
   }
 })
+
+function mapReady () {
+  $(document).ready(function () {
+    $(document).trigger('mapready')
+  })
+}
