@@ -1,5 +1,3 @@
-var searchMapInstance //Todo, figure out a way to skip this global var
-
 (function ($) {
   $.fn.vegosvar.search = {
     settings: {
