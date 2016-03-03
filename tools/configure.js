@@ -12,7 +12,7 @@ var collections = [
         },{
             name: 'chips',
             type: '4',
-            subcategory: 'livsmedel'
+            subcategory: 'snacks'
         },{
             name: 'e-nummer',
             type: '4',
@@ -20,11 +20,11 @@ var collections = [
         },{
             name: 'glass',
             type: '4',
-            subcategory: 'livsmedel'
+            subcategory: 'snacks'
         },{
             name: 'godis',
             type: '4',
-            subcategory: 'livsmedel'
+            subcategory: 'snacks'
         },{
             name: 'hudvård',
             type: '4',
@@ -83,60 +83,52 @@ var collections = [
             subcategory: 'alkohol'
         },{
             name: 'indiskt',
-            type: '3',
-            subcategory: 'asiatiskt'
+            type: '3'
         },{
             name: 'kinesiskt',
-            type: '3',
-            subcategory: 'asiatiskt'
+            type: '3'
+        },{
+            name: 'etiopiskt',
+            type: '3'
+        },{
+            name: 'koreanskt',
+            type: '3'
         },{
             name: 'thailändskt',
-            type: '3',
-            subcategory: 'asiatiskt'
+            type: '3'
         },{
             name: 'japanskt',
-            type: '3',
-            subcategory: 'asiatiskt'
+            type: '3'
         },{
             name: 'grekiskt',
-            type: '3',
-            subcategory: 'europeiskt'
+            type: '3'
         },{
             name: 'libanesiskt',
-            type: '3',
-            subcategory: 'mellanöstern'
+            type: '3'
         },{
             name: 'italienskt',
-            type: '3',
-            subcategory: 'europeiskt'
+            type: '3'
         },{
             name: 'vietnamesiskt',
-            type: '3',
-            subcategory: 'asiatiskt'
+            type: '3'
         },{
             name: 'persiskt',
-            type: '3',
-            subcategory: 'mellanöstern'
+            type: '3'
         },{
             name: 'mexikanskt',
-            type: '3',
-            subcategory: 'amerikanskt'
+            type: '3'
         },{
             name: 'franskt',
-            type: '3',
-            subcategory: 'europeiskt'
+            type: '3'
         },{
             name: 'svenskt',
-            type: '3',
-            subcategory: 'europeiskt'
+            type: '3'
         },{
             name: 'brittiskt',
-            type: '3',
-            subcategory: 'europeiskt'
+            type: '3'
         },{
             name: 'tyskt',
-            type: '3',
-            subcategory: 'asiatiskt'
+            type: '3'
         }]
     },
     {
