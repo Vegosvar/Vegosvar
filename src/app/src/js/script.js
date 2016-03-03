@@ -11,20 +11,19 @@ $(window).load(function () {
 
     input.trigger('fileselect', [numFiles, label])
   })
-
-  $(document).ready(function () {
-    FastClick.attach(document.body)
-    $('.btn-file :file').on('fileselect', function (event, numFiles, label) {
-      //console.log(numFiles)
-      //console.log(label)
-    })
-  })
-
-  $('[data-toggle="tooltip"]').tooltip()
-
 })
 
 $(document).ready(function () {
+  FastClick.attach(document.body) //Attach FastClick
+
+  //Does this function even do anything?
+  $('.btn-file :file').on('fileselect', function (event, numFiles, label) {
+    //console.log(numFiles)
+    //console.log(label)
+  })
+
+  $('[data-toggle="tooltip"]').tooltip() //Enable tooltips, but do we even use any?
+
   if ($('#srch-term').length > 0 && $('#srch-term').val() === '') {
     setSearchFormState()
     doTrigger()
@@ -70,25 +69,6 @@ $(document).ready(function () {
     }
   })
 
-  function setSearchFormState() {
-    if ($('.searchForm').val() === '') {
-      $('#searchForm-btn-default').html(
-        $('<i>', {
-          class: 'glyphicon glyphicon-search'
-        })
-      )
-      $('#results').hide()
-    } else {
-      $('#searchForm-btn-default').html(
-        $('<img>', {
-          alt: 'Laddar...',
-          src: '/assets/images/loading.svg',
-          class: 'loading'
-        })
-      )
-    }
-  }
-
   var typingTimer
   $('.searchForm').on('keyup', function () {
     clearTimeout(typingTimer)
@@ -106,15 +86,34 @@ $(document).ready(function () {
       doTrigger()
     }
   }, 0)
-
-  // Search results //
-  function doTrigger() {
-    if ($('.searchForm').val().length > 2) {
-      var searchTerm = $('.searchForm').val()
-      $.fn.vegosvar.search.query(searchTerm)
-    }
-  }
 })
+
+function setSearchFormState() {
+  if ($('.searchForm').val() === '') {
+    $('#searchForm-btn-default').html(
+      $('<i>', {
+        class: 'glyphicon glyphicon-search'
+      })
+    )
+    $('#results').hide()
+  } else {
+    $('#searchForm-btn-default').html(
+      $('<img>', {
+        alt: 'Laddar...',
+        src: '/assets/images/loading.svg',
+        class: 'loading'
+      })
+    )
+  }
+}
+
+// Get search results
+function doTrigger() {
+  if ($('.searchForm').val().length > 2) {
+    var searchTerm = $('.searchForm').val()
+    $.fn.vegosvar.search.query(searchTerm)
+  }
+}
 
 function mapReady () {
   $(document).ready(function () {
