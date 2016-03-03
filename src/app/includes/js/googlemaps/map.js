@@ -1,323 +1,345 @@
 (function ($) {
-  var mapInstance
-  var defaults = {
-    element: null,
-    center: {
-      lat: 59.3293358,
-      lng: 18.0686101
-    },
-    zoom: 4,
-    google: {
-      map: null,
-      markers: [],
-      overlay: null,
-      cluster: null
-    },
-    autorun: true
+  var state = {
+    instances: [],
+    active: null
   }
 
-  $.fn.googleMap = function (options) {
-    var settings = $.extend(defaults, options)
+  //TODO join this function with $.fn.googleMap
+  $.fn.googleMapInstances = function(options) {
+    var module = {
+      map: {
+        add: function(element, settings) {
+          //Create new map instance
+          var map = $(element).googleMap(settings)
 
-    google.maps.InfoWindow.prototype.isOpen = function () {
-      var map = this.map
-      return (map !== null && typeof map !== "undefined")
-    }
-
-    fn = {
-      init: function () {
-        try {
-          settings.google.map = new google.maps.Map(settings.element, {
-            zoom: settings.zoom,
-            center: settings.center
-          })
-
-          settings.google.overlay = new google.maps.OverlayView()
-          settings.google.overlay.draw = function () {}
-          settings.google.overlay.setMap(settings.google.map)
-
-          return true
-        } catch (err) {
-          throw err
-        }
-      },
-      setMarker: function (options) {
-        settings.google.markers.push(new google.maps.Marker({
-          position: options.position,
-          map: settings.google.map,
-          title: options.title,
-          icon: options.icon
-        }))
-
-        var index = settings.google.markers.length - 1
-
-        settings.google.markers[index].infowindow = new google.maps.InfoWindow({
-          content: options.content,
-          maxWidth: 200,
-          minWidth: 200
-        })
-
-        settings.google.markers[index].addListener('click', function () {
-          if (settings.google.markers[index].infowindow.isOpen()) {
-            settings.google.markers[index].infowindow.close()
-          } else {
-            for (var i = settings.google.markers.length - 1; i >= 0; i--) {
-              settings.google.markers[i].infowindow.close()
-            }
-            settings.google.markers[index].infowindow.open(settings.google.map, settings.google.markers[index])
+          state.instances.push(map)
+          if(state.active === null) { //This is the first map, set it as active
+            state.active = state.instances.length -1
           }
-        })
-      },
-      clusterMarkers: function () {
-        settings.google.cluster = new MarkerClusterer(settings.google.map, settings.google.markers, {
-          minimumClusterSize: 2,
-          maxZoom: 13,
-          gridSize: 20,
-          styles: [
-            {
-              textColor: 'white',
-              url: '/assets/images/map/cluster.png',
-              height: 28,
-              width: 31
-            },
-          ]
-        })
-      },
-      setCenter: function (position) {
-        try {
-          settings.google.map.setCenter(position)
-        } catch (err) {
-          throw err
+        },
+        current: function() {
+          //Return the current instance
+          if(state.active !== null) {
+            if(state.instances[state.active] !== 'undefined') {
+              return state.instances[state.active]
+            }
+          }
+
+          return false
+        },
+        get: function(instance) {
+          //Get instance if one is provided, else return all instances
+          if(typeof(instance) === 'undefined') {
+            return state.instances
+          }
+
+          if(state.instances[instance] !== 'undefined') {
+            return state.instances[instance]
+          } else {
+            return false
+          }
+        },
+        set: function(position) {
+          //Set the current
+          if(state.instances[position] !== 'undefined') {
+            state.active = position
+          } else {
+            return false
+          }
         }
       },
-      setZoom: function (zoom) {
-        try {
-          settings.google.map.setZoom(parseInt(zoom))
-        } catch (err) {
-          throw err
+      marker: {
+        add: function(element) {
+
+        },
+        get: function(element) {
+
+        },
+        remove: function(element) {
+
         }
-      },
-      setBounds: function (bounds) {
-        try {
-          settings.google.map.fitBounds(bounds)
-        } catch (err) {
-          throw err
-        }
-      },
-      getSettings: function () {
-        return settings
-      },
-      getBounds: function () {
-        return settings.google.map.getBounds()
-      },
-      getCenter: function () {
-        return settings.google.map.getCenter()
-      },
-      getMap: function () {
-        return settings.google.map
-      },
-      getMarkers: function () {
-        return settings.google.markers
-      },
-      getOverlay: function () {
-        return settings.google.overlay
-      },
-      getZoom: function () {
-        return settings.google.map.getZoom()
-      },
-      getLatLng: function (obj) {
-        return new google.maps.LatLng(obj)
-      },
-      getLatLngBounds: function (obj) {
-        return new google.maps.LatLngBounds(obj)
-      },
-      panBy: function (point) {
-        try {
-          settings.google.map.panBy(point)
-        } catch (err) {
-          throw err
-        }
-      },
-      panTo: function (latLng) {
-        try {
-          settings.google.map.panTo(latLng)
-        } catch (err) {
-          throw err
-        }
-      },
-      panToBounds: function (bounds) {
-        try {
-          settings.google.map.panToBounds(bounds)
-        } catch (err) {
-          throw err
-        }
-      },
-      triggerResize: function () {
-        google.maps.event.trigger(settings.google.map, 'resize')
-      },
-      removeMarkers: function () {
-        settings.google.markers = settings.google.markers.filter(function (marker) {
-          marker.setMap(null)
-        })
       }
     }
 
-    if (settings.autorun === true && ($(this).length)) {
-      settings.element = $(this)[0]
-      fn.init()
-    }
-
-    return fn
+    return module
   }
-}(jQuery))
 
-//Place markers on map
-function setMarkers(data, settings) {
-  for (var i = 0; i < data.length; i++) {
-    entry = data[i]
-    if (typeof(entry.post.coordinates) !== 'undefined') {
-      var iconUrl = '/assets/images/'
-
-      switch (entry.type) {
-        case '3':
-          iconUrl += 'pin-restaurant.png'
-          break
-        case '5':
-          iconUrl += 'pin-store.png'
-          break
-        default:
-          iconUrl = false //use default google marker
-          break
-      }
-
-      var infoWindowContent = function (entry) {
-        var content = (entry.post.content.length > 90) ? entry.post.content.substr(0, 90) + '...' : entry.post.content
-        return $('<div>', {
+  $.fn.vegosvar.map = function() {
+    var module = {
+      getInfowindowContent: function(content) {
+        var content = (content.length > 90) ? content.substr(0, 90) + '...' : content
+        var result = $('<div>', {
           class: 'infowindow-content'
         })
         .html(content)
-      }
 
-      var entryContent = $('<div>')
-      .append(
-        $('<div>', {
-          id: 'infowindow-' + entry._id,
-          class: 'infowindow-container'
-        })
-        .append(
-          $('<div>', {
-            class: 'infowindow-header'
-          })
+        return result
+      },
+      entryContent: function(entry) {
+        return $('<div>')
           .append(
             $('<div>', {
-              class: 'infowindow-image'
-            })
-            .append(
-              $('<img>', {
-                src: '/uploads/' + entry.post.cover.filename + '.jpg'
-              })
-           ),
-            $('<div>', {
-              class: 'infowindow-title'
-            })
-            .append(
-              $('<a>', {
-                href: entry.url
-              })
-              .html(entry.title)
-           ),
-            $('<div>', {
-              class: 'infowindow-stars-container'
+              id: 'infowindow-' + entry._id,
+              class: 'infowindow-container'
             })
             .append(
               $('<div>', {
-                class: 'stars'
+                class: 'infowindow-header'
               })
               .append(
-                $.map(new Array(5), function (value, i) {
-                  return $('<div>', {
-                    class: ('rating' in entry && 'votes_sum' in entry.rating && (i + 1) <= entry.rating.votes_sum) ? 'star active' : 'star'
-                  }).append(
-                    $('<span>', {
-                      class: 'glyphicon glyphicon-star'
+                $('<div>', {
+                  class: 'infowindow-image'
+                })
+                .append(
+                  $('<img>', {
+                    src: '/uploads/' + entry.post.cover.filename + '.jpg'
+                  })
+               ),
+                $('<div>', {
+                  class: 'infowindow-title'
+                })
+                .append(
+                  $('<a>', {
+                    href: entry.url
+                  })
+                  .html(entry.title)
+               ),
+                $('<div>', {
+                  class: 'infowindow-stars-container'
+                })
+                .append(
+                  $('<div>', {
+                    class: 'stars'
+                  })
+                  .append(
+                    $.map(new Array(5), function (value, i) {
+                      return $('<div>', {
+                        class: ('rating' in entry && 'votes_sum' in entry.rating && (i + 1) <= entry.rating.votes_sum) ? 'star active' : 'star'
+                      }).append(
+                        $('<span>', {
+                          class: 'glyphicon glyphicon-star'
+                        })
+                     )
                     })
                  )
-                })
-             )
+               )
+             ),
+             module.getInfowindowContent(entry.post.content)
            )
-         ),
-          infoWindowContent(entry)
-       )
-     )
+         )
+      },
+      applyMarkerData: function(data, options) {
+        if (options.hasOwnProperty('data')) {
+          if (options.data.filterName === 'single') {
+            if (data.length > 0 && data[0].post.hasOwnProperty('coordinates')) {
+              var mapInstance = $.fn.googleMapInstances().map.current()
 
-      mapInstance.setMarker({
-        position: {
-          lat: parseFloat(entry.post.coordinates.latitude),
-          lng: parseFloat(entry.post.coordinates.longitude)
-        },
-        title: entry.title,
-        content: entryContent.html(),
-        icon: {
-          url: iconUrl,
-          size: new google.maps.Size(32, 32)
+              mapInstance.setCenter({
+                lat: parseFloat(data[0].post.coordinates.latitude),
+                lng: parseFloat(data[0].post.coordinates.longitude)
+              })
+
+              mapInstance.setZoom(15)
+
+              module.setMarkers(data, { infoWindowOpen: true })
+
+              module.getMarkerData({}, function (data) {
+                module.applyMarkerData(data, {})
+              })
+            } else {
+              //console.log('Page is missing map coordinates')
+              return false
+            }
+          }
         }
-      })
 
-      if ('infoWindowOpen' in settings && settings.infoWindowOpen === true) {
-        //Open the newly added infowindow by default
-        var mapSettings = mapInstance.getSettings()
-        var markers = mapSettings.google.markers
+        module.setMarkers(data, options)
+      },
+      setMarkers: function(data, settings) {
+        var mapInstance = $.fn.googleMapInstances().map.current()
 
-        if ($('.filter:visible').length <= 0) {
-          ///show open infowindow only if filter is not visible
-          var marker = markers[markers.length - 1]
-          marker.infowindow.open(mapInstance.getMap(), marker)
-          google.maps.event.addListenerOnce(marker.infowindow, 'domready', function () {
-            panToFit()
-          })
+        for (var i = 0; i < data.length; i++) {
+          entry = data[i]
+          if (typeof(entry.post.coordinates) !== 'undefined') {
+            var iconUrl = '/assets/images/'
+
+            switch (entry.type) {
+              case '3':
+                iconUrl += 'pin-restaurant.png'
+                break
+              case '5':
+                iconUrl += 'pin-store.png'
+                break
+              default:
+                return false
+            }
+
+            var content = module.entryContent(entry)
+
+            mapInstance.setMarker({
+              position: {
+                lat: parseFloat(entry.post.coordinates.latitude),
+                lng: parseFloat(entry.post.coordinates.longitude)
+              },
+              title: entry.title,
+              content: content.html(),
+              icon: {
+                url: iconUrl,
+                size: new google.maps.Size(32, 32)
+              }
+            })
+
+            if(settings) {
+              if ('infoWindowOpen' in settings && settings.infoWindowOpen === true) {
+                //Open the newly added infowindow
+                onDomReadyOpenMarkerInfowindow(true)
+              }
+            }
+          }
         }
+
+        if (typeof(settings) !== 'undefined' && settings.hasOwnProperty('cluster')) {
+          if (settings.cluster === true) {
+            mapInstance.clusterMarkers()
+          }
+        }
+      },
+      panToFit: function() {
+        var mapInstance = $.fn.googleMapInstances().map.current()
+
+        var projection = mapInstance.getMap().getProjection()
+
+        var bounds = $.fn.googleMap().getBounds()
+        var center = bounds.getCenter()
+
+        var latLng = projection.fromLatLngToPoint(center)
+        var scale = 1 << mapInstance.getZoom()
+
+        var position = null
+        var offset = null
+
+        if ($(window).height() > 640) {
+          offset = ((($(window).height() * 256)) / scale)
+        } else {
+          offset = ((($(window).height() * 256) * 2.5) / scale)
+        }
+
+        if(offset) {
+          position = $.fn.googleMap().getPoint(
+            ((latLng.x * scale)) / scale,
+            ((latLng.y * scale) - offset - 100) / scale
+          )
+
+          if (position) {
+            var newCenter = projection.fromPointToLatLng(position)
+            mapInstance.setCenter(newCenter)
+            return
+          }
+        }
+      },
+      getMapOptions: function(elementId) {
+        var options = {}
+        var mapData = $(elementId).data()
+
+        //Check if map is configured to auto initialize
+        if (mapData.hasOwnProperty('mapInit')) {
+          options.init = mapData.mapInit
+        }
+
+        if (mapData.hasOwnProperty('mapCluster')) {
+          options.cluster = mapData.mapCluster
+        }
+
+        if (mapData.hasOwnProperty('mapFilter')) {
+          var filters = {
+            single: function () {
+              return {
+                id: $('.content')[0].id //Include this in the map data attributes
+              }
+            },
+            restaurant: function () {
+              return {
+                type: '3'
+              }
+            },
+            butik: function () {
+              return {
+                type: '5'
+              }
+            }
+          }
+
+          if (mapData.mapFilter in filters) {
+            options.data = {
+              filter: filters[mapData.mapFilter](),
+              filterName: mapData.mapFilter
+            }
+          }
+        }
+
+        if (mapData.hasOwnProperty('markerLatitude')) {
+          options.markerLatitude = mapData.markerLatitude
+        }
+
+        if (mapData.hasOwnProperty('markerLongitude')) {
+          options.markerLongitude = mapData.markerLongitude
+        }
+
+        if (mapData.hasOwnProperty('markerTitle')) {
+          options.markerTitle = mapData.markerTitle
+        }
+
+        return options
+      },
+      setSingleOpenMarker: function(obj) {
+        var mapInstance = module.map.current()
+        mapInstance.setMarker({
+          position: {
+            lat: parseFloat(obj.coordinates.latitude),
+            lng: parseFloat(obj.coordinates.longitude)
+          },
+          content: obj.content
+        })
+
+        mapInstance.setZoom(11)
+
+        mapInstance.setCenter({
+          lat: parseFloat(obj.coordinates.latitude),
+          lng: parseFloat(obj.coordinates.longitude)
+        })
+
+        onDomReadyOpenMarkerInfowindow(true)
+      },
+      getMarkerData: function(options, callback) {
+        var settings = $.extend({
+          url: '/ajax/map'
+        }, options)
+
+        $.ajax(settings)
+        .done(function (data) {
+          callback(data)
+        })
       }
-    } else {
-      console.log(entry.title + ' has no coordinates!')
     }
+
+    return module
   }
-  if (typeof(settings) !== 'undefined' && settings.hasOwnProperty('cluster')) {
-    if (settings.cluster === true) {
-      mapInstance.clusterMarkers()
+}(jQuery))
+
+function onDomReadyOpenMarkerInfowindow(panAfter) {
+  var mapInstance = $.fn.googleMapInstances().map.current()
+  var mapSettings = mapInstance.getSettings()
+  var markers = mapSettings.google.markers
+
+  if ($('.filter:visible').length <= 0) {
+    ///show open infowindow only if filter is not visible
+    var marker = markers[markers.length - 1]
+    marker.infowindow.open(mapInstance.getMap(), marker)
+    if(panAfter) {
+      google.maps.event.addListenerOnce(marker.infowindow, 'domready', function () {
+        $.fn.vegosvar.map().panToFit()
+      })
     }
-  }
-}
-
-function panToFit() {
-  var projection = mapInstance.getMap().getProjection()
-
-  var bounds = mapInstance.getBounds()
-  var center = bounds.getCenter()
-
-  var latLng = projection.fromLatLngToPoint(center)
-  var scale = 1 << mapInstance.getZoom()
-
-  var position = null
-
-  if ($(window).height() > 640) {
-    var offset = ((($(window).height() * 256)) / scale)
-
-    position = new google.maps.Point(
-      ((latLng.x * scale) - 1) / scale,
-      ((latLng.y * scale) - offset - 100) / scale
-   )
-  } else {
-    var offset = ((($(window).height() * 256) * 2.5) / scale)
-
-    position = new google.maps.Point(
-      ((latLng.x * scale)) / scale,
-      ((latLng.y * scale) - offset - 30) / scale
-   )
-  }
-
-  if (position) {
-    var newCenter = projection.fromPointToLatLng(position)
-    mapInstance.setCenter(newCenter)
   }
 }
 
@@ -336,9 +358,11 @@ function zoomToUserLocation () {
         icon: '/assets/images/pin-my-position.png',
       }
 
+      var mapInstance = $.fn.googleMapInstances().map.current()
       var markers = mapInstance.getMarkers()
-
       var setNew = true
+
+      //Loop over all existing markers, if user location marker is found, update it
       $.each(markers, function(i, marker) {
         if('title' in marker) {
           if(marker.title === locationObj.title) {
@@ -351,7 +375,7 @@ function zoomToUserLocation () {
 
       if(setNew) {
         mapInstance.setMarker(locationObj)
-        openLastMarkerInfowindow()
+        onDomReadyOpenMarkerInfowindow(false)
       }
 
       mapInstance.setCenter(position)
@@ -362,165 +386,11 @@ function zoomToUserLocation () {
   })
 }
 
-function getMarkerData(options, callback) {
-  var settings = $.extend({
-    url: '/ajax/map'
-  }, options)
-
-  $.ajax(settings)
-  .done(function (data) {
-    callback(data)
-  })
-}
-
-function getMapOptions(element) {
-  var options = {}
-  var mapData = $('#map').data()
-
-  //Check if map is configured to auto initialize
-  if (mapData.hasOwnProperty('mapInit')) {
-    options.init = mapData.mapInit
-  }
-
-  if (mapData.hasOwnProperty('mapCluster')) {
-    options.cluster = mapData.mapCluster
-  }
-
-  if (mapData.hasOwnProperty('mapFilter')) {
-    var filters = {
-      single: function () {
-        return {
-          id: $('.content')[0].id
-        }
-      },
-      restaurant: function () {
-        return {
-          type: '3'
-        }
-      },
-      butik: function () {
-        return {
-          type: '5'
-        }
-      }
-    }
-
-    if (mapData.mapFilter in filters) {
-      options.data = {
-        filter: filters[mapData.mapFilter](),
-        filterName: mapData.mapFilter
-      }
-    }
-  }
-
-  if (mapData.hasOwnProperty('markerLatitude')) {
-    options.markerLatitude = mapData.markerLatitude
-  }
-
-  if (mapData.hasOwnProperty('markerLongitude')) {
-    options.markerLongitude = mapData.markerLongitude
-  }
-
-  if (mapData.hasOwnProperty('markerTitle')) {
-    options.markerTitle = mapData.markerTitle
-  }
-
-  return options
-}
-
-function applyMarkerData(data, options) {
-  if (options.hasOwnProperty('data')) {
-    if (options.data.filterName === 'single') {
-      if (data.length > 0 && data[0].post.hasOwnProperty('coordinates')) {
-        mapInstance.setCenter({
-          lat: parseFloat(data[0].post.coordinates.latitude),
-          lng: parseFloat(data[0].post.coordinates.longitude)
-        })
-
-        mapInstance.setZoom(15)
-
-        setMarkers(data, { infoWindowOpen: true })
-
-        getMarkerData({}, function (data) {
-          applyMarkerData(data, {})
-        })
-      } else {
-        console.log('Page is missing map coordinates')
-        return
-      }
-    }
-  }
-
-  setMarkers(data, options)
-}
-
-function openLastMarkerInfowindow() {
-  settings = mapInstance.getSettings()
-  marker = settings.google.markers[settings.google.markers.length - 1]
-  marker.infowindow.open(mapInstance.getMap(), marker)
-}
-
-function setSingleOpenMarker (obj) {
-  mapInstance.setMarker({
-    position: {
-      lat: parseFloat(obj.coordinates.latitude),
-      lng: parseFloat(obj.coordinates.longitude)
-    },
-    content: obj.content
-  })
-
-  mapInstance.setZoom(11)
-
-  mapInstance.setCenter({
-    lat: parseFloat(obj.coordinates.latitude),
-    lng: parseFloat(obj.coordinates.longitude)
-  })
-
-  openLastMarkerInfowindow()
-}
-
-function fullscreenSupported () {
-  return (document.fullscreenEnabled ||
-    document.webkitFullscreenEnabled ||
-    document.mozFullScreenEnabled ||
-    document.msFullscreenEnabled
- )
-}
-
-function isFullscreen () {
-  return (document.fullscreenElement ||
-    document.webkitFullscreenElement ||
-    document.mozFullScreenElement ||
-    document.msFullscreenElement) ? true : false
-}
-
-function enterFullscreen (element) {
-  if (element.requestFullscreen) {
-    element.requestFullscreen()
-  } else if (element.webkitRequestFullscreen) {
-    element.webkitRequestFullscreen()
-  } else if (element.mozRequestFullScreen) {
-    element.mozRequestFullScreen()
-  } else if (element.msRequestFullscreen) {
-    element.msRequestFullscreen()
-  }
-}
-
-function exitFullscreen () {
-  if (document.exitFullscreen) {
-    document.exitFullscreen()
-  } else if (document.webkitExitFullscreen) {
-    document.webkitExitFullscreen()
-  } else if (document.mozCancelFullScreen) {
-    document.mozCancelFullScreen()
-  } else if (document.msExitFullscreen) {
-    document.msExitFullscreen()
-  }
-}
-
 $(document).bind('mapready', function (e) {
-  //Initialize map
-  mapInstance = $('#map').googleMap()
+  //Initialize map(s)
+  $('.googleMap').each(function(i, map) {
+    $.fn.googleMapInstances().map.add(map)
+  })
 
   $('#show-map').on('click', function (e) {
     e.preventDefault()
@@ -528,11 +398,14 @@ $(document).bind('mapready', function (e) {
     $('.filter').addClass('hidden') //Remove overlay filter
 
     //Get map options
-    var options = getMapOptions()
+    var options = $.fn.vegosvar.map().getMapOptions('#map')
+
+    //Intialize map
+    $.fn.googleMapInstances().map.add('#map')
 
     //Get marker data
-    getMarkerData(options, function (data) {
-      applyMarkerData(data, options)
+    $.fn.vegosvar.map().getMarkerData(options, function (data) {
+      $.fn.vegosvar.map().applyMarkerData(data, options)
     })
   })
 
@@ -544,6 +417,7 @@ $(document).bind('mapready', function (e) {
   $('.showFullscreen').on('click', function (e) {
     e.preventDefault()
     if (fullscreenSupported()) {
+      //TODO, get element parent instead
       var element = document.getElementById('mapContainer')
 
       if (isFullscreen()) {
@@ -592,12 +466,12 @@ $(document).bind('mapready', function (e) {
   })
 
   if ($('#map').length > 0) {
-    var options = getMapOptions()
+    var options = $.fn.vegosvar.map().getMapOptions('#map')
 
     if ('init' in options && options.init === true) {
       if ('markerLatitude' in options && 'markerLongitude' in options) {
         //Map provides its own coordinates
-        setSingleOpenMarker({
+        $.fn.vegosvar.map().setSingleOpenMarker({
           coordinates: {
             latitude: options.markerLatitude,
             longitude: options.markerLongitude
@@ -605,8 +479,8 @@ $(document).bind('mapready', function (e) {
           content: options.markerTitle
         })
       } else {
-        getMarkerData(options, function (data) {
-          applyMarkerData(data, options)
+        $.fn.vegosvar.map().getMarkerData(options, function (data) {
+          $.fn.vegosvar.map().applyMarkerData(data, options)
         })
       }
     }
