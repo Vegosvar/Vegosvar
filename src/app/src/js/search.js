@@ -328,7 +328,7 @@
                     return false
                 }
 
-                var content = $.fn.vegosvar.map.entryContent(entry)
+                var content = $.fn.vegosvar.map().entryContent(entry)
 
                 mapInstance.setMarker({
                   position: {
