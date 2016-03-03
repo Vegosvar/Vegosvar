@@ -163,8 +163,8 @@
                       </div>
                     </div>
                     <% if (post.type === '3' || post.type === '5') { %>
-                      <div id="mapContainer" class="in-content">
-                        <div id="map" data-map-init="true" data-map-filter="single" class="sidebar"></div>
+                      <div id="mapContainer" class="mapContainer in-content">
+                        <div id="map" data-map-init="true" data-map-filter="single" class="googleMap sidebar"></div>
                         <div class="toolbar">
                           <a href="#" class="btn showMyLocation">
                             <span class="fa fa-location-arrow"></span>
@@ -438,8 +438,8 @@
               </div>
             </div>
           <% } else { %>
-            <div id="mapContainer" class="sidebar">
-              <div id="map" data-map-filter="restaurant" data-map-cluster="true" class="sidebar"></div>
+            <div id="mapContainer" class="mapContainer sidebar">
+              <div id="map" data-map-filter="restaurant" data-map-cluster="true" class="googleMap sidebar"></div>
               <div class="filter">
                 <div class="vertical-center">
                   <img alt="" src="/assets/images/map-icon.svg" style="width: 60px;"> 
