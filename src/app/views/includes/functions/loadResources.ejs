@@ -46,11 +46,13 @@ if( typeof loadAdminResources.users !== 'undefined' && loadAdminResources.users 
 <% } %>
 
 <% if (typeof loadMapResources !== 'undefined') { %>
-    <script src="//maps.googleapis.com/maps/api/js?libraries=places&region=SE&language=sv_SE&callback=mapReady" defer></script>
+    <script src="//maps.googleapis.com/maps/api/js?libraries=places&region=SE&language=sv_SE&callback=mapReady" defer async></script>
 <% if (typeof loadMapResources.autocomplete !== 'undefined' && loadMapResources.autocomplete === true) { %>
     <script src="/includes/js/googlemaps/input.js" defer></script>
 <% } %>
 <% if (typeof loadMapResources.map !== 'undefined' && loadMapResources.map === true) { %>
+    <script src="/includes/js/googlemaps/controller.js" defer></script>
+    <script src="/includes/js/googlemaps/fullscreen.js" defer></script>
     <script src="/includes/js/googlemaps/map.js" defer></script>
 <% } %>
 <% if (typeof loadMapResources.mapCluster !== 'undefined' && loadMapResources.mapCluster === true) { %>
