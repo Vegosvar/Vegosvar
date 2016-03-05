@@ -15,7 +15,7 @@ module.exports = function (app, resources) {
   app.use(function(req, res, next) {
     if (resources.toobusy()) {
       console.log('server too busy!')
-      res.send(503, 'Pust! Vegosvar är under hög belastning just nu. Försök att ladda om sidan igen!')
+      res.status(503).send('Pust! Vegosvar är under hög belastning just nu. Försök att ladda om sidan igen!')
     } else {
       next()
     }
