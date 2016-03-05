@@ -1,6 +1,6 @@
-/** redirects.js
-* @file: /src/app/routes/redirects.js
-* @description: Handles express redirect routing
+/** setup.js
+* @file: /src/app/routes/setup.js
+* @description: The first express routes to handles redirect routing and blocking requests when under extreme load
 * @parameters: Object(app), Object(resources)
 * @returns: Express routes
 */
@@ -10,6 +10,16 @@ var striptags = require('striptags')
 
 module.exports = function (app, resources) {
   var functions = resources.functions
+
+  // middleware which blocks requests when we're too busy 
+  app.use(function(req, res, next) {
+    if (resources.toobusy()) {
+      console.log('server too busy!')
+      res.send(503, 'Pust! Vegosvar är under hög belastning just nu. Försök att ladda om sidan igen!')
+    } else {
+      next()
+    }
+  })
 
   app.get('/*', function (req, res, next) {
     var noRedirect = ['logga-in','logga-ut', 'ajax', 'recensera', 'auth', 'uploads']
