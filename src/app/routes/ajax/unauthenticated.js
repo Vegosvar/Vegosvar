@@ -169,10 +169,10 @@ module.exports = function (app, resources) {
     }
 
     var queryTypes = function(string) {
-      string = string.toLowerCase().replace(/[^a-z]/gi,'') //Remove non alphabet characters
-      string = string.replace(/éè/) //Remove accent, mainly for café/kafé
+      string = string.toLowerCase().replace(/é|è/gi, 'e') //Remove accent, mainly for café/kafé
+      string = string.replace(/[^a-z]/gi, '') //Remove non alphabet characters
 
-      var keywords = ['butik','restaurang','produkt','recept','fakta','vegan','laktoovo','animal']
+      var keywords = ['cafe','kafe','butik','restaurang','produkt','recept','fakta','vegan','laktoovo','animal']
       var regexMatches = new RegExp('^' + keywords.join('|'))
 
       var match = string.match(regexMatches)
@@ -183,6 +183,7 @@ module.exports = function (app, resources) {
           //Perform the operations on the search query
           if(queryOperations[key]()) {
             //Update the search string to remove the key from the search, otherwise might result in unwanted results
+            searchString = searchString.toLowerCase().replace(/é|è/gi, 'e') //Remove accent, mainly for café/kafé
             var tmpArray = searchString.toLowerCase().split(' ')
 
             //Filter out the current key from the search query
@@ -207,7 +208,6 @@ module.exports = function (app, resources) {
         filteredQuery.$match[key] = query[key]
       }
     }
-
 
     //Array to hold regex objects of search strings
     var regexArray = []
@@ -240,6 +240,8 @@ module.exports = function (app, resources) {
       //Add $or matches with the regex strings
       filteredQuery.$match.$or = orFields
     }
+
+    console.log(searchString)
 
     //Check if query matches a city
     var citiesdb = resources.collections.cities
