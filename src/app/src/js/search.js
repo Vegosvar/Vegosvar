@@ -439,7 +439,7 @@
         .append(
           $.map(new Array(5), function (item, index) {
             return $('<div>', {
-              class: (rating !== false && index <= rating && rating > 0) ? 'active star' : 'star'
+              class: (rating !== false && index <= rating && rating > 0) ? 'active star-static' : 'star-static'
             })
             .append(
               $('<span>', {

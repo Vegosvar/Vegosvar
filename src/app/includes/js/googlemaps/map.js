@@ -114,7 +114,7 @@
                   .append(
                     $.map(new Array(5), function (value, i) {
                       return $('<div>', {
-                        class: ('rating' in entry && 'votes_sum' in entry.rating && (i + 1) <= entry.rating.votes_sum) ? 'star active' : 'star'
+                        class: ('rating' in entry && 'votes_sum' in entry.rating && (i + 1) <= entry.rating.votes_sum) ? 'star-static active' : 'star-static'
                       }).append(
                         $('<span>', {
                           class: 'glyphicon glyphicon-star'
