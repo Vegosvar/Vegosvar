@@ -156,7 +156,101 @@ module.exports = function (app, resources) {
   })
 
   app.get('/ajax/admin/revision/deny/:page_id/:revision_number', functions.isPrivileged, function (req, res, next) {
-    //TODO write this route similar to the apply one
+    var pagesdb = resources.collections.pages
+    var revisionsdb = resources.collections.revisions
+
+    var page_id = req.params.page_id
+    var revision_number = req.params.revision_number
+
+    revisionsdb.find({ post_id: new ObjectID(page_id)}).toArray(function(err, docs) {
+      if(err) {
+        res.json({
+          success:false,
+          post: page_id,
+          message: 'Could not find an entry for the page\'s revisions in the database'
+        })
+      }
+
+      var doc = docs[0]
+      var revisions = doc.revisions
+      if(revision_number in revisions) {
+        
+        //If this has not been moderated before, decrease the number of revisions pending revision
+        var pending = (revisions[revision_number].meta.accepted === null) ? (doc.pending -1) : doc.pending
+
+        var data = {
+          pending: pending,
+          revision: revision_number,
+          revisions: revisions
+        }
+
+        data.revisions[revision_number].meta.accepted = false
+
+        revisionsdb.findAndModify({
+            post_id: new ObjectID(page_id)
+          },
+          ['_id','asc'], // sort order
+          {
+            $set: data
+          }, {
+            new: true,
+            upsert: true
+          },
+          function (err, result) {
+            if(err) {
+              res.json({
+                success: false,
+                post: page_id,
+                message:'Failed to update the page\'s revision'
+              })
+            }
+
+            var new_post = data.revisions[revision_number]
+            var contributors = (new_post['meta'].user_info instanceof Array) ? new_post['meta'].user_info : [new_post['meta'].user_info]
+            delete(new_post['meta'])
+
+            var isodate = functions.newISOdate(new Date(revision_number * 1000))
+
+            pagesdb.findAndModify({
+                _id: new ObjectID(page_id)
+              },
+              ['_id','asc'], // sort order
+              {
+                $set: {
+                  post: new_post,
+                  accepted: false,
+                  "user_info.contributors": contributors,
+                  "timestamp.updated": isodate
+                }
+              }, {
+                new: true,
+                upsert: true
+              }, function (err, result) {
+                if(err) {
+                  res.json({
+                    success:false,
+                    post: page_id,
+                    message: 'Failed to update the page\'s content'
+                  })
+                }
+
+                res.json({
+                  success:true,
+                  post: page_id,
+                  message: 'Successfully denied page revision'
+                })
+              }
+            )
+          }
+        )
+      } else {
+        res.json({
+          success:false,
+          post: page_id,
+          message:'Could not find a revision with supplied id among the page\'s revisions'
+        })
+      }
+    })
   })
 
   app.get('/ajax/admin/revision/compare/:page_id/:revision_number', functions.isPrivileged, function (req, res, next) {
