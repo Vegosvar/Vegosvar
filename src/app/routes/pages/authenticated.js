@@ -176,12 +176,13 @@ module.exports = function (app, resources) {
           'recept': '2',
           'restaurang': '3',
           'produkt': '4',
-          'butik': '5'
+          'butik': '5',
+          'cafe': '6'
         }
 
         if(type in types) {
           var pageType = types[type]
-          var mapResources = (pageType === '3' || pageType === '5') ? { autocomplete: true, map: true } : false
+          var mapResources = (pageType === '3' || pageType === '5' || pageType === '6') ? { autocomplete: true, map: true } : false
           var pageResources = {
             create_page: true,
             youtube: (pageType === '2') ? true : false
@@ -231,6 +232,7 @@ module.exports = function (app, resources) {
         }
       } else {
         console.log('blocked')
+        next()
         //TODO notify user that it is blocked
       }
     })
@@ -269,6 +271,10 @@ module.exports = function (app, resources) {
             page = 'butik'
             mapResources = { autocomplete: true, map: true }
             break    
+          case 6:
+            page = 'cafe'
+            mapResources = { autocomplete: true, map: true }
+            break
           default:
             return next()
         }
