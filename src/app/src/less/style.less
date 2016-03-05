@@ -1161,9 +1161,18 @@ article {
 			font-size: 15px;
 		}
 		.contact {
+			.email {
+				.fa {
+					font-size: 13px;
+					top: -1px;
+					position: relative;
+					margin-right: 2px;
+				}
+			}
 			.website {
 				.fa {
 					font-size: 13px;
+					margin-right: 2px;
 				}
 			}
 			@media (max-width: @xs) {
@@ -1180,6 +1189,9 @@ article {
 				margin-bottom: 30px;
 			}
 		}
+		.list-group {
+			margin-bottom: 0;
+		}
 	}
 	.phone {
 		position: relative;
@@ -1192,8 +1204,12 @@ article {
 		}
 	}
 	.maplinks {
+		p {
+			margin: 0;
+		}
 		.btn {
 			padding: 12px 15px;
+			margin: 0 !important;
 		}
 	}
 	#location {
@@ -1223,7 +1239,7 @@ article {
 	margin-bottom: 25px;
 	@media (max-width: @xs) {
 		background: #292929;
-		margin: -30px -15px 0 -15px;
+		margin: -50px -15px 0 -15px;
 		padding: 30px 15px;
 		color: #fff;
 	}
@@ -1245,6 +1261,11 @@ article {
 		margin: 0 -15px;
 		padding: 30px 15px 0 15px;
 		margin-bottom: 0;
+	}
+	.fa-comments-o {
+		position: relative;
+		top: -3px;
+		font-size: 90%;
 	}
 	h2 {
 		@media (max-width: @xs) {
@@ -1636,7 +1657,7 @@ section {
 
 
 .searchMapContainer {
-	margin-bottom: 30px;
+	margin-bottom: 30px !important;
 }
 
 
@@ -2140,8 +2161,7 @@ section {
 	margin-bottom: 60px;
 	@media (max-width: @xs) {
 		margin: 0 -15px;
-		background: #fff;
-		padding: 30px 15px 0
+		padding: 30px 15px 15px
 		 15px;
 	}
 	.recipe {
@@ -2169,8 +2189,6 @@ section {
 			@media (max-width: @sm) {
 				padding: 10px 0;
 				text-align: center;
-				background: #222;
-				color: #fff;
 			}
 			h3 {
 				margin: 0 0 3px 0;
@@ -2181,7 +2199,6 @@ section {
 				}
 				@media (max-width: @sm) {
 					font-size: 16px;
-					color: #fff;
 				}
 			}
 		}

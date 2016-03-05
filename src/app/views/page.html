@@ -140,7 +140,7 @@
 
                   <% if (typeof post.post.email !== 'undefined' && post.post.email !== "") { %>
                     <div><a href="mailto:<%= post.post.email %>" target="_blank" class="text-muted email">
-                      <span class="fa fa-envelope-o small"></span> 
+                      <span class="fa fa-envelope-o"></span> 
                       <%= post.post.email %>
                     </a></div>
                   <% } %>
@@ -153,13 +153,13 @@
                   <% } %>
                 </div>
 
-                <hr class="lg hidden-xs">
+                <hr class="hidden-xs">
                 <div class="row">
                   <div class="col-lg-6" id="location">
                     <div class="hidden-xs text-center-xs">
-                      <h2><%= post.post.city %></h2>
+                      <h2>Hitta hit</h2>
                       <div class="street">
-                        <%= post.post.street %>
+                        <%= post.post.street %>, <%= post.post.city %>
                       </div>
                     </div>
                     <% if (post.type === '3' || post.type === '5') { %>
@@ -387,9 +387,9 @@
 
           <div id="comments">
             <% if (post.type === '3' || post.type === '4' || post.type === '5') { %>
-              <h2>Recensioner</h2>
+              <h2><span class="fa fa-comments-o"></span> Recensioner</h2>
             <% } else { %>
-              <h2>Kommentarer</h2>
+              <h2><span class="fa fa-comments-o"></span> Kommentarer</h2>
             <% } %>
             <div id="disqus_thread"></div>
             <script>
@@ -414,7 +414,7 @@
 
           <% if (post.type === '3' || post.type === '5') { %>
             <div class="card lg">
-              <h2><%= post.post.city %></h2>
+              <h2><a href="/?s=<%= post.post.city %>"><%= post.post.city %></a></h2>
               <h3 class="subtitle">Restauranger & butiker</h3>
               <ul class="page-menu">
               <% if(typeof(establishments) !== 'undefined') {
@@ -454,17 +454,10 @@
             </div>
           <% } %>
 
-          <div class="card lg text-center hidden-xs">
-              <p><img alt="" src="/assets/images/promote.svg" style="width: 100px"></p>
-            <h3>Skapa en sida på Vegosvar</h3>
-            <p>Det kan vara allt ifrån fakta, restauranger, butiker, produkter och recept.</p>
-            <a href="/ny" target="_blank" class="btn btn-secondary">Skapa en sida</a>
-          </div>
-
           <div class="card lg text-center">
             <p><img src="/assets/images/fb-color.svg" class="circle" style="width: 50px;"></p>
-            <h3>Facebookgrupp</h3>
-            <p>Hittar du inte det du söker? Gå med i Facebookgruppen för vegetarianer & veganer i Sverige.</p>
+            <h3>Diskutera på Facebook</h3>
+            <p>Gå med i Facebookgruppen för vegetarianer & veganer i Sverige.</p>
             <a href="https://www.facebook.com/groups/840104332722635/?fref=ts" target="_blank" class="btn btn-fb btn-secondary">Gå med i gruppen</a>
           </div>
 
