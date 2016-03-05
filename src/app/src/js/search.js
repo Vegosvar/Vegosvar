@@ -118,7 +118,8 @@
           '2': 'Recept',
           '3': 'Restauranger',
           '4': 'Produkter',
-          '5': 'Butiker'
+          '5': 'Butiker',
+          '6': 'Caféer'
         }
 
         if ($('#searchFilter').index() === -1) {
@@ -238,7 +239,7 @@
           var entryIds = [] //Array to hold all the posts ids
 
           $.each(results, function (i, entry) {
-            if (entry.type === '5' || entry.type === '3') {
+            if (entry.type === '6' || entry.type === '5' || entry.type === '3') {
               //Check if any of the results can be placed on a map
               entryIds.push(entry._id)
             }
@@ -323,6 +324,9 @@
                     break
                   case '5':
                     iconUrl += 'pin-store.png'
+                    break
+                  case '6':
+                    iconUrl += 'pin-cafe.png'
                     break
                   default:
                     return false
@@ -431,9 +435,6 @@
         var rating = (entry.hasOwnProperty('rating') ? (entry.rating.hasOwnProperty('votes_sum') ? entry.rating.votes_sum : false) : false)
         return $('<div>', {
           class: 'stars'
-        })
-        .attr({
-          'data-id': entry._id
         })
         .append(
           $.map(new Array(5), function (item, index) {
