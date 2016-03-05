@@ -75,7 +75,7 @@
 
               <h1><%= post.title %></h1>
 
-              <% if (post.type === '3' || post.type === '5') { %>
+              <% if (post.type === '3' || post.type === '5' || post.type === '6') { %>
                 <a href="/?s=<%= post.post.city %>">
                   <h2 class="subtitle">
                     <%= post.post.city %>
@@ -104,7 +104,7 @@
                 <%- post.post.content %>
               </p>
 
-              <% if (post.type === '3' || post.type === '5' || post.type === '4' && post.post.veg_type !== 'animal') { %>
+              <% if (post.type === '3' || post.type === '5' || post.type === '6' || post.type === '4' && post.post.veg_type !== 'animal') { %>
               <div class="stars lg" data-id="<%= post._id %>">
                 <% for(i = 1; i < 6; i++) { %>
                   <% var ratingSum = 0
@@ -129,7 +129,7 @@
                 </a></p>
               <% } %>
 
-              <% if (post.type === '3' || post.type === '5') { %>
+              <% if (post.type === '3' || post.type === '5' || post.type === '6') { %>
 
                 <div class="contact">
                   <% if (typeof post.post.phone !== 'undefined' && post.post.phone !== "") { %>
@@ -162,7 +162,7 @@
                         <%= post.post.street %>, <%= post.post.city %>
                       </div>
                     </div>
-                    <% if (post.type === '3' || post.type === '5') { %>
+                    <% if (post.type === '3' || post.type === '5' || post.type === '6') { %>
                       <div id="mapContainer" class="mapContainer in-content">
                         <div id="map" data-map-init="true" data-map-filter="single" class="googleMap sidebar"></div>
                         <div class="toolbar">
@@ -386,7 +386,7 @@
           </div>
 
           <div id="comments">
-            <% if (post.type === '3' || post.type === '4' || post.type === '5') { %>
+            <% if (post.type === '3' || post.type === '4' || post.type === '5' || post.type === '6') { %>
               <h2><span class="fa fa-comments-o"></span> Recensioner</h2>
             <% } else { %>
               <h2><span class="fa fa-comments-o"></span> Kommentarer</h2>
@@ -412,7 +412,7 @@
 
         <div class="col-sm-6 col-md-4 sidebar">
 
-          <% if (post.type === '3' || post.type === '5') { %>
+          <% if (post.type === '3' || post.type === '5' || post.type === '6') { %>
             <div class="card lg">
               <h2><a href="/?s=<%= post.post.city %>"><%= post.post.city %></a></h2>
               <h3 class="subtitle">Restauranger & butiker</h3>

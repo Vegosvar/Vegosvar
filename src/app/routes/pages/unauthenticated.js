@@ -177,7 +177,7 @@ module.exports = function (app, resources) {
           if(result.length > 0) {
             var mapResources = {
               map: true,
-              mapCluster: !(result[0].type === '3' || result[0].type === '5')
+              mapCluster: !(result[0].type === '3' || result[0].type === '5' || result[0].type === '6')
             }
 
             var pageResources = {
