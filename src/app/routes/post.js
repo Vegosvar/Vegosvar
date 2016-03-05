@@ -232,6 +232,54 @@ module.exports = function (app, resources) {
               hidden: hidden
             }
           }
+        } else if(type == 6) { // Cafe
+          var data = {
+            title: req.body.title,
+            url: niceurl,
+            type: type,
+            post: {
+              content: req.body.content,
+              sources: {
+                  name: typeof(req.body.source_name) === 'string' ? [req.body.source_name] : req.body.source_name,
+                  url: typeof(req.body.source_url) === 'string' ? [req.body.source_url] : req.body.source_url,
+              },
+              city: req.body.city,
+              street: req.body.street,
+              coordinates: {
+                  latitude: req.body.latitude,
+                  longitude: req.body.longitude
+              },
+              phone: req.body.phone,
+              website: req.body.website,
+              email: req.body.email,
+              license: req.body.license,
+              license_cc_version: req.body.license_cc_version,
+              license_holder: req.body.license_holder,
+              license_holder_website: req.body.license_holder_website,
+              veg_offer: req.body.veg_offer,
+              food: req.body.food,
+              hashtag: req.body.hashtag,
+              openhours: {
+                monday: req.body.monday,
+                tuesday: req.body.tuesday,
+                wednesday: req.body.wednesday,
+                thursday: req.body.thursday,
+                friday: req.body.friday,
+                saturday: req.body.saturday,
+                sunday: req.body.sunday
+              }, cover: {
+                id: cover_image_id,
+                filename: cover_image_filename
+              },
+            }, rating: {
+                likes: 0,
+                votes: 0,
+                votes_sum: 0
+            }, user_info: {
+              id: req.user._id,
+              hidden: hidden
+            }
+          }
         } else {
           res.redirect('/ny')
         }
