@@ -1653,6 +1653,26 @@ section {
 			}
 		}
 	}
+	&.static {
+		.star {
+			&:hover {
+				transform: scale(1);
+				color: #DEDEDE;
+			}
+			&:before {
+				display: none !important;
+			}
+		}
+		&:hover .star.active {
+			color: #FAB000;
+			&:hover {
+				color: #FAB000;
+			}
+			&:active {
+				color: #FAB000;
+			}
+		}
+	}
 }
 
 
