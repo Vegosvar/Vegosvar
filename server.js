@@ -1,5 +1,4 @@
 var config = require('./src/config/config')
-
 process.env.NODE_ENV = (config.environment) ? config.environment : 'development'
 
 var functions = require('./src/lib/functions.js')
@@ -7,6 +6,8 @@ var image_processer = require('./src/lib/imageProcesser.js')
 var db = require('./src/lib/db')
 
 var sitemap = require('sitemap')
+var toobusy = require('toobusy')
+toobusy.maxLag(100) //Max 100 ms delay before considered overloaded
 
 var express = require('express')
 
@@ -41,6 +42,7 @@ if (cluster.isMaster) {
       dbinstance: dbinstance,
       functions: functions,
       image_processer: image_processer,
+      toobusy: toobusy,
       config: config,
       sitemap: sitemap.createSitemap ({
         hostname: 'http://' + config.address,
@@ -62,6 +64,13 @@ if (cluster.isMaster) {
     require('./src/config')(app, resources)
     require('./src/app/routes')(app, resources)
 
-    app.listen(process.env.PORT || config.port, config.address)
+    var server = app.listen(process.env.PORT || config.port, config.address)
+
+    //Gracefully take down server on Ctrl+c
+    process.on('SIGINT', function() {
+      server.close()
+      toobusy.shutdown()
+      process.exit()
+    })
   })
 }
