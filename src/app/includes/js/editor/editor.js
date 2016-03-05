@@ -1,4 +1,16 @@
 $(document).ready(function () {
+
+  wysihtml5ParserRules.classes = {}
+  wysihtml5ParserRules.tags = {
+    h2: { keep_styles: {}},
+    h3: { keep_styles: {}},
+    h4: { keep_styles: {}},
+    b: {},
+    i: {},
+    em: { rename_tag: 'i'},
+    strong: { rename_tag: 'b'}
+  } 
+
   function checkStorage() {
     if(typeof(Storage) !== "undefined") {
       return ( localStorage.vegosvar_editor ) ? true : false;
