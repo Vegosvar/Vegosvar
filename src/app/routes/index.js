@@ -6,8 +6,8 @@
 */
 
 module.exports = function (app, resources) {
-  //Redirect checking
-  require('./redirect')(app, resources)
+  //Setup routes required before everything else
+  require('./setup')(app, resources)
 
   //Auth routes
   require('./auth')(app)
