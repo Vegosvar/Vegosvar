@@ -25,7 +25,8 @@ module.exports = function (app, resources) {
       accepted: true, //Only published pages
       $or: [
         { type: '3' },
-        { type: '5' }
+        { type: '5' },
+        { type: '6' }
       ]
     }
 
@@ -101,6 +102,14 @@ module.exports = function (app, resources) {
     var queryType = false
 
     var queryOperations = {
+      'kafe': function() {
+        query['type'] = '6'
+        return true
+      },
+      'cafe': function() {
+        query['type'] = '6'
+        return true
+      },
       'butik': function() {
         query['type'] = '5'
         return true
@@ -161,6 +170,7 @@ module.exports = function (app, resources) {
 
     var queryTypes = function(string) {
       string = string.toLowerCase().replace(/[^a-z]/gi,'') //Remove non alphabet characters
+      string = string.replace(/éè/) //Remove accent, mainly for café/kafé
 
       var keywords = ['butik','restaurang','produkt','recept','fakta','vegan','laktoovo','animal']
       var regexMatches = new RegExp('^' + keywords.join('|'))
