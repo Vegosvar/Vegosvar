@@ -25,6 +25,7 @@ module.exports = function (app, resources) {
           if(result.length > 0) {
             //Proceed as normal
             votesdb.count({ "post.id": new ObjectID(req.query.id), "user.id": req.user._id }, function(err, count) {
+              if(err) throw err
               if(count < 1) { // Användaren har inte röstat
                 var isodate = resources.functions.getISOdate()
                 var data = {
