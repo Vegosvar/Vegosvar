@@ -6,7 +6,7 @@ var image_processer = require('./src/lib/imageProcesser.js')
 var db = require('./src/lib/db')
 
 var sitemap = require('sitemap')
-var toobusy = require('toobusy')
+var toobusy = require('toobusy-js')
 toobusy.maxLag(100) //Max 100 ms delay before considered overloaded
 
 var express = require('express')
