@@ -28,7 +28,8 @@
     "main-bower-files": "^2.11.1",
     "gulp-bower": "0.0.13",
     "sitemap": "^1.5.0",
-    "compression": "^1.6.1"
+    "compression": "^1.6.1",
+    "toobusy": "^0.2.4"
   },
   "devDependencies": {
     "del": "^1.2.0",
