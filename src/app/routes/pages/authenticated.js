@@ -279,16 +279,46 @@ module.exports = function (app, resources) {
             return next()
         }
 
-        if(page !== null) {
-          res.render('post/' + page, {
-            user: req.user,
-            post: post,
-            loadEditorResources: true,
-            loadDropzoneResources: true,
-            loadMapResources: mapResources,
-            loadPageResources: pageResources,
-          })
-        }
+        var categoriesdb = resources.collections.categories
+        categoriesdb.aggregate([
+          {
+            $match: { type: "4" } //TODO, this should be checking with pageType later on
+          }, {
+            $group: {
+               _id: { id: "$_id", name: "$name", subcategory: "$subcategory" }
+            }
+          }, {
+            $group: {
+              "_id": "$_id.subcategory",
+              "names": {
+                "$push": {
+                  name: "$_id.name"
+                }
+              },
+              count: {
+                $sum: 1
+              }
+            }
+          }, {
+            $sort: {
+              _id: 1
+            }
+          }
+        ], function(err, categories) {
+          if (err) throw err
+
+          if(page !== null) {
+            res.render('post/' + page, {
+              user: req.user,
+              post: post,
+              loadEditorResources: true,
+              loadDropzoneResources: true,
+              loadMapResources: mapResources,
+              loadPageResources: pageResources,
+              categories: categories
+            })
+          }
+        })
       } else {
         next()
       }
