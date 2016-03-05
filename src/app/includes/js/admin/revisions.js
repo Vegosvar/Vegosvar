@@ -93,4 +93,54 @@ $(function(){
           $(msg).fadeIn()
         })
     })
+
+    $('#deny').on('click', function() {
+        var revision = $('.revision.active').data('revision')
+        var post_id = $('.content')[0].id;
+
+        $.ajax({
+          url: '/ajax/admin/revision/deny/' + post_id + '/' + revision
+        }).done(function(result) {
+          var msg = $('.message')
+          $(msg).hide();
+          if(result.success === true) {
+
+            $(msg).removeClass('alert-danger').addClass('alert-success')
+
+            $(msg).html(
+                $('<span>').append(
+                    $('<span>', {
+                        class: 'glyphicon glyphicon-ok'
+                    }),
+                    $('<span>')
+                    .html('&nbsp;Revisionen har nekats.')
+                )
+            )
+
+            //Move the label to the new revision
+            $('.revision.active').append( $('.revisions').find('.current') )
+          } else {
+            $(msg).removeClass('alert-success').addClass('alert-danger')
+            $(msg).html(
+                $('<span>')
+                .append(
+                    $('<span>',{
+                        class: 'glyphicon glyphicon-warning-sign'
+                    }),
+                    $('<span>')
+                    .html(
+                        '&nbsp;Oj! N&aring;got blev fel n&auml;r revisionen nekades!',
+                        $('<small>').html(
+                            'Felmeddelande:',
+                            $('<code>')
+                            .text(result.message)
+                        )
+                    )
+                )
+            )
+          }
+
+          $(msg).fadeIn()
+        })
+    })
 })
