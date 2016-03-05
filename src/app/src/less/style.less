@@ -1653,25 +1653,14 @@ section {
 			}
 		}
 	}
-	&.static {
-		.star {
-			cursor: default;
-			&:hover {
-				transform: scale(1);
-				color: #DEDEDE;
-			}
-			&:before {
-				display: none !important;
-			}
-		}
-		&:hover .star.active {
+	.star-static {
+		color: #DEDEDE;
+		font-size: 13px;
+		display: inline-block;
+		position: relative;
+		padding: 4px 1px;
+		&.active {
 			color: #FAB000;
-			&:hover {
-				color: #FAB000;
-			}
-			&:active {
-				color: #FAB000;
-			}
 		}
 	}
 }
