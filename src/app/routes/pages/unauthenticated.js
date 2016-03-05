@@ -194,7 +194,14 @@ module.exports = function (app, resources) {
                     {type:'5'}
                   ]
                 },
-                {"post.city":result[0].post.city}
+                {
+                  "post.city": result[0].post.city
+                },
+                {
+                  "_id": {
+                    $ne: result[0]._id
+                  }
+                }
               ]
             }).sort({_id:-1}).limit(10).toArray(function(err, establishments) {
 
