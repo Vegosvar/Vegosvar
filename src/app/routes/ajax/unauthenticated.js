@@ -53,6 +53,13 @@ module.exports = function (app, resources) {
             }
           }
         },
+        ignore: function(id) {
+          return {
+            _id: {
+              $ne: new ObjectID(id)
+            }
+          }
+        },
         city: function(city) {
           return {
             "post.city": String(city).toLowerCase()
@@ -70,9 +77,14 @@ module.exports = function (app, resources) {
     var pagesdb = resources.collections.pages
 
     pagesdb.find(filter).toArray(function(err, pages) {
-      for (var i = 0; i < pages.length; i++) {
-        pages[i].post.content = striptags(pages[i].post.content, ['br'])
-      }
+      pages = pages.filter(function(page) {
+        if('post' in page) {
+          if('content' in page.post) {
+            page.post.content = striptags(page.post.content, ['br'])
+            return page
+          }
+        }
+      })
 
       res.json(pages)
     })

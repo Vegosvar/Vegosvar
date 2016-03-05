@@ -143,7 +143,15 @@
 
               module.setMarkers(data, { infoWindowOpen: true })
 
-              module.getMarkerData({}, function (data) {
+              var filter = {
+                data: {
+                  filter: {
+                    ignore: data[0]._id
+                  }
+                }
+              }
+
+              module.getMarkerData(filter, function (data) {
                 module.applyMarkerData(data, {})
               })
             } else {
