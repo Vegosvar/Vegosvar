@@ -14,7 +14,6 @@ module.exports = function (app, resources) {
   // middleware which blocks requests when we're too busy 
   app.use(function(req, res, next) {
     if (resources.toobusy()) {
-      console.log('server too busy!')
       res.status(503).send('Pust! Vegosvar är under hög belastning just nu. Försök att ladda om sidan igen!')
     } else {
       next()
