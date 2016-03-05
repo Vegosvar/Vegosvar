@@ -170,6 +170,9 @@
               case '5':
                 iconUrl += 'pin-store.png'
                 break
+              case '5':
+                iconUrl += 'pin-cafe.png'
+                break
               default:
                 return false
             }
@@ -265,6 +268,11 @@
             butik: function () {
               return {
                 type: '5'
+              }
+            },
+            cafe: function () {
+              return {
+                type: '6'
               }
             }
           }
