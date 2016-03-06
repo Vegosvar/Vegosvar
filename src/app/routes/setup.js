@@ -11,6 +11,15 @@ var striptags = require('striptags')
 module.exports = function (app, resources) {
   var functions = resources.functions
 
+  //send HTTP header for maintenance
+  app.use(function(req, res, next) {
+    if('maintenance' in resources.config) {
+      if(resources.config.maintenance === true) {
+        res.status(502)
+      }
+    }
+  })
+
   // middleware which blocks requests when we're too busy 
   app.use(function(req, res, next) {
     if (resources.toobusy()) {
