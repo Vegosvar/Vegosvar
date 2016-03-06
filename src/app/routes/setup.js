@@ -13,10 +13,8 @@ module.exports = function (app, resources) {
 
   //send HTTP header for maintenance
   app.use(function(req, res, next) {
-    if('maintenance' in resources.config) {
-      if(resources.config.maintenance === true) {
-        res.status(502)
-      }
+    if(process.env.NODE_ENV === 'maintenance') {
+      res.status(502)
     }
   })
 
