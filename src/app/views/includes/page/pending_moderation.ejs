@@ -1,0 +1,7 @@
+            <% if('accepted' in post && post.accepted !== true) { %>
+              <% if('removed' in post && post.removed === true) { %>
+                <div class="label label-danger page-status"><span class="glyphicon glyphicon-remove"></span> <strong>Sidan är borttagen</strong></div>
+              <% } else { %>
+                <div class="label label-warning page-status"><span class="glyphicon glyphicon-asterisk"></span> <strong>Ej publicerad</strong> – Inväntar granskning</div>
+              <% }
+            } %>

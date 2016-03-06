@@ -1,0 +1,44 @@
+
+                  <div class="col-lg-6" id="location">
+                    <div class="hidden-xs text-center-xs">
+                      <h2>Hitta hit</h2>
+                      <div class="street">
+                        <%= post.post.street %>, <%= post.post.city %>
+                      </div>
+                    </div>
+                    <% if (post.type === '3' || post.type === '5' || post.type === '6') { %>
+                      <div id="mapContainer" class="mapContainer in-content">
+                        <div id="map" data-map-init="true" data-map-filter="single" class="googleMap sidebar"></div>
+                        <div class="toolbar">
+                          <a href="#" class="btn showMyLocation">
+                            <span class="fa fa-location-arrow"></span>
+                            Min position
+                          </a>
+                          <a href="#" class="btn showFullscreen">
+                            <span class="glyphicon glyphicon-fullscreen"></span>
+                          </a>
+                        </div>
+                        <div class="filter visible-xs">
+                          <div class="vertical-center">
+                            <img alt="" src="/assets/images/map-icon.svg" style="width: 60px;">
+                            <h2><%= post.post.city %></h2>
+                            <h3><%= post.post.street %></h3>
+                            <div><a href="#" id="show-map" class="btn btn-hero">
+                              <span class="glyphicon glyphicon-map-marker"></span>
+                              Se karta
+                            </a></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="row maplinks">
+                        <div class="col-xs-6 less-padding-right">
+                          <p><a href="http://maps.google.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block" target="_blank"><span class="fa fa-google"></span> Google Maps</a></p>
+                        </div>
+
+                        <div class="col-xs-6 less-padding-left">
+                          <p><a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block" target="_blank">
+                          <span class="fa fa-apple"></span> Apple Maps</a></p>
+                        </div>
+                      </div>
+                    <% } %>
+                  </div>

@@ -1,0 +1,86 @@
+
+                  <div class="col-lg-6 text-center-xs">
+                    <div id="openhours">
+                      <h2>Öppettider</h2>
+                      <div class="row">
+                        <div class="col-xs-6 less-padding-right">
+                          <ul class="list-group">
+                            <li class="list-group-item" id="monday">
+                              <h4 class="list-group-item-heading">Måndag</h4>
+                              <p class="list-group-item-text">
+                                <% if (typeof post.post.openhours.monday !== 'undefined' && post.post.openhours.monday !== "") { %>
+                                  <%= post.post.openhours.monday %>
+                                <% } else { %>
+                                  Tid saknas
+                              <% } %>
+                              </p>
+                            </li>
+                            <li class="list-group-item" id="tuesday">
+                              <h4 class="list-group-item-heading">Tisdag</h4>
+                              <p class="list-group-item-text">
+                                <% if (typeof post.post.openhours.tuesday !== 'undefined' && post.post.openhours.tuesday !== "") { %>
+                                  <%= post.post.openhours.tuesday %>
+                                <% } else { %>
+                                  Tid saknas
+                              <% } %>
+                              </p>
+                            </li>
+                            <li class="list-group-item" id="wednesday">
+                              <h4 class="list-group-item-heading">Onsdag</h4>
+                              <p class="list-group-item-text">
+                                <% if (typeof post.post.openhours.wednesday !== 'undefined' && post.post.openhours.wednesday !== "") { %>
+                                  <%= post.post.openhours.wednesday %>
+                                <% } else { %>
+                                  Tid saknas
+                                <% } %>
+                              </p>
+                            </li>
+                            <li class="list-group-item" id="thursday">
+                              <h4 class="list-group-item-heading">Torsdag</h4>
+                              <p class="list-group-item-text">
+                                <% if (typeof post.post.openhours.thursday !== 'undefined' && post.post.openhours.thursday !== "") { %>
+                                  <%= post.post.openhours.thursday %>
+                                <% } else { %>
+                                  Tid saknas
+                                <% } %>
+                              </p>
+                            </li>
+                          </ul>
+                        </div>
+                        <div class="col-xs-6 less-padding-left">
+                          <ul class="list-group">
+                            <li class="list-group-item" id="friday">
+                              <h4 class="list-group-item-heading">Fredag</h4>
+                              <p class="list-group-item-text">
+                                <% if (typeof post.post.openhours.friday !== 'undefined' && post.post.openhours.friday !== "") { %>
+                                  <%= post.post.openhours.friday %>
+                                <% } else { %>
+                                  Tid saknas
+                                <% } %>
+                              </p>
+                            </li>
+                            <li class="list-group-item" id="saturday">
+                              <h4 class="list-group-item-heading">Lördag</h4>
+                              <p class="list-group-item-text">
+                                <% if (typeof post.post.openhours.saturday !== 'undefined' && post.post.openhours.saturday !== "") { %>
+                                  <%= post.post.openhours.saturday %>
+                                <% } else { %>
+                                  Tid saknas
+                                <% } %>
+                              </p>
+                            </li>
+                            <li class="list-group-item" id="sunday">
+                              <h4 class="list-group-item-heading">Söndag</h4>
+                              <p class="list-group-item-text">
+                                <% if (typeof post.post.openhours.sunday !== 'undefined' && post.post.openhours.sunday !== "") { %>
+                                  <%= post.post.openhours.sunday %>
+                                <% } else { %>
+                                  Tid saknas
+                                <% } %>
+                              </p>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
