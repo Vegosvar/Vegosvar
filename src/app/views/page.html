@@ -1,468 +1,60 @@
 <% include includes/header %>
 
-  <div class="container">
-    <section id="main">
-
-      <div class="row">
-        <div class="col-md-8">
-
-          <article>
-
-            <% if('accepted' in post && post.accepted !== true) { %>
-              <% if('removed' in post && post.removed === true) { %>
-                <div class="label label-danger page-status"><span class="glyphicon glyphicon-remove"></span> <strong>Sidan är borttagen</strong></div>
-              <% } else { %>
-                <div class="label label-warning page-status"><span class="glyphicon glyphicon-asterisk"></span> <strong>Ej publicerad</strong> – Inväntar granskning</div>
-              <% }
-            } %>
-
-            <div class="likes">
-                <div class="hint">
-                  <a href="/logga-in">Logga in</a> på Vegosvar för att gilla
-                </div>
-                <% var likes = ('rating' in post && 'likes' in post.rating) ? post.rating.likes : 0
-                var classNames = (likes) ? 'glyphicon glyphicon-heart' : 'glyphicon glyphicon-heart-empty' %>
-                <span class="like <%= (typeof user !== 'undefined') ? 'add-like' : 'toggle-hint' %>" data-id="<%= post._id %>">
-                  <span id="heart-glyphicon" class="<%= classNames %>"></span>
-                  <span class="count"><%= parseInt(likes) %></span>
-                </span>
-            </div>
-
-            <div class="headerImage">
-              <% if (typeof post.post.cover.filename !== 'undefined' && post.post.cover.filename !== "" && post.post.cover.filename !== null) { %>
-              <img src="/uploads/<%= post.post.cover.filename %>.jpg" alt="<%= post.title %>"/>
-              <% } %>
-              <span class="license">
-                <%= post.post.license %> 
-                <%= post.post.license_cc_version %> 
-                <% if (typeof post.post.license_holder_website !== 'undefined' && post.post.license_holder_website !== "") { %>
-                  <a href="<%= post.post.license_holder_website %>" target="_blank"  rel="nofollow">
-                    <%= post.post.license_holder %>
-                  </a>
-                <% } else { %>
-                  <%= post.post.license_holder %>
-                <% } %>
-              </span>
-            </div>
-
-            <div id="<%= post._id %>" class="content">
-
-              <% if (post.post.veg_offer === 'Endast veganskt på menyn') { %>
-              <strong class="text-success small">
-                <span class="fa fa-check-circle"></span> 
-                100% veganskt
-              </strong>
-              <% } %>
-
-              <% if (post.type === '4') { %>
-                <% if (post.post.veg_type === 'animal') { %>
-                  <strong class="text-danger small">
-                    <span class="fa fa-info-circle"></span> 
-                    Animaliskt
-                  </strong>
-                <% } else if (post.post.veg_type === 'lacto_ovo') { %>
-                  <strong class="text-warning small">
-                    <span class="fa fa-info-circle"></span> 
-                    Lakto-ovo-vegetariskt
-                  </strong>
-                <% } else { %>
-                  <strong class="text-success small">
-                    <span class="fa fa-check-circle"></span> 
-                    Veganskt
-                  </strong>
-                <% } %>
-              <% } %>
-
-              <h1><%= post.title %></h1>
-
-              <% if (post.type === '3' || post.type === '5' || post.type === '6') { %>
-                <a href="/?s=<%= post.post.city %>">
-                  <h2 class="subtitle">
-                    <%= post.post.city %>
-                  </h2>
-                </a>
-              <% } %>
-              <% if (post.type === '4') { %>
-                <% if (typeof post.post.manufacturer !== 'undefined' && post.post.manufacturer !== "") { %>
-                  <a href="/?s=<%= post.post.manufacturer %>">
-                    <h2 class="subtitle">
-                        <%= post.post.manufacturer %>
-                    </h2>
-                  </a>
-                <% } %>
-              <% } %>
-
-              <% if (post.type === '2') {
-                  if ('video' in post.post) { %>
-                    <div id="player-container">
-                        <div id="player" data-video="<%= post.post.video %>"></div>
-                    </div>
-                  <% }
-              } %>
-
-              <p>
-                <%- post.post.content %>
-              </p>
-
-              <% if (post.type === '3' || post.type === '5' || post.type === '6' || post.type === '4' && post.post.veg_type !== 'animal') { %>
-              <div class="stars lg" data-id="<%= post._id %>">
-                <% for(i = 1; i < 6; i++) { %>
-                  <% var ratingSum = 0
-                  if (typeof post.rating !== 'undefined' && typeof post.rating.votes_sum !== 'undefined') {
-                    ratingSum = post.rating.votes_sum
-                  } %>
-                  <div class="star <%= (i <= ratingSum) ? 'active' : '' %> ">
-                    <span class="glyphicon glyphicon-star"></span>
-                  </div>
-               <% } %>
-               <% if (typeof post.rating !== 'undefined' && typeof post.rating.votes !== 'undefined') { %>
-                  <span class="votes"><%= post.rating.votes %> har röstat</span>
-                <% } else { %>
-                  <span class="votes">Bli först att rösta</span>
-                <% } %>  
-              </div>
-              <% } %>
-
-              <% if (typeof post.post.manufacturer_website !== 'undefined' && post.post.manufacturer_website !== "") { %>
-                <p><a href="<%= post.post.manufacturer_website %>" target="_blank" rel="nofollow">
-                  <%= post.post.manufacturer_website %>
-                </a></p>
-              <% } %>
-
-              <% if (post.type === '3' || post.type === '5' || post.type === '6') { %>
-
-                <div class="contact">
-                  <% if (typeof post.post.phone !== 'undefined' && post.post.phone !== "") { %>
-                    <a href="tel:<%= post.post.phone %>" class="phone">
-                      <%= post.post.phone %>
-                    </a>
-                  <% } %>
-
-                  <% if (typeof post.post.email !== 'undefined' && post.post.email !== "") { %>
-                    <div><a href="mailto:<%= post.post.email %>" target="_blank" class="text-muted email">
-                      <span class="fa fa-envelope-o"></span> 
-                      <%= post.post.email %>
-                    </a></div>
-                  <% } %>
-
-                  <% if (typeof post.post.website !== 'undefined' && post.post.website !== "") { %>
-                    <div><a href="<%= post.post.website %>" target="_blank" rel="nofollow" class="website text-muted">
-                      <span class="fa fa-external-link"></span> 
-                      Besök hemsida
-                    </a></div>
-                  <% } %>
-                </div>
-
-                <hr class="hidden-xs">
-                <div class="row">
-                  <div class="col-lg-6" id="location">
-                    <div class="hidden-xs text-center-xs">
-                      <h2>Hitta hit</h2>
-                      <div class="street">
-                        <%= post.post.street %>, <%= post.post.city %>
-                      </div>
-                    </div>
-                    <% if (post.type === '3' || post.type === '5' || post.type === '6') { %>
-                      <div id="mapContainer" class="mapContainer in-content">
-                        <div id="map" data-map-init="true" data-map-filter="single" class="googleMap sidebar"></div>
-                        <div class="toolbar">
-                          <a href="#" class="btn showMyLocation">
-                            <span class="fa fa-location-arrow"></span>
-                            Min position
-                          </a>
-                          <a href="#" class="btn showFullscreen">
-                            <span class="glyphicon glyphicon-fullscreen"></span>
-                          </a>
-                        </div>
-                        <div class="filter visible-xs">
-                          <div class="vertical-center">
-                            <img alt="" src="/assets/images/map-icon.svg" style="width: 60px;">
-                            <h2><%= post.post.city %></h2>
-                            <h3><%= post.post.street %></h3>
-                            <div><a href="#" id="show-map" class="btn btn-hero">
-                              <span class="glyphicon glyphicon-map-marker"></span>
-                              Se karta
-                            </a></div>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="row maplinks">
-                        <div class="col-xs-6 less-padding-right">
-                          <p><a href="http://maps.google.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block" target="_blank"><span class="fa fa-google"></span> Google Maps</a></p>
-                        </div>
-
-                        <div class="col-xs-6 less-padding-left">
-                          <p><a href="http://maps.apple.com/?q=<%= post.post.street %>, <%= post.post.city %>" class="btn btn-primary btn-block" target="_blank">
-                          <span class="fa fa-apple"></span> Apple Maps</a></p>
-                        </div>
-                      </div>
-                    <% } %>
-                  </div>
-
-                  <div class="col-lg-6 text-center-xs">
-                    <div id="openhours">
-                      <h2>Öppettider</h2>
-                      <div class="row">
-                        <div class="col-xs-6 less-padding-right">
-                          <ul class="list-group">
-                            <li class="list-group-item" id="monday">
-                              <h4 class="list-group-item-heading">Måndag</h4>
-                              <p class="list-group-item-text">
-                                <% if (typeof post.post.openhours.monday !== 'undefined' && post.post.openhours.monday !== "") { %>
-                                  <%= post.post.openhours.monday %>
-                                <% } else { %>
-                                  Tid saknas
-                              <% } %>
-                              </p>
-                            </li>
-                            <li class="list-group-item" id="tuesday">
-                              <h4 class="list-group-item-heading">Tisdag</h4>
-                              <p class="list-group-item-text">
-                                <% if (typeof post.post.openhours.tuesday !== 'undefined' && post.post.openhours.tuesday !== "") { %>
-                                  <%= post.post.openhours.tuesday %>
-                                <% } else { %>
-                                  Tid saknas
-                              <% } %>
-                              </p>
-                            </li>
-                            <li class="list-group-item" id="wednesday">
-                              <h4 class="list-group-item-heading">Onsdag</h4>
-                              <p class="list-group-item-text">
-                                <% if (typeof post.post.openhours.wednesday !== 'undefined' && post.post.openhours.wednesday !== "") { %>
-                                  <%= post.post.openhours.wednesday %>
-                                <% } else { %>
-                                  Tid saknas
-                                <% } %>
-                              </p>
-                            </li>
-                            <li class="list-group-item" id="thursday">
-                              <h4 class="list-group-item-heading">Torsdag</h4>
-                              <p class="list-group-item-text">
-                                <% if (typeof post.post.openhours.thursday !== 'undefined' && post.post.openhours.thursday !== "") { %>
-                                  <%= post.post.openhours.thursday %>
-                                <% } else { %>
-                                  Tid saknas
-                                <% } %>
-                              </p>
-                            </li>
-                          </ul>
-                        </div>
-                        <div class="col-xs-6 less-padding-left">
-                          <ul class="list-group">
-                            <li class="list-group-item" id="friday">
-                              <h4 class="list-group-item-heading">Fredag</h4>
-                              <p class="list-group-item-text">
-                                <% if (typeof post.post.openhours.friday !== 'undefined' && post.post.openhours.friday !== "") { %>
-                                  <%= post.post.openhours.friday %>
-                                <% } else { %>
-                                  Tid saknas
-                                <% } %>
-                              </p>
-                            </li>
-                            <li class="list-group-item" id="saturday">
-                              <h4 class="list-group-item-heading">Lördag</h4>
-                              <p class="list-group-item-text">
-                                <% if (typeof post.post.openhours.saturday !== 'undefined' && post.post.openhours.saturday !== "") { %>
-                                  <%= post.post.openhours.saturday %>
-                                <% } else { %>
-                                  Tid saknas
-                                <% } %>
-                              </p>
-                            </li>
-                            <li class="list-group-item" id="sunday">
-                              <h4 class="list-group-item-heading">Söndag</h4>
-                              <p class="list-group-item-text">
-                                <% if (typeof post.post.openhours.sunday !== 'undefined' && post.post.openhours.sunday !== "") { %>
-                                  <%= post.post.openhours.sunday %>
-                                <% } else { %>
-                                  Tid saknas
-                                <% } %>
-                              </p>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              <% } %>
-
-            </div>
+    <div class="container">
+        <section id="main">
             <div class="row">
-              <div class="col-sm-12">
-                  <% if (typeof post.post.sources !== 'undefined') { %>
-                      <% if (post.post.sources.name !== null) { %>
-                          <h3>Källor</h3>
-                          <ul id="sources-list" class="list-group">
-                              <% for (var i=0;i<post.post.sources.name.length;i++) { %>
-                                  <li id="source-<%= (i+1) %>" class="list-group-item">
-                                      <span>
-                                          <span class="source-id"><%= (i+1) %>.</span>
-                                          <a href="<%= post.post.sources.url[i] %>" 
-                                            target="_blank" 
-                                            title="<%= post.post.sources.url[i] %>" 
-                                            class="source-url">
-                                            <span class="source-name"><%= post.post.sources.name[i] %></span>
-                                          </a>
-                                      </span>
-                                  </li>
-                              <% } %>
-                          </ul>
-                      <% } %>
-                  <% } %>
-              </div>
-            </div>
-          </article>
+                <div class="col-md-8">
+                    <article>
 
-          <div id="cred">
-            <div class="row">
+                        <% include includes/page/pending_moderation %>
 
-              <div class="col-sm-6">
-                <div class="card transparent">
-                  <div class="row">
+                        <% include includes/page/likes %>
 
-                    <% if (typeof post.user_info.hidden !== true && post.user_info.hidden == "") { %>
-                      <div class="col-xs-3 col-xs-offset-0 col-sm-3 col-sm-offset-0 col-md-4 col-lg-3 avatar">
-                        <a href="#"><img alt="" src="<% include includes/functions/getUserinfoAvatar %>" class="avatar circle"></a>
-                      </div>
+                        <% include includes/page/header_image %>
 
-                      <div class="col-xs-9 col-sm-9 col-md-8 col-lg-9 info">
-                        <small>Publicerat av</small>
-                        <% if (typeof user_info.info !== 'undefined' && user_info.info.website !== "") { %>
-                          <a href="<%= user_info.info.website %>" title="<%= user_info.info.website %>" target="_blank" rel="nofollow"><h3><%= user_info.name.display_name %></h3></a>
+                        <div id="<%= post._id %>" class="content">
+
+                            <% include includes/page/header_attributes %>
+
+                            <% include includes/page/content %>
+
+                            <% include includes/page/rating %>
+
+                            <% include includes/page/contact %>
+
+                        </div>
+
+                        <% include includes/page/sources %>
+                    </article>
+
+                    <% include includes/page/cred %>
+
+                    <div id="comments">
+                        <% if (post.type === '3' || post.type === '4' || post.type === '5' || post.type === '6') { %>
+                            <h2><span class="fa fa-comments-o"></span> Recensioner</h2>
                         <% } else { %>
-                          <h3><%= user_info.name.display_name %></h3>
+                            <h2><span class="fa fa-comments-o"></span> Kommentarer</h2>
                         <% } %>
-                        <span class="description">
-                          <% if (typeof user_info.info !== 'undefined') { if (typeof user_info.info.description !== 'undefined') { %>
-                            <%= user_info.info.description %>
-                          <% } } %>
-                        </span>
-                      </div>
-                    <% } else { %>
-                      <div class="col-xs-3 col-xs-offset-0 col-sm-3 col-sm-offset-0 col-md-4 col-lg-3 avatar">
-                        <a href="#"><img alt="" src="/assets/images/no-picture.svg" class="avatar circle"></a>
-                      </div>
-
-                      <div class="col-xs-9 col-sm-9 col-md-8 col-lg-9 info">
-                        <small>Publicerat av</small>
-                        <h3>Anonym</h3>
-                        <span class="description">
-                          Författaren till artikeln har valt att vara anonym. Kanske är det Batman?
-                        </span>
-                      </div>
-                    <% } %>
-
-                  </div>
+                            <div id="disqus_thread"></div>
+                            <script>
+                                var disqus_config = function () {
+                                    this.page.url = 'http://vegosvar.se/<%= post.url %>';
+                                    this.page.identifier = '<%= post._id %>';
+                                };
+                                (function() { // DON'T EDIT BELOW THIS LINE
+                                    var d = document, s = d.createElement('script');
+                                    s.src = '//vegosvar.disqus.com/embed.js';
+                                    s.setAttribute('data-timestamp', +new Date());
+                                    (d.head || d.body).appendChild(s);
+                                })();
+                            </script>
+                            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+                    </div>
                 </div>
-              </div>
 
-              <div class="col-xs-12 col-xs-offset-0 col-sm-5 col-sm-offset-1 col-md-5 col-md-offset-1 actions">
-                <% if (typeof user !== 'undefined') { %>
-                  <a href="/redigera/<%= post.url %>" class="btn btn-third btn-block pull-right">
-                    <span class="fa fa-pencil"></span> 
-                    Redigera sida
-                  </a>
-                  <% if (String(user._id) === String(user_info.id) || user.info.permission == 'admin' || user.info.permission == 'moderator') { %>
-                  <a href="/admin/revisioner/<%= post.url %>" class="btn btn-third btn-block pull-right">
-                    <span class="glyphicon glyphicon-eye-open"></span> 
-                    Granska ändringar
-                  </a>
-                  <% } %>
-                <% } else { %>
-                <a href="/logga-in" class="btn btn-third btn-xs">
-                  <span class="fa fa-pencil"></span> 
-                  Föreslå ändringar
-                </a>
-                <a href="/rapportera" class="btn btn-third btn-xs">
-                  <span class="fa fa-flag"></span> 
-                  Rapportera
-                </a>
-
-                <% } %>
-              </div>
+                <% include includes/page/sidebar %>
 
             </div>
-          </div>
-
-          <div id="comments">
-            <% if (post.type === '3' || post.type === '4' || post.type === '5' || post.type === '6') { %>
-              <h2><span class="fa fa-comments-o"></span> Recensioner</h2>
-            <% } else { %>
-              <h2><span class="fa fa-comments-o"></span> Kommentarer</h2>
-            <% } %>
-            <div id="disqus_thread"></div>
-            <script>
-            var disqus_config = function () {
-            this.page.url = 'http://vegosvar.se/<%= post.url %>';
-            this.page.identifier = '<%= post._id %>';
-            };
-            (function() { // DON'T EDIT BELOW THIS LINE
-            var d = document, s = d.createElement('script');
-
-            s.src = '//vegosvar.disqus.com/embed.js';
-
-            s.setAttribute('data-timestamp', +new Date());
-            (d.head || d.body).appendChild(s);
-            })();
-            </script>
-            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-          </div>
-        </div>
-
-        <div class="col-sm-6 col-md-4 sidebar">
-
-          <% if (post.type === '3' || post.type === '5' || post.type === '6') { %>
-            <% if(typeof(establishments) !== 'undefined' && establishments.length > 0) { %>
-              <div class="card lg">
-                <h2><a href="/?s=<%= post.post.city %>"><%= post.post.city %></a></h2>
-                <h3 class="subtitle">Restauranger & butiker</h3>
-                <ul class="page-menu">
-                  <% for (var i = establishments.length - 1; i >= 0; i--) { %>
-                    <li>
-                      <a href="<%= establishments[i].url %>" class="item">
-                        <%= establishments[i].title %>
-                        <% if (typeof establishments[i].post.cover !== 'undefined' && establishments[i].post.cover.filename !== null) { %>
-                          <img alt="" src="/uploads/<%= establishments[i].post.cover.filename %>_thumb.jpg">
-                        <% } %>
-                      </a>
-                    </li>
-                  <% } %>
-                </ul>
-                <div class="bottom-description">
-                  <a href="/?s=<%= post.post.city %>" class="pull-right">
-                    Fler vegoställen i <%= post.post.city %>
-                    <span class="glyphicon glyphicon-chevron-right"></span>
-                  </a>
-                </div>
-              </div>
-            <% } %>
-          <% } else { %>
-            <div id="mapContainer" class="mapContainer sidebar">
-              <div id="map" data-map-filter="restaurant" data-map-cluster="true" class="googleMap sidebar"></div>
-              <div class="filter">
-                <div class="vertical-center">
-                  <img alt="" src="/assets/images/map-icon.svg" style="width: 60px;"> 
-                  <h2>Veganskt käk nära dig</h2>
-                  <h3>Restauranger & butiker</h3>
-                  <a href="#" id="show-map" class="btn btn-hero">
-                    <span class="glyphicon glyphicon-map-marker"></span>
-                    Se karta
-                  </a>
-                </div>
-              </div>
-            </div>
-          <% } %>
-
-          <div class="card lg text-center">
-            <p><img src="/assets/images/fb-color.svg" class="circle" style="width: 50px;"></p>
-            <h3>Diskutera på Facebook</h3>
-            <p>Gå med i Facebookgruppen för vegetarianer & veganer i Sverige.</p>
-            <a href="https://www.facebook.com/groups/840104332722635/?fref=ts" target="_blank" class="btn btn-fb btn-secondary">Gå med i gruppen</a>
-          </div>
-
-        </div>
-      </div>
-    </section>
-  </div>
+        </section>
+    </div>
 <% include includes/footer %>
