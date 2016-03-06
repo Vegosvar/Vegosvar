@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 var config = require('./src/config/config')
 process.env.NODE_ENV = (config.environment) ? config.environment : 'development'
 
