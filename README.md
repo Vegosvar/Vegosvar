@@ -6,13 +6,16 @@
 Requires MongoDB 3.0+
 
 ## Install
+
+Clone repository `git clone https://github.com/Vegosvar/Vegosvar`
+
 Run `npm install`
 
 Copy config.default.js to config.js.
 
 Then run ``gulp`` to run the local server. 
 
-Optionally you can set up a proxy with `nginx` and run Vegosvar as a systemd service.
+Optionally you can set up a proxy with `nginx` and run Vegosvar as a `systemd` service.
 
 ## Configure
 
