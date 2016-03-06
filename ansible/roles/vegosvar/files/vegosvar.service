@@ -1,0 +1,31 @@
+## Guide to enable vegosvar.service
+##
+## Copy service file
+## sudo cp vegosvar.service /etc/systemd/system/
+##
+## Enable service
+## sudo systemctl daemon-reload
+## sudo systemctl enable vegosvar.service
+##
+## To start it for the first time, without needing to reboot
+## sudo systemctl start vegosvar.service
+##
+## Verify status
+## sudo systemctl status vegosvar
+##
+## Log can be seen by running
+## sudo journalctl -f -u vegosvar
+
+[Unit]
+Description=Vegosvar
+
+[Service]
+ExecStart=/usr/local/bin/gulp
+Restart=always
+User=vegosvar
+Group=vegosvar
+Environment=PATH=/usr/bin:/usr/local/bin
+WorkingDirectory=/var/www/beta.vegosvar.se
+
+[Install]
+WantedBy=multi-user.target
