@@ -309,6 +309,7 @@
       },
       setSingleOpenMarker: function(obj) {
         var mapInstance = $.fn.googleMapInstances().map.current()
+
         mapInstance.setMarker({
           position: {
             lat: parseFloat(obj.coordinates.latitude),
