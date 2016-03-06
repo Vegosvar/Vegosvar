@@ -15,6 +15,8 @@ module.exports = function (app, resources) {
   app.use(function(req, res, next) {
     if(process.env.NODE_ENV === 'maintenance') {
       res.status(502)
+    } else {
+      next()
     }
   })
 
