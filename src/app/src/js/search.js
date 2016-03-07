@@ -222,35 +222,39 @@
           //Create map controls
           var controls = []
 
-          var controlFullscreen = $('<div>', {
-            class: 'btn showFullscreen'
-          })
-          .append(
-            $('<span>', {
-              class: 'glyphicon glyphicon-fullscreen'
+          if (fullscreenSupported()) {
+            var controlFullscreen = $('<div>', {
+              class: 'btn showFullscreen'
             })
-          )
-          .on('click', function () {
-            $.fn.vegosvar.search.map.toggleFullscreen()
-          })
+            .append(
+              $('<span>', {
+                class: 'glyphicon glyphicon-fullscreen'
+              })
+            )
+            .on('click', function () {
+              $.fn.vegosvar.search.map.toggleFullscreen()
+            })
 
-          controls.push(controlFullscreen)
+            controls.push(controlFullscreen)
+          }
 
-          var controlUserLocation = $('<div>', {
-            class: 'btn showMyLocation'
-          })
-          .append(
-            $('<span>', {
-              class: 'fa fa-location-arrow'
-            }),
-            $('<span>')
-            .text('Min position')
-          )
-          .on('click', function () {
-            $.fn.vegosvar.search.map.updateUserLocation()
-          })
+          if (navigator.geolocation) {
+            var controlUserLocation = $('<div>', {
+              class: 'btn showMyLocation'
+            })
+            .append(
+              $('<span>', {
+                class: 'fa fa-location-arrow'
+              }),
+              $('<span>')
+              .text('Min position')
+            )
+            .on('click', function () {
+              $.fn.vegosvar.search.map.updateUserLocation()
+            })
 
-          controls.push(controlUserLocation)
+            controls.push(controlUserLocation)
+          }
 
           //Add controls to map
           $.each(controls, function (i, control) {
@@ -313,11 +317,35 @@
         }
       },
       toggleFullscreen: function () {
-        if (fullscreenSupported()) {
-          var element = $($.fn.vegosvar.search.settings.map.element).parent()
+        var element = $($.fn.vegosvar.search.settings.map.element).parent()
 
+        if (isFullscreen()) {
+          exitFullscreen()
+          $(element).css({
+            margin: '',
+            width: '',
+            height: '',
+            position: '',
+            top: ''
+          })
+          return
+        }
+
+        var mapInstance = $.fn.vegosvar.search.settings.map.instance
+        var center = mapInstance.getCenter()
+
+        enterFullscreen(element[0])
+
+        $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function (e) {
           if (isFullscreen()) {
-            exitFullscreen()
+            $(element).css({
+              margin: '0',
+              width: '100%',
+              height: '100%',
+              position: 'absolute',
+              top: '0'
+            })
+          } else {
             $(element).css({
               margin: '',
               width: '',
@@ -325,38 +353,11 @@
               position: '',
               top: ''
             })
-            return
           }
 
-          var mapInstance = $.fn.vegosvar.search.settings.map.instance
-          var center = mapInstance.getCenter()
-
-          enterFullscreen(element[0])
-
-          $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function (e) {
-            if (isFullscreen()) {
-              $(element).css({
-                margin: '0',
-                width: '100%',
-                height: '100%',
-                position: 'absolute',
-                top: '0'
-              })
-            } else {
-              $(element).css({
-                margin: '',
-                width: '',
-                height: '',
-                position: '',
-                top: ''
-              })
-            }
-
-            mapInstance.triggerResize()
-            mapInstance.setCenter(center)
-            console.log(center)
-          })
-        }
+          mapInstance.triggerResize()
+          mapInstance.setCenter(center)
+        })
       },
       updateUserLocation: function () {
         var userMarker = {
@@ -396,9 +397,6 @@
 
             mapInstance.setCenter(userMarker.position)
             mapInstance.setZoom(11)
-          } else {
-            console.log('nope nope')
-            //TODO display error
           }
         })
       },
