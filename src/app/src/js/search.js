@@ -218,6 +218,49 @@
         var initialized = $.fn.vegosvar.search.settings.map.initialized
         if (!initialized) {
           $.fn.vegosvar.search.settings.map.instance = $($.fn.vegosvar.search.settings.map.element).googleMap()
+          $.fn.vegosvar.search.map.setup()
+        }
+      },
+      setup: function () {
+        if ($.fn.vegosvar.search.map.get() && !$.fn.vegosvar.search.settings.map.initialized) {
+          //Create map controls
+          var controls = []
+
+          var controlFullscreen = $('<div>', {
+            class: 'btn showFullscreen'
+          })
+          .append(
+            $('<span>', {
+              class: 'glyphicon glyphicon-fullscreen'
+            })
+          )
+          .on('click', function () {
+            $.fn.vegosvar.search.map.toggleFullscreen()
+          })
+
+          controls.push(controlFullscreen)
+
+          var controlUserLocation = $('<div>', {
+            class: 'btn showMyLocation'
+          })
+          .append(
+            $('<span>', {
+              class: 'fa fa-location-arrow'
+            }),
+            $('<span>')
+            .text('Min position')
+          )
+          .on('click', function () {
+            $.fn.vegosvar.search.map.updateUserLocation()
+          })
+
+          controls.push(controlUserLocation)
+
+          //Add controls to map
+          $.each(controls, function (i, control) {
+            $.fn.vegosvar.search.settings.map.instance.addControl(control[0])
+          })
+
           $.fn.vegosvar.search.settings.map.initialized = true
         }
       },
@@ -273,8 +316,97 @@
           $.fn.vegosvar.search.map.show()
         }
       },
+      toggleFullscreen: function () {
+        if (fullscreenSupported()) {
+          var element = $($.fn.vegosvar.search.settings.map.element)
+
+          if (isFullscreen()) {
+            exitFullscreen()
+            $(element).css({
+              margin: '',
+              width: '',
+              height: '',
+              position: '',
+              top: ''
+            })
+            return
+          }
+
+          var mapInstance = $.fn.vegosvar.search.settings.map.instance
+          var center = mapInstance.getCenter()
+
+          enterFullscreen(element[0])
+
+          $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function (e) {
+            if (isFullscreen()) {
+              $(element).css({
+                margin: '0',
+                width: '100%',
+                height: '100%',
+                position: 'absolute',
+                top: '0'
+              })
+            } else {
+              $(element).css({
+                margin: '',
+                width: '',
+                height: '',
+                position: '',
+                top: ''
+              })
+            }
+
+            mapInstance.triggerResize()
+            mapInstance.setCenter(center)
+          })
+        }
+      },
+      updateUserLocation: function () {
+        var userMarker = {
+          title: 'Din plats',
+          content: 'Du är här!',
+          icon: '/assets/images/pin-my-position.png',
+        }
+
+        $.fn.geoLocation(function (result) {
+          if (result.success === true) {
+            userMarker.position = {
+              lat: parseFloat(result.position.latitude),
+              lng: parseFloat(result.position.longitude)
+            }
+
+            var mapInstance = $.fn.vegosvar.search.settings.map.instance
+            var markers = mapInstance.getMarkers()
+
+            var setNew = true
+
+            //Loop over all existing markers, if user location marker is found, update it
+            $.each(markers, function(i, marker) {
+              if('title' in marker) {
+                if(marker.title === userMarker.title) { //This is bad and I know it's bad, deal with it
+                  setNew = false
+
+                  marker.setPosition(userMarker.position)
+                  marker.infowindow.open(mapInstance.getMap(), marker)
+                }
+              }
+            })
+
+            if(setNew) {
+              var marker = mapInstance.setMarker(userMarker)
+              marker.infowindow.open(mapInstance.getMap(), marker)
+            }
+
+            mapInstance.setCenter(userMarker.position)
+            mapInstance.setZoom(11)
+          } else {
+            console.log('nope nope')
+            //TODO display error
+          }
+        })
+      },
       visible: function () {
-        return $('.searchMapContainer').is(':visible')
+        return $($.fn.vegosvar.search.settings.map.element).is(':visible')
       },
       markers: {
         remove: function () {
