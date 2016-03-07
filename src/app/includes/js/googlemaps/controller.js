@@ -41,12 +41,14 @@
         }
       },
       setMarker: function (options) {
-        settings.google.markers.push(new google.maps.Marker({
+        var marker = new google.maps.Marker({
           position: options.position,
           map: settings.google.map,
           title: options.title,
           icon: options.icon
-        }))
+        })
+
+        settings.google.markers.push(marker)
 
         var index = settings.google.markers.length - 1
 
@@ -66,6 +68,8 @@
             settings.google.markers[index].infowindow.open(settings.google.map, settings.google.markers[index])
           }
         })
+
+        return marker
       },
       clusterMarkers: function () {
         settings.google.cluster = new MarkerClusterer(settings.google.map, settings.google.markers, {
@@ -164,6 +168,13 @@
         settings.google.markers = settings.google.markers.filter(function (marker) {
           marker.setMap(null)
         })
+      },
+      addControl: function(control) {
+        try {
+          settings.google.map.controls[google.maps.ControlPosition.TOP_RIGHT].push(control)
+        } catch (err) {
+          throw err
+        }
       }
     }
 
