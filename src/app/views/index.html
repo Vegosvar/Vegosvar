@@ -196,11 +196,14 @@
                                         <span class="glyphicon glyphicon-heart"></span>
                                         Populärt recept
                                     </div>
+                                    <% console.log(recipes[i].post.cover.filename === null) %>
+                                    <a href="<%= recipes[i].url %>">
                                     <% if (typeof recipes[i].post.cover !== 'undefined' && recipes[i].post.cover.filename !== null) { %>
-                                        <a href="<%= recipes[i].url %>">
-                                            <img alt="" src="/uploads/<%= recipes[i].post.cover.filename %>.jpg">
-                                        </a>
+                                        <img alt="" src="/uploads/<%= recipes[i].post.cover.filename %>.jpg">
+                                    <% } else { %>
+                                        <img alt="" src="/assets/images/placeholder-2.svg">
                                     <% } %>
+                                    </a>
                                     <div class="title">
                                         
                                         <a href="<%= recipes[i].url %>">
