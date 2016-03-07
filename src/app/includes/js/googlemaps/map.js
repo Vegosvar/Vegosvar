@@ -449,6 +449,8 @@ $(document).bind('mapready', function (e) {
       }
 
       var data = $('#map').data()
+      var mapInstance = $.fn.googleMapInstances().map.current()
+
       data.center = mapInstance.getCenter()
 
       enterFullscreen(element)
