@@ -545,7 +545,7 @@ $(document).bind('mapready', function (e) {
       $.fn.vegosvar.map().applyMarkerData(data, options)
     })
 
-    if($(this).hasClass('showFullscreen')) {
+    if($(this).hasClass('showMyLocation')) {
       $.fn.vegosvar.map().updateUserLocation()
     }
   })
