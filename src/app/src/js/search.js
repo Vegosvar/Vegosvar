@@ -33,10 +33,6 @@
     validate: function () {
       var results = $.fn.vegosvar.search.settings.results
       if (results.length > 0) {
-        if ($('#searchEngine-noResults').css('display') === 'block') {
-          $('#searchEngine-noResults').show()
-        }
-
         $('#searchFor')
         .html(
           $('<h2>', {
@@ -318,7 +314,7 @@
       },
       toggleFullscreen: function () {
         if (fullscreenSupported()) {
-          var element = $($.fn.vegosvar.search.settings.map.element)
+          var element = $($.fn.vegosvar.search.settings.map.element).parent()
 
           if (isFullscreen()) {
             exitFullscreen()
@@ -358,6 +354,7 @@
 
             mapInstance.triggerResize()
             mapInstance.setCenter(center)
+            console.log(center)
           })
         }
       },
@@ -381,9 +378,9 @@
             var setNew = true
 
             //Loop over all existing markers, if user location marker is found, update it
-            $.each(markers, function(i, marker) {
-              if('title' in marker) {
-                if(marker.title === userMarker.title) { //This is bad and I know it's bad, deal with it
+            $.each(markers, function (i, marker) {
+              if ('title' in marker) {
+                if (marker.title === userMarker.title) { //This is bad and I know it's bad, deal with it
                   setNew = false
 
                   marker.setPosition(userMarker.position)
@@ -392,7 +389,7 @@
               }
             })
 
-            if(setNew) {
+            if (setNew) {
               var marker = mapInstance.setMarker(userMarker)
               marker.infowindow.open(mapInstance.getMap(), marker)
             }
