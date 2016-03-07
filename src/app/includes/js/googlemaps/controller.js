@@ -119,6 +119,9 @@
       getMap: function () {
         return settings.google.map
       },
+      getElement: function () {
+        return settings.element
+      },
       getMarkers: function () {
         return settings.google.markers
       },
