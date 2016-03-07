@@ -187,7 +187,7 @@
 
             var content = module.entryContent(entry)
 
-            mapInstance.setMarker({
+            var marker = mapInstance.setMarker({
               position: {
                 lat: parseFloat(entry.post.coordinates.latitude),
                 lng: parseFloat(entry.post.coordinates.longitude)
@@ -203,7 +203,12 @@
             if(settings) {
               if ('infoWindowOpen' in settings && settings.infoWindowOpen === true) {
                 //Open the newly added infowindow
-                onDomReadyOpenMarkerInfowindow(true)
+                marker.infowindow.open(mapInstance.getMap(), marker)
+
+                //Pan to fit the new infowindow
+                google.maps.event.addListenerOnce(marker.infowindow, 'domready', function () {
+                  $.fn.vegosvar.map().panToFit()
+                })
               }
             }
           }
@@ -309,7 +314,7 @@
       },
       setSingleOpenMarker: function(obj) {
         var mapInstance = module.map.current()
-        mapInstance.setMarker({
+        var marker = mapInstance.setMarker({
           position: {
             lat: parseFloat(obj.coordinates.latitude),
             lng: parseFloat(obj.coordinates.longitude)
@@ -324,7 +329,10 @@
           lng: parseFloat(obj.coordinates.longitude)
         })
 
-        onDomReadyOpenMarkerInfowindow(true)
+        marker.infowindow.open(mapInstance.getMap(), marker)
+        google.maps.event.addListenerOnce(marker.infowindow, 'domready', function () {
+          $.fn.vegosvar.map().panToFit()
+        })
       },
       getMarkerData: function(options, callback) {
         var settings = $.extend({
@@ -341,23 +349,6 @@
     return module
   }
 }(jQuery))
-
-function onDomReadyOpenMarkerInfowindow(panAfter) {
-  var mapInstance = $.fn.googleMapInstances().map.current()
-  var mapSettings = mapInstance.getSettings()
-  var markers = mapSettings.google.markers
-
-  if ($('.filter:visible').length <= 0) {
-    ///show open infowindow only if filter is not visible
-    var marker = markers[markers.length - 1]
-    marker.infowindow.open(mapInstance.getMap(), marker)
-    if(panAfter) {
-      google.maps.event.addListenerOnce(marker.infowindow, 'domready', function () {
-        $.fn.vegosvar.map().panToFit()
-      })
-    }
-  }
-}
 
 function zoomToUserLocation () {
   $.fn.geoLocation(function (result) {
@@ -390,8 +381,8 @@ function zoomToUserLocation () {
       })
 
       if(setNew) {
-        mapInstance.setMarker(locationObj)
-        onDomReadyOpenMarkerInfowindow(false)
+        var marker = mapInstance.setMarker(locationObj)
+        marker.infowindow.open(mapInstance.getMap(), marker)
       }
 
       mapInstance.setCenter(position)
