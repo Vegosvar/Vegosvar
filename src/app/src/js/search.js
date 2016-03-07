@@ -220,23 +220,9 @@
       setup: function () {
         if ($.fn.vegosvar.search.map.get() && !$.fn.vegosvar.search.settings.map.initialized) {
           //Create map controls
-          var controls = []
-
-          if (fullscreenSupported()) {
-            var controlFullscreen = $('<div>', {
-              class: 'btn showFullscreen'
-            })
-            .append(
-              $('<span>', {
-                class: 'glyphicon glyphicon-fullscreen'
-              })
-            )
-            .on('click', function () {
-              $.fn.vegosvar.search.map.toggleFullscreen()
-            })
-
-            controls.push(controlFullscreen)
-          }
+          var controlContainer = $('<div>', {
+            class: 'toolbar'
+          })
 
           if (navigator.geolocation) {
             var controlUserLocation = $('<div>', {
@@ -253,14 +239,27 @@
               $.fn.vegosvar.search.map.updateUserLocation()
             })
 
-            controls.push(controlUserLocation)
+            $(controlContainer).append(controlUserLocation)
+          }
+
+          if (fullscreenSupported()) {
+            var controlFullscreen = $('<div>', {
+              class: 'btn showFullscreen'
+            })
+            .append(
+              $('<span>', {
+                class: 'glyphicon glyphicon-fullscreen'
+              })
+            )
+            .on('click', function () {
+              $.fn.vegosvar.search.map.toggleFullscreen()
+            })
+
+            $(controlContainer).append(controlFullscreen)
           }
 
           //Add controls to map
-          $.each(controls, function (i, control) {
-            $.fn.vegosvar.search.settings.map.instance.addControl(control[0])
-          })
-
+          $.fn.vegosvar.search.settings.map.instance.addControl(controlContainer[0])
           $.fn.vegosvar.search.settings.map.initialized = true
         }
       },
