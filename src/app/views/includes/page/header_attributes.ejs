@@ -1,0 +1,52 @@
+              <% if (post.post.veg_offer === 'Endast veganskt på menyn') { %>
+              <strong class="text-success small">
+                <span class="fa fa-check-circle"></span> 
+                100% veganskt
+              </strong>
+              <% } %>
+
+              <% if (post.type === '4') { %>
+                <% if (post.post.veg_type === 'animal') { %>
+                  <strong class="text-danger small">
+                    <span class="fa fa-info-circle"></span> 
+                    Animaliskt
+                  </strong>
+                <% } else if (post.post.veg_type === 'lacto_ovo') { %>
+                  <strong class="text-warning small">
+                    <span class="fa fa-info-circle"></span> 
+                    Lakto-ovo-vegetariskt
+                  </strong>
+                <% } else { %>
+                  <strong class="text-success small">
+                    <span class="fa fa-check-circle"></span> 
+                    Veganskt
+                  </strong>
+                <% } %>
+              <% } %>
+
+              <h1><%= post.title %></h1>
+
+              <% if (post.type === '3' || post.type === '5' || post.type === '6') { %>
+                <a href="/?s=<%= post.post.city %>">
+                  <h2 class="subtitle">
+                    <%= post.post.city %>
+                  </h2>
+                </a>
+              <% } %>
+              <% if (post.type === '4') { %>
+                <% if (typeof post.post.manufacturer !== 'undefined' && post.post.manufacturer !== "") { %>
+                  <a href="/?s=<%= post.post.manufacturer %>">
+                    <h2 class="subtitle">
+                        <%= post.post.manufacturer %>
+                    </h2>
+                  </a>
+                <% } %>
+              <% } %>
+
+              <% if (post.type === '2') {
+                  if ('video' in post.post) { %>
+                    <div id="player-container">
+                        <div id="player" data-video="<%= post.post.video %>"></div>
+                    </div>
+                  <% }
+              } %>

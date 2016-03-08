@@ -1,0 +1,16 @@
+            <div class="headerImage">
+              <% if (typeof post.post.cover.filename !== 'undefined' && post.post.cover.filename !== "" && post.post.cover.filename !== null) { %>
+              <img src="/uploads/<%= post.post.cover.filename %>.jpg" alt="<%= post.title %>"/>
+              <% } %>
+              <span class="license">
+                <%= post.post.license %> 
+                <%= post.post.license_cc_version %> 
+                <% if (typeof post.post.license_holder_website !== 'undefined' && post.post.license_holder_website !== "") { %>
+                  <a href="<%= post.post.license_holder_website %>" target="_blank"  rel="nofollow">
+                    <%= post.post.license_holder %>
+                  </a>
+                <% } else { %>
+                  <%= post.post.license_holder %>
+                <% } %>
+              </span>
+            </div>

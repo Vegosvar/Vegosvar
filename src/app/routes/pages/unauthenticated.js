@@ -39,6 +39,15 @@ module.exports = function (app, resources) {
     }], function(err, pageStats) {
       //Get pages for front page
       pagesdb.find({}, options).toArray(function(err, pages) {
+        pages = pages.filter(function(page) {
+          if('post' in page) {
+            if('content' in page.post) {
+              page.post.content = striptags(page.post.content, ['br','p','a','span','i','b'])
+              page.post.content = (page.post.content.length > 115) ? page.post.content.substr(0, 115) + '...' : page.post.content
+              return page
+            }
+          }
+        })
         pagesdb.find({
           $or:[
             {type:'3'},
@@ -79,8 +88,7 @@ module.exports = function (app, resources) {
                   mapCluster: true
                 },
                 startpage: false,
-                searchString: req.query.s,
-                striptags: striptags
+                searchString: req.query.s
               })
             })
           })

@@ -1,0 +1,18 @@
+              <% if (post.type === '3' || post.type === '5' || post.type === '6' || post.type === '4' && post.post.veg_type !== 'animal') { %>
+              <div class="stars lg" data-id="<%= post._id %>">
+                <% for(i = 1; i < 6; i++) { %>
+                  <% var ratingSum = 0
+                  if (typeof post.rating !== 'undefined' && typeof post.rating.votes_sum !== 'undefined') {
+                    ratingSum = post.rating.votes_sum
+                  } %>
+                  <div class="star <%= (i <= ratingSum) ? 'active' : '' %> ">
+                    <span class="glyphicon glyphicon-star"></span>
+                  </div>
+               <% } %>
+               <% if (typeof post.rating !== 'undefined' && typeof post.rating.votes !== 'undefined') { %>
+                  <span class="votes"><%= post.rating.votes %> har röstat</span>
+                <% } else { %>
+                  <span class="votes">Bli först att rösta</span>
+                <% } %>  
+              </div>
+              <% } %>

@@ -211,12 +211,24 @@ module.exports = function (app, resources) {
             })
           }
 
+          var mapResources = {
+            map: true,
+            mapCluster: !(post.type === '3' || post.type === '5' || post.type === '6')
+          }
+
+          var pageResources = {
+            public_page: true,
+            youtube: (post.type === '2') ? true : false
+          }
+
           res.render('admin/revisions', {
             user: req.user,
             post: post,
             revisions: revisions_available,
             current: current,
-            loadAdminResources: { revisions: true }
+            loadAdminResources: { revisions: true },
+            loadMapResources: mapResources,
+            loadPageResources: pageResources
           })
         } else {
           console.log(post.title + ' saknar document i revisions collection')

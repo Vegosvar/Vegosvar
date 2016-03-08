@@ -10,6 +10,13 @@ $(function(){
     }
 
     $('.revision').on('click', function () {
+        //If this is the current post revision, hide deny button
+        if($(this).data('item-class') == 'active') {
+            $('.options').hide()
+        } else {
+            $('.options').fadeIn()
+        }
+
         //Restore default classes to the list group items 
         $('.revision').each( function () {
             $(this).addClass($(this).data('item-class'))
@@ -21,7 +28,6 @@ $(function(){
         //And add it to this item (while removing the default class)
         $(this).removeClass($(this).data('item-class')).addClass('active')
 
-        //
         var revision = $(this).data('revision')
         getRevision(revision, function(result) {
             //Get the diffed result
@@ -40,7 +46,7 @@ $(function(){
             }
 
             //Then apply it to the page with a nice fade effect
-            $('.revision_content').html(content).hide().fadeIn()
+            $('.page-content').html(content).hide().fadeIn()
         })
     })
 

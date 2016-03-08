@@ -16,6 +16,55 @@
           if(state.active === null) { //This is the first map, set it as active
             state.active = state.instances.length -1
           }
+
+          module.map.setup()
+        },
+        setup: function() {
+          var activeMap = state.active
+
+          //Create map controls
+          var controlContainer = $('<div>', {
+            class: 'toolbar'
+          })
+
+          if (navigator.geolocation) {
+            var controlUserLocation = $('<div>', {
+              class: 'btn showMyLocation'
+            })
+            .append(
+              $('<span>', {
+                class: 'fa fa-location-arrow'
+              }),
+              $('<span>')
+              .text('Min position')
+            )
+            .on('click', function () {
+              module.map.set(activeMap)
+              $.fn.vegosvar.map().updateUserLocation()
+            })
+
+            $(controlContainer).append(controlUserLocation)
+          }
+
+          if (fullscreenSupported()) {
+            var controlFullscreen = $('<div>', {
+              class: 'btn showFullscreen'
+            })
+            .append(
+              $('<span>', {
+                class: 'glyphicon glyphicon-fullscreen'
+              })
+            )
+            .on('click', function () {
+              module.map.set(activeMap)
+              $.fn.vegosvar.map().toggleFullscreen()
+            })
+
+            $(controlContainer).append(controlFullscreen)
+          }
+
+          //Add controls to map
+          module.map.current().addControl(controlContainer[0])
         },
         current: function() {
           //Return the current instance
@@ -187,7 +236,7 @@
 
             var content = module.entryContent(entry)
 
-            mapInstance.setMarker({
+            var marker = mapInstance.setMarker({
               position: {
                 lat: parseFloat(entry.post.coordinates.latitude),
                 lng: parseFloat(entry.post.coordinates.longitude)
@@ -203,7 +252,12 @@
             if(settings) {
               if ('infoWindowOpen' in settings && settings.infoWindowOpen === true) {
                 //Open the newly added infowindow
-                onDomReadyOpenMarkerInfowindow(true)
+                marker.infowindow.open(mapInstance.getMap(), marker)
+
+                //Pan to fit the new infowindow
+                google.maps.event.addListenerOnce(marker.infowindow, 'domready', function () {
+                  $.fn.vegosvar.map().panToFit()
+                })
               }
             }
           }
@@ -309,8 +363,7 @@
       },
       setSingleOpenMarker: function(obj) {
         var mapInstance = $.fn.googleMapInstances().map.current()
-
-        mapInstance.setMarker({
+        var marker = mapInstance.setMarker({
           position: {
             lat: parseFloat(obj.coordinates.latitude),
             lng: parseFloat(obj.coordinates.longitude)
@@ -325,7 +378,10 @@
           lng: parseFloat(obj.coordinates.longitude)
         })
 
-        onDomReadyOpenMarkerInfowindow(true)
+        marker.infowindow.open(mapInstance.getMap(), marker)
+        google.maps.event.addListenerOnce(marker.infowindow, 'domready', function () {
+          $.fn.vegosvar.map().panToFit()
+        })
       },
       getMarkerData: function(options, callback) {
         var settings = $.extend({
@@ -336,29 +392,96 @@
         .done(function (data) {
           callback(data)
         })
+      },
+      toggleFullscreen: function () {
+        var mapInstance = $.fn.googleMapInstances().map.current()
+        var mapElement = mapInstance.getElement()
+        var element = $(mapElement).parent()
+
+        if (isFullscreen()) {
+          exitFullscreen()
+          $(element).css({
+            margin: '',
+            width: '',
+            height: '',
+            position: '',
+            top: ''
+          })
+          return
+        }
+
+        var center = mapInstance.getCenter()
+        enterFullscreen(element[0])
+
+        $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function (e) {
+          if (isFullscreen()) {
+            $(element).css({
+              margin: '0',
+              width: '100%',
+              height: '100%',
+              position: 'absolute',
+              top: '0'
+            })
+          } else {
+            $(element).css({
+              margin: '',
+              width: '',
+              height: '',
+              position: '',
+              top: ''
+            })
+          }
+
+          mapInstance.triggerResize()
+          mapInstance.setCenter(center)
+        })
+      },
+      updateUserLocation: function () {
+        var userMarker = {
+          title: 'Din plats',
+          content: 'Du är här!',
+          icon: '/assets/images/pin-my-position.png',
+        }
+
+        $.fn.geoLocation(function (result) {
+          if (result.success === true) {
+            userMarker.position = {
+              lat: parseFloat(result.position.latitude),
+              lng: parseFloat(result.position.longitude)
+            }
+
+            var mapInstance = $.fn.googleMapInstances().map.current()
+            var markers = mapInstance.getMarkers()
+
+            var setNew = true
+
+            //Loop over all existing markers, if user location marker is found, update it
+            $.each(markers, function (i, marker) {
+              if ('title' in marker) {
+                if (marker.title === userMarker.title) { //This is bad and I know it's bad, deal with it
+                  setNew = false
+
+                  marker.setPosition(userMarker.position)
+                  marker.infowindow.open(mapInstance.getMap(), marker)
+                }
+              }
+            })
+
+            if (setNew) {
+              var marker = mapInstance.setMarker(userMarker)
+              marker.infowindow.open(mapInstance.getMap(), marker)
+            }
+
+            mapInstance.setCenter(userMarker.position)
+            mapInstance.setZoom(11)
+          }
+        })
       }
     }
 
     return module
   }
 }(jQuery))
-
-function onDomReadyOpenMarkerInfowindow(panAfter) {
-  var mapInstance = $.fn.googleMapInstances().map.current()
-  var mapSettings = mapInstance.getSettings()
-  var markers = mapSettings.google.markers
-
-  if ($('.filter:visible').length <= 0) {
-    ///show open infowindow only if filter is not visible
-    var marker = markers[markers.length - 1]
-    marker.infowindow.open(mapInstance.getMap(), marker)
-    if(panAfter) {
-      google.maps.event.addListenerOnce(marker.infowindow, 'domready', function () {
-        $.fn.vegosvar.map().panToFit()
-      })
-    }
-  }
-}
 
 function zoomToUserLocation () {
   $.fn.geoLocation(function (result) {
@@ -391,8 +514,8 @@ function zoomToUserLocation () {
       })
 
       if(setNew) {
-        mapInstance.setMarker(locationObj)
-        onDomReadyOpenMarkerInfowindow(false)
+        var marker = mapInstance.setMarker(locationObj)
+        marker.infowindow.open(mapInstance.getMap(), marker)
       }
 
       mapInstance.setCenter(position)
@@ -417,68 +540,13 @@ $(document).bind('mapready', function (e) {
     //Get map options
     var options = $.fn.vegosvar.map().getMapOptions('#map')
 
-    //Intialize map
-    $.fn.googleMapInstances().map.add('#map')
-
     //Get marker data
     $.fn.vegosvar.map().getMarkerData(options, function (data) {
       $.fn.vegosvar.map().applyMarkerData(data, options)
     })
-  })
 
-  $('.showMyLocation').on('click', function (e) {
-    e.preventDefault()
-    zoomToUserLocation()
-  })
-
-  $('.showFullscreen').on('click', function (e) {
-    e.preventDefault()
-    if (fullscreenSupported()) {
-      //TODO, get element parent instead
-      var element = document.getElementById('mapContainer')
-
-      if (isFullscreen()) {
-        exitFullscreen()
-        $(element).css({
-          margin: '',
-          width: '',
-          height: '',
-          position: '',
-          top: ''
-        })
-        return
-      }
-
-      var data = $('#map').data()
-      data.center = mapInstance.getCenter()
-
-      enterFullscreen(element)
-
-      $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function (e) {
-        if (isFullscreen()) {
-          $(element).css({
-            margin: '0',
-            width: '100%',
-            height: '100%',
-            position: 'absolute',
-            top: '0'
-          })
-        } else {
-          $(element).css({
-            margin: '',
-            width: '',
-            height: '',
-            position: '',
-            top: ''
-          })
-        }
-
-        mapInstance.triggerResize()
-        mapInstance.setCenter(data.center)
-      })
-    } else {
-      console.log('no fullscreen support')
-      //TODO notify user
+    if($(this).hasClass('showMyLocation')) {
+      $.fn.vegosvar.map().updateUserLocation()
     }
   })
 

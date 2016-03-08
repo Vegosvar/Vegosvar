@@ -9,11 +9,12 @@
 @yellow:				#ffd23a;
 @blue:					#236FAF;
 @red:					#E04A43;
-@pink:					#F95376;
+@pink:					#FE5991;
 @orange:				#F69424;
 
 @recipe:				@pink;
 @restaurant:			#8D53A1;
+@cafe: 					#C4324C;
 @store:					#FB8B11;
 @product:				@blue;
 
@@ -1330,7 +1331,7 @@ section {
 				color: #fff;
 				float: left;
 				background: #eee;
-				margin-bottom: 15px;
+				margin-bottom: 10px;
 				border-radius: 3px;
 				transition: background 0.2s, transform 0.2s;
 				font-size: 18px;
@@ -1359,6 +1360,12 @@ section {
 					background: @restaurant;
 					&:hover {
 						background: darken(@restaurant, 3%);
+					}
+				}
+				&.cafe {
+					background: @cafe;
+					&:hover {
+						background: darken(@cafe, 3%);
 					}
 				}
 				&.store {
@@ -1671,8 +1678,10 @@ section {
 
 .searchMapContainer {
 	margin-bottom: 30px !important;
+	margin-top: 0 !important;
+	display: none;
+	height: 400px;
 }
-
 
 #stats {
 	background: darken(@blue, 5%);
@@ -1981,9 +1990,9 @@ section {
 	position: relative;
 	overflow: hidden;
 	.toolbar {
-		position: absolute;
-		top: 5px;
-		right: 5px;
+		position: absolute !important;
+		top: 5px !important;
+		right: 5px !important;
 		.btn {
 			float: left;
 			background: #fff;
