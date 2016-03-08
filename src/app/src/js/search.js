@@ -321,11 +321,13 @@
         }
       },
       toggleFullscreen: function () {
-        var element = $($.fn.vegosvar.search.settings.map.element).parent()
+        var mapInstance = $.fn.vegosvar.search.settings.map.instance
+        var mapElement = mapInstance.getElement()
+        var parentElement = $(mapElement).parent()
 
         if (isFullscreen()) {
           exitFullscreen()
-          $(element).css({
+          $(parentElement).css({
             margin: '',
             width: '',
             height: '',
@@ -335,14 +337,13 @@
           return
         }
 
-        var mapInstance = $.fn.vegosvar.search.settings.map.instance
-        var center = mapInstance.getCenter()
+        $(mapElement).data('center', mapInstance.getCenter())
 
-        enterFullscreen(element[0])
+        enterFullscreen(parentElement[0])
 
         $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function (e) {
           if (isFullscreen()) {
-            $(element).css({
+            $(parentElement).css({
               margin: '0',
               width: '100%',
               height: '100%',
@@ -350,7 +351,7 @@
               top: '0'
             })
           } else {
-            $(element).css({
+            $(parentElement).css({
               margin: '',
               width: '',
               height: '',
@@ -360,7 +361,8 @@
           }
 
           mapInstance.triggerResize()
-          mapInstance.setCenter(center)
+          console.log(mapElement)
+          mapInstance.setCenter($(mapElement).data('center'))
         })
       },
       updateUserLocation: function (callback) {
@@ -401,10 +403,10 @@
 
             mapInstance.setCenter(userMarker.position)
             mapInstance.setZoom(11)
+          }
 
-            if (typeof(callback) === 'function') {
-              callback()
-            }
+          if (typeof(callback) === 'function') {
+            callback()
           }
         })
       },

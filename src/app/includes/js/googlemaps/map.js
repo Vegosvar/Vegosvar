@@ -416,7 +416,7 @@
           return
         }
 
-        var center = mapInstance.getCenter()
+        $(element).data('center', mapInstance.getCenter())
         enterFullscreen(element[0])
 
         $(document).on('webkitfullscreenchange mozfullscreenchange fullscreenchange', function (e) {
@@ -439,7 +439,7 @@
           }
 
           mapInstance.triggerResize()
-          mapInstance.setCenter(center)
+          mapInstance.setCenter($(element).data('center'))
         })
       },
       updateUserLocation: function (callback) {
@@ -480,10 +480,10 @@
 
             mapInstance.setCenter(userMarker.position)
             mapInstance.setZoom(11)
+          }
 
-            if(typeof(callback) === 'function') {
-              callback()
-            }
+          if(typeof(callback) === 'function') {
+            callback()
           }
         })
       }
