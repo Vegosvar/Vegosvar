@@ -28,9 +28,9 @@
         </div>
     </div>
     <div class="col-sm-6">
-        <div class="mapContainer" style="margin:0;height:200px;">
+        <div id="mapContainer" style="margin:0;height:200px;">
             <% if(typeof(post) !== 'undefined' && typeof(post.post.coordinates) !== 'undefined') { %>
-                <div id="map" class="googleMap" data-map-init="true" data-marker-latitude="<%= post.post.coordinates.latitude %>" data-marker-longitude=<%= post.post.coordinates.longitude %> data-marker-title="<%= post.post.street %>"></div>
+                <div id="map" data-map-init="true" data-marker-latitude="<%= post.post.coordinates.latitude %>" data-marker-longitude=<%= post.post.coordinates.longitude %> data-marker-title="<%= post.post.street %>"></div>
             <% } else { %>
                 <div id="map"></div>
             <% } %>
