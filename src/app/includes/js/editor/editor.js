@@ -2,6 +2,15 @@ $(document).ready(function () {
 
   wysihtml5ParserRules.classes = {}
   wysihtml5ParserRules.tags = {
+    a: {
+      check_attributes: {
+        href: 'url'
+      },
+      set_attributes: {
+        rel: 'nofollow',
+        target: '_blank'
+      }
+    },
     h2: { keep_styles: {}},
     h3: { keep_styles: {}},
     h4: { keep_styles: {}},
@@ -39,6 +48,10 @@ $(document).ready(function () {
       case 'newword:composer':
       case 'aftercommand:composer':
         $('.editable-content').text($.fn.editorController('getValue'))
+        break
+      case 'change':
+        console.log('change')
+        $.fn.editorController('setBookmark')
         break
     }
   }
@@ -119,7 +132,12 @@ $(document).ready(function () {
     if (linkText.length <= 0)
       linkText = linkUrl
 
-    var html = '<a href="' + linkUrl + '" title="L&auml;nk: ' + linkUrl + '">' + linkText + '</a>'
+    var link = $('<a>', {
+      href: linkUrl,
+      rel: 'nofollow',
+      class: 'open-in-browser',
+    })
+    .text(linkText)
 
     //Check if text has been selected previous to inserting link
     $.fn.editorController('setSelection')
@@ -128,7 +146,7 @@ $(document).ready(function () {
     $.fn.editorController('insert', {
       insert: {
         type: 'html',
-        content: html
+        content: link[0].outerHTML
       }
     })
 
@@ -229,6 +247,7 @@ $(document).ready(function () {
       html += '&nbsp;'; //blankspace needed otherwise you can't do a line break after if the source is inserted on the last line
 
       //If the editor is out of focus, restore the bookmark
+      $.fn.editorController('setFocus')
       $.fn.editorController('setBookmark');
 
       //Insert the link
@@ -352,6 +371,10 @@ $(document).ready(function () {
 
   //Update existing sources select
   updateSourceSelect()
+
+  $('#toolbar a').on('click', function () {
+    $.fn.editorController('triggerEvent', {type:'interaction'})
+  })
 
   //See function
   $('#insert-link-button-mobile').bind("DOMSubtreeModified", mobileInsertLinkFix)

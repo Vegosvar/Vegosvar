@@ -58,7 +58,11 @@
         }
         $.fn.editorController('triggerEvent', {type:'change'})
         break
+      case 'setFocus':
+        $(instance.element).focus()
+        break
       case 'getBookmark':
+        $.fn.editorController('setFocus')
         instance.bookmark = editor.composer.selection.getBookmark()
         break
       case 'setBookmark':
@@ -74,9 +78,15 @@
       case 'getSelection':
         return instance.selection
       case 'setSelection':
-        if(instance.selection.text.length == 0 && instance.selection.node != instance.element) {
-          editor.composer.selection.selectNode(instance.selection.node)
+        console.log('set')
+        if('text' in instance.selection && typeof(instance.selection.text) !== 'undefined') {
+          if(instance.selection.text.length == 0 && instance.selection.node != instance.element) {
+            editor.composer.selection.selectNode(instance.selection.node)
+          } else {
+            $.fn.editorController('setBookmark')
+          }
         } else {
+          $.fn.editorController('setFocus')
           $.fn.editorController('setBookmark')
         }
         break
