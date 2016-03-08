@@ -1,5 +1,4 @@
 $(document).ready(function () {
-
   wysihtml5ParserRules.classes = {}
   wysihtml5ParserRules.tags = {
     a: {
@@ -79,9 +78,12 @@ $(document).ready(function () {
         //Option does not exist, insert it.
         $('#insert-source-existing').append(
           $('<option>')
-          .attr('value',optionValues[i])
+          .attr('value', optionValues[i])
           .text(optionValues[i] + '. ' + optionTexts[i])
         );
+      } else {
+        $('#insert-source-existing option[value=' + optionValues[i] + ']')
+        .text(optionValues[i] + '. ' + optionTexts[i])
       }
 
       //TODO insert a method to remove sources
@@ -293,6 +295,8 @@ $(document).ready(function () {
       $('#insert-source-url').val(url)
       $('#insert-source-id').val(id)
 
+      updateSourceSelect()
+
       //Show modal
       $('#editorModalSource').modal('show')
   })
@@ -324,6 +328,12 @@ $(document).ready(function () {
         $('#source-existing').removeClass('hidden')
         $('#source-title-new').removeClass('hidden')
         $('#insert-source-save').removeClass('hidden')
+
+        //Hacky solution to update source in storage
+        $('#sources-storage').find('input.'+containerId+'[name="source_url"]').val(url)
+        $('#sources-storage').find('input.'+containerId+'[name="source_name"]').val(name)
+
+        updateSourceSelect()
       })
   })
 
