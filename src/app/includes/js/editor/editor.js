@@ -88,10 +88,7 @@ $(document).ready(function () {
         );
       }
 
-      //Hide reminder to use source references
-      if($('#sources-reminder').is(':visible')) {
-          $('#sources-reminder').hide()
-      }
+      //TODO insert a method to remove sources
 
       //Make sure the select elements container is visible
       if($('#source-existing').hasClass('hidden')) {
@@ -279,9 +276,14 @@ $(document).ready(function () {
       e.preventDefault()
       var container = $(this).parent();
 
-      //Hide unrelated content
+      //Show related content
+      $('#insert-source-remove').removeClass('hidden')
       $('#insert-source-edit').removeClass('hidden')
       $('#source-title-edit').removeClass('hidden')
+      $('#source-title-edit').removeClass('hidden')
+
+      //Hide unrelated content
+      $('#source-title-insert').addClass('hidden')
       $('#source-existing').addClass('hidden')
       $('#source-title-new').addClass('hidden')
       $('#insert-source-save').addClass('hidden')
@@ -319,6 +321,10 @@ $(document).ready(function () {
         //Reset modal content
         $('#source-title-edit').addClass('hidden')
         $('#insert-source-edit').addClass('hidden')
+        $('#insert-source-remove').addClass('hidden')
+        $('#source-title-edit').addClass('hidden')
+
+        $('#source-title-insert').removeClass('hidden')
         $('#source-existing').removeClass('hidden')
         $('#source-title-new').removeClass('hidden')
         $('#insert-source-save').removeClass('hidden')
@@ -333,9 +339,18 @@ $(document).ready(function () {
 
       $('#source-title-edit').addClass('hidden')
       $('#insert-source-edit').addClass('hidden')
+      $('#insert-source-remove').addClass('hidden')
+      $('#source-title-edit').addClass('hidden')
+
+      $('#source-title-insert').removeClass('hidden')
       $('#source-existing').removeClass('hidden')
       $('#insert-source-save').removeClass('hidden')
     })
+  })
+
+  $('#insert-source-remove').on('click', function (){
+    console.log('clicked to remove')
+    //TODO, remove the source reference
   })
 
   //Listen for when the user inserts an image
