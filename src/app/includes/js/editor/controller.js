@@ -78,7 +78,6 @@
       case 'getSelection':
         return instance.selection
       case 'setSelection':
-        console.log('set')
         if('text' in instance.selection && typeof(instance.selection.text) !== 'undefined') {
           if(instance.selection.text.length == 0 && instance.selection.node != instance.element) {
             editor.composer.selection.selectNode(instance.selection.node)
