@@ -40,7 +40,13 @@
             )
             .on('click', function () {
               module.map.set(activeMap)
-              $.fn.vegosvar.map().updateUserLocation()
+
+              var buttonIcon = $(this).find('span.fa')
+              buttonIcon.removeClass('fa-location-arrow').addClass('fa-spinner fa-pulse')
+
+              $.fn.vegosvar.map().updateUserLocation(function () {
+                buttonIcon.removeClass('fa-spinner fa-pulse').addClass('fa-location-arrow')
+              })
             })
 
             $(controlContainer).append(controlUserLocation)
@@ -436,7 +442,7 @@
           mapInstance.setCenter(center)
         })
       },
-      updateUserLocation: function () {
+      updateUserLocation: function (callback) {
         var userMarker = {
           title: 'Din plats',
           content: 'Du är här!',
@@ -474,6 +480,10 @@
 
             mapInstance.setCenter(userMarker.position)
             mapInstance.setZoom(11)
+
+            if(typeof(callback) === 'function') {
+              callback()
+            }
           }
         })
       }
