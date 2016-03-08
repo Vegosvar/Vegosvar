@@ -281,8 +281,8 @@ $(document).ready(function () {
       $('#source-title-edit').removeClass('hidden')
 
       //Hide unrelated content
-      $('#source-title-insert').addClass('hidden')
       $('#source-existing').addClass('hidden')
+      $('#source-title-insert').addClass('hidden')
       $('#source-title-new').addClass('hidden')
       $('#insert-source-save').addClass('hidden')
 
@@ -294,8 +294,6 @@ $(document).ready(function () {
       $('#insert-source-name').val(name)
       $('#insert-source-url').val(url)
       $('#insert-source-id').val(id)
-
-      updateSourceSelect()
 
       //Show modal
       $('#editorModalSource').modal('show')
@@ -322,6 +320,7 @@ $(document).ready(function () {
         $('#source-title-edit').addClass('hidden')
         $('#insert-source-edit').addClass('hidden')
         $('#insert-source-remove').addClass('hidden')
+        $('#source-existing').addClass('hidden')
         $('#source-title-edit').addClass('hidden')
 
         $('#source-title-insert').removeClass('hidden')
@@ -332,31 +331,33 @@ $(document).ready(function () {
         //Hacky solution to update source in storage
         $('#sources-storage').find('input.'+containerId+'[name="source_url"]').val(url)
         $('#sources-storage').find('input.'+containerId+'[name="source_name"]').val(name)
-
-        updateSourceSelect()
       })
   })
 
   //User dismissed modal for updating a source reference
-  $('#insert-source-dismiss').on('click', function () {
+  $('#insert-source-dismiss a[data-dismiss="modal"]').on('click', function () {
     $('#editorModalSource').modal('hide').on('hidden.bs.modal', function () {
-      $('#insert-source-name').val('')
-      $('#insert-source-url').val('')
-
-      $('#source-title-edit').addClass('hidden')
-      $('#insert-source-edit').addClass('hidden')
-      $('#insert-source-remove').addClass('hidden')
-      $('#source-title-edit').addClass('hidden')
-
-      $('#source-title-insert').removeClass('hidden')
-      $('#source-existing').removeClass('hidden')
-      $('#insert-source-save').removeClass('hidden')
+      editorModalSourceReset()
     })
   })
 
   $('#insert-source-remove').on('click', function (){
-    console.log('clicked to remove')
-    //TODO, remove the source reference
+    var containerId = $('#insert-source-id').val()
+    $('#source-' + containerId).remove()
+
+    $('#sources-storage').find('input.'+containerId+'[name="source_url"]').remove()
+    $('#sources-storage').find('input.'+containerId+'[name="source_name"]').remove()
+
+    $('#insert-source-existing option').each(function (i, option) {
+      var value = $(option).val()
+      if(value == containerId) {
+        $(option).remove()
+      }
+    })
+
+    $('#editorModalSource').modal('hide').on('hidden.bs.modal', function () {
+      editorModalSourceReset()
+    })
   })
 
   //Listen for when the user inserts an image
@@ -399,4 +400,18 @@ $(document).ready(function () {
 
   //See function
   $('#insert-link-button-mobile').bind("DOMSubtreeModified", mobileInsertLinkFix)
+
+  function editorModalSourceReset ()  {
+    $('#insert-source-name').val('')
+    $('#insert-source-url').val('')
+
+    $('#source-title-edit').addClass('hidden')
+    $('#insert-source-edit').addClass('hidden')
+    $('#insert-source-remove').addClass('hidden')
+    $('#source-title-edit').addClass('hidden')
+
+    $('#source-title-insert').removeClass('hidden')
+    $('#source-existing').removeClass('hidden')
+    $('#insert-source-save').removeClass('hidden')
+  }
 })
