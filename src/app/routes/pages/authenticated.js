@@ -221,6 +221,7 @@ module.exports = function (app, resources) {
               type: type,
               loadEditorResources: true,
               loadDropzoneResources: true,
+              loadValidationResources: true,
               loadMapResources: mapResources,
               loadPageResources: pageResources,
               categories: categories
