@@ -26,7 +26,7 @@ module.exports = function (app, resources) {
     //Prevent speakingurl from converting swedish characters to ae and oe by replacing them with what we want
     //also remove any non alphanumeric characters in url
     var tamperedTitle = String(req.body.title).toLowerCase().replace(/å|ä/g, 'a').replace(/ö/g, 'o')
-    tamperedTitle = tamperedTitle.replace(/é|è/gi, 'e').replace(/á|à/gi) //Remove accent, mainly for café/kafé
+    tamperedTitle = tamperedTitle.replace(/é|è/gi, 'e').replace(/á|à/gi, 'a') //Remove accent, mainly for café/kafé
     tamperedTitle = tamperedTitle.replace(/[^\w\s]/gi, '') //Finally remove all non word characters, but leave spaces
     console.log(tamperedTitle)
     var niceurl = getSlug(tamperedTitle, {
