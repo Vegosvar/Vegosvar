@@ -49,10 +49,6 @@ $(document).ready(function () {
       case 'aftercommand:composer':
         $('.editable-content').text($.fn.editorController('getValue'))
         break
-      case 'change':
-        console.log('change')
-        $.fn.editorController('setBookmark')
-        break
     }
   }
 
