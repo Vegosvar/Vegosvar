@@ -21,7 +21,7 @@ $(document).ready(function () {
 
   function checkStorage() {
     if(typeof(Storage) !== "undefined") {
-      return ( localStorage.vegosvar_editor ) ? true : false;
+      return ( localStorage.vegosvar_editor ) ? true : false
     }
   }
 
@@ -80,7 +80,7 @@ $(document).ready(function () {
           $('<option>')
           .attr('value', optionValues[i])
           .text(optionValues[i] + '. ' + optionTexts[i])
-        );
+        )
       } else {
         $('#insert-source-existing option[value=' + optionValues[i] + ']')
         .text(optionValues[i] + '. ' + optionTexts[i])
@@ -90,7 +90,7 @@ $(document).ready(function () {
 
       //Make sure the select elements container is visible
       if($('#source-existing').hasClass('hidden')) {
-       $('#source-existing').removeClass('hidden').show();
+       $('#source-existing').removeClass('hidden').show()
       }
     }
   }
@@ -155,16 +155,16 @@ $(document).ready(function () {
 
   //Listen for when the user inserts a source reference
   $('#insert-source-save').on('click', function () {
-      var html;
-      var sourceText = $('#insert-source-name').val();
-      var sourceUrl = $('#insert-source-url').val();
+      var html
+      var sourceText = $('#insert-source-name').val()
+      var sourceUrl = $('#insert-source-url').val()
 
       //Check if user has entered a new source
       if(sourceUrl.length > 0) {
           //Create a new source reference
 
           //Get the ID for the new source reference
-          var sourceId = $('#sources-list').children().length + 1;
+          var sourceId = $('#sources-list').children().length + 1
 
           //Update the sources-list ul with the new source
           $('#sources-list').append(
@@ -206,7 +206,7 @@ $(document).ready(function () {
                   .text('Redigera')
                 )
             )
-          );
+          )
 
           //And insert a new input field with the new source-link
           $('#sources-storage').append(
@@ -226,24 +226,24 @@ $(document).ready(function () {
                       value: sourceText
                   })
               )
-          );
+          )
 
           //Update existing sources select dropdown
           updateSourceSelect()
 
           //Finally set up the html to insert into the editor
-          html = '<sup class="wysihtml5-uneditable-container source-link" contenteditable="false" data-source="source-' + sourceId + '">[' + sourceId + ']</sup>';
+          html = '<sup class="wysihtml5-uneditable-container source-link" contenteditable="false" data-source="source-' + sourceId + '">[' + sourceId + ']</sup>'
       } else {
-          var sourceId = $('#insert-source-existing').val();
-          sourceText = $("#insert-source-existing option:selected" ).text();
-          html = '<sup class="wysihtml5-uneditable-container source-link" contenteditable="false" data-source="source-' + sourceId + '">[' + sourceId + ']</sup>';
+          var sourceId = $('#insert-source-existing').val()
+          sourceText = $("#insert-source-existing option:selected" ).text()
+          html = '<sup class="wysihtml5-uneditable-container source-link" contenteditable="false" data-source="source-' + sourceId + '">[' + sourceId + ']</sup>'
       }
 
-      html += '&nbsp;'; //blankspace needed otherwise you can't do a line break after if the source is inserted on the last line
+      html += '&nbsp;' //blankspace needed otherwise you can't do a line break after if the source is inserted on the last line
 
       //If the editor is out of focus, restore the bookmark
       $.fn.editorController('setFocus')
-      $.fn.editorController('setBookmark');
+      $.fn.editorController('setBookmark')
 
       //Insert the link
       $.fn.editorController('insert', {
@@ -253,17 +253,15 @@ $(document).ready(function () {
         }
       })
 
-      $('#editorModalSource').modal('hide')
-
-      $('#editorModalSource').on('hidden.bs.modal', function() {
-          $('#insert-source-name').val('');
-          $('#insert-source-url').val('');
+      $('#editorModalSource').modal('hide').on('hidden.bs.modal', function() {
+        $('#insert-source-name').val('')
+        $('#insert-source-url').val('')
       })
   })
 
   //If user clicks on a source reference link, scroll down to show it
   $('#editor').on('click', '.source-link', function() {
-    var elementId = $(this).data('source');
+    var elementId = $(this).data('source')
     $('html, body').animate({
       scrollTop: $("#" + elementId).offset().top
     }, 1000)
@@ -272,7 +270,7 @@ $(document).ready(function () {
   //If the user clicks to edit a source reference link, bring up the modal
   $('#sources-list').on('click', '.source-edit', function(e) {
       e.preventDefault()
-      var container = $(this).parent();
+      var container = $(this).parent()
 
       //Show related content
       $('#insert-source-remove').removeClass('hidden')
@@ -317,16 +315,7 @@ $(document).ready(function () {
         $('#insert-source-url').val('')
 
         //Reset modal content
-        $('#source-title-edit').addClass('hidden')
-        $('#insert-source-edit').addClass('hidden')
-        $('#insert-source-remove').addClass('hidden')
-        $('#source-existing').addClass('hidden')
-        $('#source-title-edit').addClass('hidden')
-
-        $('#source-title-insert').removeClass('hidden')
-        $('#source-existing').removeClass('hidden')
-        $('#source-title-new').removeClass('hidden')
-        $('#insert-source-save').removeClass('hidden')
+        editorModalSourceReset()
 
         //Hacky solution to update source in storage
         $('#sources-storage').find('input.'+containerId+'[name="source_url"]').val(url)
