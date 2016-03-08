@@ -2,6 +2,15 @@ $(document).ready(function () {
 
   wysihtml5ParserRules.classes = {}
   wysihtml5ParserRules.tags = {
+    a: {
+      check_attributes: {
+        href: 'url'
+      },
+      set_attributes: {
+        rel: 'nofollow',
+        target: '_blank'
+      }
+    },
     h2: { keep_styles: {}},
     h3: { keep_styles: {}},
     h4: { keep_styles: {}},
@@ -75,10 +84,7 @@ $(document).ready(function () {
         );
       }
 
-      //Hide reminder to use source references
-      if($('#sources-reminder').is(':visible')) {
-          $('#sources-reminder').hide()
-      }
+      //TODO insert a method to remove sources
 
       //Make sure the select elements container is visible
       if($('#source-existing').hasClass('hidden')) {
@@ -119,7 +125,12 @@ $(document).ready(function () {
     if (linkText.length <= 0)
       linkText = linkUrl
 
-    var html = '<a href="' + linkUrl + '" title="L&auml;nk: ' + linkUrl + '">' + linkText + '</a>'
+    var link = $('<a>', {
+      href: linkUrl,
+      rel: 'nofollow',
+      class: 'open-in-browser',
+    })
+    .text(linkText)
 
     //Check if text has been selected previous to inserting link
     $.fn.editorController('setSelection')
@@ -128,7 +139,7 @@ $(document).ready(function () {
     $.fn.editorController('insert', {
       insert: {
         type: 'html',
-        content: html
+        content: link[0].outerHTML
       }
     })
 
@@ -229,6 +240,7 @@ $(document).ready(function () {
       html += '&nbsp;'; //blankspace needed otherwise you can't do a line break after if the source is inserted on the last line
 
       //If the editor is out of focus, restore the bookmark
+      $.fn.editorController('setFocus')
       $.fn.editorController('setBookmark');
 
       //Insert the link
@@ -260,9 +272,14 @@ $(document).ready(function () {
       e.preventDefault()
       var container = $(this).parent();
 
-      //Hide unrelated content
+      //Show related content
+      $('#insert-source-remove').removeClass('hidden')
       $('#insert-source-edit').removeClass('hidden')
       $('#source-title-edit').removeClass('hidden')
+      $('#source-title-edit').removeClass('hidden')
+
+      //Hide unrelated content
+      $('#source-title-insert').addClass('hidden')
       $('#source-existing').addClass('hidden')
       $('#source-title-new').addClass('hidden')
       $('#insert-source-save').addClass('hidden')
@@ -300,6 +317,10 @@ $(document).ready(function () {
         //Reset modal content
         $('#source-title-edit').addClass('hidden')
         $('#insert-source-edit').addClass('hidden')
+        $('#insert-source-remove').addClass('hidden')
+        $('#source-title-edit').addClass('hidden')
+
+        $('#source-title-insert').removeClass('hidden')
         $('#source-existing').removeClass('hidden')
         $('#source-title-new').removeClass('hidden')
         $('#insert-source-save').removeClass('hidden')
@@ -314,9 +335,18 @@ $(document).ready(function () {
 
       $('#source-title-edit').addClass('hidden')
       $('#insert-source-edit').addClass('hidden')
+      $('#insert-source-remove').addClass('hidden')
+      $('#source-title-edit').addClass('hidden')
+
+      $('#source-title-insert').removeClass('hidden')
       $('#source-existing').removeClass('hidden')
       $('#insert-source-save').removeClass('hidden')
     })
+  })
+
+  $('#insert-source-remove').on('click', function (){
+    console.log('clicked to remove')
+    //TODO, remove the source reference
   })
 
   //Listen for when the user inserts an image
@@ -352,6 +382,10 @@ $(document).ready(function () {
 
   //Update existing sources select
   updateSourceSelect()
+
+  $('#toolbar a').on('click', function () {
+    $.fn.editorController('triggerEvent', {type:'interaction'})
+  })
 
   //See function
   $('#insert-link-button-mobile').bind("DOMSubtreeModified", mobileInsertLinkFix)
