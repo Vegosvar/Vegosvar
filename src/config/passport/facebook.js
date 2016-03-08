@@ -27,6 +27,7 @@ module.exports = function(config) {
         info: {
           website: null,
           description: null,
+          permission: 'user'
         },
         fb_photo: (profile.photos) ? profile.photos[0].value : '/unknown_user.png',
         active_photo: 'facebook'

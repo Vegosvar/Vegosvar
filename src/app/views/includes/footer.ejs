@@ -57,5 +57,8 @@
 </body>
   <% if (typeof loadDropzoneResources !== 'undefined' && loadDropzoneResources === true) { %>
     <script type="text/javascript" src="/includes/js/dropzone/dropzone-script.js"></script>
-  <% } %>
+  <% } 
+    if (typeof loadValidationResources !== 'undefined' && loadValidationResources === true) { %>
+      <script type="text/javascript" src="/assets/js/validation.js"></script>
+    <% } %>
 </html>
