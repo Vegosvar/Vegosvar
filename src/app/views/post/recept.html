@@ -9,7 +9,7 @@
                         <h1><%= (typeof(post) !== 'undefined') ? 'Redigera: ' + post.title : 'Nytt recept' %></h1><br>
 						<form action="/submit" method="post">
 
-							<input type="hidden" name="type" id="submit-type" value="2">
+							<input type="hidden" name="type" value="2">
 							<input type="hidden" name="id" value="<%= (typeof(post) !== 'undefined') ? post._id : '' %>">
 
                             <% include includes/template_parts/imageupload %>
@@ -17,6 +17,8 @@
                             <% include includes/template_parts/title %>
 
                             <% include includes/editor %>
+
+                            <% include includes/template_parts/video %>
 
 							<h2>Typ av rätt</h2>
 							<div class="radio">

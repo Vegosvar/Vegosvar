@@ -36,12 +36,12 @@
                         <a class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </a>
-                        <h4 class="modal-title">Infoga källa</h4>
+                        <h4 id="source-title-insert" class="modal-title">Infoga källa</h4>
+                        <h4 id="source-title-edit" class="modal-title hidden">Redigera källa</h4>
                     </div>
                     <div class="modal-body">
                         <div class="new-source">
                             <h4 id="source-title-new">Ny Källa</h4>
-                            <h4 id="source-title-edit" class="hidden">Redigera källa</h4>
                             <div class="input-group hidden">
                                 <input id="insert-source-id" class="form-control" disabled="disabled" type="text">
                             </div>
@@ -69,6 +69,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <a id="insert-source-remove" class="btn btn-danger hidden disabled" style="float:left"><span class="glyphicon glyphicon-remove"></span> Ta bort källa</a>
                         <a id="insert-source-save" class="btn btn-primary">OK</a>
                         <a id="insert-source-edit" class="btn btn-primary hidden">OK</a>
                         <a id="insert-source-dismiss" class="btn btn-danger" data-dismiss="modal">Avbryt</a>
@@ -180,9 +181,6 @@
         </div>
     </div>
     <div id="sources-container" class="col-sm-12">
-        <% if (typeof(post) === 'undefined') { %>
-            <div id="sources-reminder" class="alert alert-info"><span class="glyphicon glyphicon-superscript"></span>Glöm inte att källhänvisa</div>
-        <% } %>
         <ul id="sources-list" class="list-group">
             <% if (typeof(post) !== 'undefined' && typeof(post.post.sources) !== 'undefined') {
                 if (typeof(post.post.sources.name !== 'undefined') && post.post.sources.name !== null) {
