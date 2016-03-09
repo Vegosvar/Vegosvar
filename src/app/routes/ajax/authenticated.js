@@ -174,9 +174,10 @@ module.exports = function (app, resources) {
     }
   })
 
-  app.get('/ajax/validate', function(req, res) {
-    var title = req.query.t 
-    var niceurl = getSlug(title, {
+  app.get('/ajax/validate/title', function(req, res) {
+    var title = req.query.title
+    var slug = functions.replaceDiacritics(title)
+    var niceurl = getSlug(slug, {
       // URL Settings
       separator: '-',
       maintainCase: false,
@@ -184,13 +185,18 @@ module.exports = function (app, resources) {
     })
 
     var pagesdb = resources.collections.pages
-    pagesdb.count({ title: niceurl }, function (err, sum) {
-      if(sum > 0) {
-        res.send('0')
-      } else {
-        res.send('1')
+    pagesdb.count({ url: niceurl }, function (err, sum) {
+      if (err) {
+        res.json({
+          success: false
+        })
       }
-    })
 
+      res.json({
+        success: true,
+        available: (sum > 0) ? false : true,
+        url: niceurl
+      })
+    })
   })
 }
