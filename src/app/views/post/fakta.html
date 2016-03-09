@@ -10,7 +10,7 @@
 
 						<form action="/submit" method="post">
 
-							<input type="hidden" name="type" id="submit-type" value="1">
+							<input type="hidden" name="type" value="1">
 							<input type="hidden" name="id" value="<%= (typeof(post) !== 'undefined') ? post._id : '' %>">
 
                             <% include includes/template_parts/imageupload %>

@@ -8,9 +8,9 @@
                     <article>
                         <h1><%= (typeof(post) !== 'undefined') ? 'Redigera: ' + post.title : 'Ny produkt' %></h1><br>
 
-                        <form action="/submit" class="validate-me" method="post">
+                        <form action="/submit" method="post">
 
-                            <input type="hidden" name="type" id="submit-type" value="4">
+                            <input type="hidden" name="type" value="4">
                             <input type="hidden" name="id" value="<%= (typeof(post) !== 'undefined') ? post._id : '' %>">
 
                             <% include includes/template_parts/imageupload %>
@@ -39,27 +39,7 @@
                                 </label>
                             </div>
 
-                            <h2>Typ av produkt</h2>
-                            <div class="row">
-                                <% if(typeof(categories) !== 'undefined') {
-                                    for(var key in categories) {
-                                        var category = categories[key] %>
-                                        <div class="col-xs-12 col-sm-4">
-                                            <h3 style="text-transform:capitalize"><%= category._id %></h3>
-                                            <% for(i=0;i<category.names.length;i++) {
-                                                var isChecked = (typeof(post) !== 'undefined') ? ( (post.post.product_type == category.names[i].name) ? 'checked=checked' : '' ) : (category.names[i].name == 'annat') ? 'checked=checked' : ''
-                                                %>
-                                                <div class="radio">
-                                                    <label>
-                                                        <input type="radio" name="product_type" value="<%= category.names[i].name %>" <%= isChecked %> />
-                                                        <span class="product_name" style="text-transform:capitalize"><%= category.names[i].name %></span>
-                                                    </label>
-                                                </div>
-                                            <% } %>
-                                        </div>
-                                    <% }
-                                } %>
-                            </div>
+                            <% include includes/template_parts/category %>
 
                             <h2>Tillverkare</h2>
                             <div class="row">
