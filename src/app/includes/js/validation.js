@@ -76,7 +76,7 @@ var verifyFields = {
           } else {
             $(element).addClass('invalid')
 
-            var error = 'Det finns redan en sida med den h&auml;r rubriken!'
+            var error = 'Det finns redan en sida med den h&auml;r rubriken'
             if($('.title-error').length > 0) {
               $('.title-error').html(error).show()
             } else {
@@ -97,7 +97,7 @@ var verifyFields = {
     } else {
       $(element).addClass('invalid')
 
-      var error = 'Rubriken m&auml;ste vara minst 3 tecken!'
+      var error = 'Rubriken m&aring;ste vara minst 3 tecken'
       if($('.title-error').length > 0) {
         $('.title-error').html(error).show()
       } else {
@@ -127,7 +127,7 @@ var verifyFields = {
       }
     } else {
       $('#editor').addClass('invalid')
-      var error = 'Sidan m&aring;ste ha en beskriving p&aring; minst ' + ((10 - value.length) +1) + ' tecken till. Det klarar du :)!'
+      var error = 'Sidan m&aring;ste ha en beskriving p&aring; minst ' + ((10 - value.length) +1) + ' tecken till'
 
       if($('.editor-error').length > 0) {
         $('.editor-error').html(error).show()
@@ -168,7 +168,7 @@ var verifyFields = {
             $('<span>', {
               class: 'error-city text-invalid'
             })
-            .html('Stad m&aring;ste anges!')
+            .html('Stad m&aring;ste anges')
           )
         }
 
@@ -196,7 +196,7 @@ var verifyFields = {
             $('<span>', {
               class: 'error-street text-invalid'
             })
-            .html('Gatunamn m&aring;ste anges!')
+            .html('Gatunamn m&aring;ste anges')
           )
         }
 
@@ -228,7 +228,7 @@ var verifyFields = {
             $('<span>', {
               class: 'error-manufacturer-name text-invalid'
             })
-            .html('Tillverkare m&aring;ste anges!')
+            .html('Tillverkare m&aring;ste anges')
           )
         }
 
@@ -258,7 +258,7 @@ var verifyFields = {
             $('<span>', {
               class: 'error-manufacturer-site text-invalid'
             })
-            .html('Tillverkarens hemsida m&aring;ste anges!')
+            .html('Tillverkarens hemsida m&aring;ste anges')
           )
         }
 
@@ -351,7 +351,7 @@ $(document).ready(function () {
           $('<span>', {
             class: 'text-invalid submit-error'
           })
-          .html('&nbsp;Ett eller flera f&auml;lt beh&ouml;ver kompletteras!')
+          .html('&nbsp;Ett eller flera f&auml;lt beh&ouml;ver kompletteras')
         )
       }
 
