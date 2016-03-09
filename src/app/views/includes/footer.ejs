@@ -52,7 +52,9 @@
       </div>
     </div>
   </div>
-
+<% if (typeof loadValidationResources !== 'undefined' && loadValidationResources === true) { %>
+<script type="text/javascript" src="/assets/js/validation.js"></script>
+<% } %>
 <% include functions/getScripts %>
 <% include functions/loadResources %>
 </body>

@@ -6,6 +6,7 @@
 */
 
 var ObjectID = require('mongodb').ObjectID
+var getSlug = require('speakingurl')
 
 module.exports = function (app, resources) {
   var functions = resources.functions
@@ -171,5 +172,25 @@ module.exports = function (app, resources) {
         }
       })
     }
+  })
+
+  app.get('/ajax/validate', function(req, res) {
+    var title = req.query.t 
+    var niceurl = getSlug(title, {
+      // URL Settings
+      separator: '-',
+      maintainCase: false,
+      symbols: false
+    })
+
+    var pagesdb = resources.collections.pages
+    pagesdb.count({ title: niceurl }, function (err, sum) {
+      if(sum > 0) {
+        res.send('0')
+      } else {
+        res.send('1')
+      }
+    })
+
   })
 }
