@@ -571,10 +571,13 @@
         return $('<div>', {
           class: 'stars'
         })
+        .attr({
+          'data-id': entry._id
+        })
         .append(
           $.map(new Array(5), function (item, index) {
             return $('<div>', {
-              class: (rating !== false && index <= rating && rating > 0) ? 'active star-static' : 'star-static'
+              class: (rating !== false && (index +1) <= rating && rating > 0) ? 'active star' : 'star'
             })
             .append(
               $('<span>', {
