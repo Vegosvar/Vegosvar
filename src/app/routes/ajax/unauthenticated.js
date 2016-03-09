@@ -97,6 +97,19 @@ module.exports = function (app, resources) {
     var searchString = req.query.s
     var searchArray = searchString.toLowerCase().split(' ')
 
+    var valid = false
+    for (var i = searchArray.length - 1; i >= 0; i--) {
+      if(searchArray[i].match(/\w/gi) !== null ) {
+        valid = true
+      }
+    }
+
+    //No valid word characters, quit early
+    if(!valid) {
+      res.json([])
+      return
+    }
+
     //The default query object
     var query = {}
 
@@ -108,20 +121,23 @@ module.exports = function (app, resources) {
     }
 
     //The default fields we search
-    var searchFields = ['url','title','post.content','post.food','post.product_type','post.city']
+    var searchFields = ['url','type','title','post.content','post.food','post.product_type','post.city']
+
+    var searchWeights = {
+      'post.veg_type': 30, //This is very high, since it can only match 'vegan', 'lacto_ovo' and 'animal'
+      'type': 25,
+      'title': 25,
+      'post.product_type': 18,
+      'post.content': 15,
+      'post.city': 15,
+      'post.food': 10,
+      'post.veg_offer': 1
+    }
 
     //Check if query matches a type
     var queryType = false
 
     var queryOperations = {
-      'kafe': function() {
-        query['type'] = '6'
-        return true
-      },
-      'cafe': function() {
-        query['type'] = '6'
-        return true
-      },
       'butik': function() {
         query['type'] = '5'
         return true
@@ -184,7 +200,7 @@ module.exports = function (app, resources) {
       string = string.toLowerCase().replace(/é|è/gi, 'e') //Remove accent, mainly for café/kafé
       string = string.replace(/[^a-z]/gi, '') //Remove non alphabet characters
 
-      var keywords = ['cafe','kafe','butik','restaurang','produkt','recept','fakta','vegan','laktoovo','animal']
+      var keywords = ['butik','restaurang','produkt','recept','fakta','vegan','laktoovo','animal']
       var regexMatches = new RegExp('^' + keywords.join('|'))
 
       var match = string.match(regexMatches)
@@ -213,6 +229,10 @@ module.exports = function (app, resources) {
     for (var i in searchArray) {
       queryTypes(searchArray[i])
     }
+
+    //Remove extraneous spaces
+    searchString = searchString.replace(/\s+/g, " ").replace(/^\s|\s$/g, "")
+    console.log(searchString)
 
     //Go over all the keys
     for(var key in query) {
@@ -252,8 +272,6 @@ module.exports = function (app, resources) {
       //Add $or matches with the regex strings
       filteredQuery.$match.$or = orFields
     }
-
-    console.log(searchString)
 
     //Check if query matches a city
     var citiesdb = resources.collections.cities
@@ -303,15 +321,6 @@ module.exports = function (app, resources) {
 
           //The order is important, not just the weights.
           //If a match is made later that value can not match against another key in searchWeights, choose carefully
-          var searchWeights = {
-            'post.veg_type': 30, //This is very high, since it can only match 'vegan', 'lacto_ovo' and 'animal'
-            'title': 25,
-            'post.product_type': 18,
-            'post.content': 15,
-            'post.city': 15,
-            'post.food': 10,
-            'post.veg_offer': 1
-          }
 
           //Calculate the weight of each result
           var totalWeight = 0
