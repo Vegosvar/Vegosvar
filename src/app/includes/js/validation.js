@@ -61,7 +61,6 @@ var verifyFields = {
     var value = $(element).val()
 
     if(value.length > 2) {
-      $(element).unbind('blur')
 
       $.ajax({
         url: '/ajax/validate/title',
@@ -96,6 +95,8 @@ var verifyFields = {
         }
       })
     } else {
+      $(element).addClass('invalid')
+
       var error = 'Rubriken m&auml;ste vara minst 3 tecken!'
       if($('.title-error').length > 0) {
         $('.title-error').html(error).show()
@@ -118,8 +119,6 @@ var verifyFields = {
     var value = $(element).text()
 
     if(value.length > 10) {
-      $(element).unbind('blur')
-
       $('#editor').removeClass('invalid')
       $('.editor-error').hide()
 
@@ -220,6 +219,8 @@ var verifyFields = {
           callback(true)
         }
       } else {
+        $(elementName).addClass('invalid')
+
         if($('.error-manufacturer-name').length > 0) {
           $('.error-manufacturer-name').show()
         } else {
