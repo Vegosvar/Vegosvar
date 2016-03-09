@@ -60,6 +60,10 @@ if( typeof loadAdminResources.users !== 'undefined' && loadAdminResources.users 
 <% } %>
 <% } %>
 
+<% if (typeof loadValidationResources !== 'undefined' && loadValidationResources === true) { %>
+<script type="text/javascript" src="/includes/js/validation.js"></script>
+<% } %>
+
 <% if (typeof loadEditorResources !== 'undefined' && loadEditorResources === true) { %>
     <script src="/assets/js/wysihtml/wysihtml.min.js" defer></script>
     <script src="/assets/js/wysihtml/wysihtml-toolbar.min.js" defer></script>
