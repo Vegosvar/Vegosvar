@@ -121,13 +121,14 @@ module.exports = function (app, resources) {
     }
 
     //The default fields we search
-    var searchFields = ['url','type','title','post.content','post.food','post.product_type','post.city']
+    var searchFields = ['url','type','slug','title','post.content','post.food','post.product_type','post.city']
 
     var searchWeights = {
       'post.veg_type': 30, //This is very high, since it can only match 'vegan', 'lacto_ovo' and 'animal'
       'type': 25,
       'title': 25,
       'post.product_type': 18,
+      'slug': 15,
       'post.content': 15,
       'post.city': 15,
       'post.food': 10,
