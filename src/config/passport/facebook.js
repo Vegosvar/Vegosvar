@@ -35,7 +35,8 @@ module.exports = function(resources) {
         info: {
           website: null,
           description: null,
-          blocked: false
+          blocked: false,
+          permission: 'user'
         },
         fb_photo: (profile.photos) ? profile.photos[0].value : '/unknown_user.png',
         active_photo: 'facebook',
