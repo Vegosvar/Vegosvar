@@ -3,7 +3,7 @@
     <% if(typeof(categories) !== 'undefined') {
         for(var key in categories) {
             var category = categories[key] %>
-            <div class="col-xs-12 col-sm-4">
+            <div class="col-xs-12 col-sm-3">
                 <h3 style="text-transform:capitalize"><%= category._id %></h3>
                 <% for(i=0;i<category.names.length;i++) {
                     var isChecked = (typeof(post) !== 'undefined') ? ( (post.post.product_type == category.names[i].name) ? 'checked=checked' : '' ) : (category.names[i].name == 'annat') ? 'checked=checked' : ''
