@@ -70,6 +70,14 @@ module.exports = {
 
     return url
   },
+  replaceDiacritics: function(string) {
+    return string.toLowerCase()
+    .replace(/á|à|å|ä/g, 'a')
+    .replace(/ö|ò|ó/gi, 'o')
+    .replace(/é|è/gi, 'e')
+    .replace(/ç/gi, 'c')
+    .replace(/[^\w\s]/gi, '') //Finally remove all non word characters, but leave spaces
+  },
   isAuthenticated: function(req, res, next) {
     if (req.isAuthenticated()) {
       return next()
