@@ -146,9 +146,14 @@
                   class: 'infowindow-image'
                 })
                 .append(
-                  $('<img>', {
-                    src: '/uploads/' + entry.post.cover.filename + '.jpg'
+                  $('<a>', {
+                    href: entry.url
                   })
+                  .append(
+                    $('<img>', {
+                      src: '/uploads/' + entry.post.cover.filename + '.jpg'
+                    })
+                  )
                ),
                 $('<div>', {
                   class: 'infowindow-title'
