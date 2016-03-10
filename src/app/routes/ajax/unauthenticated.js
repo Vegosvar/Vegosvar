@@ -10,6 +10,8 @@ var striptags = require('striptags')
 var extend = require('util')._extend;
 
 module.exports = function (app, resources) {
+  var functions = resources.functions
+
   /** /ajax/map
   * @type: GET
   * @description: Ajax route for loading page info to a map.
@@ -132,13 +134,34 @@ module.exports = function (app, resources) {
       'post.content': 15,
       'post.city': 15,
       'post.food': 10,
-      'post.veg_offer': 1
     }
 
     //Check if query matches a type
     var queryType = false
 
     var queryOperations = {
+      'kafe': function() {
+        searchWeights.slug = 30
+        searchFields.push({
+          property: 'slug',
+          value: 'kafe'
+        })
+
+        searchString += ' cafe'
+
+        return false
+      },
+      'cafe': function() {
+        searchWeights.slug = 30
+        searchFields.push({
+          property: 'slug',
+          value: 'cafe'
+        })
+
+        searchString += ' kafe'
+
+        return false
+      },
       'butik': function() {
         query['type'] = '5'
         return true
@@ -160,7 +183,7 @@ module.exports = function (app, resources) {
         return true
       },
       'vegan': function() {
-        if('type' in query && query.type === '3') {
+        if('type' in query && query.type === '4') {
           query['veg_type'] = 'vegan'
           return true
         } else {
@@ -172,7 +195,7 @@ module.exports = function (app, resources) {
         }
       },
       'laktoovo': function() {
-        if('type' in query && query.type === '3') {
+        if('type' in query && query.type === '4') {
           query['veg_type'] = 'lacto_ovo'
           return true
         } else {
@@ -184,7 +207,7 @@ module.exports = function (app, resources) {
         }
       },
       'animal': function() {
-        if('type' in query && query.type === '3') {
+        if('type' in query && query.type === '4') {
           query['veg_type'] = 'animal'
           return true
         } else {
@@ -198,10 +221,10 @@ module.exports = function (app, resources) {
     }
 
     var queryTypes = function(string) {
-      string = string.toLowerCase().replace(/é|è/gi, 'e') //Remove accent, mainly for café/kafé
+      string = functions.replaceDiacritics(string)
       string = string.replace(/[^a-z]/gi, '') //Remove non alphabet characters
 
-      var keywords = ['butik','restaurang','produkt','recept','fakta','vegan','laktoovo','animal']
+      var keywords = ['cafe','kafe','butik','restaurang','produkt','recept','fakta','vegan','laktoovo','animal']
       var regexMatches = new RegExp('^' + keywords.join('|'))
 
       var match = string.match(regexMatches)
@@ -212,8 +235,7 @@ module.exports = function (app, resources) {
           //Perform the operations on the search query
           if(queryOperations[key]()) {
             //Update the search string to remove the key from the search, otherwise might result in unwanted results
-            searchString = searchString.toLowerCase().replace(/é|è/gi, 'e') //Remove accent, mainly for café/kafé
-            var tmpArray = searchString.toLowerCase().split(' ')
+            var tmpArray = functions.replaceDiacritics(searchString).split(' ')
 
             //Filter out the current key from the search query
             searchString = tmpArray.filter(function(text) {
@@ -233,7 +255,6 @@ module.exports = function (app, resources) {
 
     //Remove extraneous spaces
     searchString = searchString.replace(/\s+/g, " ").replace(/^\s|\s$/g, "")
-    console.log(searchString)
 
     //Go over all the keys
     for(var key in query) {
