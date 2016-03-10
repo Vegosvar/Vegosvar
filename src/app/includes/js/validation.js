@@ -63,13 +63,7 @@ $(document).ready(function () {
 
       if(value.length > 2) {
 
-        $.ajax({
-          url: '/ajax/validate/title',
-          data: {
-            title: value
-          }
-        })
-        .done(function (result) {
+        var checkTitleResult = function(result, callback) {
           if(result.success) {
             if(result.available) {
               $('.title-error').hide()
@@ -94,6 +88,24 @@ $(document).ready(function () {
           if(typeof(callback) === 'function') {
             callback(result.available)
           }
+        }
+
+        if($('input[name="id"]').val().length == 24) { //We're editing a page, be more lenient
+          checkTitleResult({
+            success: true,
+            available: true
+          }, callback)
+          return
+        }
+
+        $.ajax({
+          url: '/ajax/validate/title',
+          data: {
+            title: value
+          }
+        })
+        .done(function (result) {
+          checkTitleResult(result, callback)
         })
       } else {
         $(element).addClass('invalid')
@@ -355,11 +367,6 @@ $(document).ready(function () {
 
   $('button.form-submit').on('click', function () {
     if(valid !== true) {
-
-      if($('input[name="id"]').val().length == 24) {
-        valid = true //TODO fix this workaround
-        submitForm()
-      }
 
       validatedFields = []
       validateFields()
