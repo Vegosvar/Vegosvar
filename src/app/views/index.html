@@ -221,11 +221,15 @@
                                                     var avatar_url = '/assets/images/no-picture.svg'
                                                 }
                                             } %>
-                                            <img src="<%= avatar_url %>" />
-                                            Recept av <%= recipes[i].user_info.display_name %>
+                                            <img src="<%= avatar_url %>" class="avatar">
+                                            <span class="credit">
+                                                Recept av <%= recipes[i].user_info.display_name %>
+                                            </span>
                                         <% } else { %>
-                                            <img src="/assets/images/no-picture.svg" />
-                                            Recept av Anonym
+                                            <img src="/assets/images/no-picture.svg" class="avatar">
+                                            <span class="credit">
+                                                Recept av Anonym
+                                            </span>
                                         <% } %>
                                     </div>
                                 </a>
