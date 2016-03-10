@@ -233,7 +233,7 @@
               case '5':
                 iconUrl += 'pin-store.png'
                 break
-              case '5':
+              case '6':
                 iconUrl += 'pin-cafe.png'
                 break
               default:
