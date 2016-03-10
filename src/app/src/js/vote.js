@@ -28,9 +28,12 @@ $(window).load(function () {
 
   $('.like.add-like').on('click', function () {
     var container = this
-    var id = $(this).data('id')
+    var id = $(container).data('id')
+    var element = $(container).find('#heart-glyphicon')
+    $(element).removeClass('glyphicon glyphicon-heart glyphicon-heart-empty').addClass('fa fa-spin fa-spinner')
     $.get('/ajax/like?id=' + id, function (data) {
-      var element = $(container).find('#heart-glyphicon')
+      $(element).removeClass('fa fa-spin fa-spinner').addClass('glyphicon')
+
       if (data.new_value === 0) {
         $(element).addClass('glyphicon-heart-empty').removeClass('glyphicon-heart')
       } else {
