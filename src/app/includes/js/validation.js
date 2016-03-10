@@ -342,23 +342,25 @@ $(document).ready(function () {
             valid = false
           }
         })
+
+        console.log(valid)
+
+        if(valid) {
+          $('form[method="post"]').unbind('submit') 
+          $('.form-submit').click().trigger('click')
+        } else {
+          if($('.submit-error').length > 0) {
+            $('.submit-error').show();
+          } else {
+            $('.form-submit').after(
+              $('<span>', {
+                class: 'text-invalid submit-error'
+              })
+              .html('&nbsp;Ett eller flera f&auml;lt beh&ouml;ver kompletteras')
+            )
+          }
+        }
       }, 300)
-
-      if($('.submit-error').length > 0) {
-        $('.submit-error').show();
-      } else {
-        $('.form-submit').after(
-          $('<span>', {
-            class: 'text-invalid submit-error'
-          })
-          .html('&nbsp;Ett eller flera f&auml;lt beh&ouml;ver kompletteras')
-        )
-      }
-
-      if(valid) {
-        $('form[method="post"]').unbind('submit') 
-        $('.form-submit').trigger('click')
-      }
     }
   })
 })
