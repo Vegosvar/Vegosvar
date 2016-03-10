@@ -99,6 +99,8 @@ module.exports = function (app, resources) {
     var searchString = req.query.s
     var searchArray = searchString.toLowerCase().split(' ')
 
+    console.log(searchString)
+
     var valid = false
     for (var i = searchArray.length - 1; i >= 0; i--) {
       if(searchArray[i].match(/\w/gi) !== null ) {
@@ -313,9 +315,6 @@ module.exports = function (app, resources) {
         //Add $or matches with the regex strings
         filteredQuery.$match.$or = orFields
       }
-
-
-      console.log(filteredQuery.$match)
 
       //Find pages
       var pagesdb = resources.collections.pages
