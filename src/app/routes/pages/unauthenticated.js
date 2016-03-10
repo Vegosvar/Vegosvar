@@ -51,7 +51,7 @@ module.exports = function (app, resources) {
         pagesdb.find({
           $or:[
             {type:'3'},
-            {type:'5'}
+            {type:'5'},
             {type:'6'}
             ]
         }).sort({_id:-1}).limit(12).toArray(function(err, establishments) {
