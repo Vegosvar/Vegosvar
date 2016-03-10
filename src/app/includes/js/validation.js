@@ -343,8 +343,6 @@ $(document).ready(function () {
           }
         })
 
-        console.log(valid)
-
         if(valid) {
           $('form[method="post"]').unbind('submit') 
           $('.form-submit').click().trigger('click')
