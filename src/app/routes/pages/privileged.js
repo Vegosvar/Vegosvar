@@ -51,7 +51,7 @@ module.exports = function (app, resources) {
             if (err) throw err
 
             revisionsdb.find({pending: { $gt: 0 } }).toArray(function(err, revisions) {
-              pagesdb.find({delete: true}).toArray(function(err, removals) {
+              pagesdb.find({removed: { $exists: false }, delete: true}).toArray(function(err, removals) {
                 var changes = []
                 //Check if any of the removed pages has new revisions
                 for (var i = 0; i < removals.length; i++) {
@@ -115,7 +115,7 @@ module.exports = function (app, resources) {
         revisionIds.push(String(revisions[i].post_id))
       }
 
-      pagesdb.find({ $or: [ { _id: { $in: updated } }, { delete: true } ] } ).toArray(function(err, pages) {
+      pagesdb.find({ removed: { $exists: false }, $or: [ { _id: { $in: updated } }, { delete: true } ] } ).toArray(function(err, pages) {
         if (err) throw err
 
         if(pages.length > 0) {
