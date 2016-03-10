@@ -355,7 +355,7 @@ $(document).ready(function () {
 
   $('button.form-submit').on('click', function () {
     if(valid !== true) {
-
+      validatedFields = []
       validateFields()
 
       setTimeout(function () {
