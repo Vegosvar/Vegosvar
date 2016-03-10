@@ -233,13 +233,14 @@ module.exports = function (app, resources) {
 
         if(key in queryOperations) {
           //Perform the operations on the search query
-          if(queryOperations[key]()) {
+          if(queryOperations[key]() === true) {
             //Update the search string to remove the key from the search, otherwise might result in unwanted results
-            var tmpArray = functions.replaceDiacritics(searchString).split(' ')
+            var tmpArray = searchString.split(' ')
 
             //Filter out the current key from the search query
             searchString = tmpArray.filter(function(text) {
-              var isKey = text.match(key)
+              var compareText = functions.replaceDiacritics(text)
+              var isKey = compareText.match(key)
               if(isKey === null) {
                 return text
               }
@@ -263,38 +264,6 @@ module.exports = function (app, resources) {
       }
     }
 
-    //Array to hold regex objects of search strings
-    var regexArray = []
-
-    //As the searchString has been manipulated it might not even be anything at all anymore
-    if(searchString.length > 0) {
-      regexArray = searchString.split(' ').map(function(text) {
-        return new RegExp(text, 'gi')
-      })
-
-      var orFields = []
-      for (var i = searchFields.length - 1; i >= 0; i--) {
-        var obj = {}
-
-        if(typeof searchFields[i] === 'object') {
-          if('property' in searchFields[i] && 'value' in searchFields[i]) {
-            obj[searchFields[i].property] = {
-              $in: [searchFields[i].value]
-            }
-          }
-        } else {
-          obj[searchFields[i]] = {
-            $in: regexArray
-          }
-        }
-
-        orFields.push(obj)
-      }
-
-      //Add $or matches with the regex strings
-      filteredQuery.$match.$or = orFields
-    }
-
     //Check if query matches a city
     var citiesdb = resources.collections.cities
     citiesdb.find({
@@ -310,26 +279,43 @@ module.exports = function (app, resources) {
           '$options': '-i'
         }
 
+        searchString = searchString.replace(new RegExp(cities[0].name, 'i'), '')
       }
 
-      /*
-      //Check if query matches a category
-      var categoriesdb = resources.collections.categories
-      categoriesdb.find({
-        $or: [{
-          name: {
-            $in: searchArray
+      //Array to hold regex objects of search strings
+      var regexArray = []
+
+      //As the searchString has been manipulated it might not even be anything at all anymore
+      if(searchString.length > 0) {
+        regexArray = searchString.split(' ').map(function(text) {
+          return new RegExp(text, 'gi')
+        })
+
+        var orFields = []
+        for (var i = searchFields.length - 1; i >= 0; i--) {
+          var obj = {}
+
+          if(typeof searchFields[i] === 'object') {
+            if('property' in searchFields[i] && 'value' in searchFields[i]) {
+              obj[searchFields[i].property] = {
+                $in: [searchFields[i].value]
+              }
+            }
+          } else {
+            obj[searchFields[i]] = {
+              $in: regexArray
+            }
           }
-        }, {
-          subcategory: {
-            $in: searchArray
-          }
-        }]
-      }).toArray(function(err, categories) {
-        //console.log(categories)
-        //If we found a match here, we might want to restrict the query to that type of category
-      })
-      */
+
+          orFields.push(obj)
+        }
+
+        //Add $or matches with the regex strings
+        filteredQuery.$match.$or = orFields
+      }
+
+
+      console.log(filteredQuery.$match)
 
       //Find pages
       var pagesdb = resources.collections.pages
