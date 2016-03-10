@@ -40,29 +40,31 @@ $("div#uploader").dropzone(
   }, dropzoneOptions)
 )
 
-var avatarDZ = new Dropzone('#avatar',
-  $.extend({
-    url: '/submit/file/avatar',
-    previewsContainer: $('.avatar')[0],
-    previewTemplate: 
-    $('<div>', {
-      class: 'dz-preview dz-file-preview'
-    })
-    .append(
+if($('#avatar').length > 0) {
+  var avatarDZ = new Dropzone('#avatar',
+    $.extend({
+      url: '/submit/file/avatar',
+      previewsContainer: $('.avatar')[0],
+      previewTemplate: 
       $('<div>', {
-        class: 'dz-details'
+        class: 'dz-preview dz-file-preview'
       })
       .append(
-        $('<img>')
-        .attr('data-dz-thumbnail', '')
-      )
-    )[0].outerHTML,
-  }, dropzoneOptions)
-)
+        $('<div>', {
+          class: 'dz-details'
+        })
+        .append(
+          $('<img>')
+          .attr('data-dz-thumbnail', '')
+        )
+      )[0].outerHTML,
+    }, dropzoneOptions)
+  )
 
-avatarDZ.on('sending', function () {
-  $('#user-avatar').hide()
-  if($('.dz-preview').length > 1) {
-    $('.dz-preview:first').remove()
-  }
-})
+  avatarDZ.on('sending', function () {
+    $('#user-avatar').hide()
+    if($('.dz-preview').length > 1) {
+      $('.dz-preview:first').remove()
+    }
+  })
+}
