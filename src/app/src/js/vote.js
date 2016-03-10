@@ -9,8 +9,8 @@ $(window).load(function () {
       $.get('/ajax/addVote?id=' + article + '&content=' + content, function (data) {
         if (data === '1') {
           window.location.assign('/recensera')
-        } else if (data === '3') {
-          alert('Du har redan röstat!')
+        } else if (data === '3' || data === '5') {
+          //TODO, this should really be fixed
         } else {
           $('span.votes').html(data[0].count)
           var element = $('#' + data[0]._id + '.stars')
