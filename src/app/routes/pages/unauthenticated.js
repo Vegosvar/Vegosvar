@@ -49,10 +49,12 @@ module.exports = function (app, resources) {
           }
         })
         pagesdb.find({
+          accepted: true,
           $or:[
             {type:'3'},
-            {type:'5'}
-            ]
+            {type:'5'},
+            {type:'6'}
+          ]
         }).sort({_id:-1}).limit(12).toArray(function(err, establishments) {
           pagesdb.find({
             $or:[
@@ -71,6 +73,9 @@ module.exports = function (app, resources) {
                   if(!recipes[i].user_info.hidden) {
                     if(String(recipes[i].user_info.id) == String(users[u]._id) ) {
                       recipes[i].user_info.display_name = users[u].name.display_name
+                      recipes[i].user_info.active_photo = users[u].active_photo
+                      recipes[i].user_info.fb_photo = users[u].fb_photo
+                      recipes[i].user_info.vegosvar_photo = users[u].vegosvar_photo
                     }
                   }
                 }
@@ -199,7 +204,8 @@ module.exports = function (app, resources) {
                 {
                   $or:[
                     {type:'3'},
-                    {type:'5'}
+                    {type:'5'},
+                    {type:'6'}
                   ]
                 },
                 {

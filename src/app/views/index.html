@@ -210,6 +210,18 @@
                                         </a>
 
                                         <% if (typeof recipes[i].user_info.hidden !== true && 'display_name' in recipes[i].user_info) { %>
+                                        <% if (typeof recipes[i].user_info.active_photo === 'undefined') {
+                                                var user_info_url = '/assets/images/no-picture.svg'
+                                            } else {
+                                                if(recipes[i].user_info.active_photo === 'vegosvar') {
+                                                    var user_info_url = recipes[i].user_info.vegosvar_photo
+                                                } else if (recipes[i].user_info.active_photo === 'facebook') {
+                                                    var user_info_url = recipes[i].user_info.fb_photo
+                                                } else {
+                                                    var user_info_url = '/assets/images/no-picture.svg'
+                                                }
+                                            } %>
+                                            <img src="<%= user_info_url %>" alt="" />
                                             Recept av <%= recipes[i].user_info.display_name %>
                                         <% } else { %>
                                             Recept av Anonym
@@ -275,6 +287,7 @@
                     break
                 case "3":
                 case "5":
+                case "6":
                     stats.places += groupCount
                     break
             }
