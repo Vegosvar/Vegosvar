@@ -339,19 +339,9 @@ module.exports = function (app, resources) {
                 }
 
                 revisionsdb.update({ post_id : id}, revision, function(err, result) {
-                  res.redirect('/ny/uppdaterad/?newpost='+niceurl)
-                })
-              } else {
-                console.log('No entry for this page in revisions collection')
-                pagesdb.find({ _id : id }).toArray(function(err, result) {
-                  data.timestamp = {
-                    created: result[0].timestamp.created,
-                    update: isodate, // Add timestamp for update
-                    updatedby: req.user._id
-                  }
-
-                  pagesdb.update({_id:id}, data, function(err, result) {
-                    res.redirect('/ny/uppdaterad/?newpost='+niceurl)
+                  res.json({
+                    success: true,
+                    url: '/ny/uppdaterad/?newpost='+niceurl
                   })
                 })
               }
@@ -382,8 +372,10 @@ module.exports = function (app, resources) {
               }
 
               revisionsdb.insert(revision, function(err, doc) {
-                //Should probably make a redirect to a page showing that the page is updated and will be published after moderation
-                res.redirect('/ny/publicerad/?newpost='+niceurl)
+                res.json({
+                  success: true,
+                  url: '/ny/publicerad/?newpost='+niceurl
+                })
               })
             })
           }
