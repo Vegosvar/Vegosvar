@@ -355,6 +355,12 @@ $(document).ready(function () {
 
   $('button.form-submit').on('click', function () {
     if(valid !== true) {
+
+      if($('input[name="id"]').val().length == 24) {
+        valid = true //TODO fix this workaround
+        submitForm()
+      }
+
       validatedFields = []
       validateFields()
 
