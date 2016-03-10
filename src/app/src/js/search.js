@@ -28,6 +28,8 @@
           })
         )
         $.fn.vegosvar.search.validate()
+
+        ga('send', 'pageview', '/?s=' + searchTerm)
       })
     },
     validate: function () {
