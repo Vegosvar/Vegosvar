@@ -226,11 +226,11 @@ module.exports = function (app, resources) {
                 //Pages user has contributed to (but not created)
                 pagesdb.find({
                   "user_info.id": {
-                    $ne: new ObjectID(req.user._id)
+                    $ne: new ObjectID(userid)
                   },
                   "user_info.contributors": {
                     $elemMatch: {
-                      id: new ObjectID(req.user._id)
+                      id: new ObjectID(userid)
                     }
                   }
                 }).toArray(function(err, contributions) {
