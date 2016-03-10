@@ -15,7 +15,7 @@ $(document).ready(function () {
       var element = $('#editor')
       var typingTimer
 
-      $(element).on('blur', function () {
+      $(element).on('blur focus', function () {
         verifyFields.description()
 
         $(element).on('keyup', function () {
@@ -186,7 +186,9 @@ $(document).ready(function () {
           $(elementStreet).removeClass('invalid')
           $('.error-street').hide()
 
-          callback(true)
+          if(typeof(callback) === 'function') {
+            callback(true)
+          }
         } else {
           $(elementStreet).addClass('invalid')
 
@@ -317,7 +319,7 @@ $(document).ready(function () {
     })
   }
 
-  var valid = false
+  var valid = null
   var validatedFields = []
 
   function submitForm() {
@@ -348,21 +350,25 @@ $(document).ready(function () {
 
   $('form[method="post"]').bind('submit', function (e) {
     e.preventDefault()
+    return false
+  })
 
-    if(!valid) {
-
-      validated = []
+  $('button.form-submit').on('click', function () {
+    if(valid !== true) {
 
       validateFields()
 
       setTimeout(function () {
+        var validated = []
         $.each(validatedFields, function(i, result) {
           if('valid' in result) {
-            valid = result.valid
+            validated.push(result.valid)
           } else {
-            valid = false
+            valid = false //Something went wrong here
           }
         })
+
+        valid = ($.inArray(false, validated) === -1) //False not present in array
 
         if(valid) {
           submitForm()
@@ -380,7 +386,7 @@ $(document).ready(function () {
         }
       }, 300)
       return false
-    } else {
+    } else if(valid === true) {
       submitForm()
     }
   })
