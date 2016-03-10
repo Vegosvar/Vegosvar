@@ -11,6 +11,8 @@ $(document).ready(function () {
         target: '_blank'
       }
     },
+    br: {},
+    p: { unwrap: 1 },
     h2: { keep_styles: {}},
     h3: { keep_styles: {}},
     h4: { keep_styles: {}},
