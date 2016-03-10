@@ -1,0 +1,27 @@
+          <div class="panel panel-danger">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                  <span class="glyphicon glyphicon-heart"></span> 
+                  Gillade sidor
+                </h3>
+            </div>
+
+            <table class="table table-striped table-bordered datatable">
+              <thead>
+                <tr>
+                  <th>Sida</th>
+                </tr>
+              </thead>
+              <tbody>
+              <% if(typeof likes !== 'undefined') {
+                for(var i=0; i < likes.length; i++) { %>
+                <tr>
+                  <td>
+                    <a href="<%= likes[i].url %>"><%= likes[i].title %></a>
+                  </td>
+                </tr>
+              <% }
+              } %>
+              </tbody>
+            </table>
+          </div>
