@@ -13,6 +13,7 @@ module.exports = function(resources) {
     clientSecret: resources.config.facebook.app_secret,
     callbackURL: resources.config.facebook.callback,
     profileFields: ['id', 'name', 'displayName', 'picture.type(large)'],
+    enableProof: true
   }, function (access_token, refresh_token, profile, done) {
     var usersdb = resources.collections.users
 
