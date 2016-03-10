@@ -314,6 +314,7 @@ module.exports = function (app, resources) {
               post: post,
               loadEditorResources: true,
               loadDropzoneResources: true,
+              loadValidationResources: true,
               loadMapResources: mapResources,
               loadPageResources: pageResources,
               categories: categories
