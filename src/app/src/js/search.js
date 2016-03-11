@@ -105,9 +105,7 @@
       })
 
       $.fn.vegosvar.search.filter.init()
-      if ($.fn.vegosvar.search.map.visible()) {
-        $.fn.vegosvar.search.map.update()
-      }
+      $.fn.vegosvar.search.map.update()
     },
     filter: {
       add: function (entry) {
@@ -280,31 +278,38 @@
         }
       },
       update: function (results) {
-        if ($.fn.vegosvar.search.settings.map.initialized) {
-          if (typeof(results) === 'undefined') {
-            results = $.fn.vegosvar.search.settings.results
-          }
+        if (typeof(results) === 'undefined') {
+          results = $.fn.vegosvar.search.settings.results
+        }
 
-          var entryIds = [] //Array to hold all the posts ids
+        var entryIds = [] //Array to hold all the posts ids
 
+        if (results.length > 0) {
           $.each(results, function (i, entry) {
             if (entry.type === '6' || entry.type === '5' || entry.type === '3') {
               //Check if any of the results can be placed on a map
               entryIds.push(entry._id)
             }
           })
+        } else {
+          $('.showSearchMap').hide()
+        }
 
-          if (entryIds.length > 0) {
+        if (entryIds.length > 0) {
+          $('.showSearchMap').show()
+
+          if ($.fn.vegosvar.search.settings.map.initialized) {
             $.fn.vegosvar.search.map.markers.remove() //Remove all markers before adding new ones
 
             $.fn.vegosvar.search.map.query(entryIds, function (data) {
               $.fn.vegosvar.search.map.markers.add(data)
             })
-          } else {
-            $.fn.vegosvar.search.map.hide()
           }
         } else {
-          return false
+          $('.showSearchMap').hide()
+          if ($.fn.vegosvar.search.settings.map.initialized) {
+            $.fn.vegosvar.search.map.hide()
+          }
         }
       },
       show: function () {
