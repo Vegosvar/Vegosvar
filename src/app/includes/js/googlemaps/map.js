@@ -130,6 +130,26 @@
 
         return result
       },
+      getInfoWindowImage: function(entry) {
+        var coverImage = '/assets/images/placeholder-' + entry.type + '.svg'
+        if(typeof(entry.post.cover) !== 'undefined' && typeof(entry.post.cover.filename) !== 'undefined' && entry.post.cover.filename !== null) {
+          coverImage = '/uploads/' + entry.post.cover.filename + '.jpg'
+        }
+
+        return $('<div>', {
+          class: 'infowindow-image'
+        })
+        .append(
+          $('<a>', {
+            href: entry.url
+          })
+          .append(
+            $('<img>', {
+              src: coverImage
+            })
+          )
+        )
+      },
       entryContent: function(entry) {
         return $('<div>')
           .append(
@@ -142,19 +162,7 @@
                 class: 'infowindow-header'
               })
               .append(
-                $('<div>', {
-                  class: 'infowindow-image'
-                })
-                .append(
-                  $('<a>', {
-                    href: entry.url
-                  })
-                  .append(
-                    $('<img>', {
-                      src: '/uploads/' + entry.post.cover.filename + '.jpg'
-                    })
-                  )
-               ),
+                module.getInfoWindowImage(entry),
                 $('<div>', {
                   class: 'infowindow-title'
                 })
