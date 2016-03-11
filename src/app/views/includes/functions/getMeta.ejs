@@ -29,9 +29,9 @@ if (typeof post.post.content !== 'undefined' && post.post.content !== null) {
       content += (typeof striptags !== 'undefined') ? striptags(post.post.content) : post.post.content
     }
 } %>
-	<meta name="description" content="<%= content %>">
+	<meta name="description" content="<%- content %>">
 	<meta property="og:title" content="<%= post.title %> – Vegosvar">
-	<meta property="og:description" content="<%= content %>">
+	<meta property="og:description" content="<%- content %>">
 	<meta property="og:type" content="website">
 	<meta property="og:image" content="https://vegosvar.se/uploads/<%= post.post.cover.filename %>.jpg">
 	<meta property="og:url" content="https://vegosvar.se/<%= post.url %>">
