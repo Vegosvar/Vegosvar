@@ -132,7 +132,7 @@
       },
       getInfoWindowImage: function(entry) {
         var coverImage = '/assets/images/placeholder-' + entry.type + '.svg'
-        if(typeof(entry.post.cover) !== 'undefined' && typeof(entry.post.cover.filename) !== 'undefined' && entry.post.cover.filename !== null) {
+        if(typeof(entry.post.cover) !== 'undefined' && typeof(entry.post.cover.filename) !== 'undefined' && entry.post.cover.filename !== null && entry.post.cover.filename.length > 0) {
           coverImage = '/uploads/' + entry.post.cover.filename + '.jpg'
         }
 
