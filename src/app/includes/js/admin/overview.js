@@ -82,13 +82,14 @@ function sortMultidimensional(a, b) {
 var series = []
 $(function() {
     var stats = {}
-    var typeNames = ['Fakta','Recept','Restaurang','Produkt','Butik']
+    var typeNames = ['Fakta','Recept','Restaurang','Produkt','Butik','Cafe']
     for (var i = pages_stats.length - 1; i >= 0; i--) {
         var entry = pages_stats[i]
 
         var id = entry._id
         var date = id.date
         var type = parseInt( id.type ) -1
+        console.log(type)
 
 
         var dateObj = new Date(date).getTime()
