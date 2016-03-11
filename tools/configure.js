@@ -293,7 +293,7 @@ function verifyPageRevision(page) {
 
                     for(var property in properties) {
                         if( property in current ) {
-                            console.log('Verified property ' + property + ' of revision: ' + current._id)
+                            //console.log('Verified property ' + property + ' of revision: ' + current._id)
                         } else {
                             //Update revision document with given property
                             var update = properties[property]()
@@ -354,6 +354,44 @@ function insertPageRevision(page) {
     })
 }
 
+function addPageSlug(doc) {
+    var getSlug = require('speakingurl')
+
+    var replaceDiacritics = function(string) {
+        return string.toLowerCase()
+        .replace(/á|à|å|ä/g, 'a')
+        .replace(/ö|ò|ó/gi, 'o')
+        .replace(/é|è/gi, 'e')
+        .replace(/ç/gi, 'c')
+        .replace(/[^\w\s]/gi, '') //Finally remove all non word characters, but leave spaces
+    }
+
+    var tamperedTitle = replaceDiacritics(String(doc.title))
+    var niceurl = getSlug(tamperedTitle, {
+      // URL Settings
+      separator: '-',
+      maintainCase: false,
+      symbols: false
+    })
+
+    client.connect(config.database.host+config.database.name, function(err, db){
+        if(err) throw err
+
+        db.collection('pages').update({
+            _id: doc._id
+        },{
+            $set: {
+                url: niceurl,
+                slug: tamperedTitle
+            }
+        }, function(err, result){
+            console.log(result)
+        })
+
+        db.close()
+    })
+}
+
 /* Check for collections */
 client.connect(config.database.host+config.database.name, function(err, db){
     if(err) throw err
@@ -402,6 +440,7 @@ client.connect(config.database.host+config.database.name, function(err, db){
             if(docs.length > 0) {
                 for (var i = docs.length - 1; i >= 0; i--) {
                     verifyPageRevision(docs[i])
+                    addPageSlug(docs[i])
                 }
 
                 db.close()

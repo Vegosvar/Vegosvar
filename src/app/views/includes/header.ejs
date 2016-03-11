@@ -6,7 +6,7 @@
 <head>
   <% include functions/getTitle %>
 
-  <meta name="robots" content="noindex,nofollow"> <!-- Remove before release -->
+  <meta name="robots" content="index,follow"> 
 
   <% include functions/getMeta %>
 
@@ -81,11 +81,6 @@
             Välj stad
           </a>
           <ul class="dropdown-menu">
-            <% if(typeof(cities) !== 'undefined') { %>
-              <% for(i=0;i<cities.length;i++) { %>
-                <li><a href="/?s=<%= cities[i].name %>"><%= cities[i].name %></a></li>
-              <% } %>
-            <% } else { %>
               <li><a href="/?s=Stockholm">Stockholm</a></li>
               <li><a href="/?s=Göteborg">Göteborg</a></li>
               <li><a href="/?s=Malmö">Malmö</a></li>
@@ -105,7 +100,6 @@
               <li><a href="/?s=Täby">Täby</a></li>
               <li><a href="/?s=Växjö">Växjö</a></li>
               <li><a href="/?s=Halmstad">Halmstad</a></li>
-            <% } %>
           </ul>
         </li>
 
@@ -115,26 +109,11 @@
             Produkter
           </a>
           <ul class="dropdown-menu">
-            <% if(typeof(categories) !== 'undefined') { %>
-              <% for(i=0;i<categories.length;i++) { %>
-                <li><a href="/?s=<%= categories[i].name %>"><%= categories[i].name %></a></li>
-              <% } %>
-            <% } else { %>
             <li><a href="/?s=chips">Chips</a></li>
             <li><a href="/?s=glass">Glass</a></li>
-            <li><a href="/?s=godis">Godis</a></li>
-            <li><a href="/?s=hudvård">Hudvård</a></li>
-            <li><a href="/?s=kosttillskott">Kosttillskott</a></li>
-            <li><a href="/?s=makeup">Makeup</a></li>
-            <li><a href="/?s=ost">Ost</a></li>
-            <li><a href="/?s=shampoo">Shampoo</a></li>
-            <li><a href="/?s=tandkräm">Tandkräm</a></li>
+            <li><a href="/?s=Ost">Ost</a></li>
             <li><a href="/?s=vegokött">Vegokött</a></li>
-            <li><a href="/?s=vin">Vin</a></li>
             <li><a href="/?s=växtdryck">Växtdryck</a></li>
-            <li><a href="/?s=växtgrädde">Växtgrädde</a></li>
-            <li><a href="/?s=öl">Öl</a></li>
-            <% } %>
           </ul>
         </li>
 
@@ -177,11 +156,6 @@
         <a class="toggle-dropdown"><span class="glyphicon glyphicon-map-marker"></span>Välj stad</a>
         <ul class="dropdown">
           <li class="title">Välj stad</li>
-          <% if(typeof(cities) !== 'undefined') { %>
-            <% for(i=0;i<cities.length;i++) { %>
-              <li><a href="/?s=<%= cities[i].name %>"><%= cities[i].name %></a></li>
-            <% } %>
-          <% } else { %>
             <li><a href="/?s=Stockholm">Stockholm</a></li>
             <li><a href="/?s=Göteborg">Göteborg</a></li>
             <li><a href="/?s=Malmö">Malmö</a></li>
@@ -201,7 +175,6 @@
             <li><a href="/?s=Täby">Täby</a></li>
             <li><a href="/?s=Växjö">Växjö</a></li>
             <li><a href="/?s=Halmstad">Halmstad</a></li>
-          <% } %>
           <li class="desc"><div>Du kan även använda sökfunktionen för att söka på specifika städer eller områden</div></li>
         </ul>
       </li>
@@ -210,26 +183,11 @@
         <a class="toggle-dropdown"><span class="glyphicon glyphicon-ice-lolly-tasted"></span>Produkter</a>
         <ul class="dropdown">
           <li class="title">Produkter</li>
-          <% if(typeof(categories) !== 'undefined') { %>
-            <% for(i=0;i<categories.length;i++) { %>
-              <li><a href="/?s=<%= categories[i].name %>"><%= categories[i].name %></a></li>
-            <% } %>
-          <% } else { %>
-            <li><a href="/?s=Chips">Chips</a></li>
-            <li><a href="/?s=Glass">Glass</a></li>
-            <li><a href="/?s=Godis">Godis</a></li>
-            <li><a href="/?s=Hudvård">Hudvård</a></li>
-            <li><a href="/?s=Kosttillskott">Kosttillskott</a></li>
-            <li><a href="/?s=Makeup">Makeup</a></li>
+            <li><a href="/?s=chips">Chips</a></li>
+            <li><a href="/?s=glass">Glass</a></li>
             <li><a href="/?s=Ost">Ost</a></li>
-            <li><a href="/?s=Shampoo">Shampoo</a></li>
-            <li><a href="/?s=Tandkräm">Tandkräm</a></li>
-            <li><a href="/?s=Vegokött">Vegokött</a></li>
-            <li><a href="/?s=Vin">Vin</a></li>
-            <li><a href="/?s=Växtdryck">Växtdryck</a></li>
-            <li><a href="/?s=Växtgrädde">Växtgrädde</a></li>
-            <li><a href="/?s=Öl">Öl</a></li>
-          <% } %>
+            <li><a href="/?s=vegokött">Vegokött</a></li>
+            <li><a href="/?s=växtdryck">Växtdryck</a></li>
           <li class="desc"><div>Du kan även använda sökfunktionen för att söka specifika produkter eller märken</div></li>
         </ul>
       </li>

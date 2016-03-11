@@ -21,6 +21,7 @@ module.exports = {
 		return true
 	},
 	avatar: function(id) {
+		fs.unlink(__dirname + '/../uploads/avatar/' + id + '.jpg', function(err){}) //Quietly ignore unlink errors
 		var image = sharp(__dirname + '/../uploads/avatar/' + id + '_raw.jpg')
 		image.resize(200, 200)
 		image.quality(90)

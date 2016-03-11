@@ -1,0 +1,27 @@
+          <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                  Sidor du bidragit till
+                </h3>
+            </div>
+
+            <table class="table table-striped table-bordered datatable">
+              <thead>
+                <tr>
+                  <th>Sida</th>
+                </tr>
+              </thead>
+              <tbody>
+              <% if(typeof contributions !== 'undefined') {
+                for(var i=0; i < contributions.length; i++) { %>
+                <tr>
+                  <td>
+                    <a href="<%= contributions[i].url %>"><%= contributions[i].title %></a>
+                  </td>
+                </tr>
+              <% }
+              } %>
+              </tbody>
+            </table>
+          </div>
+

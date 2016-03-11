@@ -25,17 +25,13 @@ module.exports = function (app, resources) {
 
     //Prevent speakingurl from converting swedish characters to ae and oe by replacing them with what we want
     //also remove any non alphanumeric characters in url
-    var tamperedTitle = String(req.body.title).toLowerCase().replace(/å|ä/g, 'a').replace(/ö/g, 'o')
-    tamperedTitle = tamperedTitle.replace(/é|è/gi, 'e').replace(/á|à/gi, 'a') //Remove accent, mainly for café/kafé
-    tamperedTitle = tamperedTitle.replace(/[^\w\s]/gi, '') //Finally remove all non word characters, but leave spaces
-    console.log(tamperedTitle)
-    var niceurl = getSlug(tamperedTitle, {
+    var slug = functions.replaceDiacritics(String(req.body.title))
+    var niceurl = getSlug(slug, {
       // URL Settings
       separator: '-',
       maintainCase: false,
       symbols: false
     })
-    var simpleSlug = getSlug(tamperedTitle, {separator: ''})
 
     var usersdb = resources.collections.users
     var pagesdb = resources.collections.pages
@@ -288,7 +284,7 @@ module.exports = function (app, resources) {
         }
 
         data.accepted = null
-        data.slug = simpleSlug
+        data.slug = slug
 
         if(id) {
           id = new ObjectID(id) //If editing the post, the id will be provided as a string and we need to convert it to an objectid
@@ -343,19 +339,9 @@ module.exports = function (app, resources) {
                 }
 
                 revisionsdb.update({ post_id : id}, revision, function(err, result) {
-                  res.redirect('/ny/uppdaterad/?newpost='+niceurl)
-                })
-              } else {
-                console.log('No entry for this page in revisions collection')
-                pagesdb.find({ _id : id }).toArray(function(err, result) {
-                  data.timestamp = {
-                    created: result[0].timestamp.created,
-                    update: isodate, // Add timestamp for update
-                    updatedby: req.user._id
-                  }
-
-                  pagesdb.update({_id:id}, data, function(err, result) {
-                    res.redirect('/ny/uppdaterad/?newpost='+niceurl)
+                  res.json({
+                    success: true,
+                    url: '/ny/uppdaterad/?newpost='+niceurl
                   })
                 })
               }
@@ -386,8 +372,10 @@ module.exports = function (app, resources) {
               }
 
               revisionsdb.insert(revision, function(err, doc) {
-                //Should probably make a redirect to a page showing that the page is updated and will be published after moderation
-                res.redirect('/ny/publicerad/?newpost='+niceurl)
+                res.json({
+                  success: true,
+                  url: '/ny/publicerad/?newpost='+niceurl
+                })
               })
             })
           }

@@ -9,8 +9,8 @@ $(window).load(function () {
       $.get('/ajax/addVote?id=' + article + '&content=' + content, function (data) {
         if (data === '1') {
           window.location.assign('/recensera')
-        } else if (data === '3') {
-          alert('Du har redan röstat!')
+        } else if (data === '3' || data === '5') {
+          //TODO, this should really be fixed
         } else {
           $('span.votes').html(data[0].count)
           var element = $('#' + data[0]._id + '.stars')
@@ -28,9 +28,12 @@ $(window).load(function () {
 
   $('.like.add-like').on('click', function () {
     var container = this
-    var id = $(this).data('id')
+    var id = $(container).data('id')
+    var element = $(container).find('#heart-glyphicon')
+    $(element).removeClass('glyphicon glyphicon-heart glyphicon-heart-empty').addClass('fa fa-spin fa-spinner')
     $.get('/ajax/like?id=' + id, function (data) {
-      var element = $(container).find('#heart-glyphicon')
+      $(element).removeClass('fa fa-spin fa-spinner').addClass('glyphicon')
+
       if (data.new_value === 0) {
         $(element).addClass('glyphicon-heart-empty').removeClass('glyphicon-heart')
       } else {

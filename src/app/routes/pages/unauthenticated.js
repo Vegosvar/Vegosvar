@@ -50,16 +50,15 @@ module.exports = function (app, resources) {
         })
         pagesdb.find({
           accepted: true,
-          $or:[
-            {type:'3'},
-            {type:'5'},
-            {type:'6'}
+          $or: [
+            { type: '3' },
+            { type: '5' },
+            { type: '6' }
           ]
         }).sort({_id:-1}).limit(12).toArray(function(err, establishments) {
           pagesdb.find({
-            $or:[
-              {type:'2'}
-              ]
+            accepted: true,
+            type: '2'
           }).sort({_id:-1}).limit(3).toArray(function(err, recipes) {
 
             var recipeUsers = []
@@ -235,7 +234,8 @@ module.exports = function (app, resources) {
                       establishments: establishments,
                       loadGeoLocation: true,
                       loadMapResources: mapResources,
-                      loadPageResources: pageResources
+                      loadPageResources: pageResources,
+                      striptags: striptags
                     })
                   })
                 } else {
@@ -252,7 +252,8 @@ module.exports = function (app, resources) {
                     establishments: establishments,
                     loadGeoLocation: true,
                     loadMapResources: mapResources,
-                    loadPageResources: pageResources
+                    loadPageResources: pageResources,
+                    striptags: striptags
                   })
                 }
               })

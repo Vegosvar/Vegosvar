@@ -146,9 +146,14 @@
                   class: 'infowindow-image'
                 })
                 .append(
-                  $('<img>', {
-                    src: '/uploads/' + entry.post.cover.filename + '.jpg'
+                  $('<a>', {
+                    href: entry.url
                   })
+                  .append(
+                    $('<img>', {
+                      src: '/uploads/' + entry.post.cover.filename + '.jpg'
+                    })
+                  )
                ),
                 $('<div>', {
                   class: 'infowindow-title'
@@ -233,7 +238,7 @@
               case '5':
                 iconUrl += 'pin-store.png'
                 break
-              case '5':
+              case '6':
                 iconUrl += 'pin-cafe.png'
                 break
               default:

@@ -51,7 +51,7 @@ module.exports = function (app, resources) {
             if (err) throw err
 
             revisionsdb.find({pending: { $gt: 0 } }).toArray(function(err, revisions) {
-              pagesdb.find({delete: true}).toArray(function(err, removals) {
+              pagesdb.find({removed: { $exists: false }, delete: true}).toArray(function(err, removals) {
                 var changes = []
                 //Check if any of the removed pages has new revisions
                 for (var i = 0; i < removals.length; i++) {
@@ -115,7 +115,7 @@ module.exports = function (app, resources) {
         revisionIds.push(String(revisions[i].post_id))
       }
 
-      pagesdb.find({ $or: [ { _id: { $in: updated } }, { delete: true } ] } ).toArray(function(err, pages) {
+      pagesdb.find({ removed: { $exists: false }, $or: [ { _id: { $in: updated } }, { delete: true } ] } ).toArray(function(err, pages) {
         if (err) throw err
 
         if(pages.length > 0) {
@@ -166,22 +166,89 @@ module.exports = function (app, resources) {
   })
 
   app.get('/admin/profil/:user_id', functions.isPrivileged, function (req, res) {
-    var usersdb = resources.collections.users
+    var userid = new ObjectID(req.params.user_id)
     var pagesdb = resources.collections.pages
-    var revisionsdb = resources.collections.revisions
+    var likesdb = resources.collections.likes
+    var votesdb = resources.collections.votes
+    var usersdb = resources.collections.users
 
-    var user_id = req.params.user_id
-
-    usersdb.find({_id: new ObjectID(user_id) }).toArray(function(err, user) {
+    usersdb.find({_id: userid}).toArray(function(err, users) {
       if (err) throw err
+      var current_user = users[0]
 
-      user = user[0]
-      pagesdb.find( { "user_info.id": new ObjectID(user_id) }).toArray(function(err, pages) {
-        res.render('admin/profil', {
-          user: req.user,
-          current_user: user,
-          active_page: 'users',
-          pages: pages
+      //Get pages user has created
+      pagesdb.find( { "user_info.id": userid }).toArray(function(err, pages) {
+        if (err) throw err
+
+        //Find votes from this user
+        votesdb.find( {"user.id": userid }).toArray(function(err, votes) {
+          if (err) throw err
+
+          var pages_voted_on = []
+          var pages_voted_on_str = []
+          var pages_votes = []
+          for (var i = 0; i < votes.length; i++) {
+            pages_voted_on.push( votes[i].post.id )
+            pages_voted_on_str.push( String(votes[i].post.id ) )
+            pages_votes.push( votes[i].content )
+          }
+
+          //Find pages user voted on
+          pagesdb.find( { _id: { $in: pages_voted_on } } ).toArray(function(err, voted) {
+            if (err) throw err
+
+            var voted_pages = []
+            for (var i = 0; i < voted.length; i++) {
+              var position = pages_voted_on_str.indexOf( String(voted[i]._id) )
+              if( position !== -1 ) {
+                voted_pages.push({
+                  page_id: voted[i]._id,
+                  url: voted[i].url,
+                  title: voted[i].title,
+                  content: pages_votes[position]
+                })
+              }
+            }
+
+            //Get likes from this user
+            likesdb.find( { "user.id": userid }).toArray(function(err, likes) {
+              if (err) throw err
+
+              var pages_liked = []
+              for (var i = 0; i < likes.length; i++) {
+                pages_liked.push( likes[i].post.id )
+              }
+
+              //Pages user has liked
+              pagesdb.find( { _id: { $in: pages_liked } }).toArray(function(err, liked) {
+                if (err) throw err
+
+                //Pages user has contributed to (but not created)
+                pagesdb.find({
+                  "user_info.id": {
+                    $ne: new ObjectID(userid)
+                  },
+                  "user_info.contributors": {
+                    $elemMatch: {
+                      id: new ObjectID(userid)
+                    }
+                  }
+                }).toArray(function(err, contributions) {
+                  if(err) throw err
+
+                  res.render('admin/profile', {
+                    user: req.user,
+                    pages: pages,
+                    votes: voted_pages,
+                    likes: liked,
+                    current_user: current_user,
+                    contributions: contributions,
+                    loadPageResources: { datatables: true }
+                  })
+                })
+              })
+            })
+          })
         })
       })
     })

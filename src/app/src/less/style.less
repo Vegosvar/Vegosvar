@@ -491,6 +491,15 @@ button {
 		}
 	}
 }
+.invalid {
+	border: 2px solid #E65050 !important;
+}
+.text-invalid {
+	display: inline-block;
+	color: #555;
+	font-size: 13px;
+	margin-bottom: 15px;
+}
 
 .circle {
 	border-radius: 1000px;
@@ -1166,6 +1175,12 @@ article {
 		}
 		.contact {
 			.email {
+				@media (max-width: @xs) {
+					display: inline-block;
+					margin-top: 2px;
+					margin-bottom: 2px;
+					font-size: 16px;
+				}
 				.fa {
 					font-size: 13px;
 					top: -1px;
@@ -1174,6 +1189,9 @@ article {
 				}
 			}
 			.website {
+				@media (max-width: @xs) {
+					font-size: 16px;
+				}
 				.fa {
 					font-size: 13px;
 					margin-right: 2px;
@@ -1897,7 +1915,7 @@ section {
 			margin-bottom: 15px;
 		}
 		.text-overflow {
-			height: 110px;
+			height: 130px;
 			overflow: hidden;
 			@media (max-width: @xs) {
 				height: 105px;

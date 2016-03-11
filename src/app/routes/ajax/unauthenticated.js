@@ -10,6 +10,8 @@ var striptags = require('striptags')
 var extend = require('util')._extend;
 
 module.exports = function (app, resources) {
+  var functions = resources.functions
+
   /** /ajax/map
   * @type: GET
   * @description: Ajax route for loading page info to a map.
@@ -97,6 +99,21 @@ module.exports = function (app, resources) {
     var searchString = req.query.s
     var searchArray = searchString.toLowerCase().split(' ')
 
+    console.log(searchString)
+
+    var valid = false
+    for (var i = searchArray.length - 1; i >= 0; i--) {
+      if(searchArray[i].match(/\w/gi) !== null ) {
+        valid = true
+      }
+    }
+
+    //No valid word characters, quit early
+    if(!valid) {
+      res.json([])
+      return
+    }
+
     //The default query object
     var query = {}
 
@@ -108,19 +125,44 @@ module.exports = function (app, resources) {
     }
 
     //The default fields we search
-    var searchFields = ['url','title','post.content','post.food','post.product_type','post.city']
+    var searchFields = ['url','type','slug','title','post.content','post.food','post.product_type','post.city']
+
+    var searchWeights = {
+      'post.veg_type': 30, //This is very high, since it can only match 'vegan', 'lacto_ovo' and 'animal'
+      'type': 25,
+      'title': 25,
+      'post.product_type': 18,
+      'slug': 15,
+      'post.content': 15,
+      'post.city': 15,
+      'post.food': 10,
+    }
 
     //Check if query matches a type
     var queryType = false
 
     var queryOperations = {
       'kafe': function() {
-        query['type'] = '6'
-        return true
+        searchWeights.slug = 30
+        searchFields.push({
+          property: 'slug',
+          value: 'kafe'
+        })
+
+        searchString += ' cafe'
+
+        return false
       },
       'cafe': function() {
-        query['type'] = '6'
-        return true
+        searchWeights.slug = 30
+        searchFields.push({
+          property: 'slug',
+          value: 'cafe'
+        })
+
+        searchString += ' kafe'
+
+        return false
       },
       'butik': function() {
         query['type'] = '5'
@@ -143,7 +185,7 @@ module.exports = function (app, resources) {
         return true
       },
       'vegan': function() {
-        if('type' in query && query.type === '3') {
+        if('type' in query && query.type === '4') {
           query['veg_type'] = 'vegan'
           return true
         } else {
@@ -155,7 +197,7 @@ module.exports = function (app, resources) {
         }
       },
       'laktoovo': function() {
-        if('type' in query && query.type === '3') {
+        if('type' in query && query.type === '4') {
           query['veg_type'] = 'lacto_ovo'
           return true
         } else {
@@ -167,7 +209,7 @@ module.exports = function (app, resources) {
         }
       },
       'animal': function() {
-        if('type' in query && query.type === '3') {
+        if('type' in query && query.type === '4') {
           query['veg_type'] = 'animal'
           return true
         } else {
@@ -181,7 +223,7 @@ module.exports = function (app, resources) {
     }
 
     var queryTypes = function(string) {
-      string = string.toLowerCase().replace(/é|è/gi, 'e') //Remove accent, mainly for café/kafé
+      string = functions.replaceDiacritics(string)
       string = string.replace(/[^a-z]/gi, '') //Remove non alphabet characters
 
       var keywords = ['cafe','kafe','butik','restaurang','produkt','recept','fakta','vegan','laktoovo','animal']
@@ -193,14 +235,14 @@ module.exports = function (app, resources) {
 
         if(key in queryOperations) {
           //Perform the operations on the search query
-          if(queryOperations[key]()) {
+          if(queryOperations[key]() === true) {
             //Update the search string to remove the key from the search, otherwise might result in unwanted results
-            searchString = searchString.toLowerCase().replace(/é|è/gi, 'e') //Remove accent, mainly for café/kafé
-            var tmpArray = searchString.toLowerCase().split(' ')
+            var tmpArray = searchString.split(' ')
 
             //Filter out the current key from the search query
             searchString = tmpArray.filter(function(text) {
-              var isKey = text.match(key)
+              var compareText = functions.replaceDiacritics(text)
+              var isKey = compareText.match(key)
               if(isKey === null) {
                 return text
               }
@@ -214,46 +256,15 @@ module.exports = function (app, resources) {
       queryTypes(searchArray[i])
     }
 
+    //Remove extraneous spaces
+    searchString = searchString.replace(/\s+/g, " ").replace(/^\s|\s$/g, "")
+
     //Go over all the keys
     for(var key in query) {
       if( ! (key in filteredQuery.$match) ) {
         filteredQuery.$match[key] = query[key]
       }
     }
-
-    //Array to hold regex objects of search strings
-    var regexArray = []
-
-    //As the searchString has been manipulated it might not even be anything at all anymore
-    if(searchString.length > 0) {
-      regexArray = searchString.split(' ').map(function(text) {
-        return new RegExp(text, 'gi')
-      })
-
-      var orFields = []
-      for (var i = searchFields.length - 1; i >= 0; i--) {
-        var obj = {}
-
-        if(typeof searchFields[i] === 'object') {
-          if('property' in searchFields[i] && 'value' in searchFields[i]) {
-            obj[searchFields[i].property] = {
-              $in: [searchFields[i].value]
-            }
-          }
-        } else {
-          obj[searchFields[i]] = {
-            $in: regexArray
-          }
-        }
-
-        orFields.push(obj)
-      }
-
-      //Add $or matches with the regex strings
-      filteredQuery.$match.$or = orFields
-    }
-
-    console.log(searchString)
 
     //Check if query matches a city
     var citiesdb = resources.collections.cities
@@ -270,26 +281,40 @@ module.exports = function (app, resources) {
           '$options': '-i'
         }
 
+        searchString = searchString.replace(new RegExp(cities[0].name, 'i'), '')
       }
 
-      /*
-      //Check if query matches a category
-      var categoriesdb = resources.collections.categories
-      categoriesdb.find({
-        $or: [{
-          name: {
-            $in: searchArray
+      //Array to hold regex objects of search strings
+      var regexArray = []
+
+      //As the searchString has been manipulated it might not even be anything at all anymore
+      if(searchString.length > 0) {
+        regexArray = searchString.split(' ').map(function(text) {
+          return new RegExp(text, 'gi')
+        })
+
+        var orFields = []
+        for (var i = searchFields.length - 1; i >= 0; i--) {
+          var obj = {}
+
+          if(typeof searchFields[i] === 'object') {
+            if('property' in searchFields[i] && 'value' in searchFields[i]) {
+              obj[searchFields[i].property] = {
+                $in: [searchFields[i].value]
+              }
+            }
+          } else {
+            obj[searchFields[i]] = {
+              $in: regexArray
+            }
           }
-        }, {
-          subcategory: {
-            $in: searchArray
-          }
-        }]
-      }).toArray(function(err, categories) {
-        //console.log(categories)
-        //If we found a match here, we might want to restrict the query to that type of category
-      })
-      */
+
+          orFields.push(obj)
+        }
+
+        //Add $or matches with the regex strings
+        filteredQuery.$match.$or = orFields
+      }
 
       //Find pages
       var pagesdb = resources.collections.pages
@@ -303,15 +328,6 @@ module.exports = function (app, resources) {
 
           //The order is important, not just the weights.
           //If a match is made later that value can not match against another key in searchWeights, choose carefully
-          var searchWeights = {
-            'post.veg_type': 30, //This is very high, since it can only match 'vegan', 'lacto_ovo' and 'animal'
-            'title': 25,
-            'post.product_type': 18,
-            'post.content': 15,
-            'post.city': 15,
-            'post.food': 10,
-            'post.veg_offer': 1
-          }
 
           //Calculate the weight of each result
           var totalWeight = 0

@@ -113,11 +113,11 @@ module.exports = function (app, resources) {
               //Pages user has contributed to (but not created)
               pagesdb.find({
                 "user_info.id": {
-                  $ne: new ObjectID(req.user._id)
+                  $ne: new ObjectID(userid)
                 },
                 "user_info.contributors": {
                   $elemMatch: {
-                    id: new ObjectID(req.user._id)
+                    id: new ObjectID(userid)
                   }
                 }
               }).toArray(function(err, contributions) {
@@ -221,6 +221,7 @@ module.exports = function (app, resources) {
               type: type,
               loadEditorResources: true,
               loadDropzoneResources: true,
+              loadValidationResources: true,
               loadMapResources: mapResources,
               loadPageResources: pageResources,
               categories: categories
@@ -313,6 +314,7 @@ module.exports = function (app, resources) {
               post: post,
               loadEditorResources: true,
               loadDropzoneResources: true,
+              loadValidationResources: true,
               loadMapResources: mapResources,
               loadPageResources: pageResources,
               categories: categories

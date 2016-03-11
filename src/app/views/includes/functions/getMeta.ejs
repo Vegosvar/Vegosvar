@@ -22,12 +22,16 @@
 	<meta property="og:url" content="https://vegosvar.se">
 <% } else {
 if (typeof post.post.content !== 'undefined' && post.post.content !== null) {
-    if(post.post.content.length > 150) { var content = '' + post.post.content.substring(0, 150)
-  } else { var content = '' + post.post.content }
+    var content = ''
+    if(post.post.content.length > 150) {
+      content += (typeof striptags !== 'undefined') ? striptags(post.post.content.substring(0, 150)) : post.post.content.substring(0, 150)
+    } else {
+      content += (typeof striptags !== 'undefined') ? striptags(post.post.content) : post.post.content
+    }
 } %>
-	<meta name="description" content="<%= content %>">
+	<meta name="description" content="<%- content %>">
 	<meta property="og:title" content="<%= post.title %> – Vegosvar">
-	<meta property="og:description" content="<%= content %>">
+	<meta property="og:description" content="<%- content %>">
 	<meta property="og:type" content="website">
 	<meta property="og:image" content="https://vegosvar.se/uploads/<%= post.post.cover.filename %>.jpg">
 	<meta property="og:url" content="https://vegosvar.se/<%= post.url %>">

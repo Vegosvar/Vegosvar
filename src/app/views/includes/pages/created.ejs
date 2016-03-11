@@ -1,0 +1,59 @@
+          <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">Skapade sidor</h3>
+            </div>
+
+            <table class="table table-striped table-bordered datatable">
+              <thead>
+                <tr>
+                  <th>Sida</th>
+                  <th class="text-center">
+                    <span class="glyphicon glyphicon-comment"></span>
+                  </th>
+                  <th class="text-center">
+                    <span class="glyphicon glyphicon-heart"></span>
+                  </th>
+                  <th class="text-center">
+                    <span class="glyphicon glyphicon-star"></span>
+                  </th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <% if(typeof pages !== 'undefined') {
+                  for(var i=0; i < pages.length; i++) { %>
+                  <tr>
+                    <td>
+                      <a href="/<%= pages[i].url %>">
+                        <%= pages[i].title %>
+                      </a>
+                    </td>
+                    <td>
+                      <span class="disqus-comment-count" data-disqus-identifier="<%= pages[i]._id %>"></span>
+                    </td>
+                    <td><%= ('rating' in pages[i] && 'likes' in pages[i].rating && pages[i].rating.likes > 0) ? pages[i].rating.likes : '' %></td>
+                    <% if('rating' in pages[i] && 'votes' in pages[i].rating && pages[i].rating.votes > 0) { %>
+                      <td data-order="<%= pages[i].rating.votes_sum %>">
+                        <div class="stars">
+                          <% for(s = 1; s < 6; s++) { %>
+                            <div class="star <%= (s <= pages[i].rating.votes_sum) ? 'active' : '' %> ">
+                              <span class="glyphicon glyphicon-star"></span>
+                            </div>
+                          <% } %>
+                          <span class="votes"><%= pages[i].rating.votes %></span>
+                        </div>
+                      <td>
+                    <% } else { %>
+                      <td data-order="0"><td>
+                    <% } %>
+                      <a href="/redigera/<%= pages[i].url %>" class="btn btn-primary btn-xs pull-right">
+                        Redigera
+                      </a>
+                    </td>
+                  </tr>
+                  <% }
+                } %>
+              </tbody>
+            </table>
+          </div>
+
