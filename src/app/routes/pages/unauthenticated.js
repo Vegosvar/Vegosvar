@@ -231,7 +231,8 @@ module.exports = function (app, resources) {
                       establishments: establishments,
                       loadGeoLocation: true,
                       loadMapResources: mapResources,
-                      loadPageResources: pageResources
+                      loadPageResources: pageResources,
+                      striptags: striptags
                     })
                   })
                 } else {
@@ -248,7 +249,8 @@ module.exports = function (app, resources) {
                     establishments: establishments,
                     loadGeoLocation: true,
                     loadMapResources: mapResources,
-                    loadPageResources: pageResources
+                    loadPageResources: pageResources,
+                    striptags: striptags
                   })
                 }
               })
