@@ -42,7 +42,7 @@ module.exports = function (app, resources) {
         pages = pages.filter(function(page) {
           if('post' in page) {
             if('content' in page.post) {
-              page.post.content = striptags(page.post.content, ['br','p','a','span','i','b'])
+              page.post.content = striptags(page.post.content, ['br','p'])
               page.post.content = (page.post.content.length > 115) ? page.post.content.substr(0, 115) + '...' : page.post.content
               return page
             }
