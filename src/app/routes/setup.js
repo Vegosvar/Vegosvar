@@ -6,7 +6,6 @@
 */
 
 var ObjectID = require('mongodb').ObjectID
-var striptags = require('striptags')
 
 module.exports = function (app, resources) {
   var functions = resources.functions
