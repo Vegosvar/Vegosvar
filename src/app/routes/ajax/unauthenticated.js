@@ -390,7 +390,7 @@ module.exports = function (app, resources) {
             if('content' in pages[i].post) {
               //All pages should have content, if not, then something is wrong with document in db, anyway make sure this is not cause of failure
               //Strip html tags of content
-              pages[i].post.content = striptags(pages[i].post.content, ['br','p','a','span','i','b'])
+              pages[i].post.content = striptags(pages[i].post.content, ['br','p'])
 
               //Add the page with its new weight
               weightedResult.push({
