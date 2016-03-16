@@ -15,7 +15,7 @@ $(document).ready(function () {
       var element = $('#editor')
       var typingTimer
 
-      $(element).on('blur focus', function () {
+      $(element).on('blur', function () {
         verifyFields.description()
 
         $(element).on('keyup', function () {
