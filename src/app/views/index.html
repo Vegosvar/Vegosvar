@@ -132,6 +132,16 @@
                                 <div class="content">
                                     <div class="text-overflow">
                                         <a href="/<%= pages[i].url %>"><h3><%= pages[i].title %></h3></a>
+                                        <% if (pages[i].type === '3' || pages[i].type === '5' || pages[i].type === '6') { %>
+                                            <a href="/?s=<%= pages[i].post.city %>">
+                                                <h4><%= pages[i].post.city %></h4>
+                                            </a>
+                                        <% } %>
+                                        <% if (pages[i].type === '4') { %>
+                                            <a href="/?s=<%= pages[i].post.manufacturer %>">
+                                                <h4><%= pages[i].post.manufacturer %></h4>
+                                            </a>
+                                        <% } %>
                                         <% if (typeof pages[i].post.content !== 'undefined' && pages[i].post.content !== null) {
                                             if(pages[i].post.content.length > 115) {
                                                 var content = '' + pages[i].post.content.substring(0,115) + '...'
