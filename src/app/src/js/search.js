@@ -375,7 +375,7 @@
       updateUserLocation: function (callback) {
         var userMarker = {
           title: 'Din plats',
-          content: 'Du är här!',
+          content: 'Du är här',
           icon: '/assets/images/pin-my-position.png',
         }
 
