@@ -978,20 +978,23 @@ nav {
 								text-transform: uppercase;
 							}
 							&.desc {
+								position: relative;
 								padding: 0 20px;
 								background: none;
 								font-size: 13px;
 								line-height: 1.4;
-								&:before {
+								margin-top: 15px;
+								&:after {
 									display: inline-block;
-									position: relative;
-									margin-bottom: -10px;
+									position: absolute;
+									left: 40px;
+									bottom: -14px;
 									content: '';
 									width: 0; 
 									height: 0; 
 									border-left: 15px solid transparent;
 									border-right: 15px solid transparent;
-									border-bottom: 15px solid #fff;
+									border-top: 15px solid #fff;
 								}
 								div {
 									padding: 15px;
