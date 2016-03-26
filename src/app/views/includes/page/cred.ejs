@@ -47,7 +47,7 @@
                     <span class="fa fa-pencil"></span> 
                     Redigera sida
                   </a>
-                  <% if (String(user._id) === String(user_info.id) || user.info.permission == 'admin' || user.info.permission == 'moderator') { %>
+                  <% if (user.info.permission == 'admin' || user.info.permission == 'moderator') { %>
                   <a href="/admin/revisioner/<%= post.url %>" class="btn btn-warning btn-xs">
                     <span class="glyphicon glyphicon-eye-open"></span> 
                     Granska ändringar
