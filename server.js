@@ -25,19 +25,21 @@ if (cluster.isMaster) {
     console.log('worker ' + worker.process.pid + ' died')
     cluster.fork() //Initialize a new worker to replace the one that died
   })
+
 } else {
   db.connect(config, function (dbinstance) {
     var app = express()
 
     var categoriesdb = dbinstance.collection('categories')
     var citiesdb = dbinstance.collection('cities')
-    var usersdb = dbinstance.collection('users')
-    var votesdb = dbinstance.collection('votes')
-    var likesdb = dbinstance.collection('likes')
+    var chainsdb = dbinstance.collection('chains')
     var imagesdb = dbinstance.collection('images')
+    var likesdb = dbinstance.collection('likes')
     var pagesdb = dbinstance.collection('pages')
     var revisionsdb = dbinstance.collection('revisions')
     var settingsdb = dbinstance.collection('settings')
+    var usersdb = dbinstance.collection('users')
+    var votesdb = dbinstance.collection('votes')
 
     var resources = {
       dbinstance: dbinstance,
@@ -52,14 +54,16 @@ if (cluster.isMaster) {
       collections: {
         cities: citiesdb,
         categories: categoriesdb,
+        chains: chainsdb,
         images: imagesdb,
         likes: likesdb,
         pages: pagesdb,
         revisions: revisionsdb,
+        settings: settingsdb,
         users: usersdb,
         votes: votesdb,
-        settings: settingsdb
-      }
+      },
+      queries: db.queries
     }
 
     require('./src/config')(app, resources)
