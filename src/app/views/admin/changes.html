@@ -25,36 +25,38 @@
                               Status
                             </th>
                           </thead>
-                          <% if(typeof(changes) !== 'undefined') {
-                            if(changes.length > 0) {
-                                for(i=0;i < changes.length;i++) { %>
-                                  <tr>
-                                    <td>
-                                      <a href="<%= (changes[i].delete === true) ? '/admin/borttagning/' + changes[i].id : '/admin/revisioner/' + changes[i].url %>"><%= changes[i].title %></a>
-                                    </td>
-                                    <td>
-                                      <span class="date_updated"><%= changes[i].updated %></span>
-                                    </td>
-                                    <td>
-                                      <span class="date_created"><%= changes[i].created %></span>
-                                    </td>
-                                    <td>
-                                      <% if(changes[i].delete === true) { %>
-                                          <span class="label label-danger">Radera</span>
-                                        <% } else {
-                                          if(changes[i].revisions == 1) { %>
-                                            <span class="label label-success">Ny</span>
-                                          <% } else { %>
-                                            <span class="label label-warning">Uppdatering</span>
-                                          <% }
-                                      } %>
-                                    </td>
-                                  </tr>
+                          <tbody>
+                            <% if(typeof(changes) !== 'undefined') {
+                              if(changes.length > 0) {
+                                  for(i=0;i < changes.length;i++) { %>
+                                    <tr>
+                                      <td>
+                                        <a href="<%= (changes[i].delete === true) ? '/admin/borttagning/' + changes[i].id : '/admin/revisioner/' + changes[i].url %>"><%= changes[i].title %></a>
+                                      </td>
+                                      <td>
+                                        <span class="date_updated"><%= changes[i].updated %></span>
+                                      </td>
+                                      <td>
+                                        <span class="date_created"><%= changes[i].created %></span>
+                                      </td>
+                                      <td>
+                                        <% if(changes[i].delete === true) { %>
+                                            <span class="label label-danger">Radera</span>
+                                          <% } else {
+                                            if(changes[i].revisions == 1) { %>
+                                              <span class="label label-success">Ny</span>
+                                            <% } else { %>
+                                              <span class="label label-warning">Uppdatering</span>
+                                            <% }
+                                        } %>
+                                      </td>
+                                    </tr>
+                                  <% }
+                                } else { %>
+                                  <h3>Alla sidor är modererade!</h3>
                                 <% }
-                              } else { %>
-                                <h3>Alla sidor är modererade!</h3>
-                              <% }
-                          } %>
+                            } %>
+                          </tbody>
                         </table>
                     </article>
                 </div>
