@@ -167,10 +167,6 @@ module.exports = function (app, resources) {
 
   app.get('/admin/profil/:user_id', functions.isPrivileged, function (req, res) {
     var userid = new ObjectID(req.params.user_id)
-    var pagesdb = resources.collections.pages
-    var likesdb = resources.collections.likes
-    var votesdb = resources.collections.votes
-    var usersdb = resources.collections.users
 
     var renderObj =  {
       user: req.user,
@@ -179,13 +175,12 @@ module.exports = function (app, resources) {
       loadPageResources: { datatables: true }
     }
 
-    //Get sidebar info (move this elsewhere maybe?)
-    resources.queries.getAdminSidebar()
-      .then(function(changes) {
-        renderObj.changes = changes
-    })
-
     new Promise.all([
+      //Get sidebar info (move this elsewhere maybe?)
+      resources.queries.getAdminSidebar()
+        .then(function(changes) {
+          renderObj.changes = changes
+      }),
       //Get the user from the database
       resources.queries.getUsers({
         _id: userid
@@ -305,7 +300,7 @@ module.exports = function (app, resources) {
         var pageHasMap = (page.type === '3' || page.type === '5' || page.type === '6')
         renderObj.loadMapResources = {
           map: pageHasMap,
-          mapCluster: pageHasMap
+          mapCluster: !pageHasMap
         }
 
         //Check for other page specific resources we might require
