@@ -199,4 +199,22 @@ module.exports = function (app, resources) {
       })
     })
   })
+
+  app.get('/ajax/chains', function(req, res) {
+    var type = ('type' in req.query && typeof(req.query.type) !== 'undefined') ? req.query.type : false
+    var chainsdb = resources.collections.chains
+
+    chainsdb.find({ type: type }, { _id: 1, name: 1 }).toArray(function(err, chains) {
+      if (err) {
+        res.json({
+          success: false
+        })
+      }
+
+      res.json({
+        success: true,
+        data: chains
+      })
+    })
+  })
 }
