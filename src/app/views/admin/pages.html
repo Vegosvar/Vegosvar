@@ -1,0 +1,50 @@
+<% include ../includes/header %>
+    <div class="container">
+        <section id="main">
+            <div class="row">
+                <div class="col-md-2">
+                  <% include template_parts/sidebar %>
+                </div>
+                <div class="col-md-10">
+                    <article>
+                      <h1 class="no-margin-top">Sidor</h1>
+                      <h2 class="subtitle">Alla sidor</h2>
+                      <table class="table table-striped table-bordered table-hover datatable" data-page-length="25">
+                        <thead>
+                          <th class="sort-default" data-order="desc">
+                            Sida
+                          </th>
+                          <th>
+                            Uppdaterad
+                          </th>
+                          <th>
+                            Skapad
+                          </th>
+                          <th>
+                            Skapad av
+                          </th>
+                        </thead>
+                        <tbody>
+                          <% if(typeof(pages) !== 'undefined') {
+                            if(pages.length > 0) {
+                              for(i=0;i < pages.length;i++) { %>
+                                <tr>
+                                  <td><a href="/<%= pages[i].url %>"><%= pages[i].title %></a></td>
+                                  <td><%= pages[i].timestamp.updated %></td>
+                                  <td><%= pages[i].timestamp.created %></td>
+                                  <td><%= ('user' in pages[i]) ? pages[i].user.name.display_name : 'Okänd' %></td>
+                                </tr>
+                              <% } %>
+                            <% } else { %>
+                              <h3>Inga sidor registrerade!</h3>
+                            <% } %>
+                          <% } %>
+                        </tbody>
+                      </table>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </div>
+
+<% include ../includes/footer %>

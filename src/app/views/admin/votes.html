@@ -1,0 +1,54 @@
+<% include ../includes/header %>
+    <div class="container">
+        <section id="main">
+            <div class="row">
+                <div class="col-md-2">
+                  <% include template_parts/sidebar %>
+                </div>
+                <div class="col-md-10">
+                    <article>
+                      <h1 class="no-margin-top">Röstningar</h1>
+                      <h2 class="subtitle">Alla röstningar</h2>
+                      <table class="table table-striped table-bordered table-hover datatable" data-page-length="25" data-aa-sorting="false">
+                        <thead>
+                          <th>
+                            Sida
+                          </th>
+                          <th>
+                            Användare
+                          </th>
+                          <th>
+                            Betyg
+                          </th>
+                        </thead>
+                        <tbody>
+                          <% if(typeof(votes) !== 'undefined') {
+                            if(votes.length > 0) {
+                              for(i=0;i < votes.length;i++) { %>
+                                <tr>
+                                  <td><a href="/<%= votes[i].url %>"><%= votes[i].title %></a></td>
+                                  <td><%= ('user' in votes[i]) ? votes[i].user.name.display_name : 'Okänd' %></td>
+                                  <td data-order="<%= votes[i].content %>">
+                                    <div class="stars" data-id="<%= votes[i].page_id %>">
+                                      <% for(s = 1; s < 6; s++) { %>
+                                        <div class="star-static <%= (s <= votes[i].content) ? 'active' : '' %> ">
+                                          <span class="glyphicon glyphicon-star"></span>
+                                        </div>
+                                      <% } %>
+                                    </div>
+                                  </td>
+                                </tr>
+                              <% } %>
+                            <% } else { %>
+                              <h3>Inga sidor har gillats :(!</h3>
+                            <% } %>
+                          <% } %>
+                        </tbody>
+                      </table>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </div>
+
+<% include ../includes/footer %>
