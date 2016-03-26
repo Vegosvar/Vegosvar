@@ -1,5 +1,5 @@
-(function ($) {
   var editor
+(function ($) {
   var instance = {
     element: null,
     bookmark: null,
@@ -91,10 +91,20 @@
         break
       case 'getValue':
         return editor.composer.getValue()
+      case 'setValue':
+        editor.setValue(args, false)
+        break
       case 'selectionIsType':
         return editor.composer.commands.state(settings.type)
       case 'triggerEvent':
         $(editor).trigger(settings.type);
+        break
+      case 'disable':
+        editor.disable()
+        break
+      case 'enable':
+        editor.enable()
+        break
     }
   }
 }(jQuery))
