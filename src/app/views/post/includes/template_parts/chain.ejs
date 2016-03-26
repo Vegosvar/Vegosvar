@@ -1,0 +1,151 @@
+<h2>Kedja</h2>
+<div class="row">
+    <div class="col-sm-6" style="margin-bottom: 20px">
+        <div class="input-group">
+            <span class="input-group-addon"><input id="isChain" type="checkbox" class="form-control" value="<%= (typeof(post) !== 'undefined' && 'chain' in post.post && typeof(post.post.chain) !== 'undefined') ? 'checked=checked' : '' %>"></span>
+            <input class="form-control filterSelect" name="chain" type="text" placeholder="Välj kedja" disabled="disabled" value="<%= (typeof(post) !== 'undefined' && 'chain' in post.post && typeof(post.post.chain) !== 'undefined') ? post.post.chain : '' %>">
+        </div>
+        <span class="input-desc">Den här platsen är en del av något större.</span>
+    </div>
+    <div class="col-sm-6">
+        <div class="alert alert-success chain-alert hidden"><span class="glyphicon glyphicon-alert"></span><span class="chain-message"></span><span class="chain-name" style="font-weight: bold"></span></div>
+    </div>
+</div>
+
+<script>
+$(document).ready(function () {
+    function resetFields() {
+        $.fn.editorController('enable')
+        $.fn.editorController('setValue', '')
+
+        $('#header-input').prop('disabled', false).val('')
+
+        $('.dz-hidden-input').prop('disabled', false)
+        $('#upload-group').show()
+
+        $('.headerImageRow').remove()
+
+        $('.chain-alert').addClass('hidden')
+    }
+
+    $('#isChain').on('click', function () {
+        var disabled = !$(this).is(':checked')
+        $('.filterSelect').prop('disabled', disabled)
+        if(disabled) {
+            resetFields()
+            $('.filterSelect').val('')
+        }
+    })
+
+    $.ajax({
+        url: '/ajax/chains',
+        data: {
+            type: $('input[name="type"]').val() //Only get chains of the same page type
+        }
+    })
+    .done(function(result) {
+        var chains = [{
+            id: 0,
+            value: 'Kedjan finns inte i listan'
+        }]
+
+        if('success' in result && result.success) {
+            result.data = [{
+                _id: '123456',
+                name: 'Max',
+                cover: {
+                    filename: '997416f619d708bbe47'
+                },
+                description: 'Max serverar mat. Max är en restaurang.'
+            }, {
+                _id: '654321',
+                name: 'O\'learys',
+                cover: {
+                    filename: 'e2ba905bf30'
+                },
+                description: 'O\'learys är ett ställe, det händer saker där.'
+            }]
+
+            $.merge(chains, $.map(result.data, function(chain) {
+                return {
+                    id: chain._id,
+                    value: chain.name,
+                    image: chain.cover.filename,
+                    description: chain.description
+                }
+            }))
+
+            $('.filterSelect').autocomplete({
+              source: chains,
+              minLength: 0,
+              autoFocus: true,
+              select: function (event, ui) {
+                $('.filterSelect').trigger('blur')
+
+                var updateChainName = function(name) {
+                    $('.chain-name').html(name)
+                }
+
+                var updateChainMessage = function(message) {
+                    $('.chain-message').html(message)
+                }
+
+                if(ui.item.id === 0) {
+                    console.log('other')
+                    //Let the user create a new chain, unlock possibly locked fields
+                    resetFields()
+
+                    updateChainMessage('En ny kedja kommer att skapas med namn: ')
+                    updateChainName($('#header-input').val())
+                    
+                    $('#header-input').on('keyup', function() {
+                        updateChainName($(this).val())
+                    })
+
+                    $('.chain-alert').removeClass('hidden')
+                } else {
+                    console.log('existing')
+                    //This is an existing chain, replace cover image with that from chain, also, lock fields title and description.
+
+                    //Set the description of the chain
+                    $.fn.editorController('setValue', ui.item.description)
+
+                    $.fn.editorController('disable')
+
+                    $('#header-input').prop('disabled', true)
+                    $('#header-input').val(ui.item.value)
+
+                    $('.dz-hidden-input').prop('disabled', true)
+                    $('#upload-group').hide()
+
+                    $('.headerImageRow').remove()
+                    $('#upload-group').before(
+                        $('<div>', {
+                            class: 'row headerImageRow'
+                        })
+                        .css('margin-bottom', '15px')
+                        .append(
+                            $('<div>', {
+                                class: 'col-xs-12'
+                            })
+                            .append(
+                                $('<img>', {
+                                    src: '/uploads/' + ui.item.image + '.jpg'
+                                })
+                            )
+                        )
+                    )
+
+                    updateChainMessage('Platsen kommer att l&auml;ggas till f&ouml;r kedjan: ')
+                    updateChainName(ui.item.value)
+
+                    $('.chain-alert').removeClass('hidden')
+                }
+              }
+            }).focus(function () {            
+                $(this).autocomplete('search')
+            })
+        }
+    })
+})
+</script>
