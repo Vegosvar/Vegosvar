@@ -44,13 +44,14 @@ module.exports = {
     instance.close()
   },
   queries: {
-    getPages: function(query) {
+    getPages: function(query, fields, sort, limit) {
       var query = extend({}, query)
       var fields = extend({}, fields)
       var sort = extend({}, sort)
+      var limit = (limit) ? limit : 0
 
       return new Promise(function(resolve, reject) {
-        instance.collection('pages').find(query, fields).sort(sort).toArray(function(err, pages) {
+        instance.collection('pages').find(query, fields).sort(sort).limit(limit).toArray(function(err, pages) {
           if (err) {
             reject(err)
           } else {
@@ -85,13 +86,49 @@ module.exports = {
         })
       })
     },
-    getRevisions: function(query) {
+    getPageCategories: function(type) {
+      return new Promise(function(resolve, reject) {
+        instance.collection('categories').aggregate([
+          {
+            $match: { type: type }
+          }, {
+            $group: {
+               _id: { id: "$_id", name: "$name", subcategory: "$subcategory" }
+            }
+          }, {
+            $group: {
+              "_id": "$_id.subcategory",
+              "names": {
+                "$push": {
+                  name: "$_id.name"
+                }
+              },
+              count: {
+                $sum: 1
+              }
+            }
+          }, {
+            $sort: {
+              _id: 1
+            }
+          }
+        ], function(err, categories) {
+          if(err) {
+            reject(err)
+          } else {
+            resolve(categories)
+          }
+        })
+      })
+    },
+    getRevisions: function(query, fields, sort, limit) {
       var query = extend({}, query)
       var fields = extend({}, fields)
       var sort = extend({}, sort)
+      var limit = (limit) ? limit : 0
 
       return new Promise(function(resolve, reject) {
-        instance.collection('revisions').find(query, fields).sort(sort).toArray(function(err, revisions) {
+        instance.collection('revisions').find(query, fields).sort(sort).limit(limit).toArray(function(err, revisions) {
           if (err) {
             reject(err)
           } else {
@@ -100,13 +137,14 @@ module.exports = {
         })
       })
     },
-    getUsers: function(query, fields, sort) {
+    getUsers: function(query, fields, sort, limit) {
       var query = extend({}, query)
       var fields = extend({}, fields)
       var sort = extend({}, sort)
+      var limit = (limit) ? limit : 0
 
       return new Promise(function(resolve, reject) {
-        instance.collection('users').find(query, fields).sort(sort).toArray(function(err, users) {
+        instance.collection('users').find(query, fields).sort(sort).limit(limit).toArray(function(err, users) {
           if (err) {
             reject(err)
           } else {
@@ -115,13 +153,14 @@ module.exports = {
         })
       })
     },
-    getVotes: function(query) {
+    getVotes: function(query, fields, sort, limit) {
       var query = extend({}, query)
       var fields = extend({}, fields)
       var sort = extend({}, sort)
+      var limit = (limit) ? limit : 0
 
       return new Promise(function(resolve, reject) {
-        instance.collection('votes').find(query, fields).sort(sort).toArray(function(err, votes) {
+        instance.collection('votes').find(query, fields).sort(sort).limit(limit).toArray(function(err, votes) {
           if (err) {
             reject(err)
           } else {
@@ -130,13 +169,14 @@ module.exports = {
         })
       })
     },
-    getLikes: function(query, fields, sort) {
+    getLikes: function(query, fields, sort, limit) {
       var query = extend({}, query)
       var fields = extend({}, fields)
       var sort = extend({}, sort)
+      var limit = (limit) ? limit : 0
 
       return new Promise(function(resolve, reject) {
-        instance.collection('likes').find(query, fields).sort(sort).toArray(function(err, users) {
+        instance.collection('likes').find(query, fields).sort(sort).limit(limit).toArray(function(err, users) {
           if (err) {
             reject(err)
           } else {
@@ -196,6 +236,27 @@ module.exports = {
         })
       })
     },
+    getPagesStats: function() {
+      return new Promise(function(resolve, reject) {
+        //Get page stats
+        instance.collection('pages').aggregate([{
+            $group: {
+                _id: {
+                    type: "$type"
+                },
+                count: {
+                    $sum: 1
+                }
+            }
+        }], function(err, pages) {
+          if (err) {
+            reject(err)
+          } else {
+            resolve(pages)
+          }
+        })
+      })
+    },
     getAdminSidebar: function() {
       return new Promise(function(resolve, reject) {
         //Get revisions not yet moderated
@@ -228,6 +289,42 @@ module.exports = {
             resolve(changes)
           })
         })
+      })
+    },
+    updateUser: function(query, update, options) {
+      var query = (query) ? query : false
+      var update = (update) ? update : false
+      var options = extend({}, options)
+
+      return new Promise(function(resolve, reject) {
+        if(query && update) {
+          instance.collection('users').update(query, update, options, function(err, result) {
+            if(err) {
+              reject(err)
+            } else {
+              resolve(result)
+            }
+          })
+        } else {
+          reject(new Error('Both "query" and "update" arguments must be supplied'))
+        }
+      })
+    },
+    deleteUser: function(query) {
+      var query = (query) ? query : false
+
+      return new Promise(function(resolve, reject) {
+        if(query) {
+          instance.collection('users').delete(query, function(err, result) {
+            if(err) {
+              reject(err)
+            } else {
+              resolve(result)
+            }
+          })
+        } else {
+          reject(new Error('"query" argument must be supplied'))
+        }
       })
     }
   }
