@@ -130,8 +130,7 @@ var collections = [
             name: 'tyskt',
             type: '3'
         }]
-    },
-    {
+    }, {
         name: 'cities',
         exists: false,
         data: [{
@@ -157,29 +156,26 @@ var collections = [
             },{
                 name: 'lund'
             }]
-    },
-    {
+    }, {
         name: 'images',
         exists: false
-    },
-    {
+    }, {
         name: 'pages',
         exists: false
-    },
-    {
+    }, {
         name: 'revisions',
         exists: false
-    },
-    {
+    }, {
         name: 'sessions',
         exists: false
-    },
-    {
+    }, {
         name: 'users',
         exists: false
-    },
-    {
+    }, {
         name: 'votes',
+        exists: false
+    }, {
+        name: 'chains',
         exists: false
     }
 ]
@@ -374,7 +370,7 @@ function addPageSlug(doc) {
       symbols: false
     })
 
-    client.connect(config.database.host+config.database.name, function(err, db){
+    client.connect(config.database.host+config.database.name, function(err, db) {
         if(err) throw err
 
         db.collection('pages').update({
@@ -385,10 +381,12 @@ function addPageSlug(doc) {
                 slug: tamperedTitle
             }
         }, function(err, result){
-            console.log(result)
-        })
+            if(result) {
+                console.log('Slug attributes updated for ' + doc.title)
+            }
 
-        db.close()
+            db.close()
+        })
     })
 }
 
