@@ -7,97 +7,106 @@
 
 var ObjectID = require('mongodb').ObjectID
 var striptags = require('striptags')
+var extend = require('util')._extend
+var Promise = require('promise')
 
 module.exports = function (app, resources) {
   var functions = resources.functions
 
   app.get('/', function (req, res) {
-    req.session.returnTo = '/'
-
-    var pagesdb = resources.collections.pages
-    var citiesdb = resources.collections.cities
-    var categoriesdb = resources.collections.categories
-    var likesdb = resources.collections.likes
-    var usersdb = resources.collections.users
-
-    var pages = {}
-    var options = {
-      limit: 9,
-      sort: [ ['rating.likes', 'desc'] ]
+    var renderObj = {
+      user: req.user,
+      loadGeoLocation: true,
+      loadMapResources: {
+        map: true,
+        mapCluster: true
+      },
+      startpage: false,
+      searchString: req.query.s,
+      pages: [],
+      recipes: []
     }
 
-    //Get page stats
-    pagesdb.aggregate([{
-        $group: {
-            _id: {
-                type: "$type"
-            },
-            count: {
-                $sum: 1
-            }
-        }
-    }], function(err, pageStats) {
-      //Get pages for front page
-      pagesdb.find({}, options).toArray(function(err, pages) {
-        pages = pages.filter(function(page) {
-          if('post' in page) {
-            if('content' in page.post) {
-              page.post.content = striptags(page.post.content, ['br','p'])
-              page.post.content = (page.post.content.length > 115) ? page.post.content.substr(0, 115) + '...' : page.post.content
-              return page
-            }
+    new Promise.all([
+      //Get page stats for the footer
+      resources.queries.getPagesStats()
+      .then(function(pages) {
+        renderObj.pageStats = pages
+      }),
+      //Get the pages for 'Hett just nu'
+      resources.queries.getPages(
+        {},
+        {}, {
+          'rating.likes': -1
+        },
+        9
+      )
+      .then(function(pages) {
+        return pages.filter(function(page) {
+          if('post' in page && 'content' in page.post) {
+            page.post.content = striptags(page.post.content, ['br','p'])
+            page.post.content = (page.post.content.length > 115) ? page.post.content.substr(0, 115) + '...' : page.post.content
+            return page
           }
         })
-        pagesdb.find({
-          accepted: true,
-          $or: [
-            { type: '3' },
-            { type: '5' },
-            { type: '6' }
-          ]
-        }).sort({_id:-1}).limit(12).toArray(function(err, establishments) {
-          pagesdb.find({
-            accepted: true,
-            type: '2'
-          }).sort({_id:-1}).limit(3).toArray(function(err, recipes) {
-
-            var recipeUsers = []
-            for (var i = recipes.length -1; i >= 0; i--) {
-              recipeUsers.push( recipes[i].user_info.id)
-            }
-
-            usersdb.find({_id: { $in: recipeUsers } }).toArray(function(err, users) {
-              for (var i = recipes.length - 1; i >= 0; i--) {
-                for (var u = users.length - 1; u >= 0; u--) {
-                  if(!recipes[i].user_info.hidden) {
-                    if(String(recipes[i].user_info.id) == String(users[u]._id) ) {
-                      recipes[i].user_info.display_name = users[u].name.display_name
-                      recipes[i].user_info.active_photo = users[u].active_photo
-                      recipes[i].user_info.fb_photo = users[u].fb_photo
-                      recipes[i].user_info.vegosvar_photo = users[u].vegosvar_photo
-                    }
-                  }
-                }
-              }
-
-              res.render('index', {
-                user: req.user,
-                pageStats: pageStats,
-                pages: pages,
-                establishments: establishments,
-                recipes: recipes,
-                loadGeoLocation: true,
-                loadMapResources: {
-                  map: true,
-                  mapCluster: true
-                },
-                startpage: false,
-                searchString: req.query.s
-              })
-            })
-          })
-        })
       })
+      .then(function(pages) {
+        renderObj.pages = pages
+      }),
+      //Get the new restaurants, cafees and shops for the 'Goda nyheter' sidebar
+      resources.queries.getPages({
+        accepted: true,
+        $or: [
+          { type: '3' },
+          { type: '5' },
+          { type: '6' }
+        ],
+      },
+      {},
+      { _id: -1 },
+      12
+      )
+      .then(function(establishments) {
+        renderObj.establishments = establishments
+      }),
+      //Get the recipes to showcase
+      resources.queries.getPages({
+        accepted: true,
+        type: '2',
+      },
+      {},
+      { _id: -1 },
+      12
+      )
+      .then(function(recipes) {
+        //Get the user whom created each recipe
+        return new Promise.all(recipes.map(function(recipe) {
+          //Make sure we don't show anyone that opted to be anonymous
+          if ( ! (recipe.user_info.hidden) ) {
+            //Get the associated users's info
+            return resources.queries.getUsers({
+              _id: recipe.user_info.id
+            })
+            .then(function(users) {
+              if(users.length > 0) {
+                return extend(recipe.user_info, users[0])
+              } else {
+                //User account was not found, set user_info to hidden to show user as anonymous 
+                recipe.user_info.hidden = true
+                return recipe
+              }
+            })
+          } else {
+            return recipe
+          }
+        }))
+      })
+      .then(function(recipes) {
+        renderObj.recipes = recipes
+      })
+    ])
+    .done(function() {
+      res.render('index', renderObj)
     })
   })
 
@@ -152,168 +161,158 @@ module.exports = function (app, resources) {
 
   //What is this used for?
   app.get('/handle/votes', function (req, res) {
-    var votesdb = resources.collections.votes
-
-    votesdb.find({}).toArray(function(err, doc) {
-      res.json(doc)
+    resources.queries.getVotes()
+    .then(function(votes) {
+      res.json(votes)
     })
   })
 
   app.get('/:url', function (req, res, next) {
-    var url = req.params.url
-
-    var pagesdb = resources.collections.pages
-    var usersdb = resources.collections.users
-    var likesdb = resources.collections.likes
-
-    var query = {
-      url: url
+    var renderObj = {
+      user: req.user,
+      loadGeoLocation: true,
+      loadMapResources: {
+        map: true
+      },
+      loadPageResources: {
+        public_page: true
+      },
+      striptags: striptags
     }
 
-    pagesdb.count(query, function (err, count) {
-      if(count > 0) {
+    var query = {
+      url: req.params.url
+    }
 
-        if(typeof(req.user) !== 'undefined') {
-          if( ! functions.userCheckPrivileged(req.user) ) { //If user is not privileged
-            query['$or'] = [{
-              accepted: true //Either page must be published
-            }, {
-              "user_info.id": req.user._id //Or the current user is the user that created the page
-            }]
-          }
+    if(typeof(req.user) !== 'undefined') {
+      if( ! functions.userCheckPrivileged(req.user) ) { //If user is not privileged
+        query['$or'] = [{
+          accepted: true //Either page must be published
+        }, {
+          "user_info.id": req.user._id //Or the current user is the user that created the page
+        }]
+      }
+    } else {
+      query.accepted = true //If anonymous user then the page must be published
+    }
+
+    resources.queries.getPages(query)
+    .then(function(pages) {
+      if( pages.length <= 0) {
+        throw new Error('Page with url ' + req.params.url + ' was not found')
+      } else {
+        return pages[0]
+      }
+    })
+    .then(function(page) {
+      renderObj.post = page
+
+      //Get the user whom created the page
+      return resources.queries.getUsers({
+        _id: page.user_info.id
+      })
+      .then(function(users) {
+        if(users.length > 0) {
+          renderObj.user_info = users[0]
         } else {
-          query.accepted = true //If anonymous user then the page must be published
+          page.user_info.hidden = true //Show user as anonymous
+          renderObj.user_info = null
         }
 
-        pagesdb.find(query).toArray(function (err, result) {
-          if(result.length > 0) {
-            var mapResources = {
-              map: true,
-              mapCluster: !(result[0].type === '3' || result[0].type === '5' || result[0].type === '6')
-            }
+        return page
+      })
+    })
+    .then(function(page) {
+      //Check which browser dependencies are needed
+      var isPlace = (page.type === '3' || page.type === '5' || page.type === '6')
+      renderObj.loadMapResources.mapCluster = !isPlace
+      renderObj.loadPageResources.youtube = (page.type === '2')
 
-            var pageResources = {
-              public_page: true,
-              youtube: (result[0].type === '2') ? true : false
-            }
-
-            //Show places in the same city
-            pagesdb.find({
-              $and: [
-                {
-                  $or:[
-                    {type:'3'},
-                    {type:'5'},
-                    {type:'6'}
-                  ]
-                },
-                {
-                  "post.city": result[0].post.city
-                },
-                {
-                  "_id": {
-                    $ne: result[0]._id
-                  }
-                }
+      //Get places in the same city, if this page is for a restaurant, cafe or shop
+      if(isPlace) {
+        return resources.queries.getPages({
+          $and: [
+            {
+              $or:[
+                {type:'3'},
+                {type:'5'},
+                {type:'6'}
               ]
-            }).sort({_id:-1}).limit(10).toArray(function(err, establishments) {
-
-              usersdb.find({ _id : result[0].user_info.id }).toArray(function(err, user_info) {
-                if (req.isAuthenticated ()) {
-                  likesdb.count({ "post.id": new ObjectID(result[0]._id), "user.id": req.user._id }, function (err, is_liked) {
-                    if(typeof(user_info[0]) == 'undefined') {
-                      result[0].user_info.hidden = true
-                      user_info[0] = { id: '', photo: ''}
-                    }
-
-                    res.render('page', {
-                      user: req.user,
-                      post: result[0],
-                      user_info: user_info[0],
-                      userLikes: is_liked,
-                      establishments: establishments,
-                      loadGeoLocation: true,
-                      loadMapResources: mapResources,
-                      loadPageResources: pageResources,
-                      striptags: striptags
-                    })
-                  })
-                } else {
-                  if(typeof(user_info[0]) == 'undefined') {
-                    result[0].user_info.hidden = true
-                    user_info[0] = { id: '', photo: ''}
-                  }
-
-                  res.render('page', {
-                    user: req.user,
-                    post: result[0],
-                    user_info: user_info[0],
-                    userLikes: 0,
-                    establishments: establishments,
-                    loadGeoLocation: true,
-                    loadMapResources: mapResources,
-                    loadPageResources: pageResources,
-                    striptags: striptags
-                  })
-                }
-              })
-            })
-          } else {
-            //TODO, maybe we should use the logic of another function here, or throw an error to render 404 page
-            res.render('404', { user: req.user })
-          }
+            },
+            {
+              "post.city": page.post.city
+            },
+            {
+              "_id": {
+                $ne: page._id
+              }
+            }
+          ]
+        },
+        {}, //Include all fields
+        { _id: -1 }, //Sort descendingly, a.k.a. newest first
+        10 //Limit to 10 pages
+        )
+        .then(function(establishments) {
+          renderObj.establishments = establishments
         })
-      } else {
-        return next()
       }
+    })
+    .then(function() {
+      res.render('page', renderObj)
+    })
+    .catch(function (err) {
+      return next() // 404
     })
   })
 
   app.get('/sitemap.xml', function(req, res) {
     var sitemap = resources.sitemap
-    var pagesdb = resources.collections.pages
     var hostname = resources.config.hostname
 
     //Add static pages
-
     var staticPages = ['logga-in', 'om','licens','riktlinjer', 'villkor','vanliga-fragor','press','mina-sidor']
 
-    for (var i = staticPages.length - 1; i >= 0; i--) {
+    staticPages.map(function(staticPage) {
       sitemap.add({
-        url: hostname + '/' + staticPages[i],
+        url: hostname + '/' + staticPage,
         priority: 0.8
       })
-    }
+    })
 
     //Add dynamic pages
-    pagesdb.find({accepted:true}).toArray(function(err, pages) {
-      if(err) throw err
-
-      for (var i = pages.length - 1; i >= 0; i--) {
+    resources.queries.getPages({
+      accepted: true
+    })
+    .then(function(pages) {
+      return new Promise.all(pages.map(function(page) {
         var obj = {
-          url: hostname + '/' + pages[i].url
+          url: hostname + '/' + page.url
         }
 
-        if('post' in pages[i]) {
-          if('cover' in pages[i].post) {
-            if('filename' in pages[i].post.cover) {
-              if(pages[i].post.cover.filename !== null && pages[i].post.cover.filename !== "") {
-                obj.img = hostname + '/uploads/' + pages[i].post.cover.filename + '.jpg'
+        //Check if there's an image for this page
+        if('post' in page) {
+          if('cover' in page.post) {
+            if('filename' in page.post.cover) {
+              if(page.post.cover.filename !== null && page.post.cover.filename !== "") {
+                obj.img = hostname + '/uploads/' + page.post.cover.filename + '.jpg'
               }
             }
           }
         }
 
+        //Add page to sitemap
         sitemap.add(obj)
-      }
-
-      sitemap.toXML( function (err, xml) {
+      }))
+    })
+    .then(function() {
+      sitemap.toXML(function(err, xml) {
         if (err) {
           return res.status(500).end()
         }
 
         res.header('Content-Type', 'application/xml')
-        res.send( xml )
+        res.send(xml)
       })
     })
   })
