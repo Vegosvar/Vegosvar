@@ -1,3 +1,12 @@
 <% if (typeof user.info.permission !== 'undefined' && (user.info.permission === "admin" || user.info.permission === "moderator")) { %>
-	<li><a href="/admin">Administration</a></li>
+	<li>
+        <a href="/admin">
+        Administration
+        <% if(typeof(admin) !== 'undefined' && 'changes' in admin) { %>
+          <span class="label label-warning circle">
+            <%= admin.changes.length %>
+          </span>
+        <% } %>
+        </a>
+    </li>
 <% } %>
