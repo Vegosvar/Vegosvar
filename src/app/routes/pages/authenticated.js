@@ -8,26 +8,28 @@
 var ObjectID = require('mongodb').ObjectID
 var body_parser = require('body-parser')
 var urlencodedParser = body_parser.urlencoded({ extended: false })
+var extend = require('util')._extend
 var Promise = require('promise')
 
 module.exports = function (app, resources) {
   var functions = resources.functions
-  var cities = resources.collections.cities
 
-  //Have to be at least a logged in user at this point
-  app.use(function ensure_authenticated (req, res, next) {
-    functions.isAuthenticated(req, res, next)
+  app.get('/installningar', functions.isAuthenticated, function (req, res, next) {
+    var renderObj = extend({
+      loadEditorResources: true,
+      loadDropzoneResources: true 
+    }, res.vegosvar)
+
+    res.render('settings', renderObj)
   })
 
-  app.get('/installningar', function (req, res) {
-    res.render('settings', { user: req.user, loadEditorResources: true, loadDropzoneResources: true })
+  app.get('/installningar/ta-bort', functions.isAuthenticated, function (req, res, next) {
+    var renderObj = extend({}, res.vegosvar)
+    res.render('deregister', renderObj)
   })
 
-  app.get('/installningar/ta-bort', function (req, res) {
-    res.render('deregister', { user: req.user})
-  })
-
-  app.get('/installningar/ta-bort/submit', function (req, res) {
+  //TODO, move this to authenticated ajax routes
+  app.get('/installningar/ta-bort/submit', functions.isAuthenticated, function (req, res, next) {
     if(req.isAuthenticated()) {
       var usersdb = resources.collections.users
       usersdb.remove({ "_id": new ObjectID(req.user._id) }, function(err, result) {
@@ -39,11 +41,39 @@ module.exports = function (app, resources) {
     }
   })
 
-  app.post('/installningar/submit', urlencodedParser, function (req, res) {
-    var id = req.user._id
+  //TODO, move this to post.js routes
+  app.post('/installningar/submit', functions.isAuthenticated, urlencodedParser, function (req, res, next) {
+    //TODO, should really do some sanitization here 
+    var user_id = req.user._id
     var display_name = req.body.displayName
     var website = req.body.website
     var description = req.body.description
+
+    //Send info to model to perform database queries
+    resources.models.user.updateInfo({
+      user_id: user_id,
+      display_name: display_name,
+      website: website,
+      description: description
+    })
+    .then(function(result) {
+      //Handle result
+
+      //Notify user
+      res.json({
+        success: true
+      })
+    })
+    .catch(function(err) {
+      //Handle errors
+      console.log(err)
+
+      //Notify user
+      res.json({
+        success: false,
+        message: err.message
+      })
+    })
 
     resources.queries.updateUser({
       _id : new ObjectID(id)
@@ -63,34 +93,35 @@ module.exports = function (app, resources) {
     })
   })
 
-  app.get('/mina-sidor', function (req, res) {
-    var userid = new ObjectID(req.user._id)
+  app.get('/mina-sidor', functions.isAuthenticated, function (req, res, next) {
+    var user_id = new ObjectID(req.user._id)
 
-    var renderObj =  {
-      user: req.user,
+    var renderObj = extend({
+      loadPageResources: {
+        datatables: true
+      },
       votes: [],
-      likes: [],
-      loadPageResources: { datatables: true }
-    }
+      likes: []
+    }, res.vegosvar)
 
     new Promise.all([
       //Get the user from the database
       resources.queries.getUsers({
-        _id: userid
+        _id: user_id
       })
       .then(function(users) {
         renderObj.current_user = users[0]
       }),
       //Get the pages that this user has created
       resources.queries.getPages({
-        'user_info.id': userid
+        'user_info.id': user_id
       })
       .then(function(pages) {
         renderObj.pages = pages
       }),
       //Get all the votes user has cast
       resources.queries.getVotes({
-        'user.id': userid
+        'user.id': user_id
       })
       .then(function(votes) {
         //Then loop over all the votes and find the associated page
@@ -117,7 +148,7 @@ module.exports = function (app, resources) {
       }),
       //Get likes this user has given
       resources.queries.getLikes({
-        'user.id': userid
+        'user.id': user_id
       })
       .then(function(likes) {
         //Loop over all the likes and get the associated page
@@ -144,11 +175,11 @@ module.exports = function (app, resources) {
       //Get pages this user has contributed to, but not created
       resources.queries.getPages({
         'user_info.id': {
-          $ne: userid
+          $ne: user_id
         },
         'user_info.contributors': {
           $elemMatch: {
-            id: userid
+            id: user_id
           }
         }
       })
@@ -156,46 +187,53 @@ module.exports = function (app, resources) {
         renderObj.contributions = pages
       })
     ])
-    .done(function() {
+    .then(function() {
       res.render('pages', renderObj)
     })
-  })
-
-  app.get('/ny', function (req, res) {
-    res.render('new', { user: req.user })
-  })
-
-  app.get('/ny/publicerad', function (req, res) {
-    var hideredirect = (typeof(req.query.newpost) === 'undefined') ? true : false
-    res.render('post/published', {
-      user: req.user,
-      type: "product",
-      hideredirect: hideredirect,
-      post_url: req.query.newpost,
+    .catch(function(err) {
+      console.log(err)
+      return next()
     })
   })
 
-  app.get('/ny/uppdaterad', function (req, res) {
-    var hideredirect = (typeof(req.query.newpost) === 'undefined') ? true : false
-    res.render('post/updated', {
-      user: req.user,
-      type: "product",
-      hideredirect: hideredirect,
-      post_url: req.query.newpost,
-    })
+  app.get('/ny', functions.isAuthenticated, function (req, res, next) {
+    var renderObj = extend({}, res.vegosvar)
+    res.render('new', renderObj)
   })
 
-  app.get('/ny/:type', function (req, res, next) {
-    var renderObj = {
-      user: req.user,
+  app.get('/ny/publicerad', functions.isAuthenticated, function (req, res, next) {
+    var hideredirect = (typeof(req.query.newpost) === 'undefined') ? true : false
+    var renderObj = extend({
+      type: 'product',
+      hideredirect: hideredirect,
+      post_url: req.query.newpost
+    }, res.vegosvar)
+
+    res.render('post/published', renderObj)
+  })
+
+  app.get('/ny/uppdaterad', functions.isAuthenticated, function (req, res, next) {
+    var hideredirect = (typeof(req.query.newpost) === 'undefined') ? true : false
+    var renderObj = extend({
+      type: 'product',
+      hideredirect: hideredirect,
+      post_url: req.query.newpost
+    }, res.vegosvar)
+
+    res.render('post/updated', renderObj)
+  })
+
+  app.get('/ny/:type', functions.isAuthenticated, function (req, res, next) {
+    var renderObj = extend({
       type: req.params.type,
       loadEditorResources: true,
       loadDropzoneResources: true,
       loadValidationResources: true,
       loadPageResources: {
         create_page: true
-      }
-    }
+      },
+      categories: []
+    }, res.vegosvar)
 
     //Check if current user is blocked
     resources.queries.getUsers({
@@ -253,6 +291,7 @@ module.exports = function (app, resources) {
           return next()
           break
         default:
+          //This should probably be a 500 error
           console.log(err)
           return next()
           break
@@ -260,16 +299,17 @@ module.exports = function (app, resources) {
     })
   })
 
-  app.get('/redigera/:url', function (req, res, next) {
-    var renderObj = {
-      user: req.user,
+  app.get('/redigera/:url', functions.isAuthenticated, function (req, res, next) {
+    var renderObj = extend({
       loadEditorResources: true,
       loadDropzoneResources: true,
       loadValidationResources: true,
       loadPageResources: {
         create_page: true
-      }
-    }
+      },
+      post: null,
+      categories: []
+    }, res.vegosvar)
 
     resources.queries.getPages({
       url: req.params.url
