@@ -13,9 +13,8 @@ var Promise = require('promise')
 module.exports = function (app, resources) {
   var functions = resources.functions
 
-  app.get('/', function (req, res) {
-    var renderObj = {
-      user: req.user,
+  app.get('/', function (req, res, next) {
+    var renderObj = extend({
       loadGeoLocation: true,
       loadMapResources: {
         map: true,
@@ -23,250 +22,116 @@ module.exports = function (app, resources) {
       },
       startpage: false,
       searchString: req.query.s,
+      establishments: [],
       pages: [],
       recipes: []
-    }
+    }, res.vegosvar)
 
     new Promise.all([
       //Get page stats for the footer
-      resources.queries.getPagesStats()
+      resources.models.page.stats()
       .then(function(pages) {
         renderObj.pageStats = pages
       }),
       //Get the pages for 'Hett just nu'
-      resources.queries.getPages(
-        {},
-        {}, {
-          'rating.likes': -1
-        },
-        9
-      )
-      .then(function(pages) {
-        return pages.filter(function(page) {
-          if('post' in page && 'content' in page.post) {
-            page.post.content = striptags(page.post.content, ['br','p'])
-            page.post.content = (page.post.content.length > 115) ? page.post.content.substr(0, 115) + '...' : page.post.content
-            return page
-          }
-        })
-      })
+      resources.models.page.hot()
       .then(function(pages) {
         renderObj.pages = pages
       }),
       //Get the new restaurants, cafees and shops for the 'Goda nyheter' sidebar
-      resources.queries.getPages({
-        accepted: true,
-        $or: [
-          { type: '3' },
-          { type: '5' },
-          { type: '6' }
-        ],
-      },
-      {},
-      { _id: -1 },
-      12
-      )
+      resources.models.page.newPlaces()
       .then(function(establishments) {
         renderObj.establishments = establishments
       }),
       //Get the recipes to showcase
-      resources.queries.getPages({
-        accepted: true,
-        type: '2',
-      },
-      {},
-      { _id: -1 },
-      12
-      )
-      .then(function(recipes) {
-        //Get the user whom created each recipe
-        return new Promise.all(recipes.map(function(recipe) {
-          //Make sure we don't show anyone that opted to be anonymous
-          if ( ! (recipe.user_info.hidden) ) {
-            //Get the associated users's info
-            return resources.queries.getUsers({
-              _id: recipe.user_info.id
-            })
-            .then(function(users) {
-              if(users.length > 0) {
-                return extend(recipe.user_info, users[0])
-              } else {
-                //User account was not found, set user_info to hidden to show user as anonymous 
-                recipe.user_info.hidden = true
-                return recipe
-              }
-            })
-          } else {
-            return recipe
-          }
-        }))
-      })
+      resources.models.page.newRecipes()
       .then(function(recipes) {
         renderObj.recipes = recipes
       })
     ])
-    .done(function() {
+    .then(function() {
       res.render('index', renderObj)
+    })
+    .catch(function(err) {
+      console.log(err)
+      return next()
     })
   })
 
-  app.get('/logga-in', function (req, res) {
+  app.get('/logga-in', function (req, res, next) {
     res.render('login')
   })
 
-  app.get('/om', function(req, res) {
-    res.render('about', { user: req.user })
+  app.get('/om', function(req, res, next) {
+    var renderObj = extend({}, res.vegosvar)
+    res.render('about', renderObj)
   })
 
-  app.get('/licens', function(req, res) {
-    res.render('license', { user: req.user })
+  app.get('/licens', function(req, res, next) {
+    var renderObj = extend({}, res.vegosvar)
+    res.render('license', renderObj)
   })
 
-  app.get('/riktlinjer', function (req, res) {
-    res.render('guidelines', { user: req.user, hidelink: true })
+  app.get('/riktlinjer', function (req, res, next) {
+    var renderObj = extend({
+      hidelink: true
+    }, res.vegosvar)
+
+    res.render('guidelines', renderObj)
   })
 
-  app.get('/villkor', function (req, res) {
-    res.render('terms-of-use', { user: req.user, hidelink: true })
+  app.get('/villkor', function (req, res, next) {
+    var renderObj = extend({
+      hidelink: true
+    }, res.vegosvar)
+
+    res.render('terms-of-use', renderObj)
   })
 
-  app.get('/vanliga-fragor', function (req, res) {
-    res.render('faq', { user: req.user })
+  app.get('/vanliga-fragor', function (req, res, next) {
+    var renderObj = extend({}, res.vegosvar)
+    res.render('faq', renderObj)
   })
 
-  app.get('/press', function (req, res) {
-    res.render('press', { user: req.user })
+  app.get('/press', function (req, res, next) {
+    var renderObj = extend({}, res.vegosvar)
+    res.render('press', renderObj)
   })
 
-  app.get('/505', function (req, res) {
-    res.render('505', { user: req.user })
+  app.get('/505', function (req, res, next) {
+    var renderObj = extend({}, res.vegosvar)
+    res.render('505', renderObj)
   })
 
-  app.get('/recensera', functions.isAuthenticated, function (req, res) {
+/* Commented out as of 2016-03-27, since isAuthenticated just redirects to /logga-in anyway
+  app.get('/recensera', functions.isAuthenticated, function (req, res, next) {
     res.render('vote-login', { user: req.user })
   })
+*/
 
-  app.get('/rapportera', function (req, res) {
-    res.render('report', { user: req.user })
+  app.get('/rapportera', function (req, res, next) {
+    res.render('report', renderObj)
   })
 
-  app.get('/sekretesspolicy', function (req, res) {
-    res.render('privacypolicy', { user: req.user })
+  app.get('/sekretesspolicy', function (req, res, next) {
+    var renderObj = extend({}, res.vegosvar)
+    res.render('privacypolicy', renderObj)
   })
 
-  app.get('/logga-ut', function (req, res) {
+  app.get('/logga-ut', function (req, res, next) {
     req.logout()
     res.redirect('/')
   })
 
   //What is this used for?
-  app.get('/handle/votes', function (req, res) {
+  app.get('/handle/votes', function (req, res, next) {
     resources.queries.getVotes()
     .then(function(votes) {
       res.json(votes)
     })
   })
 
-  app.get('/:url', function (req, res, next) {
-    var renderObj = {
-      user: req.user,
-      loadGeoLocation: true,
-      loadMapResources: {
-        map: true
-      },
-      loadPageResources: {
-        public_page: true
-      },
-      striptags: striptags
-    }
-
-    var query = {
-      url: req.params.url
-    }
-
-    if(typeof(req.user) !== 'undefined') {
-      if( ! functions.userCheckPrivileged(req.user) ) { //If user is not privileged
-        query['$or'] = [{
-          accepted: true //Either page must be published
-        }, {
-          "user_info.id": req.user._id //Or the current user is the user that created the page
-        }]
-      }
-    } else {
-      query.accepted = true //If anonymous user then the page must be published
-    }
-
-    resources.queries.getPages(query)
-    .then(function(pages) {
-      if( pages.length <= 0) {
-        throw new Error('Page with url ' + req.params.url + ' was not found')
-      } else {
-        return pages[0]
-      }
-    })
-    .then(function(page) {
-      renderObj.post = page
-
-      //Get the user whom created the page
-      return resources.queries.getUsers({
-        _id: page.user_info.id
-      })
-      .then(function(users) {
-        if(users.length > 0) {
-          renderObj.user_info = users[0]
-        } else {
-          page.user_info.hidden = true //Show user as anonymous
-          renderObj.user_info = null
-        }
-
-        return page
-      })
-    })
-    .then(function(page) {
-      //Check which browser dependencies are needed
-      var isPlace = (page.type === '3' || page.type === '5' || page.type === '6')
-      renderObj.loadMapResources.mapCluster = !isPlace
-      renderObj.loadPageResources.youtube = (page.type === '2')
-
-      //Get places in the same city, if this page is for a restaurant, cafe or shop
-      if(isPlace) {
-        return resources.queries.getPages({
-          $and: [
-            {
-              $or:[
-                {type:'3'},
-                {type:'5'},
-                {type:'6'}
-              ]
-            },
-            {
-              "post.city": page.post.city
-            },
-            {
-              "_id": {
-                $ne: page._id
-              }
-            }
-          ]
-        },
-        {}, //Include all fields
-        { _id: -1 }, //Sort descendingly, a.k.a. newest first
-        10 //Limit to 10 pages
-        )
-        .then(function(establishments) {
-          renderObj.establishments = establishments
-        })
-      }
-    })
-    .then(function() {
-      res.render('page', renderObj)
-    })
-    .catch(function (err) {
-      return next() // 404
-    })
-  })
-
-  app.get('/sitemap.xml', function(req, res) {
+  app.get('/sitemap.xml', function(req, res, next) {
     var sitemap = resources.sitemap
     var hostname = resources.config.hostname
 
@@ -280,7 +145,7 @@ module.exports = function (app, resources) {
       })
     })
 
-    //Add dynamic pages
+    //Add pages from database
     resources.queries.getPages({
       accepted: true
     })
@@ -308,6 +173,7 @@ module.exports = function (app, resources) {
     .then(function() {
       sitemap.toXML(function(err, xml) {
         if (err) {
+          //TODO, redirect to next and handle error in error.js
           return res.status(500).end()
         }
 
@@ -315,5 +181,84 @@ module.exports = function (app, resources) {
         res.send(xml)
       })
     })
+    .catch(function(err) {
+      console.log(err)
+      return next()
+    })
   })
+
+  app.get('/:url', function (req, res, next) {
+    var renderObj = extend({
+      loadGeoLocation: true,
+      loadMapResources: {
+        map: true
+      },
+      loadPageResources: {
+        public_page: true
+      },
+      striptags: striptags,
+      post: null,
+      establishments: [],
+    }, res.vegosvar)
+
+    var query = {
+      url: req.params.url
+    }
+
+    if(typeof(req.user) !== 'undefined') {
+      if( ! functions.userCheckPrivileged(req.user) ) { //If user is not privileged
+        query['$or'] = [{
+          accepted: true //Either page must be published
+        }, {
+          "user_info.id": req.user._id //Or the current user is the user that created the page
+        }]
+      }
+    } else {
+      query.accepted = true //If anonymous user then the page must be published
+    }
+
+    //TODO, merge the 2 queries to get page and user into a function in models/page.js,
+    //also, remove dependency on renderObj.user_info, extend the object in renderObj.post.user_info instead
+    resources.models.page.get(query)
+    .then(function(page) {
+      renderObj.post = page
+
+      //Get the user whom created the page
+      return resources.models.user.get({
+        _id: page.user_info.id
+      })
+      .then(function(users) {
+        if(users.length > 0) {
+          renderObj.post.user_info = extend(renderObj.post.user_info, users[0])
+        } else {
+          renderObj.post.user_info.hidden = true //Show user as anonymous
+        }
+
+        return page
+      })
+    })
+    .then(function(page) {
+      //Check which browser dependencies are needed
+      var isPlace = (page.type === '3' || page.type === '5' || page.type === '6')
+      renderObj.loadMapResources.mapCluster = !isPlace
+      renderObj.loadPageResources.youtube = (page.type === '2')
+
+      //Get places in the same city for the sidebar, if this page is for a restaurant, cafe or shop
+      if(isPlace) {
+        resources.models.page.nearbyEstablishments(page)
+        .then(function(establishments) {
+          renderObj.establishments = establishments
+        })
+      }
+    })
+    .then(function() {
+      res.render('page', renderObj)
+    })
+    .catch(function (err) {
+      console.log(err)
+      return next() // 404
+    })
+  })
+
+
 }
