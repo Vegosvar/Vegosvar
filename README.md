@@ -3,7 +3,7 @@
 
 ## Dependencies
 
-Requires MongoDB 3.0+
+Requires Node.js 0.12.7+, MongoDB 3.0+
 
 ## Install
 
@@ -23,11 +23,11 @@ Optionally you can set up a proxy with `nginx` and run Vegosvar as a `systemd` s
 
 Copy default config
 
-* `cp ansible/roles/nginx/files/nginx.conf /etc/nginx/sites-available/nginx`
+* `cp ansible/roles/nginx/files/nginx.conf /etc/nginx/sites-available/vegosvar.conf`
 
 Enable site
 
-* `sudo ln -s /etc/sites-available/nginx.conf /etc/nginx/sites-enabled`
+* `sudo ln -s /etc/sites-available/vegosvar.conf /etc/nginx/sites-enabled`
 
 Reload nginx for changes to take effect
 
