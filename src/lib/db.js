@@ -44,6 +44,97 @@ module.exports = {
     instance.close()
   },
   queries: {
+    aggregate: function(collection, query) {
+
+      return new Promise(function(resolve, reject) {
+        if(collection && query) {
+          instance.collection(collection).aggregate(query, function(err, result) {
+            if (err) {
+              reject(err)
+            } else {
+              resolve(result)
+            }
+          })
+        } else {
+          reject(new Error('"collection" and "query" argument must be supplied'))
+        }
+      })
+    },
+    delete: function(collection, query) {
+      query = (query) ? query : false
+
+      return new Promise(function(resolve, reject) {
+        if(query) {
+          instance.collection(collection).delete(query, function(err, result) {
+            if(err) {
+              reject(err)
+            } else {
+              resolve(result)
+            }
+          })
+        } else {
+          reject(new Error('"collection" and "query" argument must be supplied'))
+        }
+      })
+    },
+    find: function(collection, query, fields, sort, limit) {
+      collection = (collection) ? collection : false
+      query = extend({}, query)
+      fields = extend({}, fields)
+      sort = extend({}, sort)
+      limit = (limit) ? limit : 0
+
+      return new Promise(function(resolve, reject) {
+        if(collection) {
+          instance.collection(collection).find(query, fields).sort(sort).limit(limit).toArray(function(err, result) {
+            if (err) {
+              reject(err)
+            } else {
+              resolve(result)
+            }
+          })
+        } else {
+          reject(new Error('"collection" argument must be supplied'))
+        }
+      })
+    },
+    insert: function(collection, query) {
+      collection = (collection) ? collection : false
+      query = extend({}, query)
+
+      return new Promise(function(resolve, reject) {
+        if(collection && query) {
+          instance.collection(collection).insert(query, function(err, result) {
+            if(err) {
+              reject(err)
+            } else {
+              resolve(result)
+            }
+          })
+        } else {
+          reject(new Error('"collection" and "query" argument must be supplied'))
+        }
+      })
+    },
+    update: function(collection, query, update, options) {
+      query = (query) ? query : false
+      update = (update) ? update : false
+      options = extend({}, options)
+
+      return new Promise(function(resolve, reject) {
+        if(collection && query && update) {
+          instance.collection(collection).update(query, update, options, function(err, result) {
+            if(err) {
+              reject(err)
+            } else {
+              resolve(result)
+            }
+          })
+        } else {
+          reject(new Error('"collection", "query" and "update" arguments must be supplied'))
+        }
+      })
+    },
     getPages: function(query, fields, sort, limit) {
       var query = extend({}, query)
       var fields = extend({}, fields)
@@ -185,9 +276,6 @@ module.exports = {
         })
       })
     },
-    getContributorsFromPage: function(page) {
-
-    },
     getPagesThisWeek: function() {
       return new Promise(function(resolve, reject) {
         var today = new Date( functions.getISOdate() )
@@ -327,5 +415,22 @@ module.exports = {
         }
       })
     }
+    /*
+    TODO: Would be cool if these could be dynamically generated somehow
+    Maybe we could get a list of all the collections, then loop over them to build these objects?
+    votes: {
+      delete: function(query) {
+        return module.exports.queries.delete('votes', query)
+      },
+      find: function(query, fields, sort, limit) {
+        return module.exports.queries.find('votes', query, fields, sort, limit)
+      },
+      insert: function() {
+        return module.exports.queries.insert('votes', query)
+      },
+      update: function(query, update, options) {
+        return module.exports.queries.update('votes', query, update, options)
+    },
+    */
   }
 }
