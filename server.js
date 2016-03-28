@@ -43,6 +43,7 @@ if (cluster.isMaster) {
 
     var resources = {
       dbinstance: dbinstance,
+      queries: db.queries,
       functions: functions,
       image_processer: image_processer,
       toobusy: toobusy,
@@ -62,9 +63,10 @@ if (cluster.isMaster) {
         settings: settingsdb,
         users: usersdb,
         votes: votesdb,
-      },
-      queries: db.queries
+      }
     }
+
+    resources.models = require('./src/app/models')(resources)
 
     require('./src/config')(app, resources)
     require('./src/app/routes')(app, resources)
