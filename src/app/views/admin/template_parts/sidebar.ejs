@@ -1,14 +1,14 @@
                   <ul class="list-group">
                     <li class="list-group-item list-group-head <% if(typeof active_page !== 'undefined' && active_page === 'index') { %> active <% } %>">
                       <a href="/admin">
-                      	<span class="glyphicon glyphicon-dashboard"></span>
-                      	Översikt
+                        <span class="glyphicon glyphicon-dashboard"></span>
+                        Översikt
                       </a>
                     </li>
                     <li class="list-group-item <% if(typeof active_page !== 'undefined' && active_page === 'users') { %> active <% } %>">
                       <a href="/admin/users">
-                      	<span class="glyphicon glyphicon-user"></span>
-                      	Användare
+                        <span class="glyphicon glyphicon-user"></span>
+                        Användare
                       </a>
                     </li>
                     <li class="list-group-item <% if(typeof active_page !== 'undefined' && active_page === 'pages') { %> active <% } %>">
@@ -37,11 +37,13 @@
                     </li>
                     <li class="list-group-item <% if(typeof active_page !== 'undefined' && active_page === 'changes') { %> active <% } %>">
                       <a href="/admin/uppdateringar">
-                      	<span class="glyphicon glyphicon-time"></span>
-                      	Granska 
-                      	<span class="label label-warning circle">
-                      		<%= (typeof changes !== 'undefined' && changes.length > 0) ? changes.length : '' %>
-                      	</span>
+                        <span class="glyphicon glyphicon-time"></span>
+                        Granska
+                        <% if(typeof(admin) !== 'undefined' && 'changes' in admin) { %>
+                          <span class="label label-warning circle">
+                            <%= admin.changes.length %>
+                          </span>
+                        <% } %>
                       </a>
                     </li>
                   </ul>
