@@ -15,7 +15,7 @@ module.exports = function (app, resources) {
     if(process.env.NODE_ENV === 'maintenance') {
       res.status(502)
     } else {
-      next()
+      return next()
     }
   })
 
@@ -24,7 +24,7 @@ module.exports = function (app, resources) {
     if (resources.toobusy()) {
       res.status(503).send('Pust! Vegosvar är under hög belastning just nu. Försök att ladda om sidan igen!')
     } else {
-      next()
+      return next()
     }
   })
 
@@ -41,7 +41,7 @@ module.exports = function (app, resources) {
         }
       }
 
-      if( canRedirectTo ) {
+      if(canRedirectTo) {
         req.session.returnTo = functions.returnUrl(req)
       } else {
         //Either reuse previous value or redirect to front page
@@ -51,6 +51,49 @@ module.exports = function (app, resources) {
       req.session.returnTo = '/'
     }
 
-    next()
+    return next()
+  })
+
+  //Resources for all users
+  app.get('*', function(req, res, next) {
+    res.vegosvar = {
+      user: req.user
+    }
+
+    return next()
+  })
+
+  //Resources for logged in users
+  app.get('*', function(req, res, next) {
+    if(req.isAuthenticated()) {
+      res.vegosvar.users = {}
+    }
+
+    return next()
+  })
+
+  //Resources for privileged users
+  app.get('*', function(req, res, next) {
+    if(req.isAuthenticated()) {
+      if(functions.userCheckPrivileged(req.user)) {
+        res.vegosvar.admin = {}
+
+        resources.queries.getAdminSidebar()
+        .then(function(changes) {
+          res.vegosvar.admin.changes = changes
+        })
+        .then(function() {
+          return next()
+        })
+        .catch(function(err) {
+          console.log(err)
+          return next()
+        })
+      } else {
+        return next()
+      }
+    } else {
+      return next()
+    }
   })
 }
