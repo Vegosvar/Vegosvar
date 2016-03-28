@@ -4,7 +4,6 @@
               <div class="col-sm-6">
                 <div class="card transparent">
                   <div class="row">
-
                     <% if (typeof post.user_info.hidden !== true && post.user_info.hidden == "") { %>
                       <div class="col-xs-3 col-xs-offset-0 col-sm-3 col-sm-offset-0 col-md-4 col-lg-3 avatar">
                         <a href="#"><img alt="" src="<% include ../../includes/functions/getUserinfoAvatar %>" class="avatar circle"></a>
@@ -12,14 +11,14 @@
 
                       <div class="col-xs-9 col-sm-9 col-md-8 col-lg-9 info">
                         <small>Publicerat av</small>
-                        <% if (typeof user_info.info !== 'undefined' && user_info.info.website !== "") { %>
-                          <a href="<%= user_info.info.website %>" title="<%= user_info.info.website %>" target="_blank" rel="nofollow"><h3><%= user_info.name.display_name %></h3></a>
+                        <% if (typeof post.user_info.info !== 'undefined' && post.user_info.info.website !== "") { %>
+                          <a href="<%= post.user_info.info.website %>" title="<%= post.user_info.info.website %>" target="_blank" rel="nofollow"><h3><%= post.user_info.name.display_name %></h3></a>
                         <% } else { %>
-                          <h3><%= user_info.name.display_name %></h3>
+                          <h3><%= post.user_info.name.display_name %></h3>
                         <% } %>
                         <span class="description">
-                          <% if (typeof user_info.info !== 'undefined') { if (typeof user_info.info.description !== 'undefined') { %>
-                            <%= user_info.info.description %>
+                          <% if (typeof post.user_info.info !== 'undefined') { if (typeof post.user_info.info.description !== 'undefined') { %>
+                            <%= post.user_info.info.description %>
                           <% } } %>
                         </span>
                       </div>

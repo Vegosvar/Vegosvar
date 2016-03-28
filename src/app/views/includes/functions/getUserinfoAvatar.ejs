@@ -1,10 +1,10 @@
-<% if (typeof user_info.active_photo === 'undefined') { %>
+<% if (typeof post.user_info.active_photo === 'undefined') { %>
 	/assets/images/no-picture.svg
 <% } else {
-	if(user_info.active_photo === 'vegosvar') { %>
-		<%= user_info.vegosvar_photo %>
-	<% } else if (user_info.active_photo === 'facebook') { %>
-		<%= user_info.fb_photo %>
+	if(post.user_info.active_photo === 'vegosvar') { %>
+		<%= post.user_info.vegosvar_photo %>
+	<% } else if (post.user_info.active_photo === 'facebook') { %>
+		<%= post.user_info.fb_photo %>
 	<% } else { %>
 		/assets/images/no-picture.svg
 	<% }
