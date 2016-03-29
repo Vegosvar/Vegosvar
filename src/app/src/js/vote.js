@@ -1,46 +1,107 @@
 $(window).load(function () {
-  $(document).on('click', '.star', function (e) {
-    e.preventDefault()
-    $(e.target).parent().addClass('push')
-    var parent = $(e.target).parent().parent()
-    var article = $(parent).data('id')
-    var content = $(e.target).parent().index() + 1
-    if (!($(e.target).parent().hasClass('deactive'))) {
-      $.get('/ajax/addVote?id=' + article + '&content=' + content, function (data) {
-        if (data === '1') {
-          window.location.assign('/recensera')
-        } else if (data === '3' || data === '5') {
-          //TODO, this should really be fixed
-        } else {
-          $('span.votes').html(data[0].count)
-          var element = $('#' + data[0]._id + '.stars')
-          $(element).children('.star').each(function () {
-            $(e.target).removeClass('active')
-          })
+  $(document).on('click', '.star', function () {
+    var container = $(this).parent()
+    var postId = $(container).data('id')
+    var content = $(this).index() + 1
+    var element = this
 
-          for (var i = 0; i <= data[0].avg; i++) {
-            $(parent).find('.star:nth-child(' + i  + ')').addClass('active')
-          }
-        }
-      })
-    }
+    $(element).addClass('push') //Add the push class
+
+    //Update vote count
+    $.ajax({
+      url: '/ajax/addVote',
+      timeout: 3000,
+      data: {
+        id: postId,
+        content: content
+      }
+    })
+    .done(function (result) {
+      if ('success' in result && result.success) {
+        //Remove active class from stars
+        $(container).children('.star').removeClass('active')
+
+        //Show the new vote count
+        $(container).find('.votes').html(result.data.count)
+
+        //Set the state to the stars again based on the new average
+        var average = new Array(parseInt(result.data.average))
+        $.each(average, function (i) {
+          var index = i + 1
+
+          $(container).children('.star:nth-child(' + index + ')').each(function (n, element) {
+            //We don't remove push class until in here as we want to cause as little
+            //interruption as possible to the animation on the element the user clicked
+            $(element).removeClass('push')
+
+            setTimeout(function (element) {
+              $(element).addClass('active push') //Add active and push class to indicate new result
+
+              //And remove it when animation ends
+              $(element).one('animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd', function (e) {
+                $(element).removeClass('push')
+              })
+            }, 100 * i, element) //Wait 100 ms between each star
+          })
+        })
+      } else {
+        var error = ('message' in result) ? result.message : 'Malformed data received from server'
+        throw new Error(error)
+      }
+    })
+    .fail(function (error) {
+      //TODO handle failure
+      console.log(error)
+    })
   })
 
   $('.like.add-like').on('click', function () {
-    var container = this
-    var id = $(container).data('id')
-    var element = $(container).find('#heart-glyphicon')
-    $(element).removeClass('glyphicon glyphicon-heart glyphicon-heart-empty').addClass('fa fa-spin fa-spinner')
-    $.get('/ajax/like?id=' + id, function (data) {
-      $(element).removeClass('fa fa-spin fa-spinner').addClass('glyphicon')
+    var element = this
+    var postId = $(element).data('id')
 
-      if (data.new_value === 0) {
-        $(element).addClass('glyphicon-heart-empty').removeClass('glyphicon-heart')
-      } else {
-        $(element).addClass('glyphicon-heart').removeClass('glyphicon-heart-empty')
+    var heartElement = $(element).find('.glyphicon')
+
+    //Remoe all glyphicon classes
+    $(heartElement).removeClass(function (index, css) {
+      return (css.match (/(^|\s)glyphicon\S+/g) || []).join(' ')
+    })
+    //Show a spinner to indicate to the user that something's going on
+    $(heartElement).addClass('fa fa-spin fa-spinner')
+
+    //Update the like count
+    $.ajax({
+      url: '/ajax/addLike',
+      timeout: 3000,
+      data: {
+        id: postId
       }
+    })
+    .always(function () {
+      //Remove spinner
+      $(heartElement).removeClass('fa fa-spin fa-spinner')
+      $(heartElement).addClass('glyphicon')
+    })
+    .done(function (result) {
+      if ('success' in result && result.success) {
+        //Restore the heart icon
+        if (result.data.count > 0) {
+          $(heartElement).addClass('glyphicon-heart')
+        } else {
+          //If there are no likes after update, show an empty heart icon instead
+          $(heartElement).addClass('glyphicon-heart-empty')
+        }
 
-      $(container).find('.count').html(data.new_value)
+        //Show the new like count
+        $(element).find('.count').html(result.data.count)
+      } else {
+        var error = ('message' in result) ? result.message : 'Malformed data received from server'
+        throw new Error(error)
+      }
+    })
+    .fail(function (error) {
+      console.log(error)
+      $(heartElement).addClass('glyphicon-warning-sign')
+      $(element).find('.count').html('Ett fel intr&auml;ffade')
     })
   })
 
