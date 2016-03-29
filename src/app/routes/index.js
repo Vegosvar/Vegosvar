@@ -13,17 +13,17 @@ module.exports = function (app, resources) {
   require('./auth')(app)
 
   //Ajax routes
-  require('./ajax/unauthenticated')(app, resources)
-  require('./ajax/authenticated')(app, resources)
   require('./ajax/privileged')(app, resources)
-
-  //Page routes
-  require('./pages/unauthenticated')(app, resources)
-  require('./pages/authenticated')(app, resources)
-  require('./pages/privileged')(app, resources)
+  require('./ajax/authenticated')(app, resources)
+  require('./ajax/unauthenticated')(app, resources)
 
   //Post routes
   require('./post')(app, resources)
+
+  //Page routes
+  require('./pages/privileged')(app, resources)
+  require('./pages/authenticated')(app, resources)
+  require('./pages/unauthenticated')(app, resources)
 
   //Error (404/500) routes
   require('./error')(app, resources)
