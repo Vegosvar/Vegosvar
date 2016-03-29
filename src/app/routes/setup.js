@@ -8,7 +8,7 @@
 var ObjectID = require('mongodb').ObjectID
 
 module.exports = function (app, resources) {
-  var functions = resources.functions
+  var utils = resources.utils
 
   //send HTTP header for maintenance
   app.use(function(req, res, next) {
@@ -42,7 +42,7 @@ module.exports = function (app, resources) {
       }
 
       if(canRedirectTo) {
-        req.session.returnTo = functions.returnUrl(req)
+        req.session.returnTo = utils.returnUrl(req)
       } else {
         //Either reuse previous value or redirect to front page
         req.session.returnTo = (req.session.returnTo) ? req.session.returnTo : '/'
@@ -75,10 +75,10 @@ module.exports = function (app, resources) {
   //Resources for privileged users
   app.get('*', function(req, res, next) {
     if(req.isAuthenticated()) {
-      if(functions.userCheckPrivileged(req.user)) {
+      if(utils.userCheckPrivileged(req.user)) {
         res.vegosvar.admin = {}
 
-        resources.queries.getAdminSidebar()
+        resources.models.admin.getAdminSidebar()
         .then(function(changes) {
           res.vegosvar.admin.changes = changes
         })
@@ -86,7 +86,7 @@ module.exports = function (app, resources) {
           return next()
         })
         .catch(function(err) {
-          console.log(err)
+          console.log(req.route.path, err)
           return next()
         })
       } else {
