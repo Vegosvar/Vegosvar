@@ -74,7 +74,7 @@ module.exports = {
     return string.toLowerCase()
     .replace(/á|à|å|ä/g, 'a')
     .replace(/ö|ò|ó/gi, 'o')
-    .replace(/é|è/gi, 'e')
+    .replace(/é|è|ë|ê/gi, 'e')
     .replace(/ç/gi, 'c')
     .replace(/[^\w\s]/gi, '') //Finally remove all non word characters, but leave spaces
   },
@@ -117,5 +117,33 @@ module.exports = {
   userCheckAdmin: function(user) {
     var admin = ['admin']
     return (typeof(user) !== 'undefined') ? (admin.indexOf(user.info.permission) >= 0) : false
+  },
+  pageTypes: function() {
+      return {
+      'fakta': '1',
+      'recept': '2',
+      'restaurang': '3',
+      'produkt': '4',
+      'butik': '5',
+      'cafe': '6'
+    }
+  },
+  typeNumberFromName: function(name) {
+    //Get type name from number
+    var pageTypes = module.exports.pageTypes()
+    if( ! (name in pageTypes) ) {
+      throw new Error('unknown') //Unknown type name
+    }
+
+    return pageTypes[name]
+  },
+  typeNameFromNumber: function(number) {
+    //Same as above, but in reverse
+    var pageTypes = module.exports.pageTypes()
+    for(var key in pageTypes) {
+      if(number == pageTypes[key]) {
+        return key
+      }
+    }
   }
 }
