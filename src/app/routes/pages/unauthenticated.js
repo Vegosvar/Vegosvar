@@ -11,7 +11,7 @@ var extend = require('util')._extend
 var Promise = require('promise')
 
 module.exports = function (app, resources) {
-  var functions = resources.functions
+  var utils = resources.utils
 
   app.get('/', function (req, res, next) {
     var renderObj = extend({
@@ -53,7 +53,7 @@ module.exports = function (app, resources) {
       res.render('index', renderObj)
     })
     .catch(function(err) {
-      console.log(err)
+      console.log(req.route.path, err)
       return next()
     })
   })
@@ -104,7 +104,7 @@ module.exports = function (app, resources) {
   })
 
 /* Commented out as of 2016-03-27, since isAuthenticated just redirects to /logga-in anyway
-  app.get('/recensera', functions.isAuthenticated, function (req, res, next) {
+  app.get('/recensera', utils.isAuthenticated, function (req, res, next) {
     res.render('vote-login', { user: req.user })
   })
 */
@@ -182,7 +182,7 @@ module.exports = function (app, resources) {
       })
     })
     .catch(function(err) {
-      console.log(err)
+      console.log(req.route.path, err)
       return next()
     })
   })
@@ -206,7 +206,7 @@ module.exports = function (app, resources) {
     }
 
     if(typeof(req.user) !== 'undefined') {
-      if( ! functions.userCheckPrivileged(req.user) ) { //If user is not privileged
+      if( ! utils.userCheckPrivileged(req.user) ) { //If user is not privileged
         query['$or'] = [{
           accepted: true //Either page must be published
         }, {
@@ -220,6 +220,13 @@ module.exports = function (app, resources) {
     //TODO, merge the 2 queries to get page and user into a function in models/page.js,
     //also, remove dependency on renderObj.user_info, extend the object in renderObj.post.user_info instead
     resources.models.page.get(query)
+    .then(function(pages) {
+      if( pages.length <= 0) {
+        throw new Error(404)
+      } else {
+        return pages[0]
+      }
+    })
     .then(function(page) {
       renderObj.post = page
 
@@ -255,7 +262,7 @@ module.exports = function (app, resources) {
       res.render('page', renderObj)
     })
     .catch(function (err) {
-      console.log(err)
+      console.log('/:url', err)
       return next() // 404
     })
   })
