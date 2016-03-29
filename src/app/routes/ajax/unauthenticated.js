@@ -10,7 +10,7 @@ var striptags = require('striptags')
 var extend = require('util')._extend;
 
 module.exports = function (app, resources) {
-  var functions = resources.functions
+  var utils = resources.utils
 
   /** /ajax/map
   * @type: GET
@@ -219,7 +219,7 @@ module.exports = function (app, resources) {
     }
 
     var queryTypes = function(string) {
-      string = functions.replaceDiacritics(string)
+      string = utils.replaceDiacritics(string)
       string = string.replace(/[^a-z]/gi, '') //Remove non alphabet characters
 
       var keywords = ['cafe','kafe','butik','restaurang','produkt','recept','fakta','vegan','laktoovo','animal']
@@ -237,7 +237,7 @@ module.exports = function (app, resources) {
 
             //Filter out the current key from the search query
             searchString = tmpArray.filter(function(text) {
-              var compareText = functions.replaceDiacritics(text)
+              var compareText = utils.replaceDiacritics(text)
               var isKey = compareText.match(key)
               if(isKey === null) {
                 return text
