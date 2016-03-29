@@ -10,19 +10,16 @@ var ObjectID = require('mongodb').ObjectID
 var extend = require('util')._extend
 var striptags = require('striptags')
 
-module.exports = function(resources) {
-  var userModel = require('./user')(resources)
-
+module.exports = function(resources, models) {
   return pageModel = {
-    get: function(query) {
-      return resources.queries.find('pages', query)
-      .then(function(pages) {
-        if( pages.length <= 0) {
-          throw new Error(404)
-        } else {
-          return pages[0]
-        }
-      })
+    aggregate: function(query) {
+      return resources.query.aggregate('pages', query)
+    },
+    get: function(query, fields, sort, limit) {
+      return resources.queries.find('pages', query, fields, sort, limit)
+    },
+    update: function(query, update, options) {
+      return resources.queries.update('pages', query, update, options)
     },
     stats: function() {
       return resources.queries.aggregate('pages', [{
@@ -99,7 +96,7 @@ module.exports = function(resources) {
           //Make sure we don't show anyone that opted to be anonymous
           if ( ! (recipe.user_info.hidden) ) {
             //Get the associated users's info
-            return userModel.get({
+            return models.user.get({
               _id: recipe.user_info.id
             })
             .then(function(users) {
@@ -118,7 +115,7 @@ module.exports = function(resources) {
       })
     },
     nearbyEstablishments: function(page) {
-      return resources.queries.getPages(
+      return resources.queries.find('pages',
         {
           $and: [
             {
