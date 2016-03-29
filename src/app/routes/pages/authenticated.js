@@ -12,9 +12,9 @@ var extend = require('util')._extend
 var Promise = require('promise')
 
 module.exports = function (app, resources) {
-  var functions = resources.functions
+  var utils = resources.utils
 
-  app.get('/installningar', functions.isAuthenticated, function (req, res, next) {
+  app.get('/installningar', utils.isAuthenticated, function (req, res, next) {
     var renderObj = extend({
       loadEditorResources: true,
       loadDropzoneResources: true 
@@ -23,13 +23,13 @@ module.exports = function (app, resources) {
     res.render('settings', renderObj)
   })
 
-  app.get('/installningar/ta-bort', functions.isAuthenticated, function (req, res, next) {
+  app.get('/installningar/ta-bort', utils.isAuthenticated, function (req, res, next) {
     var renderObj = extend({}, res.vegosvar)
     res.render('deregister', renderObj)
   })
 
   //TODO, move this to authenticated ajax routes
-  app.get('/installningar/ta-bort/submit', functions.isAuthenticated, function (req, res, next) {
+  app.get('/installningar/ta-bort/submit', utils.isAuthenticated, function (req, res, next) {
     if(req.isAuthenticated()) {
       var usersdb = resources.collections.users
       usersdb.remove({ "_id": new ObjectID(req.user._id) }, function(err, result) {
@@ -42,7 +42,7 @@ module.exports = function (app, resources) {
   })
 
   //TODO, move this to post.js routes
-  app.post('/installningar/submit', functions.isAuthenticated, urlencodedParser, function (req, res, next) {
+  app.post('/installningar/submit', utils.isAuthenticated, urlencodedParser, function (req, res, next) {
     //TODO, should really do some sanitization here 
     var user_id = req.user._id
     var display_name = req.body.displayName
@@ -66,7 +66,7 @@ module.exports = function (app, resources) {
     })
     .catch(function(err) {
       //Handle errors
-      console.log(err)
+      console.log(req.route.path, err)
 
       //Notify user
       res.json({
@@ -74,28 +74,9 @@ module.exports = function (app, resources) {
         message: err.message
       })
     })
-
-    resources.queries.updateUser({
-      _id : new ObjectID(id)
-    }, {
-      $set: {
-        'name.display_name': display_name,
-        'info.website': website,
-        'info.description': description
-      }
-    })
-    .then(function(result) {
-      res.send('1')
-    })
-    .catch(function(err) {
-      console.log(err)
-      res.send('0')
-    })
   })
 
-  app.get('/mina-sidor', functions.isAuthenticated, function (req, res, next) {
-    var user_id = new ObjectID(req.user._id)
-
+  app.get('/mina-sidor', utils.isAuthenticated, function (req, res, next) {
     var renderObj = extend({
       loadPageResources: {
         datatables: true
@@ -104,104 +85,23 @@ module.exports = function (app, resources) {
       likes: []
     }, res.vegosvar)
 
-    new Promise.all([
-      //Get the user from the database
-      resources.queries.getUsers({
-        _id: user_id
-      })
-      .then(function(users) {
-        renderObj.current_user = users[0]
-      }),
-      //Get the pages that this user has created
-      resources.queries.getPages({
-        'user_info.id': user_id
-      })
-      .then(function(pages) {
-        renderObj.pages = pages
-      }),
-      //Get all the votes user has cast
-      resources.queries.getVotes({
-        'user.id': user_id
-      })
-      .then(function(votes) {
-        //Then loop over all the votes and find the associated page
-        return new Promise.all(votes.map(function(vote) {
-          resources.queries.getPages({
-            _id: new ObjectID(vote.post.id)
-          }, {
-            url: 1,
-            title: 1
-          })
-          .then(function(pages) {
-            if(pages.length > 0) {
-              var page = pages[0]
-
-              renderObj.votes.push({
-                page_id: page._id,
-                url: page.url,
-                title: page.title,
-                content: vote.content
-              })
-            }
-          })
-        }))
-      }),
-      //Get likes this user has given
-      resources.queries.getLikes({
-        'user.id': user_id
-      })
-      .then(function(likes) {
-        //Loop over all the likes and get the associated page
-        return new Promise.all(likes.map(function(like) {
-          resources.queries.getPages({
-            _id: new ObjectID(like.post.id)
-          }, {
-            url: 1,
-            title: 1
-          })
-          .then(function(pages) {
-            if(pages.length > 0) {
-              var page = pages[0]
-
-              renderObj.likes.push({
-                page_id: page._id,
-                url: page.url,
-                title: page.title
-              })
-            }
-          })
-        }))
-      }),
-      //Get pages this user has contributed to, but not created
-      resources.queries.getPages({
-        'user_info.id': {
-          $ne: user_id
-        },
-        'user_info.contributors': {
-          $elemMatch: {
-            id: user_id
-          }
-        }
-      })
-      .then(function(pages) {
-        renderObj.contributions = pages
-      })
-    ])
-    .then(function() {
+    resources.models.user.getProfile(req.user._id)
+    .then(function(profileObj) {
+      renderObj = extend(renderObj, profileObj)
       res.render('pages', renderObj)
     })
     .catch(function(err) {
-      console.log(err)
+      console.log(req.route.path, err)
       return next()
     })
   })
 
-  app.get('/ny', functions.isAuthenticated, function (req, res, next) {
+  app.get('/ny', utils.isAuthenticated, function (req, res, next) {
     var renderObj = extend({}, res.vegosvar)
     res.render('new', renderObj)
   })
 
-  app.get('/ny/publicerad', functions.isAuthenticated, function (req, res, next) {
+  app.get('/ny/publicerad', utils.isAuthenticated, function (req, res, next) {
     var hideredirect = (typeof(req.query.newpost) === 'undefined') ? true : false
     var renderObj = extend({
       type: 'product',
@@ -212,7 +112,7 @@ module.exports = function (app, resources) {
     res.render('post/published', renderObj)
   })
 
-  app.get('/ny/uppdaterad', functions.isAuthenticated, function (req, res, next) {
+  app.get('/ny/uppdaterad', utils.isAuthenticated, function (req, res, next) {
     var hideredirect = (typeof(req.query.newpost) === 'undefined') ? true : false
     var renderObj = extend({
       type: 'product',
@@ -223,7 +123,7 @@ module.exports = function (app, resources) {
     res.render('post/updated', renderObj)
   })
 
-  app.get('/ny/:type', functions.isAuthenticated, function (req, res, next) {
+  app.get('/ny/:type', utils.isAuthenticated, function (req, res, next) {
     var renderObj = extend({
       type: req.params.type,
       loadEditorResources: true,
@@ -235,51 +135,30 @@ module.exports = function (app, resources) {
       categories: []
     }, res.vegosvar)
 
-    //Check if current user is blocked
-    resources.queries.getUsers({
-      _id: new ObjectID(req.user._id),
-      'info.blocked': false
-    })
-    .then(function(users) {
-      if(users.length > 0) {
-        return //User checks out, continue
-      } else {
-        throw new Error('blocked') //User is blocked
+    //Check if current user is blocked (maybe could do this in utils function?)
+    resources.models.user.isBlocked(req.user._id)
+    .then(function(blocked) {
+      if(blocked) {
+        throw new Error('blocked')
       }
     })
     //Check which type of page the user wants to create
     .then(function() {
-      var types = {
-        'fakta': '1',
-        'recept': '2',
-        'restaurang': '3',
-        'produkt': '4',
-        'butik': '5',
-        'cafe': '6'
-      }
-
-      //Check if type is known
-      if( ! (renderObj.type in types) ) {
-        throw new Error('unknown') //Unknown type
-      }
-
-      var pageType = types[renderObj.type]
-
       //Load additional browser dependences based on page type
-      renderObj.loadMapResources = (pageType === '3' || pageType === '5' || pageType === '6') ? { autocomplete: true, map: true } : false
-      renderObj.loadPageResources.youtube = (pageType === '2')
-
-      return pageType
+      var places = ['restaurang', 'butik', 'cafe']
+      renderObj.loadMapResources = (places.indexOf(req.params.type) !== -1) ? { autocomplete: true, map: true } : false
+      renderObj.loadPageResources.youtube = (req.params.type === 'recept')
     })
     //Get the categories for this page type
-    .then(function(type) {
-      return resources.queries.getPageCategories(type)
+    .then(function() {
+      var typeNumber = resources.models.page.typeNumberFromName(req.params.type)
+      return resources.queries.getPageCategories(typeNumber)
       .then(function(categories) {
         renderObj.categories = categories
       })
     })
     .then(function() {
-      res.render('post/' + renderObj.type, renderObj)
+      res.render('post/' + req.params.type, renderObj)
     })
     .catch(function(err) {
       //TODO, handle error better maybe?
@@ -292,14 +171,14 @@ module.exports = function (app, resources) {
           break
         default:
           //This should probably be a 500 error
-          console.log(err)
+          console.log(req.route.path, err)
           return next()
           break
       }
     })
   })
 
-  app.get('/redigera/:url', functions.isAuthenticated, function (req, res, next) {
+  app.get('/redigera/:url', utils.isAuthenticated, function (req, res, next) {
     var renderObj = extend({
       loadEditorResources: true,
       loadDropzoneResources: true,
@@ -311,53 +190,48 @@ module.exports = function (app, resources) {
       categories: []
     }, res.vegosvar)
 
-    resources.queries.getPages({
-      url: req.params.url
-    })
-    .then(function(pages) {
-      if(pages.length <= 0) {
-        throw new Error('404')
-      }
+    new Promise.all([
+      //Check if current user is blocked (maybe could do this in utils function?)
+      resources.models.user.isBlocked(req.user._id)
+      .then(function(blocked) {
+        if(blocked) {
+          throw new Error('blocked')
+        }
+      }),
+      resources.models.page.get({
+        url: req.params.url
+      })
+      .then(function(pages) {
+        if(pages.length <= 0) {
+          throw new Error('404')
+        }
 
-      return pages[0]
-    })
-    .then(function(page) {
-      renderObj.post = page
+        return pages[0]
+      })
+      .then(function(page) {
+        renderObj.post = page
+        renderObj.type = resources.utils.typeNameFromNumber(page.type)
 
-      //Load additional browser dependences based on page type
-      renderObj.loadMapResources = (page.type === '3' || page.type === '5' || page.type === '6') ? { autocomplete: true, map: true } : false
-      renderObj.loadPageResources.youtube = (page.type === '2')
+        //Load additional browser dependences based on page type
+        var places = ['restaurang', 'butik', 'cafe']
+        renderObj.loadMapResources = (places.indexOf(req.params.type) !== -1) ? { autocomplete: true, map: true } : false
+        renderObj.loadPageResources.youtube = (req.params.type === 'recept')
 
-      return page
-    })
-    //Get the categories for this page type
-    .then(function(page) {
-      return resources.queries.getPageCategories(page.type)
-      .then(function(categories) {
-        renderObj.categories = categories
         return page
       })
-    })
-    .then(function(page) {
-      var types = {
-        'fakta': '1',
-        'recept': '2',
-        'restaurang': '3',
-        'produkt': '4',
-        'butik': '5',
-        'cafe': '6'
-      }
-
-      for(var type in types) {
-        if(types[type] === page.type) {
-          renderObj.type = type
-        }
-      }
-
+      //Get the categories for this page type
+      .then(function(page) {
+        return resources.queries.getPageCategories(page.type)
+        .then(function(categories) {
+          renderObj.categories = categories
+        })
+      })
+    ])
+    .then(function() {
       res.render('post/' + renderObj.type, renderObj)
     })
     .catch(function(err) {
-      console.log(err)
+      console.log(req.route.path, err)
       return next()
     })
   })
