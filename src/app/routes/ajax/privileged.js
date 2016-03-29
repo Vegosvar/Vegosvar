@@ -8,12 +8,12 @@
 var ObjectID = require('mongodb').ObjectID
 
 module.exports = function (app, resources) {
-  var functions = resources.functions
+  var utils = resources.utils
   /** /ajax/admin/user/:user_id
   * @type: GET
   * @description: Ajax admin route for loading user info.
   */
-  app.get('/ajax/admin/user/:user_id', functions.isPrivileged, function (req, res) {
+  app.get('/ajax/admin/user/:user_id', utils.isPrivileged, function (req, res) {
     var usersdb = resources.collections.users
     var user_id = req.params.user_id
 
@@ -23,7 +23,7 @@ module.exports = function (app, resources) {
     })
   })
 
-  app.get('/ajax/admin/block/:user_id', functions.isPrivileged, function (req, res) {
+  app.get('/ajax/admin/block/:user_id', utils.isPrivileged, function (req, res) {
     var usersdb = resources.collections.users
     var user_id = req.params.user_id
 
@@ -40,7 +40,7 @@ module.exports = function (app, resources) {
     )
   })
 
-  app.get('/ajax/admin/unblock/:user_id', functions.isPrivileged, function (req, res) {
+  app.get('/ajax/admin/unblock/:user_id', utils.isPrivileged, function (req, res) {
     var usersdb = resources.collections.users
     var user_id = req.params.user_id
 
@@ -57,7 +57,7 @@ module.exports = function (app, resources) {
     )
   })
 
-  app.get('/ajax/admin/revision/apply/:page_id/:revision_number', functions.isPrivileged, function (req, res, next) {
+  app.get('/ajax/admin/revision/apply/:page_id/:revision_number', utils.isPrivileged, function (req, res, next) {
     var pagesdb = resources.collections.pages
     var revisionsdb = resources.collections.revisions
 
@@ -111,7 +111,7 @@ module.exports = function (app, resources) {
             var contributors = (new_post['meta'].user_info instanceof Array) ? new_post['meta'].user_info : [new_post['meta'].user_info]
             delete(new_post['meta'])
 
-            var isodate = functions.newISOdate(new Date(revision_number * 1000))
+            var isodate = utils.newISOdate(new Date(revision_number * 1000))
 
             pagesdb.findAndModify({
                 _id: new ObjectID(page_id)
@@ -155,7 +155,7 @@ module.exports = function (app, resources) {
     })
   })
 
-  app.get('/ajax/admin/revision/deny/:page_id/:revision_number', functions.isPrivileged, function (req, res, next) {
+  app.get('/ajax/admin/revision/deny/:page_id/:revision_number', utils.isPrivileged, function (req, res, next) {
     var pagesdb = resources.collections.pages
     var revisionsdb = resources.collections.revisions
 
@@ -209,7 +209,7 @@ module.exports = function (app, resources) {
             var contributors = (new_post['meta'].user_info instanceof Array) ? new_post['meta'].user_info : [new_post['meta'].user_info]
             delete(new_post['meta'])
 
-            var isodate = functions.newISOdate(new Date(revision_number * 1000))
+            var isodate = utils.newISOdate(new Date(revision_number * 1000))
 
             pagesdb.findAndModify({
                 _id: new ObjectID(page_id)
@@ -253,7 +253,7 @@ module.exports = function (app, resources) {
     })
   })
 
-  app.get('/ajax/admin/revision/compare/:page_id/:revision_number', functions.isPrivileged, function (req, res, next) {
+  app.get('/ajax/admin/revision/compare/:page_id/:revision_number', utils.isPrivileged, function (req, res, next) {
     var pagesdb = resources.collections.pages
     var revisionsdb = resources.collections.revisions
 
@@ -320,7 +320,7 @@ module.exports = function (app, resources) {
     })
   })
 
-  app.get('/ajax/admin/delete/approve/:page_id', functions.isPrivileged, function (req, res, next) {
+  app.get('/ajax/admin/delete/approve/:page_id', utils.isPrivileged, function (req, res, next) {
     var page_id = req.params.page_id
     var pagesdb = resources.collections.pages
 
@@ -351,7 +351,7 @@ module.exports = function (app, resources) {
     })
   })
 
-  app.get('/ajax/admin/delete/reject/:page_id', functions.isPrivileged, function (req, res, next) {
+  app.get('/ajax/admin/delete/reject/:page_id', utils.isPrivileged, function (req, res, next) {
     var page_id = req.params.page_id
     var pagesdb = resources.collections.pages
 
