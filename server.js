@@ -2,7 +2,7 @@
 var config = require('./src/config/config')
 process.env.NODE_ENV = (config.environment) ? config.environment : 'development'
 
-var functions = require('./src/lib/functions.js')
+var utils = require('./src/lib/utils.js')
 var image_processer = require('./src/lib/imageProcesser.js')
 var db = require('./src/lib/db')
 
@@ -44,7 +44,7 @@ if (cluster.isMaster) {
     var resources = {
       dbinstance: dbinstance,
       queries: db.queries,
-      functions: functions,
+      utils: utils,
       image_processer: image_processer,
       toobusy: toobusy,
       config: config,
