@@ -7,122 +7,177 @@
 
 var ObjectID = require('mongodb').ObjectID
 var getSlug = require('speakingurl')
+var Promise = require('promise')
 
 module.exports = function (app, resources) {
-  var functions = resources.functions
+  var utils = resources.utils
   /** /ajax/addVote
   * @type: GET
   * @description: Ajax route for handling user votes.
   */
-  app.get('/ajax/addVote', function (req, res) {
-    if(req.query.id != undefined && req.query.content != undefined) {
-     if (req.isAuthenticated()) {
-        var usersdb = resources.collections.users
-        var votesdb = resources.collections.votes
-        var pagesdb = resources.collections.pages
+  app.get('/ajax/addVote', utils.isAuthenticated, function (req, res) {
+    var user_id = req.user._id
+    var post_id, content
 
-        usersdb.find({ _id: new ObjectID(req.user._id), "info.blocked": false }).toArray(function(err, result) {
-          if(err) throw err
-          if(result.length > 0) {
-            //Proceed as normal
-            votesdb.count({ "post.id": new ObjectID(req.query.id), "user.id": req.user._id }, function(err, count) {
-              if(err) throw err
-              if(count < 1) { // Användaren har inte röstat
-                var isodate = resources.functions.getISOdate()
-                var data = {
-                  content: parseInt(req.query.content),
-                  timestamp: isodate,
-                  post: { id: new ObjectID(req.query.id) },
-                  user: { id: req.user._id }
-                }
+    //Verify that everything looks correct before doing any database operations
+    new Promise.all([
+      new Promise(function(resolve, reject) {
+        //Check that variables are set and valid
+        post_id = (req.query.id) ? new ObjectID(req.query.id) : false
+        content = (req.query.content) ? parseInt(req.query.content) : false
 
-                votesdb.insert(data, function (err) {
-                  if(err) throw err
-                  votesdb.aggregate(
-                  [ { $match: { "post.id": new ObjectID(req.query.id) } },
-                    { $group: {
-                      _id: new ObjectID(req.query.id),
-                      avg: { $avg: "$content" },
-                    }
-                  } ], function(err, result) {
-                    votesdb.count({ "post.id": new ObjectID(req.query.id) }, function (err, total_count) {
-                      result[0].count = total_count
-                      pagesdb.update({ "_id": new ObjectID(req.query.id) }, {$set: { "rating.votes_sum": result[0].avg}, $inc: { "rating.votes": 1 }}, function (err) {
-                        if(err) throw err
-                        res.send(result)
-                      })
-                    })
-                  })
-                })
-              } else { // Användaren har röstat
-                res.send('3') // Vote already found!
-              }
-            })
-          } else {
-            res.send('5') //User is blocked
-          }
-        })
-      } else {
-        res.send('1') // Not logged in
-      }
-    } else {
-      res.send('2') // All required variables not found in url
-    }
+        if(post_id && content) {
+          resolve()
+        } else {
+          reject()
+        }
+      }),
+      //Make sure user isn't blocked
+      resources.models.user.get({
+        _id: user_id,
+        'info.blocked': false
+      })
+      .then(function(users) {
+        if(users.length <= 0) {
+          //User is blocked, or id isn't correct or missing dependencies
+          throw new Error('blocked')
+        }
+      })
+    ])
+    //Handle vote
+    .then(function() {
+      return resources.models.vote.insertOrUpdate(post_id, user_id, content)
+    })
+    //So basically, the query above returns before
+    //the document has finished being written to the database
+    //A 100ms delay is added, because...
+    //This works for now, don't touch! //Tobias 2016-03-28
+    .then(function() {
+      return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+          resolve()
+        }, 100)
+      })
+    })
+    //Get the new average for the page
+    .then(function() {
+      return resources.models.vote.getAverage(post_id)
+    })
+    .then(function(result) {
+      //And set it to the page document
+      return resources.models.page.update({
+        _id: post_id
+      }, {
+        $set: {
+          'rating.votes_sum': result[0].avg,
+          'rating.votes': result[0].count
+        }
+      })
+      .then(function() {
+        return result
+      })
+    })
+    //Then notify the user of the new vote average
+    .then(function(result) {
+      res.json({
+        success: true,
+        data: {
+          average: result[0].avg,
+          count: result[0].count
+        }
+      })
+    })
+    .catch(function(err) {
+      //Handle error
+      console.log(req.route.path, err)
+      res.json({
+        success: false,
+        message:  err.message
+      })
+    })
   })
 
-  /** /ajax/like
+  /** /ajax/addLike
   * @type: GET
   * @description: Ajax route for handling user likes.
   */
-  app.get('/ajax/like', function (req, res) {
-    if(req.query.id != undefined) {
+  app.get('/ajax/addLike', utils.isAuthenticated, function (req, res) {
+    var user_id = req.user._id
+    var post_id
 
-      if (req.isAuthenticated()) {
-        var likesdb = resources.collections.likes
-        likesdb.count({ "post.id": new ObjectID(req.query.id), "user.id": req.user._id }, function (err, count) {
-          if(count > 0) { // Already liked, remove it
-            likesdb.remove({ "post.id": new ObjectID(req.query.id), "user.id": req.user._id }, function (err) {
-              if (err) throw err
-            })
+    //Verify that everything looks correct before doing any database operations
+    new Promise.all([
+      new Promise(function(resolve, reject) {
+        //Check that variables are set and valid
+        post_id = (req.query.id) ? new ObjectID(req.query.id) : false
 
-            var pagesdb = resources.collections.pages
-            pagesdb.update({ "_id": new ObjectID(req.query.id) }, {$inc: { "rating.likes": -1, }}, function (err) {
-              if(err) throw err
-            })
-
-            likesdb.count({ "post.id": new ObjectID(req.query.id) }, function (err, sum) {
-              if (err) throw err
-              var response = { 'action':0, 'new_value':sum }
-              res.send(response)
-            })
-          } else { // First time pressing, add it
-            var data = {
-              post: { id: new ObjectID(req.query.id) },
-              user: { id: req.user._id }
+        if(post_id) {
+          resolve()
+        } else {
+          reject()
+        }
+      })
+    ])
+    .then(function() {
+      return resources.models.like.get({
+        'post.id': post_id,
+        'user.id': user_id
+      }, {
+        _id: 1 //We'll only use the _id field for a count anyway
+      })
+      .then(function(likes) {
+        if(likes.length > 0) {
+          //Previous like found for current page, delete it
+          return resources.models.like.remove({
+            _id: likes[0]._id
+          })
+        } else {
+          //No like found for current page
+          return resources.models.like.insert({
+            post: {
+              id: post_id },
+            user: {
+              id: user_id
             }
-
-            likesdb.insert(data, function (err) {
-              if (err) throw err
-            })
-
-            var pagesdb = resources.collections.pages
-            pagesdb.update({ "_id": new ObjectID(req.query.id) }, {$inc: { "rating.likes": 1, }}, function (err) {
-              if (err) throw err
-            })
-
-            likesdb.count({ "post.id": new ObjectID(req.query.id) }, function (err, sum) {
-              if (err) throw err
-              var response = { 'action':1, 'new_value':sum }
-              res.send(response)
-            })
+          })
+        }
+      })
+    })
+    //Either we added or deleted one like, recalculate total likes
+    .then(function() {
+      return resources.models.like.get({
+        'post.id': post_id
+      }, {
+        _id: 1 //We'll only use the _id field for a count anyway
+      })
+    })
+    //Then we update the associated page with the new likes number
+    .then(function(likes) {
+      return resources.models.page.update({
+        _id: post_id
+      }, {
+        $set: {
+          'rating.likes' : likes.length
+        }
+      })
+      //If we arrive here then everything was a success, so notify the user of the new likes count
+      .then(function() {
+        res.json({
+          success: true,
+          data: {
+            count: likes.length
           }
         })
-      } else {
-        res.redirect('/login/like')
-      }
-    } else {
-      res.send('2') // All variables isnt set
-    }
+      })
+    })
+    .catch(function(err) {
+      //Handle error
+      console.log(req.route.path, err)
+      res.json({
+        success: false,
+        message:  err.message
+      })
+    })
   })
 
   app.get('/ajax/remove/:post_id', function(req, res) {
@@ -143,14 +198,14 @@ module.exports = function (app, resources) {
           var pageQuery = {
             _id: new ObjectID(post_id)
           }
-          //TODO move this into functions.js
+          //TODO move this into utils.js
           var privileged = ['admin','moderator']
           if( privileged.indexOf(user.info.permission) == -1 ) {
             //Lacking privileges, check that the user is the creator of the page
             pageQuery["user_info.id"] = new ObjectID(user._id)
           }
 
-          pagesdb.update( pageQuery, { $set: { delete: true, "timestamp.updated": functions.getISOdate() } }, function(err, status) {
+          pagesdb.update( pageQuery, { $set: { delete: true, "timestamp.updated": utils.getISOdate() } }, function(err, status) {
             if (err) throw err
             if(status.result.n > 0) {
               res.json({
@@ -176,7 +231,7 @@ module.exports = function (app, resources) {
 
   app.get('/ajax/validate/title', function(req, res) {
     var title = req.query.title
-    var slug = functions.replaceDiacritics(title)
+    var slug = utils.replaceDiacritics(title)
     var niceurl = getSlug(slug, {
       // URL Settings
       separator: '-',
