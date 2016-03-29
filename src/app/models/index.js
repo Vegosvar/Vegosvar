@@ -7,13 +7,19 @@
 
 var Promise = require('promise')
 var ObjectID = require('mongodb').ObjectID
+var extend = require('util')._extend
 
 module.exports = function(resources) {
 
-  return models = {
-    admin: require('./admin')(resources),
-    page: require('./page')(resources),
-    user: require('./user')(resources)
-  }
+  var models = {}
 
-} 
+  models.admin = require('./admin')(resources, models)
+  models.user = require('./user')(resources, models)
+  models.revision = require('./revision')(resources, models)
+  models.page = require('./page')(resources, models)
+  models.like = require('./like')(resources, models)
+  models.vote = require('./vote')(resources, models)
+
+  return models
+
+}
