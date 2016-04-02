@@ -14,7 +14,9 @@ $(window).load(function () {
 })
 
 $(document).ready(function () {
-  FastClick.attach(document.body) //Attach FastClick
+  if(typeof(FastClick) !== 'undefined') {
+    FastClick.attach(document.body) //Attach FastClick
+  }
 
   //Does this function even do anything?
   $('.btn-file :file').on('fileselect', function (event, numFiles, label) {
