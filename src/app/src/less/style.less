@@ -1210,6 +1210,18 @@ article {
 		}
 		.list-group {
 			margin-bottom: 0;
+			.list-group-item {
+				overflow: hidden;
+				.list-group-item-heading {
+					display: inline-block;
+					float: left;
+					margin: 0;
+				}
+				.list-group-item-text {
+					display: inline-block;
+					float: right;
+				}
+			}
 		}
 	}
 	.phone {
@@ -1628,6 +1640,12 @@ section {
   				display: none;
   			}
 		}
+		&.chosen {
+			border: 1px solid #FAB000;
+			opacity: 1;
+			padding: 3px 2px 2px 3px;
+			border-radius: 5px;
+		}
 		&:hover {
 			transform: scale(1.5);
 			color: #FAB000;
@@ -2030,7 +2048,7 @@ section {
 			margin-left: 4px;
 			box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.07);
 			&.showMyLocation .fa {
-				margin-right: 2px;
+				margin-right: 5px;
 			}
 			&.showFullscreen .glyphicon {
 				margin-right: 0;
@@ -2164,7 +2182,7 @@ section {
 		}
 		.infowindow-content {
 			font-size: 11px;
-			line-height: 1.4;
+			line-height: 1.3;
 		}
 	}
 }
