@@ -65,24 +65,6 @@ module.exports = {
         }
       })
     },
-    remove: function(collection, query) {
-      collection = (collection) ? collection : false
-      query = (query) ? query : false
-
-      return new Promise(function(resolve, reject) {
-        if(query) {
-          instance.collection(collection).remove(query, function(err, result) {
-            if(err) {
-              reject(err)
-            } else {
-              resolve(result)
-            }
-          })
-        } else {
-          reject(new Error('"collection" and "query" argument must be supplied'))
-        }
-      })
-    },
     get: function(collection, query, options, sort, limit) {
       collection = (collection) ? collection : false
       query = extend({}, query)
@@ -111,6 +93,24 @@ module.exports = {
       return new Promise(function(resolve, reject) {
         if(collection && query) {
           instance.collection(collection).insert(query, function(err, result) {
+            if(err) {
+              reject(err)
+            } else {
+              resolve(result)
+            }
+          })
+        } else {
+          reject(new Error('"collection" and "query" argument must be supplied'))
+        }
+      })
+    },
+    remove: function(collection, query) {
+      collection = (collection) ? collection : false
+      query = (query) ? query : false
+
+      return new Promise(function(resolve, reject) {
+        if(query) {
+          instance.collection(collection).remove(query, function(err, result) {
             if(err) {
               reject(err)
             } else {
