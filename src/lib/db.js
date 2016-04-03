@@ -15,6 +15,7 @@ module.exports = {
       instance.collection('pages').ensureIndex({
         'url': 'text',
         'title': 'text',
+        'slug': 'text',
         'post.city': 'text',
         'post.content': 'text',
         'post.food': 'text',
@@ -25,6 +26,7 @@ module.exports = {
           'weights': {
             'title': 20,
             'url': 18,
+            'slug': 15,
             'post.city': 15,
             'post.food': 10,
             'post.product_type': 10,
@@ -32,7 +34,8 @@ module.exports = {
             'post.veg_type': 3,
             'post.veg_offer': 1
         },
-        'default_language': 'swedish'
+        'default_language': 'sv',
+        'name': 'search_index'
       })
       callback(db)
     })
@@ -50,7 +53,7 @@ module.exports = {
 
       return new Promise(function(resolve, reject) {
         if(collection && query) {
-          instance.collection(collection).aggregate(query, function(err, result) {
+          instance.collection(collection).aggregate(query).toArray(function(err, result) {
             if (err) {
               reject(err)
             } else {
@@ -80,16 +83,16 @@ module.exports = {
         }
       })
     },
-    find: function(collection, query, fields, sort, limit) {
+    get: function(collection, query, options, sort, limit) {
       collection = (collection) ? collection : false
       query = extend({}, query)
-      fields = extend({}, fields)
+      options = extend({}, options)
       sort = extend({}, sort)
       limit = (limit) ? limit : 0
 
       return new Promise(function(resolve, reject) {
         if(collection) {
-          instance.collection(collection).find(query, fields).sort(sort).limit(limit).toArray(function(err, result) {
+          instance.collection(collection).find(query, options).sort(sort).limit(limit).toArray(function(err, result) {
             if (err) {
               reject(err)
             } else {
