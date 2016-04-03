@@ -22,7 +22,7 @@ $(window).load(function () {
         $(container).children('.star').removeClass('active')
 
         //Show the new vote count
-        $(container).find('.votes').html(result.data.count)
+        $(container).find('.votes').html('&nbsp;' + result.data.count)
 
         //Set the state to the stars again based on the new average
         var average = new Array(parseInt(result.data.average))
@@ -92,7 +92,7 @@ $(window).load(function () {
         }
 
         //Show the new like count
-        $(element).find('.count').html(result.data.count)
+        $(element).find('.count').html('&nbsp;' + result.data.count)
       } else {
         var error = ('message' in result) ? result.message : 'Malformed data received from server'
         throw new Error(error)
