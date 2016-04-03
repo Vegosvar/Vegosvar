@@ -207,11 +207,13 @@
                                         Populärt recept
                                     </div>
                                     <a href="<%= recipes[i].url %>">
-                                    <% if (typeof recipes[i].post.cover !== 'undefined' && recipes[i].post.cover.filename !== null) { %>
-                                        <img alt="" src="/uploads/<%= recipes[i].post.cover.filename %>.jpg">
-                                    <% } else { %>
-                                        <img alt="" src="/assets/images/placeholder-2.svg">
-                                    <% } %>
+                                    <% if ('cover' in recipes[i].post) {
+                                        if (typeof recipes[i].post.cover !== 'undefined' && recipes[i].post.cover.filename !== null) { %>
+                                            <img alt="" src="/uploads/<%= recipes[i].post.cover.filename %>.jpg">
+                                        <% } else { %>
+                                            <img alt="" src="/assets/images/placeholder-2.svg">
+                                        <% }
+                                    } %>
                                     </a>
                                     <div class="title">
                                         
