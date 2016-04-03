@@ -408,8 +408,12 @@
         }, options)
 
         $.ajax(settings)
-        .done(function (data) {
-          callback(data)
+        .done(function (result) {
+          if(result.success) {
+            callback(result.data)
+          } else {
+            //TODO, handle error
+          }
         })
       },
       toggleFullscreen: function () {
