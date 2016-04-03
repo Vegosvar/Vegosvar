@@ -13,7 +13,7 @@ var striptags = require('striptags')
 module.exports = function(resources, models) {
   return pageModel = {
     aggregate: function(query) {
-      return resources.query.aggregate('pages', query)
+      return resources.queries.aggregate('pages', query)
     },
     get: function(query, fields, sort, limit) {
       return resources.queries.find('pages', query, fields, sort, limit)
@@ -79,8 +79,7 @@ module.exports = function(resources, models) {
       )
     },
     newRecipes: function() {
-      return resources.queries.find('pages',
-        {
+      return resources.queries.find('pages', {
           accepted: true, //Only published
           type: '2', //Only recipe type
         },
@@ -114,6 +113,12 @@ module.exports = function(resources, models) {
         }))
       })
     },
+    delete: function(page_id) {
+      return resources.queries.update('pages', query, {
+        delete: true,
+        'timestamp.updated': resources.utils.getISOdate()
+      })
+    },
     nearbyEstablishments: function(page) {
       return resources.queries.find('pages',
         {
@@ -141,7 +146,243 @@ module.exports = function(resources, models) {
         }, //Sort descendingly, a.k.a. newest first
         10 //Limit to 10 pages
       )
+    },
+    getMapResults: function(filter) {
+      /* TODO:
+        If this filters object can be reused somehow we should modularize it
+        and put the logic to determine which filter is used somewhere else
+      */
+
+      var query = {
+        accepted: true, //Only published pages
+        $or: [
+          { type: '3' }, //Only pages that are places
+          { type: '5' },
+          { type: '6' }
+        ]
+      }
+
+      if(filter !== undefined) { //A filter is used
+        var filters = {
+          id: function(id) {
+            return {
+              _id: new ObjectID(id)
+            }
+          },
+          ids: function(ids) {
+            var objIds = ids.map(function(id) {
+              return new ObjectID(id)
+            })
+
+            return {
+              _id: {
+                $in: objIds
+              }
+            }
+          },
+          city: function(city) {
+            return {
+              'post.city': String(city).toLowerCase()
+            }
+          },
+          type: function(type) {
+            return {
+              type: String(type)
+            }
+          },
+          ignore: function(id) {
+            return {
+              _id: {
+                $ne: new ObjectID(id)
+              }
+            }
+          }
+        }
+
+        for(var key in filter) {
+          if(key in filters) {
+            query = filters[key](filter[key])
+          }
+        }
+      }
+
+      return models.page.get(query)
+      .then(function(pages) {
+        return pages.filter(function(page) {
+          if('post' in page) {
+            if('content' in page.post) {
+              page.post.content = striptags(page.post.content, ['br', 'p'])
+              return page
+            }
+          }
+        })
+      })
+    },
+    getSearchResults: function(queryString) {
+      //No valid word characters, quit early
+      if(queryString.match(/\w/gi) === null ) {
+        throw new Error('No valid characters in query')
+      }
+
+      //This is the base query object
+      var searchObj = {
+        query: {
+          $match: {
+            'accepted': true //Only published pages
+          }
+        },
+        searchString: queryString.toLowerCase()
+      }
+
+      //First, build initial query object based on search string
+      return models.page.getPreQueryFilter(searchObj)
+      .then(function(searchObj) {
+        //Perform a search using the query
+        if(searchObj.searchString.length > 0) {
+          var query = []
+
+          var searchQuery = {
+            $match: extend({
+              $text: {
+                $diacriticSensitive: true,
+                $search: searchObj.searchString
+              }
+            }, searchObj.query.$match)
+          }
+
+          query.push(searchQuery)
+
+          var sortQuery = {
+            $sort: {
+              score: {
+                $meta: 'textScore'
+              }
+            }
+          }
+
+          query.push(sortQuery)
+
+          var projectQuery = {
+            $project: {
+              "score": {
+                  $meta: 'textScore'
+              },
+              "title": "$title",
+              "url": "$url",
+              "slug": "$slug",
+              "type": "$type",
+              "post": "$post",
+              "user_info": "$user_info",
+              "rating": "$rating",
+              "timestamp": "$timestamp"
+            }
+          }
+
+          query.push(projectQuery)
+
+          console.log('1', query)
+
+          return resources.models.page.aggregate(query)
+        } else {
+          console.log('2', searchObj.query)
+          return resources.models.page.aggregate([searchObj.query])
+        }
+      })
+      .then(function(result) {
+        result = result.map(function(page) {
+          //TODO: Also sort after views
+          page.score = 0
+
+          if (typeof(page.rating) !== 'undefined') {
+            if(typeof(page.rating.likes) !== 'undefined') {
+              page.score += parseInt(page.rating.likes)
+            }
+
+            if(typeof(page.rating.votes) !== 'undefined' && typeof(page.rating.votes_sum) !== 'undefined') {
+              page.score += ( parseInt(page.rating.votes_sum) * parseInt(page.rating.votes) / 10 )
+            }
+          }
+
+          return page
+        })
+
+        result.sort(function(a, b) {
+          return (b.score - a.score)
+        })
+
+        return result
+      })
+    },
+    getPreQueryFilter: function(searchObj) {
+      //Build an array of the search string to handle the db querying more easily
+      var stringArray = searchObj.searchString.split(' ')
+
+      //Check if string matches a page type
+      stringArray = stringArray.filter(function(string) { 
+        if(resources.utils.isPageType(string) !== false) {
+          //Restrict page type to the one matching current string
+          searchObj.query.$match['type'] = resources.utils.typeNumberFromName(string)
+          searchObj.searchString = resources.utils.removePatterFromString(searchObj.searchString, string)
+        } else {
+          return string
+        }
+      })
+
+      return new Promise.all([
+        //Check if any words match a city
+        models.city.get({
+          name: {
+            $in: stringArray
+          }
+        })
+        .then(function(result) {
+          if(result.length > 0) {
+            var city = result[0].name
+
+            //Restrict results to the matched city
+            searchObj.query.$match['post.city'] = {
+              '$regex': city, //Search only this city
+              '$options': '-i'
+            }
+            //Remove matched city from the search string
+            searchObj.searchString = resources.utils.removePatterFromString(searchObj.searchString, city)
+          }
+        }),
+        //Check if any words match a category
+        models.category.get({
+          name: {
+            $in: stringArray
+          }
+        })
+        .then(function(result) {
+          if(result.length > 0) {
+            switch (result[0].type) {
+              case '1':
+                break
+              case '2':
+                break
+              case '3':
+                break
+              case '4':
+                if( ( ! ('type' in searchObj.query.$match) || searchObj.query.$match.type === '4' ) ) {
+                  var type = result[0].name
+                  //Restrict results to the matched product type
+                  searchObj.query.$match['post.product_type'] = type
+                  //Remove matched text from the search string
+                  searchObj.searchString = resources.utils.removePatterFromString(searchObj.searchString, type)
+                }
+                break
+              case '5':
+                break
+              case '6':
+                break
+            }
+          }
+        })
+      ])
+      .then(function() {
+        return searchObj
+      })
     }
   }
-
 }
