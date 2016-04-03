@@ -28,19 +28,6 @@ module.exports = function (app, resources) {
     res.render('deregister', renderObj)
   })
 
-  //TODO, move this to authenticated ajax routes
-  app.get('/installningar/ta-bort/submit', utils.isAuthenticated, function (req, res, next) {
-    if(req.isAuthenticated()) {
-      var usersdb = resources.collections.users
-      usersdb.remove({ "_id": new ObjectID(req.user._id) }, function(err, result) {
-        if (err) throw err
-        res.send('1')
-      })
-    } else {
-      res.send('0')
-    }
-  })
-
   //TODO, move this to post.js routes
   app.post('/installningar/submit', utils.isAuthenticated, urlencodedParser, function (req, res, next) {
     //TODO, should really do some sanitization here 
