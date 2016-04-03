@@ -109,6 +109,10 @@ module.exports = function (app, resources) {
     res.render('about', { user: req.user })
   })
 
+  app.get('/profil', function(req, res) {
+    res.render('profile', { user: req.user })
+  })
+
   app.get('/licens', function(req, res) {
     res.render('license', { user: req.user })
   })
