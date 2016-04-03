@@ -19,6 +19,8 @@ module.exports = function(resources) {
   models.page = require('./page')(resources, models)
   models.like = require('./like')(resources, models)
   models.vote = require('./vote')(resources, models)
+  models.category = require('./category')(resources, models)
+  models.city = require('./city')(resources, models)
 
   return models
 
