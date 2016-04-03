@@ -14,6 +14,9 @@ module.exports = function(resources, models) {
     get: function(query) {
       return resources.queries.find('users', query)
     },
+    remove: function(query) {
+      return resources.queries.remove('users', query)
+    },
     isBlocked: function(user_id) {
       return resources.queries.find('users', {
         _id: new ObjectID(user_id),
@@ -24,6 +27,61 @@ module.exports = function(resources, models) {
           return false //User checks out, continue
         } else {
           return true
+        }
+      })
+    },
+    isPrivileged: function(user_id) {
+      return models.user.get({
+        _id: user_id
+      })
+      .then(function(users) {
+        if(users.length > 0) {
+          //TODO, move this into utils instead
+          var privileged = ['admin','moderator']
+
+          return (privileged.indexOf(user.info.permission) !== -1)
+        } else {
+          return false
+        }
+      })
+    },
+    block: function(user_id) {
+      var user_id = new ObjectID(user_id)
+
+      return resources.queries.update('users', {
+        _id : new ObjectID(user_id)
+      }, {
+        $set: {
+          'info.blocked': true,
+        }
+      })
+      .then(function(result) {
+        if(result.result.nMatched > 0) {
+          return {
+            updated: result.result.nUpdated
+          }
+        } else {
+          throw new Error('User not found with id ' + user_id)
+        }
+      })
+    },
+    unblock: function(user_id) {
+      var user_id = new ObjectID(user_id)
+
+      return resources.queries.update('users', {
+        _id : new ObjectID(user_id)
+      }, {
+        $set: {
+          'info.blocked': true,
+        }
+      })
+      .then(function(result) {
+        if(result.result.nMatched > 0) {
+          return {
+            updated: result.result.nUpdated
+          }
+        } else {
+          throw new Error('User not found with id ' + user_id)
         }
       })
     },
