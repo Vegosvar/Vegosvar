@@ -207,7 +207,7 @@
                                         Populärt recept
                                     </div>
                                     <a href="<%= recipes[i].url %>">
-                                    <% if ('cover' in recipes[i].post) {
+                                    <% if ('post' in recipes[i] && 'cover' in recipes[i].post) {
                                         if (typeof recipes[i].post.cover !== 'undefined' && recipes[i].post.cover.filename !== null) { %>
                                             <img alt="" src="/uploads/<%= recipes[i].post.cover.filename %>.jpg">
                                         <% } else { %>
@@ -221,28 +221,31 @@
                                             <h3><%= recipes[i].title %></h3>
                                         </a>
 
-                                        <% if (typeof recipes[i].user_info.hidden !== true && 'display_name' in recipes[i].user_info) { %>
-                                        <% if (typeof recipes[i].user_info.active_photo === 'undefined') {
-                                                var avatar_url = '/assets/images/no-picture.svg'
-                                            } else {
-                                                if(recipes[i].user_info.active_photo === 'vegosvar') {
-                                                    var avatar_url = recipes[i].user_info.vegosvar_photo
-                                                } else if (recipes[i].user_info.active_photo === 'facebook') {
-                                                    var avatar_url = recipes[i].user_info.fb_photo
-                                                } else {
+                                        <% if ('user_info' in typeof(recipes[i]) ) {
+
+                                            <% if (typeof recipes[i].user_info.hidden !== true && 'display_name' in recipes[i].user_info) { %>
+                                            <% if (typeof recipes[i].user_info.active_photo === 'undefined') {
                                                     var avatar_url = '/assets/images/no-picture.svg'
-                                                }
-                                            } %>
-                                            <img src="<%= avatar_url %>" class="avatar">
-                                            <span class="credit">
-                                                Recept av <%= recipes[i].user_info.display_name %>
-                                            </span>
-                                        <% } else { %>
-                                            <img src="/assets/images/no-picture.svg" class="avatar">
-                                            <span class="credit">
-                                                Recept av Anonym
-                                            </span>
-                                        <% } %>
+                                                } else {
+                                                    if(recipes[i].user_info.active_photo === 'vegosvar') {
+                                                        var avatar_url = recipes[i].user_info.vegosvar_photo
+                                                    } else if (recipes[i].user_info.active_photo === 'facebook') {
+                                                        var avatar_url = recipes[i].user_info.fb_photo
+                                                    } else {
+                                                        var avatar_url = '/assets/images/no-picture.svg'
+                                                    }
+                                                } %>
+                                                <img src="<%= avatar_url %>" class="avatar">
+                                                <span class="credit">
+                                                    Recept av <%= recipes[i].user_info.display_name %>
+                                                </span>
+                                            <% } else { %>
+                                                <img src="/assets/images/no-picture.svg" class="avatar">
+                                                <span class="credit">
+                                                    Recept av Anonym
+                                                </span>
+                                            <% }
+                                        } %>
                                     </div>
                                 </a>
                             </div>
