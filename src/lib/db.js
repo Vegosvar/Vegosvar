@@ -65,7 +65,7 @@ module.exports = {
         }
       })
     },
-    get: function(collection, query, options, sort, limit) {
+    find: function(collection, query, options, sort, limit) {
       collection = (collection) ? collection : false
       query = extend({}, query)
       options = extend({}, options)
