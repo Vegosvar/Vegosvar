@@ -72,6 +72,10 @@ module.exports = function (app, resources) {
     res.render('license', renderObj)
   })
 
+  app.get('/profil', function(req, res) {
+    res.render('profile', { user: req.user })
+  })
+
   app.get('/riktlinjer', function (req, res, next) {
     var renderObj = extend({
       hidelink: true

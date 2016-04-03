@@ -22,7 +22,12 @@
 @sm:					991px;
 @md:					1199px;
 
-
+.text-pink {
+	color: @pink;
+}
+.text-red {
+	color: @red;
+}
 
 
 // Template
@@ -55,7 +60,7 @@ a {
 	}
 }
 
-h1 {
+h1, .h1 {
 	margin-top: 0;
 	color: #333;
 	font-weight: 700;
@@ -1286,7 +1291,7 @@ article {
 			text-align: center;
 			margin-bottom: -30px;
 			margin-top: 10px;
-			padding: 5px 0;
+			padding: 10px 0;
 			background: #222;
 		}
 	}
@@ -1425,6 +1430,31 @@ section {
 	}
 }
 
+.profileHeader {
+	background: #333; 
+	height: 250px;
+	background-size: cover;
+	background-position: center center;
+	@media (max-width: @xs) {
+		height: 150px;
+	}
+}
+
+#profile {
+	margin-top: -250px;
+	@media (max-width: @xs) {
+		margin-top: 0;
+	}
+	.userStats {
+		overflow: hidden;
+		opacity: 0.4;
+		margin-bottom: 10px;
+		.stat {
+			float: left;
+			margin-right: 15px;
+		}
+	}
+}
 
 #heroSearch {
 	background-color: @brand-color;
@@ -2647,11 +2677,4 @@ section {
 			}
 		}
 	}
-}
-
-
-// Misc
-
-.glyphicon.glyphicon-star-empty {
-	opacity: 0.3;
 }
