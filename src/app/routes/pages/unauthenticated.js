@@ -266,7 +266,7 @@ module.exports = function (app, resources) {
       res.render('page', renderObj)
     })
     .catch(function (err) {
-      console.log('/:url', err)
+      console.log(req.route.path, err)
       return next() // 404
     })
   })
