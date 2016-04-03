@@ -273,7 +273,7 @@ module.exports = function(resources, models) {
     },
     getPagesByMonth: function() {
         //New pages submitted this month
-      return model.page.aggregate([{
+      return models.page.aggregate([{
           $group: {
             _id: {
               id: '$_id', type: '$type', date: '$timestamp.created'
