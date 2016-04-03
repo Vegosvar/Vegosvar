@@ -18,8 +18,10 @@
           s: searchTerm
         }
       })
-      .done(function (data, error) {
-        $.fn.vegosvar.search.settings.results = data
+      .done(function (result) {
+        if (result.success) {
+          $.fn.vegosvar.search.settings.results = result.data
+        }
       })
       .always(function () {
         $('#searchForm-btn-default').html(
@@ -524,6 +526,16 @@
           $('<h3>').text(entry.title)
         )
       },
+      city: function (entry) {
+        if (typeof(entry.post.city) !== 'undefined') {
+          return $('<a>', {
+            href: '/?s=' + entry.post.city
+          })
+          .append(
+            $('<h4>').text(entry.post.city)
+          )
+        }
+      },
       description: function (entry) {
         var description = $('<p>')
 
@@ -568,9 +580,11 @@
           }
         }
 
+        var content = (entry.post.content.length > 115) ? entry.post.content.substring(0, 115) + '...' : entry.post.content
+
         $(description).append(
           $('<span>')
-          .html(entry.post.content.substring(0, 115) + '...')
+          .html(content)
         )
 
         return description
@@ -625,7 +639,6 @@
             .attr('data-id', entry._id)
             .append(
               $('<span>', {
-                id: 'heart-glyphicon',
                 class: 'glyphicon glyphicon-heart'
               }),
               $('<span>', {
@@ -661,6 +674,7 @@
               })
               .append(
                 $.fn.vegosvar.search.results.title(entry),
+                $.fn.vegosvar.search.results.city(entry),
                 $.fn.vegosvar.search.results.description(entry),
                 $.fn.vegosvar.search.results.rating(entry),
                 $('<div>', {
