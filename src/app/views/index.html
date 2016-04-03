@@ -223,8 +223,8 @@
 
                                         <% if ('user_info' in typeof(recipes[i]) ) {
 
-                                            <% if (typeof recipes[i].user_info.hidden !== true && 'display_name' in recipes[i].user_info) { %>
-                                            <% if (typeof recipes[i].user_info.active_photo === 'undefined') {
+                                            if (typeof recipes[i].user_info.hidden !== true && 'display_name' in recipes[i].user_info) {
+                                            if (typeof recipes[i].user_info.active_photo === 'undefined') {
                                                     var avatar_url = '/assets/images/no-picture.svg'
                                                 } else {
                                                     if(recipes[i].user_info.active_photo === 'vegosvar') {
