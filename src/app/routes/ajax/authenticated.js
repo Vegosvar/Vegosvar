@@ -11,6 +11,31 @@ var Promise = require('promise')
 
 module.exports = function (app, resources) {
   var utils = resources.utils
+
+  app.get('/installningar/ta-bort/submit', utils.isAuthenticated, function (req, res, next) {
+    resources.models.user.remove({
+      _id: new ObjectID(req.user._id)
+    })
+    .then(function(result) {
+      //Handle result
+
+      //Notify user
+      res.json({
+        success: true
+      })
+    })
+    .catch(function(err) {
+      //Handle errors
+      console.log(req.route.path, err)
+
+      //Notify user
+      res.json({
+        success: false,
+        message: err.message
+      })
+    })
+  })
+
   /** /ajax/addVote
   * @type: GET
   * @description: Ajax route for handling user votes.
@@ -64,6 +89,7 @@ module.exports = function (app, resources) {
       return resources.models.vote.getAverage(post_id)
     })
     .then(function(result) {
+      console.log(result)
       //And set it to the page document
       return resources.models.page.update({
         _id: post_id
@@ -180,58 +206,57 @@ module.exports = function (app, resources) {
     })
   })
 
-  app.get('/ajax/remove/:post_id', function(req, res) {
-    var post_id = req.params.post_id
-    var userid = req.user._id
+  app.get('/ajax/remove/:page_id', utils.isAuthenticated, function(req, res) {
+    var page_id = new ObjectID(req.params.page_id)
+    var userid = new ObjectID(req.user._id)
 
-    var pagesdb = resources.collections.pages
-    var usersdb = resources.collections.users
+    resources.models.user.isBlocked(user_id)
+    .then(function(blocked) {
+      if(blocked) {
+        throw new Error('User ' + user_id + ' is blocked')
+      }
 
-    if(typeof(req.user) !== 'undefined') {
-      //Make sure user exists
-      usersdb.find({_id: new ObjectID(userid)}).toArray(function(err, users) {
-        if (err) throw err
+      var query = {
+        _id: page_id
+      }
 
-        if(users.length > 0) {
-          var user = users[0]
-
-          var pageQuery = {
-            _id: new ObjectID(post_id)
-          }
-          //TODO move this into utils.js
-          var privileged = ['admin','moderator']
-          if( privileged.indexOf(user.info.permission) == -1 ) {
-            //Lacking privileges, check that the user is the creator of the page
-            pageQuery["user_info.id"] = new ObjectID(user._id)
-          }
-
-          pagesdb.update( pageQuery, { $set: { delete: true, "timestamp.updated": utils.getISOdate() } }, function(err, status) {
-            if (err) throw err
-            if(status.result.n > 0) {
-              res.json({
-                success: status.result.nModified,
-                message: (status.result.nModified) ? 'Page has already been scheduled for deletion' : 'Page has been scheduled for deletion'
-              })
-            } else {
-              res.json({
-                success: false,
-                message: 'No page in database matched'
-              })
-            }
-          })
-        } else {
-          res.json({
-            success: false,
-            message: 'Unable to locate user in database'
-          })
+      return resources.models.user.isPrivileged(user_id)
+      .then(function(privileged) {
+        if(!privileged) {
+          //Lacking privileges, check that the user is the creator of the page
+          query['user_info.id'] = user_id
         }
+
+        return resources.models.page.delete(query)
+        .then(function(result) {
+          if(result.result.nMatched > 0) {
+            return {
+              updated: result.result.nUpdated
+            }
+          } else {
+            throw new Error('No page was matched in remove request query')
+          }
+        })
       })
-    }
+    })
+    .then(function(result) {
+      res.json({
+        success: true,
+        data: result
+      })
+    })
+    .catch(function(err) {
+      //Handle error
+      console.log(req.route.path, err)
+      res.json({
+        success: false,
+        message:  err.message
+      })
+    })
   })
 
-  app.get('/ajax/validate/title', function(req, res) {
-    var title = req.query.title
-    var slug = utils.replaceDiacritics(title)
+  app.get('/ajax/validate/title/:title', utils.isAuthenticated, function(req, res) {
+    var slug = utils.replaceDiacritics(req.params.title)
     var niceurl = getSlug(slug, {
       // URL Settings
       separator: '-',
@@ -239,23 +264,28 @@ module.exports = function (app, resources) {
       symbols: false
     })
 
-    var pagesdb = resources.collections.pages
-    pagesdb.count({ url: niceurl }, function (err, sum) {
-      if (err) {
-        res.json({
-          success: false
-        })
-      }
-
+    resources.models.page.get({
+      url: niceurl,
+    })
+    .then(function(result) {
       res.json({
         success: true,
-        available: (sum > 0) ? false : true,
-        url: niceurl
+        data: {
+          available: (result.length === 0),
+          url: niceurl
+        }
+      })
+    })
+    .catch(function(err) {
+      res.json({
+        success: false,
+        message: err.message
       })
     })
   })
 
-  app.get('/ajax/chains', function(req, res) {
+  app.get('/ajax/chains/:type', function(req, res) {
+    /*
     var type = ('type' in req.query && typeof(req.query.type) !== 'undefined') ? req.query.type : false
     var chainsdb = resources.collections.chains
 
@@ -271,5 +301,6 @@ module.exports = function (app, resources) {
         data: chains
       })
     })
+    */
   })
 }

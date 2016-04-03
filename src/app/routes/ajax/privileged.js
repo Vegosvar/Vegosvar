@@ -14,242 +14,106 @@ module.exports = function (app, resources) {
   * @description: Ajax admin route for loading user info.
   */
   app.get('/ajax/admin/user/:user_id', utils.isPrivileged, function (req, res) {
-    var usersdb = resources.collections.users
     var user_id = req.params.user_id
-
-    usersdb.find({_id : new ObjectID(user_id)}).toArray(function(err, user) {
-      if(err) throw err
-      res.send(user[0])
+    resources.models.user.get({
+      _id : new ObjectID(user_id)
+    })
+    .then(function(result) {
+      if(result.length > 0) {
+        res.json({
+          success: true,
+          data: result[0]
+        })
+      } else {
+        throw new Error('User not found with id ' + user_id)
+      }
+    })
+    .catch(function(err) {
+      console.log(err)
+      res.json({
+        success: false,
+        message: err.message
+      })
     })
   })
 
   app.get('/ajax/admin/block/:user_id', utils.isPrivileged, function (req, res) {
-    var usersdb = resources.collections.users
-    var user_id = req.params.user_id
-
-    usersdb.update({
-        _id : new ObjectID(user_id)
-      }, {
-        $set: {
-         "info.blocked": true,
-       }
-      }, function(err, status) {
-        if(err) throw err
-        res.json(status)
-      }
-    )
+    resources.models.user.block(user_id)
+    .then(function(result) {
+      res.json({
+        success: true,
+        data: result
+      })
+    })
+    .catch(function(err) {
+      console.log(err)
+      res.json({
+        success: false,
+        message: err.message
+      })
+    })
   })
 
   app.get('/ajax/admin/unblock/:user_id', utils.isPrivileged, function (req, res) {
-    var usersdb = resources.collections.users
     var user_id = req.params.user_id
 
-    usersdb.update({
-        _id : new ObjectID(user_id)
-      }, {
-        $set: {
-         "info.blocked": false,
-       }
-      }, function(err, status) {
-        if(err) throw err
-        res.json(status)
-      }
-    )
+    resources.models.user.unblock(user_id)
+    .then(function(result) {
+      res.json({
+        success: true,
+        data: result
+      })
+    })
+    .catch(function(err) {
+      console.log(err)
+      res.json({
+        success: false,
+        message: err.message
+      })
+    })
   })
 
   app.get('/ajax/admin/revision/apply/:page_id/:revision_number', utils.isPrivileged, function (req, res, next) {
-    var pagesdb = resources.collections.pages
-    var revisionsdb = resources.collections.revisions
-
     var page_id = req.params.page_id
     var revision_number = req.params.revision_number
 
-    revisionsdb.find({ post_id: new ObjectID(page_id)}).toArray(function(err, docs) {
-      if(err) {
-        res.json({
-          success:false,
-          post: page_id,
-          message: 'Could not find an entry for the page\'s revisions in the database'
-        })
-      }
-
-      var doc = docs[0]
-      var revisions = doc.revisions
-      if(revision_number in revisions) {
-        
-        //If this has not been moderated before, decrease the number of revisions pending revision
-        var pending = (revisions[revision_number].meta.accepted === null) ? (doc.pending -1) : doc.pending
-
-        var data = {
-          pending: pending,
-          revision: revision_number,
-          revisions: revisions
+    resources.models.revision.accept(page_id, revision_number)
+    .then(function(updated) {
+      res.json({
+        success: true,
+        data: {
+          updated: updated
         }
-
-        data.revisions[revision_number].meta.accepted = true
-
-        revisionsdb.findAndModify({
-            post_id: new ObjectID(page_id)
-          },
-          ['_id','asc'], // sort order
-          {
-            $set: data
-          }, {
-            new: true,
-            upsert: true
-          },
-          function (err, result) {
-            if(err) {
-              res.json({
-                success: false,
-                post: page_id,
-                message:'Failed to update the page\'s revision'
-              })
-            }
-
-            var new_post = data.revisions[revision_number]
-            var contributors = (new_post['meta'].user_info instanceof Array) ? new_post['meta'].user_info : [new_post['meta'].user_info]
-            delete(new_post['meta'])
-
-            var isodate = utils.newISOdate(new Date(revision_number * 1000))
-
-            pagesdb.findAndModify({
-                _id: new ObjectID(page_id)
-              },
-              ['_id','asc'], // sort order
-              {
-                $set: {
-                  post: new_post,
-                  accepted: true,
-                  "user_info.contributors": contributors,
-                  "timestamp.updated": isodate
-                }
-              }, {
-                new: true,
-                upsert: true
-              }, function (err, result) {
-                if(err) {
-                  res.json({
-                    success:false,
-                    post: page_id,
-                    message: 'Failed to update the page\'s content'
-                  })
-                }
-
-                res.json({
-                  success:true,
-                  post: page_id,
-                  message: 'Successfully updated page to approved revision'
-                })
-              }
-            )
-          }
-        )
-      } else {
-        res.json({
-          success:false,
-          post: page_id,
-          message:'Could not find a revision with supplied id among the page\'s revisions'
-        })
-      }
+      })
+    })
+    .catch(function(err) {
+      console.log(err)
+      res.json({
+        success: false,
+        message: err.message
+      })
     })
   })
 
   app.get('/ajax/admin/revision/deny/:page_id/:revision_number', utils.isPrivileged, function (req, res, next) {
-    var pagesdb = resources.collections.pages
-    var revisionsdb = resources.collections.revisions
-
-    var page_id = req.params.page_id
+    var page_id = new ObjectID(req.params.page_id)
     var revision_number = req.params.revision_number
 
-    revisionsdb.find({ post_id: new ObjectID(page_id)}).toArray(function(err, docs) {
-      if(err) {
-        res.json({
-          success:false,
-          post: page_id,
-          message: 'Could not find an entry for the page\'s revisions in the database'
-        })
-      }
-
-      var doc = docs[0]
-      var revisions = doc.revisions
-      if(revision_number in revisions) {
-        
-        //If this has not been moderated before, decrease the number of revisions pending revision
-        var pending = (revisions[revision_number].meta.accepted === null) ? (doc.pending -1) : doc.pending
-
-        var data = {
-          pending: pending,
-          revision: revision_number,
-          revisions: revisions
+    resources.models.revision.reject(page_id, revision_number)
+    .then(function(updated) {
+      res.json({
+        success: true,
+        data: {
+          updated: updated
         }
-
-        data.revisions[revision_number].meta.accepted = false
-
-        revisionsdb.findAndModify({
-            post_id: new ObjectID(page_id)
-          },
-          ['_id','asc'], // sort order
-          {
-            $set: data
-          }, {
-            new: true,
-            upsert: true
-          },
-          function (err, result) {
-            if(err) {
-              res.json({
-                success: false,
-                post: page_id,
-                message:'Failed to update the page\'s revision'
-              })
-            }
-
-            var new_post = data.revisions[revision_number]
-            var contributors = (new_post['meta'].user_info instanceof Array) ? new_post['meta'].user_info : [new_post['meta'].user_info]
-            delete(new_post['meta'])
-
-            var isodate = utils.newISOdate(new Date(revision_number * 1000))
-
-            pagesdb.findAndModify({
-                _id: new ObjectID(page_id)
-              },
-              ['_id','asc'], // sort order
-              {
-                $set: {
-                  post: new_post,
-                  accepted: false,
-                  "user_info.contributors": contributors,
-                  "timestamp.updated": isodate
-                }
-              }, {
-                new: true,
-                upsert: true
-              }, function (err, result) {
-                if(err) {
-                  res.json({
-                    success:false,
-                    post: page_id,
-                    message: 'Failed to update the page\'s content'
-                  })
-                }
-
-                res.json({
-                  success:true,
-                  post: page_id,
-                  message: 'Successfully denied page revision'
-                })
-              }
-            )
-          }
-        )
-      } else {
-        res.json({
-          success:false,
-          post: page_id,
-          message:'Could not find a revision with supplied id among the page\'s revisions'
-        })
-      }
+      })
+    })
+    .catch(function(err) {
+      console.log(err)
+      res.json({
+        success: false,
+        message: err.message
+      })
     })
   })
 
@@ -322,9 +186,8 @@ module.exports = function (app, resources) {
 
   app.get('/ajax/admin/delete/approve/:page_id', utils.isPrivileged, function (req, res, next) {
     var page_id = req.params.page_id
-    var pagesdb = resources.collections.pages
 
-    pagesdb.update({
+    resources.models.page.update({
       _id: new ObjectID(page_id)
     }, {
       $set: {
@@ -332,51 +195,42 @@ module.exports = function (app, resources) {
         accepted: false,
         removed: true
       }
-    }, function(err, result) {
-      if(err) {
-        res.json({
-          success: false
-        })
-      }
-
-      if(result.result.ok == true) {
-        res.json({
-          success: true
-        })
-      } else {
-        res.json({
-          success: false
-        })
-      }
+    })
+    .then(function(result) {
+      res.json({
+        success: true
+      })
+    })
+    .catch(function(err) {
+      console.log(err)
+      res.json({
+        success: false,
+        message: err.message
+      })
     })
   })
 
   app.get('/ajax/admin/delete/reject/:page_id', utils.isPrivileged, function (req, res, next) {
     var page_id = req.params.page_id
-    var pagesdb = resources.collections.pages
 
-    pagesdb.update({
+    resources.models.page.update({
       _id: new ObjectID(page_id)
     }, {
       $unset: {
         delete: ''
       }
-    }, function(err, result) {
-      if(err) {
-        res.json({
-          success: false
-        })
-      }
-
-      if(result.result.ok == true) {
-        res.json({
-          success: true
-        })
-      } else {
-        res.json({
-          success: false
-        })
-      }
+    })
+    .then(function(result) {
+      res.json({
+        success: true
+      })
+    })
+    .catch(function(err) {
+      console.log(err)
+      res.json({
+        success: false,
+        message: err.message
+      })
     })
   })
 }
