@@ -128,6 +128,10 @@ module.exports = {
       'cafe': '6'
     }
   },
+  isPageType: function(string) {
+    var pageTypes = module.exports.pageTypes()
+    return (string in pageTypes)
+  },
   typeNumberFromName: function(name) {
     //Get type name from number
     var pageTypes = module.exports.pageTypes()
@@ -145,5 +149,12 @@ module.exports = {
         return key
       }
     }
+  },
+  removePatterFromString: function(string, pattern) {
+    return string.split(' ').filter(function(text) {
+      if(text.match(pattern) === null) {
+        return text
+      }
+    }).join(' ').trim()
   }
 }
