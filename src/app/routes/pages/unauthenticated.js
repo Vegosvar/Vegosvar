@@ -59,7 +59,7 @@ module.exports = function (app, resources) {
           pagesdb.find({
             accepted: true,
             type: '2'
-          }).sort({_id:-1}).limit(3).toArray(function(err, recipes) {
+          }).sort({_id:-1}).limit(6).toArray(function(err, recipes) {
 
             var recipeUsers = []
             for (var i = recipes.length -1; i >= 0; i--) {
