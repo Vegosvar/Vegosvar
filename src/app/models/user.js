@@ -17,6 +17,9 @@ module.exports = function(resources, models) {
     remove: function(query) {
       return resources.queries.remove('users', query)
     },
+    update: function(query, update, options) {
+      return resources.queries.update('users', query, update, options)
+    },
     isBlocked: function(user_id) {
       return resources.queries.find('users', {
         _id: new ObjectID(user_id),
@@ -32,7 +35,7 @@ module.exports = function(resources, models) {
     },
     isPrivileged: function(user_id) {
       return models.user.get({
-        _id: user_id
+        _id: new ObjectID(user_id)
       })
       .then(function(users) {
         if(users.length > 0) {
@@ -49,16 +52,16 @@ module.exports = function(resources, models) {
       var user_id = new ObjectID(user_id)
 
       return resources.queries.update('users', {
-        _id : new ObjectID(user_id)
+        _id : user_id
       }, {
         $set: {
           'info.blocked': true,
         }
       })
       .then(function(result) {
-        if(result.result.nMatched > 0) {
+        if(result.result.n > 0) {
           return {
-            updated: result.result.nUpdated
+            modified: result.result.nModified
           }
         } else {
           throw new Error('User not found with id ' + user_id)
@@ -69,16 +72,16 @@ module.exports = function(resources, models) {
       var user_id = new ObjectID(user_id)
 
       return resources.queries.update('users', {
-        _id : new ObjectID(user_id)
+        _id : user_id
       }, {
         $set: {
-          'info.blocked': true,
+          'info.blocked': false,
         }
       })
       .then(function(result) {
-        if(result.result.nMatched > 0) {
+        if(result.result.n > 0) {
           return {
-            updated: result.result.nUpdated
+            modified: result.result.nModified
           }
         } else {
           throw new Error('User not found with id ' + user_id)
