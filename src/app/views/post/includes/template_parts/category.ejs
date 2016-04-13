@@ -1,21 +1,37 @@
 <h2>Typ av produkt</h2>
 <div class="row">
     <% if(typeof(categories) !== 'undefined') {
-        for(var key in categories) {
-            var category = categories[key] %>
-            <div class="col-xs-12 col-sm-3">
-                <h3 style="text-transform:capitalize"><%= category._id %></h3>
-                <% for(i=0;i<category.names.length;i++) {
-                    var isChecked = (typeof(post) !== 'undefined') ? ( (post.post.product_type == category.names[i].name) ? 'checked=checked' : '' ) : (category.names[i].name == 'annat') ? 'checked=checked' : ''
-                    %>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="product_type" value="<%= category.names[i].name %>" <%= isChecked %> />
-                            <span class="product_name" style="text-transform:capitalize"><%= category.names[i].name %></span>
-                        </label>
-                    </div>
-                <% } %>
-            </div>
-        <% }
+        console.log('hello')
+        var categoryObj = {}
+        for (var i = categories.length - 1; i >= 0; i--) {
+            var category = categories[i]
+            var categoryClass = category.subcategory
+
+            if(categoryClass in categoryObj) {
+                categoryObj[categoryClass].push(category.name)
+            } else {
+                categoryObj[categoryClass] = [category.name]
+            }
+        }
+
+        console.log(Object.keys(categoryObj))
+        var categoryKeys = Object.keys(categoryObj)
+        categoryKeys.sort(function(a, b) {
+            if(a < b) return -1;
+            if(a > b) return 1;
+            return 0;
+        })
+
+        for(var key in categoryKeys) {
+            var categoryName = categoryKeys[key]
+            for(var i = categoryObj[categoryName].length - 1;  i >= 0; i--) {
+                var categories = categoryObj[categoryName]
+                %>
+                <div class="col-xs-12 col-sm-3">
+                <h3 style="text-transform:capitalize"><%= categoryName %></h3>
+
+                </div>
+            <% }
+        }
     } %>
 </div>
