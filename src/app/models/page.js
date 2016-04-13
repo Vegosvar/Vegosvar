@@ -18,6 +18,9 @@ module.exports = function(resources, models) {
     get: function(query, fields, sort, limit) {
       return resources.queries.find('pages', query, fields, sort, limit)
     },
+    insert: function(query) {
+      return resources.queries.insert('pages', query)
+    },
     update: function(query, update, options) {
       return resources.queries.update('pages', query, update, options)
     },
@@ -357,12 +360,6 @@ module.exports = function(resources, models) {
         .then(function(result) {
           if(result.length > 0) {
             switch (result[0].type) {
-              case '1':
-                break
-              case '2':
-                break
-              case '3':
-                break
               case '4':
                 if( ( ! ('type' in searchObj.query.$match) || searchObj.query.$match.type === '4' ) ) {
                   var type = result[0].name
@@ -372,10 +369,6 @@ module.exports = function(resources, models) {
                   searchObj.searchString = resources.utils.removePatterFromString(searchObj.searchString, type)
                 }
                 break
-              case '5':
-                break
-              case '6':
-                break
             }
           }
         })
@@ -383,6 +376,126 @@ module.exports = function(resources, models) {
       .then(function() {
         return searchObj
       })
+    },
+    updatePost: function(id, data) {
+      //TODO: document this more
+
+      var isodate = resources.utils.getISOdate()
+      var user_id = new ObjectID(data.user_info.id)
+
+      id = new ObjectID(id) //If editing the post, the id will be provided as a string and we need to convert it to an objectid
+
+      if('contributors' in data.user_info) {
+        //Check if this user has already contributed to the post, otherwise add the user to the array
+        var userHasContributed = false
+
+        for(var userObj in data.user_info.contributors) {
+          var userObjId = data.user_info.contributors[userObj].id
+          if(String(user_id) == String(userObjId)) {
+            userHasContributed = true
+          }
+        }
+
+        if(!userHasContributed) {
+          data.user_info.contributors.push({
+            id: user_id,
+            hidden: data.user_info.hidden
+          })
+        }
+      }
+
+      return models.revision.get({
+        post_id: id
+      })
+      .then(function(result) {
+        if(result.length > 0) {
+          var revision = result[0]
+
+          var update = {
+            modified: isodate,
+            pending: revision.pending += 1,
+            revisions: {}
+          }
+
+          update.revisions[revision_number] = data.post
+          
+          update.revisions[revision_number].meta = {
+            accepted: null,
+            user_info: {
+              id: user_id,
+              hidden: data.user_info.hidden
+            },
+            timestamp: {
+              created: isodate,
+              updatedby: user_id
+            }
+          }
+
+          update = extend(revision, update)
+
+          return models.revision.update({ post_id: id }, update)
+        } else {
+          throw new Error('No revision document matching ID was found')
+        }
+      })
+    },
+    insertPost: function(data) {
+      //TODO: document this more
+
+      var isodate = resources.utils.getISOdate()
+      var user_id = new ObjectID(data.user_info.id)
+
+      //add the user creating it to the list of contributors
+      data.user_info.contributors = [{
+        id: user_id,
+        hidden: data.user_info.hidden
+      }]
+
+      data.timestamp = {
+        created: isodate // Add timestamp for time of creation
+      }
+
+      return models.page.insert(data)
+      .then(function(result) {
+        var revision_number = (new Date(isodate).getTime() / 1000) //This is a unix timestamp
+        var revision = {
+          post_id: result.ops[0]._id,
+          pending: 1, //Represents total number of revisions that are awaiting moderation, at insertion, just this one
+          modified: isodate,
+          revision: revision_number,
+          revisions: {},
+        }
+
+        revision.revisions[revision_number] = data.post
+        revision.revisions[revision_number].meta = {
+          accepted: null,
+          user_info: data.user_info,
+          timestamp: {
+            created: isodate
+          }
+        }
+
+        return models.revision.insert(revision)
+      })
+    },
+    newPost: function(req) {
+      var id = req.body.id
+      var hidden = (req.body.hidden) ? true : false;
+
+      var data = resources.utils.parseBody(req)
+      if(id) {
+        //This is an update to an existing post
+        return resources.models.page.updatePost(id, data)
+        .then(function() {
+          return data
+        })
+      } else {
+        //This is a new post
+        return resources.models.page.insertPost(data)
+        .then(function() {
+          return data
+        })
+      }
     }
   }
 }
