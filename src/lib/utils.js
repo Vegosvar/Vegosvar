@@ -156,5 +156,172 @@ module.exports = {
         return text
       }
     }).join(' ').trim()
+  },
+  writeFile: function(file, filePath) {
+    var fs = require('fs')
+    return new Promise(function(resolve, reject) {
+      var fstream = fs.createWriteStream(filePath)
+      file.pipe(fstream)
+
+      fstream.on('close', function() {
+        resolve()
+      })
+    })
+  },
+  parseBody: function(req) {
+    var getSlug = require('speakingurl')
+    var ObjectID = require('mongodb').ObjectID
+
+    var type = req.body.type
+    var hidden = (req.body.hidden) ? true : false;
+    var user_id = new ObjectID(req.user._id)
+
+    //Prevent speakingurl from converting swedish characters to ae and oe by replacing them with what we want
+    //also remove any non alphanumeric characters in url
+    var slug = module.exports.replaceDiacritics(String(req.body.title))
+    var niceurl = getSlug(slug, {
+      // URL Settings
+      separator: '-',
+      maintainCase: false,
+      symbols: false
+    })
+
+    if(req.body.cover_image_id == 'undefined' || req.body.cover_image_filename == 'undefined') {
+      cover_image_id = null
+      cover_image_filename = null
+    } else {
+      cover_image_id = req.body.cover_image_id
+      cover_image_filename = req.body.cover_image_filename
+    }
+
+    //These are the basic attributes shared among all the page types
+    //which are all the attributes needed for type 1 (Fact)
+    var data = {
+      title: req.body.title,
+      url: niceurl,
+      accepted: null,
+      slug: slug,
+      type: type,
+      post: {
+        content: req.body.content,
+        sources: {
+            name: typeof(req.body.source_name) === 'string' ? [req.body.source_name] : req.body.source_name,
+            url: typeof(req.body.source_url) === 'string' ? [req.body.source_url] : req.body.source_url,
+        },
+        license: req.body.license,
+        license_cc_version: req.body.license_cc_version,
+        license_holder: req.body.license_holder,
+        license_holder_website: req.body.license_holder_website,
+        cover: {
+          id: cover_image_id,
+          filename: cover_image_filename
+        }
+      }, rating: {
+        likes: 0
+      }, user_info: {
+        id: user_id,
+        hidden: hidden
+      }
+    }
+
+    //TODO: there has to be a better way to do this than this switch
+    switch(type) {
+      case '1':
+        break;
+      case '2': //Recipe
+        data.post = extend(data.post, {
+          video: req.body.video,
+          food_type: req.body.food_type
+        })
+
+        data.rating = extend(data.rating, {
+          votes: 0,
+          votes_sum: 0
+        })
+        break
+      case '3': //Restaurant
+      case '5': //Store
+        data.post = extend(data.post, {
+          city: req.body.city,
+          street: req.body.street,
+          coordinates: {
+            latitude: req.body.latitude,
+            longitude: req.body.longitude
+          },
+          phone: req.body.phone,
+          website: req.body.website,
+          email: req.body.email,
+          license: req.body.license,
+          license_cc_version: req.body.license_cc_version,
+          license_holder: req.body.license_holder,
+          license_holder_website: req.body.license_holder_website,
+          veg_offer: req.body.veg_offer,
+          food: req.body.food,
+          hashtag: req.body.hashtag,
+          openhours: {
+            monday: req.body.monday,
+            tuesday: req.body.tuesday,
+            wednesday: req.body.wednesday,
+            thursday: req.body.thursday,
+            friday: req.body.friday,
+            saturday: req.body.saturday,
+            sunday: req.body.sunday
+          }
+        })
+
+        data.rating = extend(data.rating, {
+          votes: 0,
+          votes_sum: 0
+        })
+
+        break
+      case '4': //Product
+        data = extend(data, {
+          post: {
+            veg_type: req.body.veg_type,
+            product_type: req.body.product_type,
+            manufacturer: req.body.manufacturer,
+            manufacturer_website: req.body.manufacturer_website,
+            hashtag: req.body.hashtag
+          }
+        })
+        break
+      case '6':
+        data.post = extend(data.post, {
+          city: req.body.city,
+          street: req.body.street,
+          coordinates: {
+            latitude: req.body.latitude,
+            longitude: req.body.longitude
+          },
+          website: req.body.website,
+          license: req.body.license,
+          license_cc_version: req.body.license_cc_version,
+          license_holder: req.body.license_holder,
+          license_holder_website: req.body.license_holder_website,
+          veg_offer: req.body.veg_offer,
+          food: req.body.food,
+          hashtag: req.body.hashtag,
+          openhours: {
+            monday: req.body.monday,
+            tuesday: req.body.tuesday,
+            wednesday: req.body.wednesday,
+            thursday: req.body.thursday,
+            friday: req.body.friday,
+            saturday: req.body.saturday,
+            sunday: req.body.sunday
+          }
+        })
+
+        data.rating = extend(data.rating, {
+          votes: 0,
+          votes_sum: 0
+        })
+        break
+      default:
+        throw new Error('Unknown page type in request body')
+    }
+
+    return data
   }
 }
