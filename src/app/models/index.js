@@ -21,6 +21,7 @@ module.exports = function(resources) {
   models.vote = require('./vote')(resources, models)
   models.category = require('./category')(resources, models)
   models.city = require('./city')(resources, models)
+  models.image = require('./image')(resources, models)
 
   return models
 
