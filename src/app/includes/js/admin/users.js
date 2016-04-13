@@ -205,13 +205,15 @@ $(document).ready(function() {
         url: '/ajax/admin/user/' + userId
       }).done(function(result) {
         //Create new modal
-        var modal = newModal(result)
+        if(result.success) {
+          var modal = newModal(result.data)
 
-        $('#main').append( $(modal) )
-        $('#modal').modal('show')
-        $('#modal').on('hidden.bs.modal', function () {
-          $('#modal').remove(); //Remove modal after it closes
-        })
+          $('#main').append( $(modal) )
+          $('#modal').modal('show')
+          $('#modal').on('hidden.bs.modal', function () {
+            $('#modal').remove(); //Remove modal after it closes
+          })
+        }
       })
     } else {
       console.log('Nope')
