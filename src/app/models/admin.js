@@ -87,6 +87,13 @@ module.exports = function(resources, models) {
             }
           })
         }))
+        .then(function(likes) {
+          return likes.filter(function(like) {
+            if(like) {
+              return like
+            }
+          })
+        })
       })
     },
     getPages: function() {
@@ -109,10 +116,10 @@ module.exports = function(resources, models) {
           //Convert timestamps to a human readable datetime
           return new Promise.all(pages.map(function(page) {
             if('updated' in page.timestamp) {
-              page.timestamp.updated = utils.getPrettyDateTime(page.timestamp.updated)
+              page.timestamp.updated = resources.utils.getPrettyDateTime(page.timestamp.updated)
             }
 
-            page.timestamp.created = utils.getPrettyDateTime(page.timestamp.created)
+            page.timestamp.created = resources.utils.getPrettyDateTime(page.timestamp.created)
 
             return page
           }))
@@ -141,7 +148,7 @@ module.exports = function(resources, models) {
       var result = {} //The object we eventually will return
 
       //Get revisions pending moderation
-      models.revision.get({
+      return models.revision.get({
         pending: {
           $gt: 0
         }
@@ -160,8 +167,8 @@ module.exports = function(resources, models) {
                 id: page._id,
                 title: page.title,
                 url: page.url,
-                created: utils.getPrettyDateTime(page.timestamp.created),
-                updated: utils.getPrettyDateTime(revision.modified),
+                created: resources.utils.getPrettyDateTime(page.timestamp.created),
+                updated: resources.utils.getPrettyDateTime(revision.modified),
                 revisions: Object.keys(revision.revisions).length,
                 delete: page.hasOwnProperty('delete') ? page.delete : false
               }
@@ -203,8 +210,8 @@ module.exports = function(resources, models) {
                   id: page._id,
                   title: page.title,
                   url: page.url,
-                  created: utils.getPrettyDateTime(page.timestamp.created),
-                  updated: page.timestamp.hasOwnProperty('updated') ? utils.getPrettyDateTime(page.timestamp.updated) : 0,
+                  created: resources.utils.getPrettyDateTime(page.timestamp.created),
+                  updated: page.timestamp.hasOwnProperty('updated') ? resources.utils.getPrettyDateTime(page.timestamp.updated) : 0,
                   revisions: 0,
                   delete: page.hasOwnProperty('delete') ? page.delete : false
                 })
@@ -212,6 +219,9 @@ module.exports = function(resources, models) {
             })
           }
         })
+      })
+      .then(function() {
+        return result
       })
     },
     getVotes: function() {
@@ -252,10 +262,18 @@ module.exports = function(resources, models) {
               if(users.length > 0) {
                 vote.user = users[0]
                 return vote
-              }
+              }            
             })
           }
         }))
+        .then(function(votes) {
+          //Remove all undefined entries
+          return votes.filter(function(vote) {
+            if(vote) {
+              return vote
+            }
+          })
+        })
       })
     },
     getPagesThisWeek: function() {
