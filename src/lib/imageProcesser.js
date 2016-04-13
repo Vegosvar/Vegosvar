@@ -15,13 +15,12 @@ module.exports = {
 		var imagethumb = sharp(__dirname + '/../uploads/' + filename + '_original.jpg')
 		imagethumb.resize(345, 181)
 		imagethumb.toFile(__dirname + '/../uploads/' + filename + '_thumb.jpg', function (err, info) { 
-			fs.unlink(__dirname + '/../uploads/' + uFilename + '_original.jpg')
+			fs.unlink(__dirname + '/../uploads/' + filename + '_original.jpg')
 		})
 		
 		return true
 	},
 	avatar: function(id) {
-		fs.unlink(__dirname + '/../uploads/avatar/' + id + '.jpg', function(err){}) //Quietly ignore unlink errors
 		var image = sharp(__dirname + '/../uploads/avatar/' + id + '_raw.jpg')
 		image.resize(200, 200)
 		image.quality(90)
