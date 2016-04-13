@@ -221,7 +221,7 @@
                                             <h3><%= recipes[i].title %></h3>
                                         </a>
 
-                                        <% if ('user_info' in typeof(recipes[i]) ) {
+                                        <% if ('user_info' in recipes[i] ) {
 
                                             if (typeof recipes[i].user_info.hidden !== true && 'display_name' in recipes[i].user_info) {
                                             if (typeof recipes[i].user_info.active_photo === 'undefined') {
