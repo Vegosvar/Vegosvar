@@ -138,8 +138,10 @@ module.exports = function (app, resources) {
     })
     //Get the categories for this page type
     .then(function() {
-      var typeNumber = resources.models.page.typeNumberFromName(req.params.type)
-      return resources.queries.getPageCategories(typeNumber)
+      var typeNumber = resources.utils.typeNumberFromName(req.params.type)
+      return resources.models.category.get({
+        type: String(typeNumber)
+      })
       .then(function(categories) {
         renderObj.categories = categories
       })
