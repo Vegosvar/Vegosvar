@@ -38,6 +38,8 @@ module.exports = function (app, resources) {
   })
 
   app.get('/ajax/admin/block/:user_id', utils.isPrivileged, function (req, res) {
+    var user_id = req.params.user_id
+
     resources.models.user.block(user_id)
     .then(function(result) {
       res.json({
