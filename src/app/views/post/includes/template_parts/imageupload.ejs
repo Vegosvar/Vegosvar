@@ -1,3 +1,61 @@
-<div class="input-group" id="upload-group">
-	<div id="uploader" class="dropzone"></div>
+<style>
+.upload-previews {
+    display: inline;
+}
+
+.upload-previews .preview-image {
+    width: 160px;
+    height: 90px;
+    background-size: cover;
+    background-position: center center;
+    float: left;
+    display: inline-block;
+    margin-bottom: 15px;
+}
+
+.upload-previews .preview-image:first-child {
+    width: 100%;
+    height: 362px;
+}
+
+
+.upload-previews .preview-image:nth-child(n+2) {
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.upload-previews .preview-image:nth-child(5) {
+    margin-right: 0px !important;;
+}
+
+.upload-previews .preview-image.done:nth-child(n+2):hover {
+    background-image: url("https://placeholdit.imgix.net/~text?txtsize=33&txt=Huvudbild&w=160&h=87") !important; /* TODO: replace with our own placeholder image */
+}
+
+#uploader.uploading {
+    min-height: 90px;
+    width: 160px;
+    height: 90px;
+    float: left;
+    display: inline-block;
+}
+
+#uploader .dz-message {
+    display: block;
+}
+
+#uploader.dz-max-files-reached {
+    display: none;
+}
+
+@media screen and (min-width: 992px) {
+    .upload-previews .preview-image:nth-child(n+2) {
+        margin-right: 15px;
+    }
+}
+</style>
+<div id="upload-group">
+    <div class="upload-previews">
+        <div id="uploader" class="dropzone"></div>
+    </div>
 </div>
