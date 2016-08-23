@@ -19,7 +19,7 @@
         }
       })
       .done(function (result) {
-        if (result.success) {
+        if (result.success === true) {
           $.fn.vegosvar.search.settings.results = result.data
         }
       })
@@ -303,8 +303,13 @@
           if ($.fn.vegosvar.search.settings.map.initialized) {
             $.fn.vegosvar.search.map.markers.remove() //Remove all markers before adding new ones
 
-            $.fn.vegosvar.search.map.query(entryIds, function (data) {
-              $.fn.vegosvar.search.map.markers.add(data)
+            $.fn.vegosvar.search.map.query(entryIds, function (result) {
+              if (result.success === true) {
+                $.fn.vegosvar.search.map.markers.add(result.data)
+              } else {
+                //Malformed data from server
+                console.log('Unknown data format returned from server', result)
+              }
             })
           }
         } else {
@@ -370,7 +375,6 @@
           }
 
           mapInstance.triggerResize()
-          console.log(mapElement)
           mapInstance.setCenter($(mapElement).data('center'))
         })
       },
@@ -460,7 +464,7 @@
         set: function (entries, callback) {
           var mapInstance = $.fn.vegosvar.search.map.get()
           $.each(entries, function (i, entry) {
-            if ('post' in entry) {
+            if (entry && 'post' in entry) {
               if ('coordinates' in entry.post && typeof(entry.post.coordinates) !== 'undefined') {
                 var iconUrl = '/assets/images/'
 
