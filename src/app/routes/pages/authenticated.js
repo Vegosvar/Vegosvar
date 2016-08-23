@@ -17,7 +17,7 @@ module.exports = function (app, resources) {
   app.get('/installningar', utils.isAuthenticated, function (req, res, next) {
     var renderObj = extend({
       loadEditorResources: true,
-      loadDropzoneResources: true 
+      loadDropzoneResources: true
     }, res.vegosvar)
 
     res.render('settings', renderObj)
@@ -30,7 +30,7 @@ module.exports = function (app, resources) {
 
   //TODO, move this to post.js routes
   app.post('/installningar/submit', utils.isAuthenticated, urlencodedParser, function (req, res, next) {
-    //TODO, should really do some sanitization here 
+    //TODO, should really do some sanitization here
     var user_id = req.user._id
     var display_name = req.body.displayName
     var website = req.body.website
@@ -203,17 +203,19 @@ module.exports = function (app, resources) {
 
         //Load additional browser dependences based on page type
         var places = ['restaurang', 'butik', 'cafe']
-        renderObj.loadMapResources = (places.indexOf(req.params.type) !== -1) ? { autocomplete: true, map: true } : false
+        renderObj.loadMapResources = (places.indexOf(renderObj.type) !== -1) ? { autocomplete: true, map: true } : false
         renderObj.loadPageResources.youtube = (req.params.type === 'recept')
 
         return page
       })
       //Get the categories for this page type
       .then(function(page) {
-        return resources.queries.getPageCategories(page.type)
+        /* TODO: Not implemented yet
+        return resources.models.categories.getPageCategories(page.type)
         .then(function(categories) {
           renderObj.categories = categories
         })
+        */
       })
     ])
     .then(function() {
