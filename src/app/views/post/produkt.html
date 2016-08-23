@@ -1,8 +1,8 @@
-<% include ../includes/header %>
+<% include ../partials/header %>
 
     <div class="container">
         <section id="main">
-            <% include includes/errors.ejs %>
+            <% include partials/errors.ejs %>
             <div class="row">
                 <div class="col-md-8">
                     <article>
@@ -13,11 +13,11 @@
                             <input type="hidden" name="type" value="4">
                             <input type="hidden" name="id" value="<%= (typeof(post) !== 'undefined') ? post._id : '' %>">
 
-                            <% include includes/template_parts/imageupload %>
+                            <% include partials/template_parts/imageupload %>
 
-                            <% include includes/template_parts/title %>
+                            <% include partials/template_parts/title %>
 
-                            <% include includes/editor %>
+                            <% include partials/editor %>
 
                             <h2>Innehåll</h2>
                             <div class="radio">
@@ -39,7 +39,7 @@
                                 </label>
                             </div>
 
-                            <% include includes/template_parts/category %>
+                            <% include partials/template_parts/category %>
 
                             <h2>Tillverkare</h2>
                             <div class="row">
@@ -55,21 +55,21 @@
                                 </div>
                             </div>
 
-                            <% include includes/template_parts/other %>
+                            <% include partials/template_parts/other %>
 
-                            <% include includes/template_parts/license %>
+                            <% include partials/template_parts/license %>
 
                             <hr>
 
-                            <% include includes/template_parts/submit %>
+                            <% include partials/template_parts/submit %>
                         </form>
                     </article>
 
-                    <% include includes/template_parts/remove %>
+                    <% include partials/template_parts/remove %>
                 </div>
                 <div class="col-md-4">
                     <aside>
-                        <% include includes/sidebar %>
+                        <% include partials/sidebar %>
                     </aside>
                 </div>
             </div>
@@ -77,5 +77,5 @@
         </section>
     </div>
 
-<% include includes/filepush %>
-<% include ../includes/footer %>
+<% include partials/filepush %>
+<% include ../partials/footer %>

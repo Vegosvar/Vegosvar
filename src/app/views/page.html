@@ -1,4 +1,4 @@
-<% include includes/header %>
+<% include partials/header %>
 
     <div class="container">
         <section id="main">
@@ -6,35 +6,35 @@
                 <div class="col-md-8">
                     <article>
 
-                        <% include includes/page/pending_moderation %>
+                        <% include partials/page/pending_moderation %>
 
-                        <% include includes/page/likes %>
+                        <% include partials/page/likes %>
 
-                        <% include includes/page/header_image %>
+                        <% include partials/page/header_image %>
 
                         <div id="<%= post._id %>" class="content">
 
-                            <% include includes/page/header_attributes %>
+                            <% include partials/page/header_attributes %>
 
-                            <% include includes/page/content %>
+                            <% include partials/page/content %>
 
-                            <% include includes/page/rating %>
+                            <% include partials/page/rating %>
 
-                            <% include includes/page/contact %>
+                            <% include partials/page/contact %>
 
                         </div>
 
-                        <% include includes/page/sources %>
+                        <% include partials/page/sources %>
                     </article>
 
-                    <% include includes/page/cred %>
+                    <% include partials/page/cred %>
 
-                    <% include includes/page/comments %>
+                    <% include partials/page/comments %>
                 </div>
 
-                <% include includes/page/sidebar %>
+                <% include partials/page/sidebar %>
 
             </div>
         </section>
     </div>
-<% include includes/footer %>
+<% include partials/footer %>

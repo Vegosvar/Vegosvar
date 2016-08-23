@@ -1,4 +1,4 @@
-<% include includes/header %>
+<% include partials/header %>
 
     <div id="heroSearch" class="<%= typeof searchString !== 'undefined' ? 'contracted':'transition' %>">
         <div class="container">
@@ -282,7 +282,7 @@
         </div>
     </div>
 
-<% include includes/promotion %>
+<% include partials/promotion %>
 
     <% if(typeof pageStats !== 'undefined') {
         var stats = {
@@ -346,4 +346,4 @@
     <% } %>
 
 
-<% include includes/footer %>
+<% include partials/footer %>

@@ -1,4 +1,4 @@
-<% include ../includes/header %>
+<% include ../partials/header %>
 <div class="container">
     <section id="main">
         <div class="row">
@@ -8,10 +8,10 @@
             <div class="col-md-10">
                 <article>
                     <h1 class="no-margin-top"><%= current_user.name.display_name %></h1>
-                    <% include ../includes/pages/index %>
+                    <% include ../partials/pages/index %>
                 </article>
             </div>
         </div>
     </section>
 </div>
-<% include ../includes/footer %>
+<% include ../partials/footer %>

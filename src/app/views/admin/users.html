@@ -1,4 +1,4 @@
-<% include ../includes/header %>
+<% include ../partials/header %>
     <div class="container">
         <section id="main">
             <div class="row">
@@ -15,7 +15,7 @@
                                     <div class="list-group-item">
                                         <div id="<%= users[i]._id %>">
                                             <a href="/admin/profil/<%= users[i]._id %>">
-                                                <img src="<% include ../includes/functions/getUsersAvatar %>" class="circle" style="width: 30px; height: 30px; margin-right: 5px;">
+                                                <img src="<% include ../partials/functions/getUsersAvatar %>" class="circle" style="width: 30px; height: 30px; margin-right: 5px;">
                                                 <span class="user_name"><%= users[i].name.display_name %></span>
                                             </a>
                                             <% if( typeof(users[i].info.blocked) !== 'undefined' && users[i].info.blocked === true ) { %>
@@ -35,4 +35,4 @@
         </section>
     </div>
 
-<% include ../includes/footer %>
+<% include ../partials/footer %>

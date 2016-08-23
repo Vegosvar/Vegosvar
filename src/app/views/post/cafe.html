@@ -1,8 +1,8 @@
-<% include ../includes/header %>
+<% include ../partials/header %>
 
     <div class="container">
         <section id="main">
-            <% include includes/errors.ejs %>
+            <% include partials/errors.ejs %>
             <div class="row">
                 <div class="col-md-8">
                     <article>
@@ -13,19 +13,19 @@
                             <input type="hidden" name="type" value="6">
                             <input type="hidden" name="id" value="<%= (typeof(post) !== 'undefined') ? post._id : '' %>">
 
-                            <% include includes/template_parts/imageupload %>
+                            <% include partials/template_parts/imageupload %>
 
-                            <% include includes/template_parts/title %>
+                            <% include partials/template_parts/title %>
 
-                            <% include includes/template_parts/chain %>
+                            <% include partials/template_parts/chain %>
 
-                            <% include includes/editor %>
+                            <% include partials/editor %>
 
-                            <% include includes/template_parts/location %>
+                            <% include partials/template_parts/location %>
 
-                            <% include includes/template_parts/contact %>
+                            <% include partials/template_parts/contact %>
 
-                            <% include includes/template_parts/openhours %>
+                            <% include partials/template_parts/openhours %>
 
                             <h2>
                                 <span class="glyphicon glyphicon-cutlery"></span>
@@ -52,18 +52,18 @@
                                 </label>
                             </div>
 
-                            <% include includes/template_parts/other %>
-                            <% include includes/template_parts/license %>
+                            <% include partials/template_parts/other %>
+                            <% include partials/template_parts/license %>
                             <hr>
-                            <% include includes/template_parts/submit %>
+                            <% include partials/template_parts/submit %>
                         </form>
                     </article>
 
-                    <% include includes/template_parts/remove %>
+                    <% include partials/template_parts/remove %>
                 </div>
                 <div class="col-md-4">
                     <aside>
-                        <% include includes/sidebar %>
+                        <% include partials/sidebar %>
                     </aside>
                 </div>
             </div>
@@ -71,5 +71,5 @@
         </section>
     </div>
 
-<% include includes/filepush %>
-<% include ../includes/footer %>
+<% include partials/filepush %>
+<% include ../partials/footer %>
