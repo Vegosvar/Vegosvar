@@ -2,6 +2,9 @@
   $.fn.vegosvar = {}
 }(jQuery))
 
+/* I actually have no idea why this code is in the window.load function,
+or anywhere for that matter. //Tobias 2016-08-23
+*/
 $(window).load(function () {
 
   $(document).on('change', '.btn-file :file', function () {
