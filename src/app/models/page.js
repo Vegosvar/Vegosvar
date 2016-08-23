@@ -105,7 +105,7 @@ module.exports = function(resources, models) {
               if(users.length > 0) {
                 return extend(recipe.user_info, users[0])
               } else {
-                //User account was not found, set user_info to hidden to show user as anonymous 
+                //User account was not found, set user_info to hidden to show user as anonymous
                 recipe.user_info.hidden = true
                 return recipe
               }
@@ -321,7 +321,7 @@ module.exports = function(resources, models) {
       var stringArray = searchObj.searchString.split(' ')
 
       //Check if string matches a page type
-      stringArray = stringArray.filter(function(string) { 
+      stringArray = stringArray.filter(function(string) {
         if(resources.utils.isPageType(string) !== false) {
           //Restrict page type to the one matching current string
           searchObj.query.$match['type'] = resources.utils.typeNumberFromName(string)
@@ -417,8 +417,10 @@ module.exports = function(resources, models) {
             revisions: {}
           }
 
+          var revision_number = revision.revision;
+
           update.revisions[revision_number] = data.post
-          
+
           update.revisions[revision_number].meta = {
             accepted: null,
             user_info: {
