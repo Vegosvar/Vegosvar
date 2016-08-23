@@ -89,8 +89,6 @@ $(function() {
         var id = entry._id
         var date = id.date
         var type = parseInt( id.type ) -1
-        console.log(type)
-
 
         var dateObj = new Date(date).getTime()
         if (type in typeNames) {
