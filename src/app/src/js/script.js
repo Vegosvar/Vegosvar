@@ -14,7 +14,7 @@ $(window).load(function () {
 })
 
 $(document).ready(function () {
-  if(typeof(FastClick) !== 'undefined') {
+  if (typeof(FastClick) !== 'undefined') {
     FastClick.attach(document.body) //Attach FastClick
   }
 
