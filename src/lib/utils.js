@@ -171,6 +171,7 @@ module.exports = {
   parseBody: function(req) {
     var getSlug = require('speakingurl')
     var ObjectID = require('mongodb').ObjectID
+		var extend = require('util')._extend
 
     var type = req.body.type
     var hidden = (req.body.hidden) ? true : false;
