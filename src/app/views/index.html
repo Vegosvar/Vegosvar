@@ -1,226 +1,232 @@
 <% include partials/header %>
 
-    <div id="heroSearch" class="<%= typeof searchString !== 'undefined' ? 'contracted':'transition' %>">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 text-center">
+<div id="heroSearch" class="<%= typeof searchString !== 'undefined' ? 'contracted':'transition' %>">
+  <div class="container">
+    <div class="row">
+      <div class="col-sm-12 text-center">
 
-                    <a href="/" class="visible-xs logo"><img alt="" src="/assets/images/vegosvar.svg"></a>
+        <a href="/" class="visible-xs logo"><img alt="" src="/assets/images/vegosvar.svg"></a>
 
-                    <div class="intro">
-                        <h1>Enkla svar på vegofrågor</h1>
-                    </div>
-
-                    <form action=".">
-                        <div class="searchEngine input-group">
-                            <input type="search" class="form-control searchForm" name="s" id="srch-term" placeholder="Vad söker du?" autocomplete="off" value="<%= typeof searchString !== 'undefined' ? searchString:'' %>">
-                            <div class="input-group-btn">
-                                <button class="btn btn-default" id="searchForm-btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-                            </div>
-                        </div>
-                    </form>
-
-                    <p class="searchTips hidden-xs">Sök veganska restauranger, butiker, fakta, produkter & recept</p>
-                    <p class="searchTips visible-xs">Fakta, restauranger, produkter & recept</p>
-
-                </div>
-            </div>
+        <div class="intro">
+          <h1>Enkla svar på vegofrågor</h1>
         </div>
+
+        <form action=".">
+          <div class="searchEngine input-group">
+            <input type="search" class="form-control searchForm" name="s" id="srch-term" placeholder="Vad söker du?" autocomplete="off" value="<%= typeof searchString !== 'undefined' ? searchString:'' %>">
+            <div class="input-group-btn">
+              <button class="btn btn-default" id="searchForm-btn-default" type="submit">
+                <i class="glyphicon glyphicon-search"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+
+        <p class="searchTips hidden-xs">Sök veganska restauranger, butiker, fakta, produkter & recept</p>
+        <p class="searchTips visible-xs">Fakta, restauranger, produkter & recept</p>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="results">
+  <div class="container">
+
+    <div id="searchMap">
+      <button class="showSearchMap btn btn-third">
+        <span class="fa fa-map-o"></span>
+        <span class="showSearchMapText">Se karta</span>
+      </button>
     </div>
 
-    <section id="results">
-        <div class="container">
+    <div id="searchFor"></div>
 
-            <div id="searchMap">
-                <button class="showSearchMap btn btn-third">
-                    <span class="fa fa-map-o"></span>
-                    <span class="showSearchMapText">Se karta</span>
-                </button>
-            </div>
-
-            <div id="searchFor"></div>
-
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="searchMapContainer mapContainer">
-                        <div id="mapResults" style="height:100%"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-                <div id="searchResult"></div>
-            </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="searchMapContainer mapContainer">
+          <div id="mapResults" style="height:100%"></div>
         </div>
-    </section>
+      </div>
+    </div>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-5 col-lg-4 pull-first-sm">
-                <section id="mapContainer" class="mapContainer">
-                    <div id="map" class="googleMap" data-map-cluster="true"></div>
-                    <div class="filter">
-                        <div class="vertical-center">
-                            <img alt="" src="/assets/images/map-icon.svg" style="width: 70px;">
-                            <h2>Veganskt käk nära mig</h2>
-                            <h3>Restauranger & butiker</h3>
-                            <a href="#" id="show-map" class="btn btn-hero showMyLocation">
-                                <span class="fa fa-location-arrow"></span>
-                                Se karta
-                            </a>
-                        </div>
-                    </div>
-                </section>
+    <div class="row">
+      <div id="searchResult"></div>
+    </div>
+  </div>
+</section>
 
-                <div class="card lg hidden-xs">
-                    <h2>Goda nyheter</h2>
-                    <h3 class="subtitle">Nya restauranger & butiker</h3>
-                    <ul class="page-menu">
-                    <% if(typeof(establishments) !== 'undefined') {
+<div class="container">
+  <div class="row">
+    <div class="col-md-5 col-lg-4 pull-first-sm">
+      <section id="mapContainer" class="mapContainer">
+        <div id="map" class="googleMap" data-map-cluster="true"></div>
+        <div class="filter">
+          <div class="vertical-center">
+            <img alt="" src="/assets/images/map-icon.svg" style="width: 70px;">
+            <h2>Veganskt käk nära mig</h2>
+            <h3>Restauranger & butiker</h3>
+            <a href="#" id="show-map" class="btn btn-hero showMyLocation">
+              <span class="fa fa-location-arrow"></span>
+              Se karta
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <div class="card lg hidden-xs">
+        <h2>Goda nyheter</h2>
+        <h3 class="subtitle">Nya restauranger & butiker</h3>
+        <ul class="page-menu">
+          <% if(typeof(establishments) !== 'undefined') {
                         for (var i = establishments.length - 1; i >= 0; i--) { %>
-                            <li>
-                                <a href="<%= establishments[i].url %>" class="item">
-                                    <%= establishments[i].title %>
-                                    <% if (typeof establishments[i].post.cover !== 'undefined' && establishments[i].post.cover.filename !== null) { %>
-                                        <img alt="" src="/uploads/<%= establishments[i].post.cover.filename %>_thumb.jpg">
-                                    <% } %>
-                                </a>
-                                <a href="/?s=<%= establishments[i].post.city %>"
-                                   class="subitem">
-                                    <%= establishments[i].post.city %>
-                                </a>
-                            </li>
-                        <% } %>
-                    <% } %>
-                    </ul>
-                    <div class="bottom-description">
-                        Alltid något veganskt
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-7 col-lg-8 pull-last-sm">
-                <section id="hot">
-                    <h2>
-                        <img alt="" src="/assets/images/fire-dark.svg" class="fire-dark">
-                        <img alt="" src="/assets/images/fire-color.svg" class="fire-color">
-                        Hett just nu
-                    </h2>
-                    <div class="row">
-                        <% for (var i=0; i < pages.length; i++) { %>
-                        <div class="col-sm-4 col-md-6 col-lg-4">
-                            <div class="result">
-                                <% if (typeof pages[i].post.cover !== 'undefined' && pages[i].post.cover.filename !== null && pages[i].post.cover.filename.length > 0) { %>
-                                <a href="/<%= pages[i].url %>">
-                                    <div class="image" style="background-image: url(/uploads/<%= pages[i].post.cover.filename %>_thumb.jpg)"></div>
-                                </a>
-                                <% } else { %>
-                                    <a href="/<%= pages[i].url %>">
-                                        <div class="image" style="background-image: url(/assets/images/placeholder-<%= pages[i].type %>.svg)"></div>
-                                    </a>
-                                <% } %>
-                                <% var likes = ('rating' in pages[i] && 'likes' in pages[i].rating) ? pages[i].rating.likes : 0
+            <li>
+              <a href="<%= establishments[i].url %>" class="item">
+                <%= establishments[i].title %>
+                <% if (typeof establishments[i].post.cover !== 'undefined' && establishments[i].post.cover.filename !== null) { %>
+                  <img alt="" src="/uploads/<%= establishments[i].post.cover.filename %>_thumb.jpg">
+                <% } %>
+              </a>
+              <a href="/?s=<%= establishments[i].post.city %>" class="subitem">
+                <%= establishments[i].post.city %>
+              </a>
+            </li>
+          <% } %>
+        <% } %>
+      </ul>
+      <div class="bottom-description">
+        Alltid något veganskt
+      </div>
+    </div>
+  </div>
+  <div class="col-md-7 col-lg-8 pull-last-sm">
+    <section id="hot">
+      <h2>
+        <img alt="" src="/assets/images/fire-dark.svg" class="fire-dark">
+        <img alt="" src="/assets/images/fire-color.svg" class="fire-color">
+        Hett just nu
+      </h2>
+      <div class="row">
+        <% for (var i=0; i < pages.length; i++) { %>
+          <div class="col-sm-4 col-md-6 col-lg-4">
+            <div class="result">
+              <% if (typeof pages[i].post.cover !== 'undefined' && pages[i].post.cover.filename !== null && pages[i].post.cover.filename.length > 0) { %>
+                <a href="/<%= pages[i].url %>">
+                  <div class="image" style="background-image: url(/uploads/<%= pages[i].post.cover.filename %>_thumb.jpg)"></div>
+                </a>
+              <% } else { %>
+                <a href="/<%= pages[i].url %>">
+                  <div class="image" style="background-image: url(/assets/images/placeholder-<%= pages[i].type %>.svg)"></div>
+                </a>
+              <% } %>
+              <% var likes = ('rating' in pages[i] && 'likes' in pages[i].rating) ? pages[i].rating.likes : 0
                                 var classNames = (likes) ? 'glyphicon glyphicon-heart' : 'glyphicon glyphicon-heart-empty' %>
-                                <div class="likes xs <%= (likes > 0) ? '' : 'hidden' %>">
-                                    <div class="hint">
-                                      <a href="/logga-in">Logga in</a> på Vegosvar för att gilla
-                                    </div>
-                                    <span class="like <%= (typeof user !== 'undefined') ? 'add-like' : 'toggle-hint' %>" data-id="<%= pages[i]._id %>">
-                                      <span id="heart-glyphicon" class="<%= classNames %>"></span>
-                                      <span class="count"><%= likes %></span>
-                                    </span>
-                                </div>
-                                <div class="content">
-                                    <div class="text-overflow">
-                                        <a href="/<%= pages[i].url %>"><h3><%= pages[i].title %></h3></a>
-                                        <% if (pages[i].type === '3' || pages[i].type === '5' || pages[i].type === '6') { %>
-                                            <a href="/?s=<%= pages[i].post.city %>">
-                                                <h4><%= pages[i].post.city %></h4>
-                                            </a>
-                                        <% } %>
-                                        <% if (pages[i].type === '4') { %>
-                                            <a href="/?s=<%= pages[i].post.manufacturer %>">
-                                                <h4><%= pages[i].post.manufacturer %></h4>
-                                            </a>
-                                        <% } %>
-                                        <% if (typeof pages[i].post.content !== 'undefined' && pages[i].post.content !== null) {
+              <div class="likes xs <%= (likes > 0) ? '' : 'hidden' %>">
+                <div class="hint">
+                  <a href="/logga-in">Logga in</a>
+                  på Vegosvar för att gilla
+                </div>
+                <span class="like <%= (typeof user !== 'undefined') ? 'add-like' : 'toggle-hint' %>" data-id="<%= pages[i]._id %>">
+                  <span id="heart-glyphicon" class="<%= classNames %>"></span>
+                  <span class="count"><%= likes %></span>
+                </span>
+              </div>
+              <div class="content">
+                <div class="text-overflow">
+                  <a href="/<%= pages[i].url %>">
+                    <h3><%= pages[i].title %></h3>
+                  </a>
+                  <% if (pages[i].type === '3' || pages[i].type === '5' || pages[i].type === '6') { %>
+                    <a href="/?s=<%= pages[i].post.city %>">
+                      <h4><%= pages[i].post.city %></h4>
+                    </a>
+                  <% } %>
+                  <% if (pages[i].type === '4') { %>
+                    <a href="/?s=<%= pages[i].post.manufacturer %>">
+                      <h4><%= pages[i].post.manufacturer %></h4>
+                    </a>
+                  <% } %>
+                <% if (typeof pages[i].post.content !== 'undefined' && pages[i].post.content !== null) {
                                             if(pages[i].post.content.length > 115) {
                                                 var content = '' + pages[i].post.content.substring(0,115) + '...'
                                             } else {
                                                 var content = '' + pages[i].post.content
                                             }
                                         } %>
-                                        <p>
-                                            <% if (pages[i].type === '4') { %>
-                                                <% if (pages[i].post.veg_type === 'animal') { %>
-                                                    <strong class="text-danger">Animaliskt</strong>
-                                                <% } else if (pages[i].post.veg_type === 'lacto_ovo') { %>
-                                                    <strong class="text-warning">Lakto-ovo</strong>
-                                                <% } else { %>
-                                                    <strong class="text-success"><span class="fa fa-check-circle"></span> Veganskt</strong>
-                                                <% } %>
-                                            <% } %>
-                                            <%- pages[i].post.content %>
-                                        </p>
-                                    </div>
-                                </div>
-                                <% if (pages[i].type === '3' || pages[i].type === '5' || pages[i].type === '6' || pages[i].type === '4' && pages[i].post.veg_type !== 'animal') { %>
-                                  <div class="stars" data-id="<%= pages[i]._id %>">
-                                    <div class="star<%if(pages[i].rating.votes_sum > 0){ %> active<%}%>">
-                                      <span class="glyphicon glyphicon-star"></span>
-                                    </div>
-                                    <div class="star<%if(pages[i].rating.votes_sum > 1){ %> active<%}%>">
-                                      <span class="glyphicon glyphicon-star"></span>
-                                    </div>
-                                    <div class="star<%if(pages[i].rating.votes_sum > 2){ %> active<%}%>">
-                                      <span class="glyphicon glyphicon-star"></span>
-                                    </div>
-                                    <div class="star<%if(pages[i].rating.votes_sum > 3){ %> active<%}%>">
-                                      <span class="glyphicon glyphicon-star"></span>
-                                    </div>
-                                    <div class="star<%if(pages[i].rating.votes_sum > 4){ %> active<%}%>">
-                                      <span class="glyphicon glyphicon-star"></span>
-                                    </div>
+                  <p>
+                    <% if (pages[i].type === '4') { %>
+                      <% if (pages[i].post.veg_type === 'animal') { %>
+                        <strong class="text-danger">Animaliskt</strong>
+                      <% } else if (pages[i].post.veg_type === 'lacto_ovo') { %>
+                        <strong class="text-warning">Lakto-ovo</strong>
+                      <% } else { %>
+                        <strong class="text-success">
+                          <span class="fa fa-check-circle"></span>
+                          Veganskt</strong>
+                      <% } %>
+                    <% } %>
+                    <%- pages[i].post.content %>
+                  </p>
+                </div>
+              </div>
+              <% if (pages[i].type === '3' || pages[i].type === '5' || pages[i].type === '6' || pages[i].type === '4' && pages[i].post.veg_type !== 'animal') { %>
+                <div class="stars" data-id="<%= pages[i]._id %>">
+                  <div class="star<%if(pages[i].rating.votes_sum > 0){ %> active<%}%>">
+                    <span class="glyphicon glyphicon-star"></span>
+                  </div>
+                  <div class="star<%if(pages[i].rating.votes_sum > 1){ %> active<%}%>">
+                    <span class="glyphicon glyphicon-star"></span>
+                  </div>
+                  <div class="star<%if(pages[i].rating.votes_sum > 2){ %> active<%}%>">
+                    <span class="glyphicon glyphicon-star"></span>
+                  </div>
+                  <div class="star<%if(pages[i].rating.votes_sum > 3){ %> active<%}%>">
+                    <span class="glyphicon glyphicon-star"></span>
+                  </div>
+                  <div class="star<%if(pages[i].rating.votes_sum > 4){ %> active<%}%>">
+                    <span class="glyphicon glyphicon-star"></span>
+                  </div>
 
-                                    <% if (typeof pages[i].rating.votes !== 'undefined') { %>
-                                      <span class="votes"><%= pages[i].rating.votes %></span>
-                                    <% } else { %>
-                                      <span class="votes">0</span>
-                                    <% } %>
-                                  </div>
-                                <% } %>
-                            </div>
-                        </div>
-                        <% } %>
-                    </div>
-                </section>
+                  <% if (typeof pages[i].rating.votes !== 'undefined') { %>
+                    <span class="votes"><%= pages[i].rating.votes %></span>
+                  <% } else { %>
+                    <span class="votes">0</span>
+                  <% } %>
+                </div>
+              <% } %>
             </div>
-        </div>
+          </div>
+        <% } %>
+      </div>
+    </section>
+  </div>
+</div>
 
-        <section id="recipes">
-            <div class="row">
-                <% if(typeof(recipes) !== 'undefined') {
+<section id="recipes">
+  <div class="row">
+    <% if(typeof(recipes) !== 'undefined') {
                     for (var i = recipes.length - 1; i >= 0; i--) { %>
-                        <div class="col-sm-4">
-                            <div class="recipe">
-                                    <div class="label">
-                                        Recept
-                                    </div>
-                                    <a href="<%= recipes[i].url %>">
-                                    <% if ('post' in recipes[i] && 'cover' in recipes[i].post) {
+      <div class="col-sm-4">
+        <div class="recipe">
+          <div class="label">
+            Recept
+          </div>
+          <a href="<%= recipes[i].url %>">
+            <% if ('post' in recipes[i] && 'cover' in recipes[i].post) {
                                         if (typeof recipes[i].post.cover !== 'undefined' && recipes[i].post.cover.filename !== null) { %>
-                                            <img alt="" src="/uploads/<%= recipes[i].post.cover.filename %>.jpg">
-                                        <% } else { %>
-                                            <img alt="" src="/assets/images/placeholder-2.svg">
-                                        <% }
+              <img alt="" src="/uploads/<%= recipes[i].post.cover.filename %>.jpg">
+            <% } else { %>
+              <img alt="" src="/assets/images/placeholder-2.svg">
+            <% }
                                     } %>
-                                    </a>
-                                    <div class="title">
-                                        
-                                        <a href="<%= recipes[i].url %>">
-                                            <h3><%= recipes[i].title %></h3>
-                                        </a>
+          </a>
+          <div class="title">
 
-                                        <% if ('user_info' in recipes[i] ) {
+            <a href="<%= recipes[i].url %>">
+              <h3><%= recipes[i].title %></h3>
+            </a>
+
+          <% if ('user_info' in recipes[i] ) {
 
                                             if (typeof recipes[i].user_info.hidden !== true && 'display_name' in recipes[i].user_info) {
                                             if (typeof recipes[i].user_info.active_photo === 'undefined') {
@@ -234,115 +240,92 @@
                                                         var avatar_url = '/assets/images/no-picture.svg'
                                                     }
                                                 } %>
-                                                <img src="<%= avatar_url %>" class="avatar">
-                                                <span class="credit">
-                                                    Recept av <%= recipes[i].user_info.display_name %>
-                                                </span>
-                                            <% } else { %>
-                                                <img src="/assets/images/no-picture.svg" class="avatar">
-                                                <span class="credit">
-                                                    Recept av Anonym
-                                                </span>
-                                            <% }
+            <img src="<%= avatar_url %>" class="avatar">
+            <span class="credit">
+              Recept av
+              <%= recipes[i].user_info.display_name %>
+            </span>
+          <% } else { %>
+            <img src="/assets/images/no-picture.svg" class="avatar">
+            <span class="credit">
+              Recept av Anonym
+            </span>
+          <% }
                                         } %>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    <% } %>
-                <% } %>
-            </div>
-        </section>
-
-        <div class="card lg visible-xs">
-            <h2 class="text-center">Goda nyheter</h2>
-            <h3 class="subtitle text-center">Nya restauranger & butiker</h3>
-            <ul class="page-menu">
-            <% if(typeof(establishments) !== 'undefined') {
-                for (var i = establishments.length - 1; i >= 0; i--) { %>
-                    <li>
-                        <a href="<%= establishments[i].url %>" class="item">
-                            <%= establishments[i].title %>
-                            <% if (typeof establishments[i].post.cover !== 'undefined' && establishments[i].post.cover.filename !== null) { %>
-                                <img alt="" src="/uploads/<%= establishments[i].post.cover.filename %>_thumb.jpg">
-                            <% } %>
-                        </a>
-                        <a href="/?s=<%= establishments[i].post.city %>"
-                           class="subitem">
-                            <%= establishments[i].post.city %>
-                        </a>
-                    </li>
-                <% } %>
-            <% } %>
-            </ul>
-            <div class="bottom-description">
-                Alltid något veganskt
-            </div>
         </div>
+      </a>
     </div>
+  </div>
+<% } %>
+<% } %>
+</div>
+</section>
+
+<div class="card lg visible-xs">
+<h2 class="text-center">Goda nyheter</h2>
+<h3 class="subtitle text-center">Nya restauranger & butiker</h3>
+<ul class="page-menu">
+<% if(typeof(establishments) !== 'undefined') {
+                for (var i = establishments.length - 1; i >= 0; i--) { %>
+<li>
+  <a href="<%= establishments[i].url %>" class="item">
+    <%= establishments[i].title %>
+    <% if (typeof establishments[i].post.cover !== 'undefined' && establishments[i].post.cover.filename !== null) { %>
+      <img alt="" src="/uploads/<%= establishments[i].post.cover.filename %>_thumb.jpg">
+    <% } %>
+  </a>
+  <a href="/?s=<%= establishments[i].post.city %>" class="subitem">
+    <%= establishments[i].post.city %>
+  </a>
+</li>
+<% } %>
+<% } %>
+</ul>
+<div class="bottom-description">
+Alltid något veganskt
+</div>
+</div>
+</div>
 
 <% include partials/promotion %>
 
-    <% if(typeof pageStats !== 'undefined') {
-        var stats = {
-            places: 0,
-            facts: 0,
-            products: 0,
-            recipes: 0
-        }
+<% if(typeof pageStats !== 'undefined') { var stats = { places: 0, facts: 0, products: 0, recipes: 0 } for(var group in pageStats) { var groupType = pageStats[group]._id.type var groupCount = pageStats[group].count switch(groupType) { case "1":
+stats.facts += groupCount break case "2": stats.recipes += groupCount break case "4": stats.products += groupCount break case "3": case "5": case "6": stats.places += groupCount break } } %>
+<div id="stats">
+<div class="container">
+<div class="row">
+<div class="col-sm-3">
+<div class="stat">
+<span class="counter"><%= stats.places %></span>
+<span class="object">Veganvänliga<br>
+  platser</span>
+</div>
+</div>
+<div class="col-sm-3">
+<div class="stat">
+<span class="counter"><%= stats.facts %></span>
+<span class="object">Matnyttiga<br>
+  faktasidor</span>
+</div>
+</div>
+<div class="col-sm-3">
+<div class="stat">
+<span class="counter"><%= stats.products %></span>
+<span class="object">Fantastiska<br>
+  produkter</span>
+</div>
+</div>
+<div class="col-sm-3">
+<div class="stat">
+<span class="counter"><%= stats.recipes %></span>
+<span class="object">Riktigt goda<br>
+  recept</span>
+</div>
+</div>
+</div>
+</div>
+</div>
 
-        for(var group in pageStats) {
-            var groupType = pageStats[group]._id.type
-            var groupCount = pageStats[group].count
-            switch(groupType) {
-                case "1":
-                    stats.facts += groupCount
-                    break
-                case "2":
-                    stats.recipes += groupCount
-                    break
-                case "4":
-                    stats.products += groupCount
-                    break
-                case "3":
-                case "5":
-                case "6":
-                    stats.places += groupCount
-                    break
-            }
-        } %>
-        <div id="stats">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-3">
-                        <div class="stat">
-                            <span class="counter"><%= stats.places %></span> 
-                            <span class="object">Veganvänliga<br> platser</span>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="stat">
-                            <span class="counter"><%= stats.facts %></span> 
-                            <span class="object">Matnyttiga<br> faktasidor</span>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="stat">
-                            <span class="counter"><%= stats.products %></span> 
-                            <span class="object">Fantastiska<br> produkter</span>
-                        </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <div class="stat">
-                            <span class="counter"><%= stats.recipes %></span> 
-                            <span class="object">Riktigt goda<br> recept</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    <% } %>
-
+<% } %>
 
 <% include partials/footer %>

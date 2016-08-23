@@ -1,26 +1,28 @@
 <% include ../partials/header %>
 
-	<div class="container">
-		<section id="main">
+<div class="container">
+  <section id="main">
 
-			<div class="row">
-				<div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 col-lg-10 col-lg-offset-1">
+    <div class="row">
+      <div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 col-lg-10 col-lg-offset-1">
 
-					<article class="text-center">
-						<p><img src="/assets/images/butterfly.svg" class="circle" style="width: 200px;"></p>
-						<h1><span class="fa fa-check-circle text-success"></span> Sidan är skapad</h1>
-						<p class="preamble">Den inväntar nu granskning</p><br>
-						<% console.log(hideredirect) %>
-						<% if (typeof hideredirect !== 'undefined' && hideredirect !== true) { %>
-						<a href="/<%= post_url %>" class="btn btn-primary lg">Besök sida</a> 
-						<% } %>
-						<a href="/ny" class="btn btn-secondary lg">Skapa en till</a>
-					</article>
+        <article class="text-center">
+          <p><img src="/assets/images/butterfly.svg" class="circle" style="width: 200px;"></p>
+          <h1>
+            <span class="fa fa-check-circle text-success"></span>
+            Sidan är skapad</h1>
+          <p class="preamble">Den inväntar nu granskning</p><br>
+          <% console.log(hideredirect) %>
+          <% if (typeof hideredirect !== 'undefined' && hideredirect !== true) { %>
+            <a href="/<%= post_url %>" class="btn btn-primary lg">Besök sida</a>
+          <% } %>
+          <a href="/ny" class="btn btn-secondary lg">Skapa en till</a>
+        </article>
 
-				</div>
-			</div>
+      </div>
+    </div>
 
-		</section>
-	</div>
+  </section>
+</div>
 
 <% include ../partials/footer %>

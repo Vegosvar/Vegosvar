@@ -1,46 +1,54 @@
 <% include partials/header %>
 
-  <div class="container">
-    <section id="main">
-      <div class="row">
-        <div class="col-md-8 col-sm-offset-2">
-          <div id="alert-warning" class="hidden">Din begäran kunde inte hanteras just nu, vänligen försök igen senare</div>
-          <article>
-            <h1>Ta bort konto</h1>
-            <p class="preamble">Vi måste alla gå vidare i livet någon gång, tack för din tid hos oss!</p>
-            <p>Observera att dina skapade sidor fortfarande kommer ligga kvar på Vegosvar om du inte tar bort dem först. Du kommer däremot stå som anonym på alla skapade sidor. Om du önskar registrera dig på nytt i framtiden kommer du inte att få tillbaka rättigheterna till dina tidigare sidor.</p>
-            <p>För att bekräfta att detta verkligen är vad du vill göra kan du trycka på knappen nedan.</p>
-            <p><a id="submit-removal" class="btn btn-danger">Ta bort mitt konto</a></p>
-          </article>
-        </div>
+<div class="container">
+  <section id="main">
+    <div class="row">
+      <div class="col-md-8 col-sm-offset-2">
+        <div id="alert-warning" class="hidden">Din begäran kunde inte hanteras just nu, vänligen försök igen senare</div>
+        <article>
+          <h1>Ta bort konto</h1>
+          <p class="preamble">Vi måste alla gå vidare i livet någon gång, tack för din tid hos oss!</p>
+          <p>Observera att dina skapade sidor fortfarande kommer ligga kvar på Vegosvar om du inte tar bort dem först. Du kommer däremot stå som anonym på alla skapade sidor. Om du önskar registrera dig på nytt i framtiden kommer du inte att få tillbaka
+            rättigheterna till dina tidigare sidor.</p>
+          <p>För att bekräfta att detta verkligen är vad du vill göra kan du trycka på knappen nedan.</p>
+          <p>
+            <button id="submit-removal" class="btn btn-danger">Ta bort mitt konto</button>
+          </p>
+        </article>
       </div>
-    </section>
-  </div>
-      <script type="text/javascript">
-        $('#submit-removal').on('click', function (e) {
-          $('#submit-removal').addClass('disabled')
-          e.preventDefault()
-          $.get('/installningar/ta-bort/submit', function (data) {
-            if(data == 1) {
-              window.location = '/logga-ut'
-            } else {
-              if($('#alert-warning').hasClass('hidden')) {
-                clearTimeout(timeout)
-                $('#alert-warning').css({ 'display':'none' }).removeClass('hidden')
-                $('#alert-warning').slideDown('fast')
-                var timeout = setTimeout(function() {
-                  $('#alert-warning').slideUp('fast')
-                  setTimeout(function() { $('#alert-warning').addClass('hidden') }, 210)
-                }, 6000)
-              } else {
-                clearTimeout(timeout)
-                var timeout = setTimeout(function() {
-                  $('#alert-warning').slideUp('fast')
-                  setTimeout(function() { $('#alert-warning').addClass('hidden') }, 210)
-                }, 6000)
-              }
-            }
-          })
-        })
-      </script>
+    </div>
+  </section>
+</div>
+<!-- TODO: Remove inline js from here -->
+<script type="text/javascript">
+  $('#submit-removal').on('click', function(e) {
+    $('#submit-removal').addClass('disabled')
+    e.preventDefault()
+    $.get('/installningar/ta-bort/submit', function(data) {
+      if (data == 1) {
+        window.location = '/logga-ut'
+      } else {
+        if ($('#alert-warning').hasClass('hidden')) {
+          clearTimeout(timeout)
+          $('#alert-warning').css({'display': 'none'}).removeClass('hidden')
+          $('#alert-warning').slideDown('fast')
+          var timeout = setTimeout(function() {
+            $('#alert-warning').slideUp('fast')
+            setTimeout(function() {
+              $('#alert-warning').addClass('hidden')
+            }, 210)
+          }, 6000)
+        } else {
+          clearTimeout(timeout)
+          var timeout = setTimeout(function() {
+            $('#alert-warning').slideUp('fast')
+            setTimeout(function() {
+              $('#alert-warning').addClass('hidden')
+            }, 210)
+          }, 6000)
+        }
+      }
+    })
+  })
+</script>
 <% include partials/footer %>

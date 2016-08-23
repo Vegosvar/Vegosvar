@@ -1,90 +1,90 @@
 <% include ../partials/header %>
 
-	<div class="container">
-		<section id="main">
-			<% include partials/errors.ejs %>
-			<div class="row">
-				<div class="col-md-8">
-					<article>
-                        <h1><%= (typeof(post) !== 'undefined') ? 'Redigera: ' + post.title : 'Nytt recept' %></h1><br>
-						<form action="/submit" method="post">
+<div class="container">
+  <section id="main">
+    <% include partials/errors.ejs %>
+    <div class="row">
+      <div class="col-md-8">
+        <article>
+          <h1><%= (typeof(post) !== 'undefined') ? 'Redigera: ' + post.title : 'Nytt recept' %></h1><br>
+          <form action="/submit" method="post">
 
-							<input type="hidden" name="type" value="2">
-							<input type="hidden" name="id" value="<%= (typeof(post) !== 'undefined') ? post._id : '' %>">
+            <input type="hidden" name="type" value="2">
+            <input type="hidden" name="id" value="<%= (typeof(post) !== 'undefined') ? post._id : '' %>">
 
-                            <% include partials/template_parts/imageupload %>
+            <% include partials/template_parts/imageupload %>
 
-                            <% include partials/template_parts/title %>
+            <% include partials/template_parts/title %>
 
-                            <% include partials/editor %>
+            <% include partials/editor %>
 
-                            <% include partials/template_parts/video %>
+            <% include partials/template_parts/video %>
 
-							<h2>Typ av rätt</h2>
-							<div class="radio">
-								<label>
-									<input type="radio" name="food_type" value="baked" <%= (typeof(post) !== 'undefined' && post.post.type == 'baked') ? 'checked=checked' : '' %>>
-									Bakat
-								</label>
-							</div>
-							<div class="radio">
-								<label>
-									<input type="radio" name="food_type" value="first-course" <%= (typeof(post) !== 'undefined' && post.post.type == 'first-course') ? 'checked=checked' : '' %>>
-									Förrätt
-								</label>
-							</div>
-							<div class="radio">
-								<label>
-									<input type="radio" name="food_type" value="main-course" <%= (typeof(post) !== 'undefined' && post.post.type == 'main-course') ? 'checked=checked' : '' %>>
-									Huvudrätt
-								</label>
-							</div>
-							<div class="radio">
-								<label>
-									<input type="radio" name="food_type" value="dessert" <%= (typeof(post) !== 'undefined' && post.post.type == 'dessert') ? 'checked=checked' : '' %>>
-									Efterätt
-								</label>
-							</div>
-							<div class="radio">
-								<label>
-									<input type="radio" name="food_type" value="snack" <%= (typeof(post) !== 'undefined' && post.post.type == 'snack') ? 'checked=checked' : '' %>>
-									Snacks
-								</label>
-							</div>
-							<div class="radio">
-								<label>
-									<input type="radio" name="food_type" value="drink" <%= (typeof(post) !== 'undefined' && post.post.type == 'drink') ? 'checked=checked' : '' %>>
-									Dryck
-								</label>
-							</div>
-							<div class="radio">
-								<label>
-									<input type="radio" name="food_type" value="other" <%= (typeof(post) !== 'undefined') ? ( (post.post.type == 'other') ? 'checked=checked' : '' ) : 'checked=checked' %>>
-									Annat
-								</label>
-							</div>
+            <h2>Typ av rätt</h2>
+            <div class="radio">
+              <label>
+                <input type="radio" name="food_type" value="baked" <%= (typeof(post) !== 'undefined' && post.post.type == 'baked') ? 'checked=checked' : '' %>>
+                Bakat
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" name="food_type" value="first-course" <%= (typeof(post) !== 'undefined' && post.post.type == 'first-course') ? 'checked=checked' : '' %>>
+                Förrätt
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" name="food_type" value="main-course" <%= (typeof(post) !== 'undefined' && post.post.type == 'main-course') ? 'checked=checked' : '' %>>
+                Huvudrätt
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" name="food_type" value="dessert" <%= (typeof(post) !== 'undefined' && post.post.type == 'dessert') ? 'checked=checked' : '' %>>
+                Efterätt
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" name="food_type" value="snack" <%= (typeof(post) !== 'undefined' && post.post.type == 'snack') ? 'checked=checked' : '' %>>
+                Snacks
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" name="food_type" value="drink" <%= (typeof(post) !== 'undefined' && post.post.type == 'drink') ? 'checked=checked' : '' %>>
+                Dryck
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" name="food_type" value="other" <%= (typeof(post) !== 'undefined') ? ( (post.post.type == 'other') ? 'checked=checked' : '' ) : 'checked=checked' %>>
+                Annat
+              </label>
+            </div>
 
-                            <% include partials/template_parts/other %>
+            <% include partials/template_parts/other %>
 
-                            <% include partials/template_parts/license %>
+            <% include partials/template_parts/license %>
 
-							<hr>
+            <hr>
 
-                            <% include partials/template_parts/submit %>
-						</form>
-					</article>
+            <% include partials/template_parts/submit %>
+          </form>
+        </article>
 
-					<% include partials/template_parts/remove %>
-				</div>
-				<div class="col-md-4">
-					<aside>
-						<% include partials/sidebar %>
-					</aside>
-				</div>
-			</div>
+        <% include partials/template_parts/remove %>
+      </div>
+      <div class="col-md-4">
+        <aside>
+          <% include partials/sidebar %>
+        </aside>
+      </div>
+    </div>
 
-		</section>
-	</div>
+  </section>
+</div>
 
 <% include partials/filepush %>
 <% include ../partials/footer %>

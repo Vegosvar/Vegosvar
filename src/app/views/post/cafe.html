@@ -1,73 +1,73 @@
 <% include ../partials/header %>
 
-    <div class="container">
-        <section id="main">
-            <% include partials/errors.ejs %>
-            <div class="row">
-                <div class="col-md-8">
-                    <article>
-                        <h1><%= (typeof(post) !== 'undefined') ? 'Redigera: ' + post.title : 'Nytt café' %></h1><br>
+<div class="container">
+  <section id="main">
+    <% include partials/errors.ejs %>
+    <div class="row">
+      <div class="col-md-8">
+        <article>
+          <h1><%= (typeof(post) !== 'undefined') ? 'Redigera: ' + post.title : 'Nytt café' %></h1><br>
 
-                        <form action="/submit" method="post">
+          <form action="/submit" method="post">
 
-                            <input type="hidden" name="type" value="6">
-                            <input type="hidden" name="id" value="<%= (typeof(post) !== 'undefined') ? post._id : '' %>">
+            <input type="hidden" name="type" value="6">
+            <input type="hidden" name="id" value="<%= (typeof(post) !== 'undefined') ? post._id : '' %>">
 
-                            <% include partials/template_parts/imageupload %>
+            <% include partials/template_parts/imageupload %>
 
-                            <% include partials/template_parts/title %>
+            <% include partials/template_parts/title %>
 
-                            <% include partials/editor %>
+            <% include partials/editor %>
 
-                            <% include partials/template_parts/location %>
+            <% include partials/template_parts/location %>
 
-                            <% include partials/template_parts/contact %>
+            <% include partials/template_parts/contact %>
 
-                            <% include partials/template_parts/openhours %>
+            <% include partials/template_parts/openhours %>
 
-                            <h2>
-                                <span class="glyphicon glyphicon-cutlery"></span>
-                                Utbud
-                            </h2>
-                            <div class="radio">
-                                <label class="text-muted">
-                                    <input type="radio" name="veg_offer" value="Veganskt går att ordna" <%= (typeof(post) !== 'undefined' && post.post.veg_offer == 'Veganskt går att ordna') ? 'checked=checked' : '' %>>
-                                    Veganskt går att ordna
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="veg_offer" value="Veganskt finns på menyn" <%= (typeof(post) !== 'undefined') ? ( (post.post.veg_offer == 'Veganskt finns på menyn') ? 'checked=checked' : '' ) : 'checked=checked' %>>
-                                    Veganskt finns på menyn
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label class="text-success">
-                                <strong>
-                                    <input type="radio" name="veg_offer" value="Endast veganskt på menyn" <%= (typeof(post) !== 'undefined' && post.post.veg_offer == 'Endast veganskt på menyn') ? 'checked=checked' : '' %>>
-                                    100% veganskt
-                                </strong>
-                                </label>
-                            </div>
-
-                            <% include partials/template_parts/other %>
-                            <% include partials/template_parts/license %>
-                            <hr>
-                            <% include partials/template_parts/submit %>
-                        </form>
-                    </article>
-
-                    <% include partials/template_parts/remove %>
-                </div>
-                <div class="col-md-4">
-                    <aside>
-                        <% include partials/sidebar %>
-                    </aside>
-                </div>
+            <h2>
+              <span class="glyphicon glyphicon-cutlery"></span>
+              Utbud
+            </h2>
+            <div class="radio">
+              <label class="text-muted">
+                <input type="radio" name="veg_offer" value="Veganskt går att ordna" <%= (typeof(post) !== 'undefined' && post.post.veg_offer == 'Veganskt går att ordna') ? 'checked=checked' : '' %>>
+                Veganskt går att ordna
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" name="veg_offer" value="Veganskt finns på menyn" <%= (typeof(post) !== 'undefined') ? ( (post.post.veg_offer == 'Veganskt finns på menyn') ? 'checked=checked' : '' ) : 'checked=checked' %>>
+                Veganskt finns på menyn
+              </label>
+            </div>
+            <div class="radio">
+              <label class="text-success">
+                <strong>
+                  <input type="radio" name="veg_offer" value="Endast veganskt på menyn" <%= (typeof(post) !== 'undefined' && post.post.veg_offer == 'Endast veganskt på menyn') ? 'checked=checked' : '' %>>
+                  100% veganskt
+                </strong>
+              </label>
             </div>
 
-        </section>
+            <% include partials/template_parts/other %>
+            <% include partials/template_parts/license %>
+            <hr>
+            <% include partials/template_parts/submit %>
+          </form>
+        </article>
+
+        <% include partials/template_parts/remove %>
+      </div>
+      <div class="col-md-4">
+        <aside>
+          <% include partials/sidebar %>
+        </aside>
+      </div>
     </div>
+
+  </section>
+</div>
 
 <% include partials/filepush %>
 <% include ../partials/footer %>

@@ -1,42 +1,44 @@
 <% include ../partials/header %>
-    <div class="container">
-        <section id="main">
-            <div class="row">
-                <div class="col-md-2">
-                  <% include template_parts/sidebar %>
-                </div>
-                <div class="col-md-10">
-                    <article>
-                      <h1 class="no-margin-top">Gillningar</h1>
-                      <h2 class="subtitle">Alla gillningar</h2>
-                      <table class="table table-striped table-bordered table-hover datatable" data-page-length="25" data-aa-sorting="false">
-                        <thead>
-                          <th>
-                            Sida
-                          </th>
-                          <th>
-                            Användare
-                          </th>
-                        </thead>
-                        <tbody>
-                          <% if(typeof(likes) !== 'undefined') {
-                            if(likes.length > 0) {
-                              for(i=0;i < likes.length;i++) { %>
-                                <tr>
-                                  <td><a href="/<%= likes[i].url %>"><%= likes[i].title %></a></td>
-                                  <td><%= ('user' in likes[i]) ? likes[i].user.name.display_name : 'Okänd' %></td>
-                                </tr>
-                              <% } %>
-                            <% } else { %>
-                              <h3>Inga sidor har gillats :(!</h3>
-                            <% } %>
-                          <% } %>
-                        </tbody>
-                      </table>
-                    </article>
-                </div>
-            </div>
-        </section>
-    </div>
+<div class="container">
+  <section id="main">
+    <div class="row">
+      <div class="col-md-2">
+        <% include partials/sidebar %>
+      </div>
+      <div class="col-md-10">
+        <article>
+          <h1 class="no-margin-top">Gillningar</h1>
+          <h2 class="subtitle">Alla gillningar</h2>
+          <table class="table table-striped table-bordered table-hover datatable" data-page-length="25" data-aa-sorting="false">
+            <thead>
+              <th>
+                Sida
+              </th>
+              <th>
+                Användare
+              </th>
+            </thead>
+            <tbody>
+              <% if(typeof(likes) !== 'undefined') {
+                if(likes.length > 0) {
+                  for(i=0;i < likes.length;i++) { %>
+                <tr>
+                  <td>
+                    <a href="/<%= likes[i].url %>"><%= likes[i].title %></a>
+                  </td>
+                  <td><%= ('user' in likes[i]) ? likes[i].user.name.display_name : 'Okänd' %></td>
+                </tr>
+              <% } %>
+            <% } else { %>
+              <h3>Inga sidor har gillats :(!</h3>
+            <% } %>
+          <% } %>
+        </tbody>
+      </table>
+    </article>
+  </div>
+</div>
+</section>
+</div>
 
 <% include ../partials/footer %>

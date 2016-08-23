@@ -1,81 +1,63 @@
 <% include ../partials/header %>
 
 <div class="container">
-    <section id="main">
-        <div class="row">
-            <div class="col-sm-2">
-                <% include template_parts/sidebar %>
-            </div>
+  <section id="main">
+    <div class="row">
+      <div class="col-sm-2">
+        <% include partials/sidebar %>
+      </div>
 
-            <div class="col-sm-7">
-                <div class="pageflag">
-                    <span class="glyphicon glyphicon-eye-open"></span> 
-                    Granskningsläge
-                </div>
-                <article>
-
-                    <% include ../partials/page/header_image %>
-
-                    <div id="<%= post._id %>" class="content">
-
-                        <% include ../partials/page/header_attributes %>
-
-                        <% include ../partials/page/content %>
-
-                        <% include ../partials/page/contact %>
-                    </div>
-
-                    <% include ../partials/page/sources %>
-
-                </article>
-            </div>
-            <div class="col-sm-3">
-
-                <h2 style="margin-top:0px">Välj version</h2>
-                <div class="list-group revisions">
-                    <% if(typeof(revisions) !== 'undefined') {
-                        for(var i = revisions.length - 1;i >= 0; i--) {
-                            var revision_id = revisions[i].id
-                            var revision_date = revisions[i].created
-                            var status = revisions[i].accepted
-
-                            var itemClasses = {
-                                true: function() {
-                                    return 'list-group-item-success'
-                                },
-                                false: function() {
-                                    return 'list-group-item-danger'
-                                },
-                                null: function() {
-                                    return ''
-                                }
-                            }
-
-                            var itemClass = (status in itemClasses && revision_id !== current) ? itemClasses[status]() : 'active'
-                            %>
-                            <div style="cursor:pointer;" class="revision list-group-item <%= itemClass %>" data-item-class="<%= itemClass %>" data-revision="<%= revision_id %>">
-                            <%= revision_date %>
-                            <% if(revision_id == current) { %>
-                                 <span class="current label label-success pull-right">Aktiv</span>
-                            <% } %>
-                            </div>
-                        <% }
-                    } %>
-                </div>
-                <div class="options" style="display:none">
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <button id="apply" class="btn btn-block btn-success">Använd</button>
-                        </div>
-                        <div class="col-sm-6">
-                            <button id="deny" class="btn btn-block btn-danger">Neka</button>
-                        </div>
-                    </div>
-                    <div class="message alert" style="display: none"></div>
-                </div>
-            </div>
+      <div class="col-sm-7">
+        <div class="pageflag">
+          <span class="glyphicon glyphicon-eye-open"></span>
+          Granskningsläge
         </div>
-    </section>
+        <article>
+
+          <% include ../partials/page/header_image %>
+
+          <div id="<%= post._id %>" class="content">
+
+            <% include ../partials/page/header_attributes %>
+
+            <% include ../partials/page/content %>
+
+            <% include ../partials/page/contact %>
+          </div>
+
+          <% include ../partials/page/sources %>
+
+        </article>
+      </div>
+      <div class="col-sm-3">
+
+        <h2 style="margin-top:0px">Välj version</h2>
+        <div class="list-group revisions">
+          <% if(typeof(revisions) !== 'undefined') { for(var i = revisions.length - 1;i >= 0; i--) { var revision_id = revisions[i].id var revision_date = revisions[i].created var status = revisions[i].accepted var itemClasses = { true: function() { return
+          'list-group-item-success' }, false: function() { return 'list-group-item-danger' }, null: function() { return '' } } var itemClass = (status in itemClasses && revision_id !== current) ? itemClasses[status]() : 'active' %>
+          <div style="cursor:pointer;" class="revision list-group-item <%= itemClass %>" data-item-class="<%= itemClass %>" data-revision="<%= revision_id %>">
+            <%= revision_date %>
+            <% if(revision_id == current) { %>
+              <span class="current label label-success pull-right">Aktiv</span>
+            <% } %>
+          </div>
+        <% }
+                    } %>
+      </div>
+      <div class="options" style="display:none">
+        <div class="row">
+          <div class="col-sm-6">
+            <button id="apply" class="btn btn-block btn-success">Använd</button>
+          </div>
+          <div class="col-sm-6">
+            <button id="deny" class="btn btn-block btn-danger">Neka</button>
+          </div>
+        </div>
+        <div class="message alert" style="display: none"></div>
+      </div>
+    </div>
+  </div>
+</section>
 </div>
 
 <% include ../partials/footer %>

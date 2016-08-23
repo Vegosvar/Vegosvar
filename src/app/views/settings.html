@@ -1,18 +1,20 @@
 <% include partials/header %>
 
-  <div class="container">
+<div class="container">
 
-    <section id="main">
+  <section id="main">
 
-      <div class="row">
-        <div class="col-md-8">
-          <article>
-            <h1>Inställningar</h1><br>
-            <form method="post" id="settingsForm">
+    <div class="row">
+      <div class="col-md-8">
+        <article>
+          <h1>Inställningar</h1><br>
+          <form method="post" id="settingsForm">
             <div class="row">
               <div class="col-sm-6">
                 <div class="input-group">
-                    <div id="avatar" class="btn btn-edit"><span class="glyphicon glyphicon-camera"></span> Välj profilbild</div>
+                  <div id="avatar" class="btn btn-edit">
+                    <span class="glyphicon glyphicon-camera"></span>
+                    Välj profilbild</div>
                 </div>
               </div>
             </div>
@@ -35,65 +37,73 @@
             <div class="row">
               <div class="col-sm-12">
                 <div class="input-group">
-                  <br><label for="description">Beskrivning av dig, ditt företag eller hemsida</label>
-                  <textarea type="text" id="description" name="description" class="form-control"><% if (typeof user.info !== 'undefined') { if(typeof user.info.description !== 'undefined') { %><%= user.info.description %><% } } %></textarea>
-                  <p><small>Max 150 bokstäver</small></p>
+                  <br>
+                  <label for="description">Beskrivning av dig, ditt företag eller hemsida</label>
+                  <textarea type="text" id="description" name="description" class="form-control">
+                    <% if (typeof user.info !== 'undefined') { if(typeof user.info.description !== 'undefined') { %><%= user.info.description %><% } } %>
+                  </textarea>
+                  <p>
+                    <small>Max 150 bokstäver</small>
+                  </p>
                 </div>
               </div>
             </div>
             <div class="row">
               <div class="col-sm-12">
-                <p><button class="btn btn-primary lg">Spara</button></p>
+                <p>
+                  <button class="btn btn-primary lg">Spara</button>
+                </p>
 
                 <div id="alert-success" class="alert alert-success hidden">
-                  <span class="glyphicon glyphicon-ok"></span> 
+                  <span class="glyphicon glyphicon-ok"></span>
                   <strong>Sparat</strong>
                 </div>
 
                 <div id="alert-warning" class="alert alert-warning hidden">
-                  <span class="glyphicon glyphicon-remove"></span> 
+                  <span class="glyphicon glyphicon-remove"></span>
                   <strong>Något blev fel, dina ändringar är inte sparade</strong>
                 </div>
 
               </div>
             </div>
-            </form>
-          </article>
-        </div>
-        <% include partials/sidebar %>
+          </form>
+        </article>
       </div>
+      <% include partials/sidebar %>
+    </div>
 
-      <div class="row">
-        <div class="col-sm-8">
-          <h3>Avsluta kontot</h3>
-          <p>Dina publicerade sidor påverkas inte av att avsluta kontot. Ditt konto och dina kontaktupppgifter kommer däremot att försvinna.
-          Vill du ta bort dina sidor först rekommenderar vi att du gör det under <a href="/mina-sidor">Mina sidor</a>.</p> 
-          <a href="/installningar/ta-bort" class="btn btn-secondary">Ta bort mitt konto</a></p><br>
-        </div>
-      </div>
-      
-    </section>
+    <div class="row">
+      <div class="col-sm-8">
+        <h3>Avsluta kontot</h3>
+        <p>Dina publicerade sidor påverkas inte av att avsluta kontot. Ditt konto och dina kontaktupppgifter kommer däremot att försvinna. Vill du ta bort dina sidor först rekommenderar vi att du gör det under
+          <a href="/mina-sidor">Mina sidor</a>.</p>
+        <a href="/installningar/ta-bort" class="btn btn-secondary">Ta bort mitt konto</a>
+      </p><br>
+    </div>
   </div>
 
-      <script type="text/javascript">
-      $('#settingsForm').submit(function (e) {
-        e.preventDefault()
-        $.post('/installningar/submit', $('#settingsForm').serialize(), function(data) {
-          if(data == 1) {
-            $('#alert-success').css({ 'display':'none' }).removeClass('hidden')
-            $('#alert-success').slideDown('fast')
-            setTimeout(function() {
-              $('#alert-success').slideUp('fast')
-            }, 6000)
-          } else {
-            $('#alert-warning').css({ 'display':'none' }).removeClass('hidden')
-            $('#alert-warning').slideDown('fast')
-            setTimeout(function() {
-              $('#alert-warning').slideUp('fast')
-            }, 6000)
-          }
-        })
-      })
-      </script>
+</section>
+</div>
+
+<script type="text/javascript">
+$('#settingsForm').submit(function(e) {
+  e.preventDefault()
+  $.post('/installningar/submit', $('#settingsForm').serialize(), function(data) {
+    if (data == 1) {
+      $('#alert-success').css({'display': 'none'}).removeClass('hidden')
+      $('#alert-success').slideDown('fast')
+      setTimeout(function() {
+        $('#alert-success').slideUp('fast')
+      }, 6000)
+    } else {
+      $('#alert-warning').css({'display': 'none'}).removeClass('hidden')
+      $('#alert-warning').slideDown('fast')
+      setTimeout(function() {
+        $('#alert-warning').slideUp('fast')
+      }, 6000)
+    }
+  })
+})
+</script>
 
 <% include partials/footer %>

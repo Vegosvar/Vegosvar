@@ -1,38 +1,38 @@
 <% include ../partials/header %>
-    <div class="container">
-        <section id="main">
-            <div class="row">
-                <div class="col-md-2">
-                  <% include template_parts/sidebar %>
-                </div>
-                <div class="col-md-10">
-                    <article>
-                        <h1 class="no-margin-top">Hantera användare</h1><br>
-                        <div class="list-group">
+<div class="container">
+  <section id="main">
+    <div class="row">
+      <div class="col-md-2">
+        <% include partials/sidebar %>
+      </div>
+      <div class="col-md-10">
+        <article>
+          <h1 class="no-margin-top">Hantera användare</h1><br>
+          <div class="list-group">
 
-                            <% if(typeof(users) !== 'undefined') {
+            <% if(typeof(users) !== 'undefined') {
                                 for(var i = users.length -1; i >= 0; i--) { %>
-                                    <div class="list-group-item">
-                                        <div id="<%= users[i]._id %>">
-                                            <a href="/admin/profil/<%= users[i]._id %>">
-                                                <img src="<% include ../partials/functions/getUsersAvatar %>" class="circle" style="width: 30px; height: 30px; margin-right: 5px;">
-                                                <span class="user_name"><%= users[i].name.display_name %></span>
-                                            </a>
-                                            <% if( typeof(users[i].info.blocked) !== 'undefined' && users[i].info.blocked === true ) { %>
-                                                <button class="btn btn-success btn-xs btn-modal-action pull-right" data-user="<%= users[i]._id %>">Häv blockering</button>
-                                            <% } else { %>
-                                                <button class="btn btn-danger btn-xs btn-modal-action pull-right" data-user="<%= users[i]._id %>">Blockera</button>
-                                            <% } %>
-                                        </div>
-                                    </div>
-                                <% } %>
-                            <% } %>
-                        </div>
-                    </article>
+              <div class="list-group-item">
+                <div id="<%= users[i]._id %>">
+                  <a href="/admin/profil/<%= users[i]._id %>">
+                    <img src="<% include ../partials/functions/getUsersAvatar %>" class="circle" style="width: 30px; height: 30px; margin-right: 5px;">
+                    <span class="user_name"><%= users[i].name.display_name %></span>
+                  </a>
+                  <% if( typeof(users[i].info.blocked) !== 'undefined' && users[i].info.blocked === true ) { %>
+                    <button class="btn btn-success btn-xs btn-modal-action pull-right" data-user="<%= users[i]._id %>">Häv blockering</button>
+                  <% } else { %>
+                    <button class="btn btn-danger btn-xs btn-modal-action pull-right" data-user="<%= users[i]._id %>">Blockera</button>
+                  <% } %>
                 </div>
-            </div>
-
-        </section>
+              </div>
+            <% } %>
+          <% } %>
+        </div>
+      </article>
     </div>
+  </div>
+
+</section>
+</div>
 
 <% include ../partials/footer %>

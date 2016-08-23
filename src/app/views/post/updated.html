@@ -1,28 +1,30 @@
 <% include ../partials/header %>
 
-	<div class="container">
-		<section id="main">
+<div class="container">
+  <section id="main">
 
-			<div class="row">
-				<div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 col-lg-10 col-lg-offset-1">
+    <div class="row">
+      <div class="col-sm-12 col-sm-offset-0 col-md-12 col-md-offset-0 col-lg-10 col-lg-offset-1">
 
-					<article class="text-center">
-						<div class="row">
-							<div class="col-sm-6 col-sm-offset-3">
-								<p><img src="/assets/images/cow.svg" class="circle" style="width: 200px;"></p>
-								<h1><span class="fa fa-check-circle text-success"></span> Inväntar revision</h1>
-								<p class="preamble">Skaparen av sidan eller någon av våra moderatorer kommer att meddelas om ändringen och få möjlighet att godkänna den.</p><br>
-								<% if (typeof hideredirect !== 'undefined' && hideredirect !== true) { %>
-								<a href="/<%= post_url %>" class="btn btn-primary lg">Besök sida</a> 
-								<% } %>
-							</div>
-						</div>
-					</article>
+        <article class="text-center">
+          <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+              <p><img src="/assets/images/cow.svg" class="circle" style="width: 200px;"></p>
+              <h1>
+                <span class="fa fa-check-circle text-success"></span>
+                Inväntar revision</h1>
+              <p class="preamble">Skaparen av sidan eller någon av våra moderatorer kommer att meddelas om ändringen och få möjlighet att godkänna den.</p><br>
+              <% if (typeof hideredirect !== 'undefined' && hideredirect !== true) { %>
+                <a href="/<%= post_url %>" class="btn btn-primary lg">Besök sida</a>
+              <% } %>
+            </div>
+          </div>
+        </article>
 
-				</div>
-			</div>
+      </div>
+    </div>
 
-		</section>
-	</div>
+  </section>
+</div>
 
 <% include ../partials/footer %>

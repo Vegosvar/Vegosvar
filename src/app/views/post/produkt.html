@@ -1,81 +1,81 @@
 <% include ../partials/header %>
 
-    <div class="container">
-        <section id="main">
-            <% include partials/errors.ejs %>
-            <div class="row">
-                <div class="col-md-8">
-                    <article>
-                        <h1><%= (typeof(post) !== 'undefined') ? 'Redigera: ' + post.title : 'Ny produkt' %></h1><br>
+<div class="container">
+  <section id="main">
+    <% include partials/errors.ejs %>
+    <div class="row">
+      <div class="col-md-8">
+        <article>
+          <h1><%= (typeof(post) !== 'undefined') ? 'Redigera: ' + post.title : 'Ny produkt' %></h1><br>
 
-                        <form action="/submit" method="post">
+          <form action="/submit" method="post">
 
-                            <input type="hidden" name="type" value="4">
-                            <input type="hidden" name="id" value="<%= (typeof(post) !== 'undefined') ? post._id : '' %>">
+            <input type="hidden" name="type" value="4">
+            <input type="hidden" name="id" value="<%= (typeof(post) !== 'undefined') ? post._id : '' %>">
 
-                            <% include partials/template_parts/imageupload %>
+            <% include partials/template_parts/imageupload %>
 
-                            <% include partials/template_parts/title %>
+            <% include partials/template_parts/title %>
 
-                            <% include partials/editor %>
+            <% include partials/editor %>
 
-                            <h2>Innehåll</h2>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="veg_type" value="animal" <%= (typeof(post) !== 'undefined' && post.post.veg_type == 'animal') ? 'checked=checked' : '' %>>
-                                    Animalisk
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="veg_type" value="lacto_ovo" <%= (typeof(post) !== 'undefined' && post.post.veg_type == 'lacto_ovo') ? 'checked=checked' : '' %>>
-                                    Lakto-ovo vegetarisk
-                                </label>
-                            </div>
-                            <div class="radio">
-                                <label>
-                                    <input type="radio" name="veg_type" value="vegan" <%= (typeof(post) !== 'undefined') ? ( (post.post.veg_type == 'vegan') ? 'checked=checked' : '' ) : 'checked=checked' %>>
-                                    Vegansk
-                                </label>
-                            </div>
-
-                            <% include partials/template_parts/category %>
-
-                            <h2>Tillverkare</h2>
-                            <div class="row">
-                                <div class="col-sm-8">
-                                    <div class="input-group">
-                                        <span class="input-group-addon">Företag</span>
-                                        <input type="text" class="form-control" name="manufacturer">
-                                    </div>
-                                    <div class="input-group">
-                                        <span class="input-group-addon">Hemsida</span>
-                                        <input type="text" class="form-control" name="manufacturer_website">
-                                    </div>
-                                </div>
-                            </div>
-
-                            <% include partials/template_parts/other %>
-
-                            <% include partials/template_parts/license %>
-
-                            <hr>
-
-                            <% include partials/template_parts/submit %>
-                        </form>
-                    </article>
-
-                    <% include partials/template_parts/remove %>
-                </div>
-                <div class="col-md-4">
-                    <aside>
-                        <% include partials/sidebar %>
-                    </aside>
-                </div>
+            <h2>Innehåll</h2>
+            <div class="radio">
+              <label>
+                <input type="radio" name="veg_type" value="animal" <%= (typeof(post) !== 'undefined' && post.post.veg_type == 'animal') ? 'checked=checked' : '' %>>
+                Animalisk
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" name="veg_type" value="lacto_ovo" <%= (typeof(post) !== 'undefined' && post.post.veg_type == 'lacto_ovo') ? 'checked=checked' : '' %>>
+                Lakto-ovo vegetarisk
+              </label>
+            </div>
+            <div class="radio">
+              <label>
+                <input type="radio" name="veg_type" value="vegan" <%= (typeof(post) !== 'undefined') ? ( (post.post.veg_type == 'vegan') ? 'checked=checked' : '' ) : 'checked=checked' %>>
+                Vegansk
+              </label>
             </div>
 
-        </section>
+            <% include partials/template_parts/category %>
+
+            <h2>Tillverkare</h2>
+            <div class="row">
+              <div class="col-sm-8">
+                <div class="input-group">
+                  <span class="input-group-addon">Företag</span>
+                  <input type="text" class="form-control" name="manufacturer">
+                </div>
+                <div class="input-group">
+                  <span class="input-group-addon">Hemsida</span>
+                  <input type="text" class="form-control" name="manufacturer_website">
+                </div>
+              </div>
+            </div>
+
+            <% include partials/template_parts/other %>
+
+            <% include partials/template_parts/license %>
+
+            <hr>
+
+            <% include partials/template_parts/submit %>
+          </form>
+        </article>
+
+        <% include partials/template_parts/remove %>
+      </div>
+      <div class="col-md-4">
+        <aside>
+          <% include partials/sidebar %>
+        </aside>
+      </div>
     </div>
+
+  </section>
+</div>
 
 <% include partials/filepush %>
 <% include ../partials/footer %>

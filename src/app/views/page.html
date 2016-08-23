@@ -1,40 +1,40 @@
 <% include partials/header %>
 
-    <div class="container">
-        <section id="main">
-            <div class="row">
-                <div class="col-md-8">
-                    <article>
+<div class="container">
+  <section id="main">
+    <div class="row">
+      <div class="col-md-8">
+        <article>
 
-                        <% include partials/page/pending_moderation %>
+          <% include partials/page/pending_moderation %>
 
-                        <% include partials/page/likes %>
+          <% include partials/page/likes %>
 
-                        <% include partials/page/header_image %>
+          <% include partials/page/header_image %>
 
-                        <div id="<%= post._id %>" class="content">
+          <div id="<%= post._id %>" class="content">
 
-                            <% include partials/page/header_attributes %>
+            <% include partials/page/header_attributes %>
 
-                            <% include partials/page/content %>
+            <% include partials/page/content %>
 
-                            <% include partials/page/rating %>
+            <% include partials/page/rating %>
 
-                            <% include partials/page/contact %>
+            <% include partials/page/contact %>
 
-                        </div>
+          </div>
 
-                        <% include partials/page/sources %>
-                    </article>
+          <% include partials/page/sources %>
+        </article>
 
-                    <% include partials/page/cred %>
+        <% include partials/page/cred %>
 
-                    <% include partials/page/comments %>
-                </div>
+        <% include partials/page/comments %>
+      </div>
 
-                <% include partials/page/sidebar %>
+      <% include partials/page/sidebar %>
 
-            </div>
-        </section>
     </div>
+  </section>
+</div>
 <% include partials/footer %>

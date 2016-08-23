@@ -1,0 +1,42 @@
+<ul class="list-group">
+  <li class="list-group-item list-group-head <% if(typeof active_page !== 'undefined' && active_page === 'index') { %> active <% } %>">
+    <a href="/admin">
+      <span class="glyphicon glyphicon-dashboard"></span> Översikt
+    </a>
+  </li>
+  <li class="list-group-item <% if(typeof active_page !== 'undefined' && active_page === 'users') { %> active <% } %>">
+    <a href="/admin/users">
+      <span class="glyphicon glyphicon-user"></span> Användare
+    </a>
+  </li>
+  <li class="list-group-item <% if(typeof active_page !== 'undefined' && active_page === 'pages') { %> active <% } %>">
+    <a href="/admin/sidor">
+      <span class="glyphicon glyphicon glyphicon-file"></span> Sidor
+    </a>
+  </li>
+  <li class="list-group-item <% if(typeof active_page !== 'undefined' && active_page === 'likes') { %> active <% } %>">
+    <a href="/admin/gillningar">
+      <span class="glyphicon glyphicon glyphicon-heart"></span> Gillningar
+    </a>
+  </li>
+  <li class="list-group-item <% if(typeof active_page !== 'undefined' && active_page === 'ratings') { %> active <% } %>">
+    <a href="/admin/rostningar">
+      <span class="glyphicon glyphicon glyphicon-star"></span> Röstningar
+    </a>
+  </li>
+  <li class="list-group-item <% if(typeof active_page !== 'undefined' && active_page === 'settings') { %> active <% } %>">
+    <a href="/admin/installningar">
+      <span class="glyphicon glyphicon-cog"></span> Inställningar
+    </a>
+  </li>
+  <li class="list-group-item <% if(typeof active_page !== 'undefined' && active_page === 'changes') { %> active <% } %>">
+    <a href="/admin/uppdateringar">
+      <span class="glyphicon glyphicon-time"></span> Granska
+      <% if(typeof(admin) !== 'undefined' && 'changes' in admin) { %>
+        <span class="label label-warning circle">
+                            <%= admin.changes.length %>
+                          </span>
+        <% } %>
+    </a>
+  </li>
+</ul>
