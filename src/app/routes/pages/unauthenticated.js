@@ -119,7 +119,7 @@ module.exports = function (app, resources) {
 
   app.get('/sekretesspolicy', function (req, res, next) {
     var renderObj = extend({}, res.vegosvar)
-    res.render('privacypolicy', renderObj)
+    res.render('privacy-policy', renderObj)
   })
 
   app.get('/logga-ut', function (req, res, next) {
