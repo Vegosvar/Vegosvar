@@ -86,6 +86,27 @@ module.exports = function (app, resources) {
     })
   })
 
+  app.get('/ajax/page/:url', function (req, res) {
+    var query = extend({
+      url: req.params.url
+    }, req.query.query)
+
+    resources.models.page.get(query)
+    .then(function(result) {
+      res.json({
+        success: true,
+        data: result
+      })
+    })
+    .catch(function(err) {
+      console.log(err)
+      res.json({
+        success: false,
+        message: err.message
+      })
+    })
+  })
+
   /** /ajax/imageInfo
   *
   */
