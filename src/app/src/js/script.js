@@ -14,15 +14,9 @@ $(window).load(function () {
 })
 
 $(document).ready(function () {
-  //FastClick.attach(document.body) //Attach FastClick
-
-  //Does this function even do anything?
-  $('.btn-file :file').on('fileselect', function (event, numFiles, label) {
-    //console.log(numFiles)
-    //console.log(label)
-  })
-
-  $('[data-toggle="tooltip"]').tooltip() //Enable tooltips, but do we even use any?
+  if (typeof(FastClick) !== 'undefined') {
+    FastClick.attach(document.body) //Attach FastClick
+  }
 
   if ($('#srch-term').length > 0 && $('#srch-term').val() === '') {
     setSearchFormState()

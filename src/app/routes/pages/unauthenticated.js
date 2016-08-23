@@ -11,6 +11,7 @@ var extend = require('util')._extend
 var Promise = require('promise')
 
 module.exports = function (app, resources) {
+<<<<<<< HEAD
   var utils = resources.utils
 
   app.get('/', function (req, res, next) {
