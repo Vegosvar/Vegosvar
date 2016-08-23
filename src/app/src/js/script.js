@@ -106,9 +106,11 @@ function setSearchFormState() {
 
 // Get search results
 function doTrigger() {
-  if ($('.searchForm').val().length > 2) {
-    var searchTerm = $('.searchForm').val()
-    $.fn.vegosvar.search.query(searchTerm)
+  if ($('.searchForm').length > 0)  {
+    if ($('.searchForm').val().length > 2) {
+      var searchTerm = $('.searchForm').val()
+      $.fn.vegosvar.search.query(searchTerm)
+    }
   }
 }
 
