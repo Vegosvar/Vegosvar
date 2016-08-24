@@ -79,7 +79,7 @@
         <h3 class="subtitle">Nya restauranger & butiker</h3>
         <ul class="page-menu">
           <% if(typeof(establishments) !== 'undefined') {
-                        for (var i = establishments.length - 1; i >= 0; i--) { %>
+            for (var i = establishments.length - 1; i >= 0; i--) { %>
             <li>
               <a href="<%= establishments[i].url %>" class="item">
                 <%= establishments[i].title %>
@@ -91,14 +91,14 @@
                 <%= establishments[i].post.city %>
               </a>
             </li>
+            <% } %>
           <% } %>
-        <% } %>
-      </ul>
-      <div class="bottom-description">
-        Alltid något veganskt
+        </ul>
+        <div class="bottom-description">
+          Alltid något veganskt
+        </div>
       </div>
     </div>
-  </div>
   <div class="col-md-7 col-lg-8 pull-last-sm">
     <section id="hot">
       <h2>
@@ -147,12 +147,12 @@
                     </a>
                   <% } %>
                 <% if (typeof pages[i].post.content !== 'undefined' && pages[i].post.content !== null) {
-                                            if(pages[i].post.content.length > 115) {
-                                                var content = '' + pages[i].post.content.substring(0,115) + '...'
-                                            } else {
-                                                var content = '' + pages[i].post.content
-                                            }
-                                        } %>
+                  if(pages[i].post.content.length > 115) {
+                    var content = '' + pages[i].post.content.substring(0,115) + '...'
+                  } else {
+                    var content = '' + pages[i].post.content
+                  }
+                } %>
                   <p>
                     <% if (pages[i].type === '4') { %>
                       <% if (pages[i].post.veg_type === 'animal') { %>
@@ -205,7 +205,7 @@
 <section id="recipes">
   <div class="row">
     <% if(typeof(recipes) !== 'undefined') {
-                    for (var i = recipes.length - 1; i >= 0; i--) { %>
+      for (var i = recipes.length - 1; i >= 0; i--) { %>
       <div class="col-sm-4">
         <div class="recipe">
           <div class="label">
@@ -213,7 +213,7 @@
           </div>
           <a href="<%= recipes[i].url %>">
             <% if ('post' in recipes[i] && 'cover' in recipes[i].post) {
-                                        if (typeof recipes[i].post.cover !== 'undefined' && recipes[i].post.cover.filename !== null) { %>
+              if (typeof recipes[i].post.cover !== 'undefined' && recipes[i].post.cover.filename !== null) { %>
               <img alt="" src="/uploads/<%= recipes[i].post.cover.filename %>.jpg">
             <% } else { %>
               <img alt="" src="/assets/images/placeholder-2.svg">
@@ -227,19 +227,18 @@
             </a>
 
           <% if ('user_info' in recipes[i] ) {
-
-                                            if (typeof recipes[i].user_info.hidden !== true && 'display_name' in recipes[i].user_info) {
-                                            if (typeof recipes[i].user_info.active_photo === 'undefined') {
-                                                    var avatar_url = '/assets/images/no-picture.svg'
-                                                } else {
-                                                    if(recipes[i].user_info.active_photo === 'vegosvar') {
-                                                        var avatar_url = recipes[i].user_info.vegosvar_photo
-                                                    } else if (recipes[i].user_info.active_photo === 'facebook') {
-                                                        var avatar_url = recipes[i].user_info.fb_photo
-                                                    } else {
-                                                        var avatar_url = '/assets/images/no-picture.svg'
-                                                    }
-                                                } %>
+            if (typeof recipes[i].user_info.hidden !== true && 'display_name' in recipes[i].user_info) {
+              if (typeof recipes[i].user_info.active_photo === 'undefined') {
+                var avatar_url = '/assets/images/no-picture.svg'
+              } else {
+                if(recipes[i].user_info.active_photo === 'vegosvar') {
+                  var avatar_url = recipes[i].user_info.vegosvar_photo
+                } else if (recipes[i].user_info.active_photo === 'facebook') {
+                  var avatar_url = recipes[i].user_info.fb_photo
+                } else {
+                  var avatar_url = '/assets/images/no-picture.svg'
+                }
+            } %>
             <img src="<%= avatar_url %>" class="avatar">
             <span class="credit">
               Recept av
@@ -250,16 +249,15 @@
             <span class="credit">
               Recept av Anonym
             </span>
-          <% }
-                                        } %>
+            <% }
+            } %>
+          </div>
         </div>
-      </a>
+      </div>
+    <% }
+    } %>
     </div>
-  </div>
-<% } %>
-<% } %>
-</div>
-</section>
+  </section>
 
 <div class="card lg visible-xs">
 <h2 class="text-center">Goda nyheter</h2>
@@ -289,8 +287,36 @@ Alltid något veganskt
 
 <% include partials/promotion %>
 
-<% if(typeof pageStats !== 'undefined') { var stats = { places: 0, facts: 0, products: 0, recipes: 0 } for(var group in pageStats) { var groupType = pageStats[group]._id.type var groupCount = pageStats[group].count switch(groupType) { case "1":
-stats.facts += groupCount break case "2": stats.recipes += groupCount break case "4": stats.products += groupCount break case "3": case "5": case "6": stats.places += groupCount break } } %>
+<% if(typeof pageStats !== 'undefined') {
+  var stats = {
+    places: 0,
+    facts: 0,
+    products: 0,
+    recipes: 0
+  };
+
+  for (var group in pageStats) {
+    var type = pageStats[group]._id.type;
+    var count = pageStats[group].count;
+
+    switch(type) {
+      case "1":
+        stats.facts += count;
+        break;
+      case "2":
+        stats.recipes += count;
+        break;
+      case "4":
+        stats.products += count;
+        break;
+      case "3":
+      case "5":
+      case "6":
+        stats.places += count;
+        break;
+    }
+  } %>
+
 <div id="stats">
 <div class="container">
 <div class="row">
