@@ -127,14 +127,6 @@ module.exports = function (app, resources) {
     res.redirect('/')
   })
 
-  //What is this used for?
-  app.get('/handle/votes', function (req, res, next) {
-    resources.queries.getVotes()
-    .then(function(votes) {
-      res.json(votes)
-    })
-  })
-
   app.get('/sitemap.xml', function(req, res, next) {
     var sitemap = resources.sitemap
     var hostname = resources.config.hostname
@@ -212,9 +204,9 @@ module.exports = function (app, resources) {
     if(typeof(req.user) !== 'undefined') {
       if( ! utils.userCheckPrivileged(req.user) ) { //If user is not privileged
         query['$or'] = [{
-          accepted: true //Either page must be published
+          accepted: true //Either page must be published..
         }, {
-          "user_info.id": req.user._id //Or the current user is the user that created the page
+          'user_info.id': req.user._id //..or the current user is the user that created the page
         }]
       }
     } else {
@@ -249,7 +241,7 @@ module.exports = function (app, resources) {
       })
     })
     .then(function(page) {
-      //Check which browser dependencies are needed
+      //Check which browser assets are needed
       var isPlace = (page.type === '3' || page.type === '5' || page.type === '6')
       renderObj.loadMapResources.mapCluster = !isPlace
       renderObj.loadPageResources.youtube = (page.type === '2')
