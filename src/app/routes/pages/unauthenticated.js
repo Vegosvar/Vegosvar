@@ -277,13 +277,16 @@ module.exports = function(app, resources) {
           .then(function(results) {
             if(results.length > 0) {
               var result = results[0];
-              console.log(result);
-              var statistic = result.statistics[0];
+              if('statistics' in result && result.statistics.length > 0) {
+                var statistic = result.statistics[0];
 
-              renderObj.statistics.views = {
-                timestamp: startDate,
-                value: parseInt(statistic.values[0])
-              };
+                if('values' in statistic && statistic.values.length > 0 ) {
+                  renderObj.statistics.views = {
+                    timestamp: startDate,
+                    value: parseInt(statistic.values[0])
+                  };
+                }
+              }
             }
           })
           .catch(function(err) {
