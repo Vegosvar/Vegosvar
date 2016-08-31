@@ -23,7 +23,14 @@ module.exports = {
     client_id: '',
     client_secret: '',
     callback: 'http://local.vegosvar.se/admin/auth/instagram/callback',
-    scope: 'public_content '
+    scope: ['public_content']
+  },
+
+  google: {
+    client_id: '',
+    client_secret: '',
+    callback: 'http://local.vegosvar.se/admin/auth/instagram/callback',
+    scope: ['https://www.googleapis.com/auth/analytics.readonly']
   },
 
   root: path.join(__dirname, '..'),
