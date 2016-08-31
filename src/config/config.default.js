@@ -29,7 +29,7 @@ module.exports = {
   google: {
     client_id: '',
     client_secret: '',
-    callback: 'http://local.vegosvar.se/admin/auth/instagram/callback',
+    callback: 'http://local.vegosvar.se/admin/auth/google/callback',
     scope: ['https://www.googleapis.com/auth/analytics.readonly']
   },
 
