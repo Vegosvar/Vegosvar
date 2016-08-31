@@ -8,10 +8,10 @@ var instance = false
 
 module.exports = {
   connect: function(config, callback) {
-    client.connect(config.database.host+config.database.name, function(err, db){
-        //Make db instance available to the rest of the module
+    client.connect(config.database.host + config.database.name, function(err, db) {
+      //Make db instance available to the rest of the module
       instance = db
-      //Set up db index on pages collection
+        //Set up db index on pages collection
       instance.collection('pages').ensureIndex({
         'url': 'text',
         'title': 'text',
@@ -22,17 +22,17 @@ module.exports = {
         'post.product_type': 'text',
         'post.veg_type': 'text',
         'post.veg_offer': 'text'
-        }, {
-          'weights': {
-            'title': 20,
-            'url': 18,
-            'slug': 15,
-            'post.city': 15,
-            'post.food': 10,
-            'post.product_type': 10,
-            'post.content': 5,
-            'post.veg_type': 3,
-            'post.veg_offer': 1
+      }, {
+        'weights': {
+          'title': 20,
+          'url': 18,
+          'slug': 15,
+          'post.city': 15,
+          'post.food': 10,
+          'post.product_type': 10,
+          'post.content': 5,
+          'post.veg_type': 3,
+          'post.veg_offer': 1
         },
         'default_language': 'sv',
         'name': 'search_index'
@@ -52,7 +52,7 @@ module.exports = {
       query = (query) ? query : false
 
       return new Promise(function(resolve, reject) {
-        if(collection && query) {
+        if (collection && query) {
           instance.collection(collection).aggregate(query).toArray(function(err, result) {
             if (err) {
               reject(err)
@@ -73,7 +73,7 @@ module.exports = {
       limit = (limit) ? limit : 0
 
       return new Promise(function(resolve, reject) {
-        if(collection) {
+        if (collection) {
           instance.collection(collection).find(query, options).sort(sort).limit(limit).toArray(function(err, result) {
             if (err) {
               reject(err)
@@ -91,9 +91,9 @@ module.exports = {
       query = extend({}, query)
 
       return new Promise(function(resolve, reject) {
-        if(collection && query) {
+        if (collection && query) {
           instance.collection(collection).insert(query, function(err, result) {
-            if(err) {
+            if (err) {
               reject(err)
             } else {
               resolve(result)
@@ -109,9 +109,9 @@ module.exports = {
       query = (query) ? query : false
 
       return new Promise(function(resolve, reject) {
-        if(query) {
+        if (query) {
           instance.collection(collection).remove(query, function(err, result) {
-            if(err) {
+            if (err) {
               reject(err)
             } else {
               resolve(result)
@@ -129,9 +129,9 @@ module.exports = {
       options = extend({}, options)
 
       return new Promise(function(resolve, reject) {
-        if(collection && query && update) {
+        if (collection && query && update) {
           instance.collection(collection).update(query, update, options, function(err, result) {
-            if(err) {
+            if (err) {
               reject(err)
             } else {
               resolve(result)
