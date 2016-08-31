@@ -41,7 +41,7 @@ module.exports = function(app, resources) {
             renderObj.pages = pages
           } else {
             //Fall back to old mode
-            resources.models.page.hot()
+            return resources.models.page.hot()
             .then(function(pages) {
               renderObj.pages = pages;
             })
