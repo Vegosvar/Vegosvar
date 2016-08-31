@@ -17,6 +17,7 @@
     "FastClick",
     "require",
     "module",
-    "console"
+    "console",
+    "ga"
   ]
 }
