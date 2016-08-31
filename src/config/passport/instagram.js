@@ -1,7 +1,7 @@
 /** instagram.js
 * @file: /config/passport/instagram.js
 * @description: Handles passport authentication for Instagram strategy
-* @parameters: Object(config)
+* @parameters: Object(resources)
 * @exports: Instagram authentication for Passport
 */
 
@@ -12,6 +12,7 @@ module.exports = function(resources) {
     clientID: resources.config.instagram.client_id,
     clientSecret: resources.config.instagram.client_secret,
     callbackURL: resources.config.instagram.callback,
+    scope: resources.config.instagram.scope,
     passReqToCallback: true
   }, function (req, access_token, refresh_token, profile, done) {
     var settingsdb = resources.collections.settings
