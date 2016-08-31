@@ -5,7 +5,7 @@
  * @exports: Object with model logic
  */
 
- //TODO: Change url to page _id attribute and look it up in the db instead, url might change over time
+//TODO: Change url to page _id attribute and look it up in the db instead, url might change over time
 
 var Promise = require('promise')
 var ObjectID = require('mongodb').ObjectID
@@ -34,8 +34,82 @@ module.exports = function(resources, models) {
     return resources.queries.update('statistics', query, update, options)
   };
 
-  model.getPageRank = function() {
+  model.getPagesRanked = function() {
+    //First look in the local database
+    return resources.queries.find('statistics', {
+        'type': 'rank',
+        'statistics': {
+          '$elemMatch': {
+            'metric.name': 'ga:pageviews',
+            'dimension.name': 'ga:pagePath'
+          }
+        },
+        'timestamp': {
+          '$gte': moment().subtract(1, 'week').toISOString() //Use no more than a week old data
+        }
+      })
+      .then(function(result) {
+        //Did we get anything?
+        if (result.length > 0) {
+          return result;
+        } else {
+          //We got nothing, query Google API
+          var query = {
+            viewId: '112999863',
+            metrics: [{
+              expression: 'ga:pageviews'
+            }],
+            dimensions: [{
+              'name': 'ga:pagePath'
+            }],
+            dimensionFilterClauses: {
+              filters: [{
+                dimensionName: 'ga:pagePath',
+                expressions: [
+                  '^\/[A-Za-z0-9-]{2,}$' //Does not match / or pages starting with query params (e.g. ?s)
+                ]
+              }]
+            },
+            orderBys: [{
+              fieldName: 'ga:pageviews', 'sortOrder': 'DESCENDING'
+            }]
+          };
 
+          return model.query({
+              reportRequests: [query]
+            })
+            .then(function(result) {
+              var parsed = model.parse(result);
+
+              if (parsed.length > 0) {
+                //Save data from Google API to the database
+                return new Promise.all(
+                    parsed.map(function(statistic) {
+                      return model.insert({
+                          statistics: [statistic],
+                          type: 'rank',
+                          query: query,
+                          timestamp: resources.utils.getISOdate()
+                        })
+                        .then(function(doc) {
+                          return doc.ops[0]; //Return the newly inserted document
+                        });
+                    })
+                  )
+                  .then(function(result) {
+                    //return the inserted documents as the result
+                    return result;
+                  })
+              } else {
+                //Otherwise return empty array
+                return [];
+              }
+            })
+            .catch(function(err) {
+              console.error(err);
+            })
+        }
+      })
   };
 
   model.getPageViews = function(url, startDate, endDate) {
@@ -46,12 +120,12 @@ module.exports = function(resources, models) {
     return resources.queries.find('statistics', {
         url: url,
         'statistics.metric': 'ga:pageviews',
-        'dateRange.startDate': {
-          $eq: startDate.toISOString()
+        'query.dateRange.startDate': {
+          $eq: startDate.format('YYYY-MM-DD')
         },
-        'dateRange.endDate': {
+        'query.dateRange.endDate': {
           $exists: true,
-          $eq: endDate.toISOString()
+          $eq: endDate.format('YYYY-MM-DD')
         }
       })
       .then(function(result) {
@@ -60,26 +134,28 @@ module.exports = function(resources, models) {
           return result;
         } else {
           //We got nothing, query Google API
-          return model.query({
-              reportRequests: [{
-                viewId: '112999863',
-                metrics: [{
-                  expression: 'ga:pageviews'
-                }],
-                dimensionFilterClauses: {
-                  filters: [{
-                    dimensionName: 'ga:pagePath',
-                    expressions: [
-                      url
-                    ]
-                  }]
-                },
-                dateRanges: [{
-                  startDate: startDate.format('YYYY-MM-DD'),
-                  endDate: endDate.format('YYYY-MM-DD')
-                }]
+          var query = {
+            viewId: '112999863',
+            metrics: [{
+              expression: 'ga:pageviews'
+            }],
+            dimensionFilterClauses: {
+              filters: [{
+                dimensionName: 'ga:pagePath',
+                expressions: [
+                  url
+                ]
               }]
-            })
+            },
+            dateRanges: [{
+              startDate: startDate.format('YYYY-MM-DD'),
+              endDate: endDate.format('YYYY-MM-DD')
+            }]
+          };
+
+          return model.query({
+            reportRequests: [query]
+          })
             .then(function(result) {
               //Parse results from Google API to a more convenient format
               var parsed = model.parse(result);
@@ -92,10 +168,8 @@ module.exports = function(resources, models) {
                       return model.insert({
                           url: url,
                           statistics: [statistic],
-                          dateRange: {
-                            startDate: startDate.toISOString(),
-                            endDate: endDate.toISOString()
-                          }
+                          query: query,
+                          timestamp: resources.utils.getISOdate()
                         })
                         .then(function(doc) {
                           return doc.ops[0]; //Return the newly inserted document
@@ -121,14 +195,27 @@ module.exports = function(resources, models) {
         if (report && 'data' in report) {
           if (report.data.rowCount > 0) {
             report.data.rows.forEach(function(row) {
-              row.metrics.forEach(function(metric, index) {
-                var metricName = report.columnHeader.metricHeader.metricHeaderEntries[index].name
+              var statistic = {};
 
-                array.push({
-                  metric: metricName,
-                  values: metric.values
+              if('dimensions' in row) {
+                row.dimensions.forEach(function(value, index) {
+                  statistic.dimension = {
+                    name: report.columnHeader.dimensions[index],
+                    value: value
+                  };
+                })
+              }
+
+              if('metrics' in row) {
+                row.metrics.forEach(function(metric, index) {
+                  statistic.metric = {
+                    name: report.columnHeader.metricHeader.metricHeaderEntries[index].name,
+                    value:  metric.values
+                  }
                 });
-              });
+              }
+
+              array.push(statistic);
             });
           }
         }
@@ -171,7 +258,7 @@ module.exports = function(resources, models) {
               switch (error.code) {
                 case 401:
                   //Access code has expired, refresh it and try again
-                  console.log('401');
+                  console.error('401');
                   var tokens = oauth2Client.credentials;
                   return model.refreshTokens(tokens)
                     .then(function(tokens) {
@@ -180,7 +267,7 @@ module.exports = function(resources, models) {
                     })
                   break;
                 default:
-                  break;
+                  throw new Error(error);
               }
             }
           })
@@ -236,10 +323,10 @@ module.exports = function(resources, models) {
         oauth2Client.refreshAccessToken(function(err, tokens) {
           if (err) {
             if ('Error' in err) {
-              console.log(err.Error);
+              console.error(err.Error);
               switch (err.Error) {
                 case 'invalid_grant':
-                  console.log('Should fire off an email to the admin right about now');
+                  console.error('Should fire off an email to the admin right about now');
                   break;
                 default:
                   break;
