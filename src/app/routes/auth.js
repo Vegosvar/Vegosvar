@@ -63,7 +63,7 @@ module.exports = function(app, resources) {
         var refresh_token = params.refresh_token;
         var expires_in = params.expires_in;
 
-        return resources.models.settings.update({
+        return resources.models.setting.update({
           'google': {
             $exists: true
           }
