@@ -5,6 +5,8 @@
  * @exports: Object with model logic
  */
 
+ //TODO: Change url to page _id attribute and look it up in the db instead, url might change over time
+
 var Promise = require('promise')
 var ObjectID = require('mongodb').ObjectID
 var moment = require('moment');
@@ -32,8 +34,12 @@ module.exports = function(resources, models) {
     return resources.queries.update('statistics', query, update, options)
   };
 
+  model.getPageRank = function() {
+
+  };
+
   model.getPageViews = function(url, startDate, endDate) {
-    startDate = moment(startDate)
+    startDate = moment(startDate);
     endDate = (endDate) ? moment(endDate) : moment();
 
     //First look in the local database
@@ -51,12 +57,10 @@ module.exports = function(resources, models) {
       .then(function(result) {
         //Did we get anything?
         if (result.length > 0) {
-          //TODO: Maybe handle result better before returning
           return result;
         } else {
           //We got nothing, query Google API
-
-          model.query({
+          return model.query({
               reportRequests: [{
                 viewId: '112999863',
                 metrics: [{
@@ -77,23 +81,35 @@ module.exports = function(resources, models) {
               }]
             })
             .then(function(result) {
+              //Parse results from Google API to a more convenient format
               var parsed = model.parse(result);
-              //Save it to the database
 
+              //Check if we have anything of value
               if (parsed.length > 0) {
-                parsed.forEach(function(statistic) {
-                  model.insert({
-                    url: url,
-                    statistics: statistic,
-                    dateRange: {
-                      startDate: startDate.toISOString(),
-                      endDate: endDate.toISOString()
-                    }
-                  });
-                });
+                //Save data from Google API to the database
+                return new Promise.all(
+                    parsed.map(function(statistic) {
+                      return model.insert({
+                          url: url,
+                          statistics: [statistic],
+                          dateRange: {
+                            startDate: startDate.toISOString(),
+                            endDate: endDate.toISOString()
+                          }
+                        })
+                        .then(function(doc) {
+                          return doc.ops[0]; //Return the newly inserted document
+                        });
+                    })
+                  )
+                  .then(function(result) {
+                    //return the inserted documents as the result
+                    return result;
+                  })
+              } else {
+                //Otherwise return empty array
+                return [];
               }
-              //TODO: Maybe handle result better before returning
-              return result;
             })
         }
       });
