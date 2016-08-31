@@ -49,11 +49,9 @@ module.exports = function(resources, models) {
         }
       })
       .then(function(result) {
-        console.log(result);
         //Did we get anything?
         if (result.length > 0) {
           //TODO: Maybe handle result better before returning
-          console.log('result found');
           return result;
         } else {
           //We got nothing, query Google API
@@ -243,8 +241,6 @@ module.exports = function(resources, models) {
         var timestamp = (new Date(tokens.expiry_date)).getTime();
         var date = (new Date()).getTime()
         var expires_in = parseInt((timestamp - date) / 1000);
-
-        console.log(tokens);
 
         return resources.models.setting.update({
             'google': {
