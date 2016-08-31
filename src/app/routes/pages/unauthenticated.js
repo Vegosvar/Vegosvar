@@ -36,7 +36,7 @@ module.exports = function(app, resources) {
         }),
         //Get the pages for 'Hett just nu'
         //resources.models.page.hot()
-        resources.models.page.hot_ranke()
+        resources.models.page.hot_ranked()
         .then(function(pages) {
           //console.log(pages);
           renderObj.pages = pages
