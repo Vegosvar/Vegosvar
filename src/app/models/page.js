@@ -88,6 +88,10 @@ module.exports = function(resources, models) {
           }
         })
         .then(function(pages) {
+          if(!pages) {
+            return [];
+          }
+
           return pages.reduce(function(pages, page, index) {
             if(index < 9) {
               pages.push(page);
