@@ -35,11 +35,17 @@ module.exports = function(app, resources) {
           renderObj.pageStats = pages
         }),
         //Get the pages for 'Hett just nu'
-        //resources.models.page.hot()
         resources.models.page.hot_ranked()
         .then(function(pages) {
-          //console.log(pages);
-          renderObj.pages = pages
+          if(pages.length > 0) {
+            renderObj.pages = pages
+          } else {
+            //Fall back to old mode
+            resources.models.page.hot()
+            .then(function(pages) {
+              renderObj.pages = pages;
+            })
+          }
         }),
         //Get the new restaurants, cafees and shops for the 'Goda nyheter' sidebar
         resources.models.page.newPlaces()
