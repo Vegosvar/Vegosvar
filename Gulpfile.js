@@ -19,7 +19,7 @@ var postcss_url = require('postcss-url')({
       return url
     }
 
-    return '../images/' + url 
+    return '../images/' + url
   }
 })
 
@@ -34,16 +34,16 @@ var sequence_error = function (callback, error) {
 
 var paths = {
   js: [
-    'src/app/src/**/*.js'
+    'src/app/assets/**/*.js'
   ],
 
   less: [
-    'src/app/src/less/**/*.less',
+    'src/app/assets/less/**/*.less',
     'bower_components/bootstrap-multiselect/dist/less/bootstrap-multiselect.less'
   ],
 
   images: [
-    'src/app/src/images/**/*',
+    'src/app/assets/images/**/*',
   ]
 }
 
@@ -189,7 +189,7 @@ gulp.task('less', function () {
         .pipe(plugins.sourcemaps.write('maps'))
         .pipe(gulp.dest('src/public/assets/css'))
 })
-  
+
 gulp.task('images', function () {
   return gulp.src(paths.images)
         .pipe(gulp.dest('src/public/assets/images'))
