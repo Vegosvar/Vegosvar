@@ -39,6 +39,10 @@ module.exports = function(resources, models) {
     hot_ranked: function() {
       return resources.models.statistic.getPagesRanked()
       .then(function(result) {
+        if(!result) {
+          return [];
+        }
+
         /* TODO: Could probably just grab all the statically defined routes
          * i.e. all routes except :url and use that as blacklist,
          * however, that would require that the models could read the express object, which is not possible atm.
