@@ -75,7 +75,7 @@ module.exports = function(app, resources) {
             timestamp: resources.utils.getISOdate()
           }
         }, {
-          new: true
+          upsert: true
         })
         .then(function(result) {
           res.redirect('/admin/installningar?google_access_token_updated=true')
