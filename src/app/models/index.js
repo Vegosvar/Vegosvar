@@ -22,6 +22,8 @@ module.exports = function(resources) {
   models.category = require('./category')(resources, models)
   models.city = require('./city')(resources, models)
   models.image = require('./image')(resources, models)
+  models.setting = require('./setting')(resources, models)
+  models.statistic = require('./statistic')(resources, models)
 
   return models
 
