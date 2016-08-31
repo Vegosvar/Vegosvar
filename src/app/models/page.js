@@ -11,7 +11,7 @@ var extend = require('util')._extend
 var striptags = require('striptags')
 
 module.exports = function(resources, models) {
-  return pageModel = {
+  return {
     aggregate: function(query) {
       return resources.queries.aggregate('pages', query)
     },
@@ -28,13 +28,79 @@ module.exports = function(resources, models) {
       return resources.queries.aggregate('pages', [{
         $group: {
           _id: {
-             type: "$type"
+             type: '$type'
           },
           count: {
             $sum: 1
           }
         }
       }])
+    },
+    hot_ranked: function() {
+      return resources.models.statistic.getPagesRanked()
+      .then(function(result) {
+        /* TODO: Could probably just grab all the statically defined routes
+         * i.e. all routes except :url and use that as blacklist,
+         * however, that would require that the models could read the express object, which is not possible atm.
+         */
+        var blacklist = ['logga-in', 'mina-sidor', 'ny$', 'ny\/*.{4,10}', 'installningar', 'admin\/*'];
+
+        var urls = result.reduce(function(urls, doc) {
+          if(doc && 'statistics' in doc) {
+            if(doc.statistics.length > 0) {
+              var statistic = doc.statistics[0];
+
+              if('dimension' in statistic) {
+                if('value' in statistic.dimension) {
+                  //Get the url of the page
+                  var url = statistic.dimension.value.substr(1);
+
+                  //Check if url is in blacklist
+                  var inBlacklist = false;
+
+                  blacklist.forEach(function(value) {
+                    var regexp = new RegExp(value)
+                    var match = url.match(regexp);
+
+                    if(match !== null) {
+                      inBlacklist = true;
+                    }
+                  })
+
+                  if(!inBlacklist) {
+                    urls.push(url);
+                  }
+                }
+              }
+            }
+          }
+
+          return urls;
+        }, []);
+
+        return resources.queries.find('pages', {
+          url: {
+            $in: urls
+          }
+        })
+        .then(function(pages) {
+          return pages.reduce(function(pages, page, index) {
+            if(index < 9) {
+              pages.push(page);
+            }
+
+            return pages;
+          }, [])
+          .filter(function(page) {
+            if('post' in page && 'content' in page.post) {
+              //Strip all html tags except for br and p from content
+              page.post.content = striptags(page.post.content, ['br','p'])
+              page.post.content = (page.post.content.length > 115) ? page.post.content.substr(0, 115) + '...' : page.post.content
+              return page
+            }
+          })
+        })
+      });
     },
     hot: function() {
       return resources.queries.find('pages',
@@ -116,7 +182,7 @@ module.exports = function(resources, models) {
         }))
       })
     },
-    delete: function(page_id) {
+    delete: function(query) {
       return resources.queries.update('pages', query, {
         delete: true,
         'timestamp.updated': resources.utils.getISOdate()
@@ -134,10 +200,10 @@ module.exports = function(resources, models) {
               ]
             },
             {
-              "post.city": page.post.city
+              'post.city': page.post.city
             },
             {
-              "_id": {
+              '_id': {
                 $ne: page._id
               }
             }
@@ -267,17 +333,17 @@ module.exports = function(resources, models) {
 
           var projectQuery = {
             $project: {
-              "score": {
+              'score': {
                   $meta: 'textScore'
               },
-              "title": "$title",
-              "url": "$url",
-              "slug": "$slug",
-              "type": "$type",
-              "post": "$post",
-              "user_info": "$user_info",
-              "rating": "$rating",
-              "timestamp": "$timestamp"
+              'title': '$title',
+              'url': '$url',
+              'slug': '$slug',
+              'type': '$type',
+              'post': '$post',
+              'user_info': '$user_info',
+              'rating': '$rating',
+              'timestamp': '$timestamp'
             }
           }
 
@@ -324,7 +390,7 @@ module.exports = function(resources, models) {
       stringArray = stringArray.filter(function(string) {
         if(resources.utils.isPageType(string) !== false) {
           //Restrict page type to the one matching current string
-          searchObj.query.$match['type'] = resources.utils.typeNumberFromName(string)
+          searchObj.query.$match.type = resources.utils.typeNumberFromName(string)
           searchObj.searchString = resources.utils.removePatterFromString(searchObj.searchString, string)
         } else {
           return string
@@ -391,7 +457,7 @@ module.exports = function(resources, models) {
 
         for(var userObj in data.user_info.contributors) {
           var userObjId = data.user_info.contributors[userObj].id
-          if(String(user_id) == String(userObjId)) {
+          if(String(user_id) === String(userObjId)) {
             userHasContributed = true
           }
         }
