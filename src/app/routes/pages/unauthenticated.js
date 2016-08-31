@@ -9,6 +9,7 @@ var ObjectID = require('mongodb').ObjectID
 var striptags = require('striptags')
 var extend = require('util')._extend
 var Promise = require('promise')
+var moment = require('moment');
 
 module.exports = function(app, resources) {
   var utils = resources.utils
@@ -197,15 +198,12 @@ module.exports = function(app, resources) {
       striptags: striptags,
       post: null,
       establishments: [],
+      statistics: []
     }, res.vegosvar)
 
-    resources.models.statistic.getPageViews(req.params.url, '2016-06-01', '2016-06-30')
-      .then(function(result) {
-        //console.log(result);
-      })
-      .catch(function(err) {
-        //console.error(err);
-      })
+    var today = moment();
+    var startDate = moment(today.startOf('month')).format('YYYY-MM-DD');
+    var endDate = moment().format('YYYY-MM-DD');
 
     var query = {
       url: req.params.url
@@ -222,6 +220,8 @@ module.exports = function(app, resources) {
     } else {
       query.accepted = true //If anonymous user then the page must be published
     }
+
+    //TODO: Make a Promise.all function instead of adding .then to the page query
 
     //TODO, merge the 2 queries to get page and user into a function in models/page.js,
     //also, remove dependency on renderObj.user_info, extend the object in renderObj.post.user_info instead
@@ -258,11 +258,26 @@ module.exports = function(app, resources) {
 
         //Get places in the same city for the sidebar, if this page is for a restaurant, cafe or shop
         if (isPlace) {
-          resources.models.page.nearbyEstablishments(page)
+          return resources.models.page.nearbyEstablishments(page)
             .then(function(establishments) {
               renderObj.establishments = establishments
             })
         }
+      })
+      .then(function() {
+        return resources.models.statistic.getPageViews(req.params.url, startDate, endDate)
+          .then(function(results) {
+            var result = results[0];
+            var statistic = result.statistics[0];
+
+            renderObj.statistics.views = {
+              timestamp: startDate,
+              value: parseInt(statistic.values[0])
+            };
+          })
+          .catch(function(err) {
+            console.error(err);
+          })
       })
       .then(function() {
         res.render('page', renderObj)
