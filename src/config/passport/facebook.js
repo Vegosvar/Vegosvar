@@ -1,7 +1,7 @@
 /** facebook.js
 * @file: /config/passport/facebook.js
 * @description: Handles passport authentication for Facebook strategy
-* @parameters: Object(config)
+* @parameters: Object(resources)
 * @exports: Facebook authentication for Passport
 */
 
