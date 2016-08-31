@@ -10,21 +10,57 @@
         <article>
           <h1 class="no-margin-top">Inställningar</h1>
 
-          <h2>Instagram</h2>
           <div>
-            <% if(typeof(instagram) !== 'undefined') { %>
-              <strong>Access token senast uppdaterad:
-              </strong>
-              <p><%= instagram %></p>
-            <% } else { %>
-              <strong>Ingen access token finns!</strong>
-              <p>Klicka på
-                <em>Generera Access Token</em>
-                för att skapa en!</p>
-            <% } %>
+            <h2>Instagram</h2>
+            <div>
+              <% if(typeof(instagram) !== 'undefined') { %>
+                <strong>Access token senast uppdaterad:
+                </strong>
+                <p><%= instagram %></p>
+              <% } else { %>
+                <strong>Ingen access token finns!</strong>
+                <p>
+                  Klicka på
+                  <em>Generera Access Token</em>
+                  för att skapa en!
+                </p>
+              <% } %>
+            </div>
+            <div>
+              <a href="/admin/auth/instagram" class="btn btn-primary">Generera Access Token</a>
+            </div>
           </div>
-          <div>
-            <a href="/admin/auth/instagram" class="btn btn-primary">Generera Access Token</a>
+          <div class="row">
+            <div class="col-xs-12">
+              <h2>Google API</h2>
+              <div>
+                <% if(typeof(google) !== 'undefined') { %>
+                  <strong>Access token senast uppdaterad:
+                  </strong>
+                  <p><%= google %></p>
+                <% } else { %>
+                  <strong>Ingen access token finns!</strong>
+                  <p>
+                    Klicka på
+                    <em>Generera Access Token</em>
+                    för att skapa en!
+                  </p>
+                <% } %>
+              </div>
+              <a href="/admin/auth/google" class="btn btn-primary">Generera Access Token</a>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <h3>Återkalla Access Token</h3>
+              <% if(typeof(google) !== 'undefined') { %>
+                <p>
+                  <strong>OBS! Gör enbart detta om du måste!</strong>
+                </p>
+                <p class="text-muted">Alla Google API förfrågningar slutar fungera när Access Token återkallas.</p>
+                <a href="/admin/auth/google/revoke">Återkalla Access Token</a>
+              <% } %>
+            </div>
           </div>
         </article>
       </div>
