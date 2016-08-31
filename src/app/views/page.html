@@ -14,7 +14,11 @@
 
           <div id="<%= post._id %>" class="content">
 
+            <!-- TODO: Create a partial for statistics -->
+            <div title="Sidvisningar den här månaden"><span class="glyphicon glyphicon-calendar"></span> <%= statistics.views.value %></div>
+
             <% include partials/page/header_attributes %>
+
 
             <% include partials/page/content %>
 

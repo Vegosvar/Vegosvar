@@ -267,13 +267,15 @@ module.exports = function(app, resources) {
       .then(function() {
         return resources.models.statistic.getPageViews(req.params.url, startDate, endDate)
           .then(function(results) {
-            var result = results[0];
-            var statistic = result.statistics[0];
+            if(results.length > 0) {
+              var result = results[0];
+              var statistic = result.statistics[0];
 
-            renderObj.statistics.views = {
-              timestamp: startDate,
-              value: parseInt(statistic.values[0])
-            };
+              renderObj.statistics.views = {
+                timestamp: startDate,
+                value: parseInt(statistic.values[0])
+              };
+            }
           })
           .catch(function(err) {
             console.error(err);
