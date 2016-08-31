@@ -10,7 +10,7 @@ module.exports = function (app, resources) {
   require('./setup')(app, resources)
 
   //Auth routes
-  require('./auth')(app)
+  require('./auth')(app, resources)
 
   //Ajax routes
   require('./ajax/privileged')(app, resources)
