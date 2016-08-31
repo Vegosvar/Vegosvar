@@ -277,6 +277,7 @@ module.exports = function(app, resources) {
           .then(function(results) {
             if(results.length > 0) {
               var result = results[0];
+              console.log(result);
               var statistic = result.statistics[0];
 
               renderObj.statistics.views = {

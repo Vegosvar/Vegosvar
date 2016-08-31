@@ -93,7 +93,7 @@ module.exports = function(app, resources) {
   app.get('/admin/auth/google/revoke', function(req, res, next) {
     var request = require('request')
 
-    return resources.models.settings.get({
+    return resources.models.setting.get({
       'google': {
         $exists: true
       }

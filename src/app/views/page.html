@@ -15,7 +15,7 @@
           <div id="<%= post._id %>" class="content">
 
             <!-- TODO: Create a partial for statistics -->
-            <% if(statistics) { %>
+            <% if(statistics && 'views' in statistics) { %>
               <div title="Sidvisningar den här månaden"><span class="glyphicon glyphicon-calendar"></span> <%= statistics.views.value %></div>
             <% } %>
 
