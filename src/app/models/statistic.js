@@ -99,7 +99,7 @@ module.exports = function(resources, models) {
       });
   };
 
-  model.parse = function(response, query) {
+  model.parse = function(response) {
     if (response && 'reports' in response) {
       var parsed = response.reports.reduce(function(array, report) {
         if (report && 'data' in report) {
@@ -110,8 +110,7 @@ module.exports = function(resources, models) {
 
                 array.push({
                   metric: metricName,
-                  values: metric.values,
-                  query: query
+                  values: metric.values
                 });
               });
             });
