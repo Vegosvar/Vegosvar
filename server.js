@@ -15,6 +15,8 @@ var express = require('express')
 var numCores = require('os').cpus().length
 var cluster = require('cluster')
 
+var mkdirp = require('mkdirp');
+
 if (cluster.isMaster) {
   // Fork workers.
   for (var i = 0; i < numCores; i++) {
@@ -27,6 +29,12 @@ if (cluster.isMaster) {
   })
 
 } else {
+  //Create uploads folders
+  var paths = [config.uploads, config.uploads + '/avatar/facebook', config.uploads + '/avatar/vegosvar'];
+  paths.forEach(path => {
+    mkdirp(path);
+  })
+
   db.connect(config, function (dbinstance) {
     var app = express()
 
