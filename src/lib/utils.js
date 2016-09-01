@@ -46,7 +46,7 @@ module.exports = {
         return "&#" + str.charCodeAt(0) + ";"
     })
   },
-  returnUrl: function(req, noRedirect) {
+  returnUrl: function(req, blacklist) {
     var url = '/'
     previousUrl = req.headers.referer
     host = req.headers.host
@@ -55,7 +55,7 @@ module.exports = {
     if(typeof(previousUrl) !== 'undefined') {
       if(previousUrl.indexOf(host) >= 0) {
         var page = ( previousUrl.substr(previousUrl.indexOf(host) + host.length) )
-        if (noRedirect && noRedirect.indexOf(page.substr(1)) === -1) {
+        if (blacklist && blacklist.indexOf(page.substr(1)) === -1) {
           url = page
         }
 
