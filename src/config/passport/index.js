@@ -18,7 +18,7 @@ module.exports = function (app, resources) {
   //passport.use(InstagramStrategy)
 
   passport.serializeUser(function (req, user, done) {
-    done(null, user.id)
+    done(null, user._id)
   })
 
   // TODO error handling etc
