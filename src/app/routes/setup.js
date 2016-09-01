@@ -19,7 +19,7 @@ module.exports = function (app, resources) {
     }
   })
 
-  // middleware which blocks requests when we're too busy 
+  // middleware which blocks requests when we're too busy
   app.use(function(req, res, next) {
     if (resources.toobusy()) {
       res.status(503).send('Pust! Vegosvar är under hög belastning just nu. Försök att ladda om sidan igen!')
@@ -29,20 +29,20 @@ module.exports = function (app, resources) {
   })
 
   app.get('/*', function (req, res, next) {
-    var noRedirect = ['logga-in','logga-ut', 'ajax', 'recensera', 'auth', 'uploads']
+    var blacklist = ['logga-in', 'logga-ut', 'ajax', 'recensera', 'auth', 'uploads']
     var canRedirectTo = true
     var path = req.originalUrl.split("?").shift()
 
     if(path !== '/') {
       path = path.split('/')[1]
-      for (var i = noRedirect.length - 1; i >= 0; i--) {
-        if(noRedirect[i].indexOf(path) !== -1) {
+      blacklist.forEach(function(entry) {
+        if(entry.indexOf(path) !== -1) {
           canRedirectTo = false
         }
-      }
+      });
 
       if(canRedirectTo) {
-        req.session.returnTo = utils.returnUrl(req)
+        req.session.returnTo = utils.returnUrl(req, blacklist)
       } else {
         //Either reuse previous value or redirect to front page
         req.session.returnTo = (req.session.returnTo) ? req.session.returnTo : '/'
