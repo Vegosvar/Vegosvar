@@ -1,14 +1,13 @@
-$(window).load(function () {
-  $(document).on('click', '.star', function () {
-    var container = $(this).parent()
-    var postId = $(container).data('id')
-    var content = $(this).index() + 1
-    var element = this
+$(document).on('click', '.star', function () {
+  var container = $(this).parent()
+  var postId = $(container).data('id')
+  var content = $(this).index() + 1
+  var element = this
 
-    $(element).addClass('push') //Add the push class
+  $(element).addClass('push') //Add the push class
 
-    //Update vote count
-    $.ajax({
+  //Update vote count
+  $.ajax({
       url: '/ajax/addVote',
       timeout: 3000,
       data: {
@@ -16,7 +15,7 @@ $(window).load(function () {
         content: content
       }
     })
-    .done(function (result) {
+    .then(function (result) {
       if ('success' in result && result.success) {
         //Remove active class from stars
         $(container).children('.star').removeClass('active')
@@ -35,41 +34,49 @@ $(window).load(function () {
             $(element).removeClass('push')
 
             setTimeout(function (element) {
-              $(element).addClass('active push') //Add active and push class to indicate new result
+                $(element).addClass('active push') //Add active and push class to indicate new result
 
-              //And remove it when animation ends
-              $(element).one('animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd', function (e) {
-                $(element).removeClass('push')
-              })
-            }, 100 * i, element) //Wait 100 ms between each star
+                //And remove it when animation ends
+                $(element).one('animationend webkitAnimationEnd oAnimationEnd MSAnimationEnd', function (e) {
+                  $(element).removeClass('push')
+                })
+              }, 100 * i, element) //Wait 100 ms between each star
           })
         })
       } else {
         var error = ('message' in result) ? result.message : 'Malformed data received from server'
-        throw new Error(error)
+
+        switch (error.toLowerCase()) {
+          case 'access denied':
+            window.location.href = '/recensera'
+            break
+          default:
+            console.error(error)
+            break
+        }
       }
     })
     .fail(function (error) {
       //TODO handle failure
-      console.log(error)
     })
+})
+
+$('.like.add-like').on('click', function () {
+  var element = this
+  var postId = $(element).data('id')
+
+  var heartElement = $(element).find('.glyphicon')
+
+  //Remoe all glyphicon classes
+  $(heartElement).removeClass(function (index, css) {
+    return (css.match(/(^|\s)glyphicon\S+/g) || []).join(' ')
   })
 
-  $('.like.add-like').on('click', function () {
-    var element = this
-    var postId = $(element).data('id')
+  //Show a spinner to indicate to the user that something's going on
+  $(heartElement).addClass('fa fa-spin fa-spinner')
 
-    var heartElement = $(element).find('.glyphicon')
-
-    //Remoe all glyphicon classes
-    $(heartElement).removeClass(function (index, css) {
-      return (css.match (/(^|\s)glyphicon\S+/g) || []).join(' ')
-    })
-    //Show a spinner to indicate to the user that something's going on
-    $(heartElement).addClass('fa fa-spin fa-spinner')
-
-    //Update the like count
-    $.ajax({
+  //Update the like count
+  $.ajax({
       url: '/ajax/addLike',
       timeout: 3000,
       data: {
@@ -99,14 +106,11 @@ $(window).load(function () {
       }
     })
     .fail(function (error) {
-      console.log(error)
       $(heartElement).addClass('glyphicon-warning-sign')
       $(element).find('.count').html('Ett fel intr&auml;ffade')
     })
-  })
 
   $('.like.toggle-hint').on('click', function (e) {
     $(this).parent().find('.hint').toggleClass('active')
   })
-
 })
