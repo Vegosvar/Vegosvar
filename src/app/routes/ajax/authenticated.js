@@ -89,7 +89,6 @@ module.exports = function (app, resources) {
       return resources.models.vote.getAverage(post_id)
     })
     .then(function(result) {
-      console.log(result)
       //And set it to the page document
       return resources.models.page.update({
         _id: post_id
@@ -132,18 +131,16 @@ module.exports = function (app, resources) {
     var post_id
 
     //Verify that everything looks correct before doing any database operations
-    new Promise.all([
-      new Promise(function(resolve, reject) {
-        //Check that variables are set and valid
-        post_id = (req.query.id) ? new ObjectID(req.query.id) : false
+    new Promise(function(resolve, reject) {
+      //Check that variables are set and valid
+      post_id = (req.query.id) ? new ObjectID(req.query.id) : false
 
-        if(post_id) {
-          resolve()
-        } else {
-          reject()
-        }
-      })
-    ])
+      if(post_id) {
+        resolve()
+      } else {
+        reject()
+      }
+    })
     .then(function() {
       return resources.models.like.get({
         'post.id': post_id,
