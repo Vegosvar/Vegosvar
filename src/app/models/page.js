@@ -177,7 +177,9 @@ module.exports = function(resources, models) {
             })
             .then(function(users) {
               if(users.length > 0) {
-                return extend(recipe.user_info, users[0])
+                var user_info = extend(recipe.user_info, users[0]);
+                recipe.user_info = user_info;
+                return recipe;
               } else {
                 //User account was not found, set user_info to hidden to show user as anonymous
                 recipe.user_info.hidden = true
