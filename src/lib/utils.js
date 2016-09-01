@@ -46,20 +46,27 @@ module.exports = {
         return "&#" + str.charCodeAt(0) + ";"
     })
   },
-  returnUrl: function(req) {
+  returnUrl: function(req, noRedirect) {
     var url = '/'
     previousUrl = req.headers.referer
     host = req.headers.host
 
+
     if(typeof(previousUrl) !== 'undefined') {
       if(previousUrl.indexOf(host) >= 0) {
         var page = ( previousUrl.substr(previousUrl.indexOf(host) + host.length) )
-        url = page
+        if (noRedirect && noRedirect.indexOf(page.substr(1)) === -1) {
+          url = page
+        }
 
         if ( req.session.returnTo !== 'undefined' ) {
           if( req.originalUrl.indexOf('.') === -1 ) { //Fix for not redirecting to an image or something
             url = req.originalUrl
+          } else {
+            url = req.session.returnTo
           }
+        } else {
+          url = '/' //If all else fails, return to start page
         }
       } else {
         url = req.originalUrl
