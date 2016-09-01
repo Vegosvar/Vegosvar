@@ -164,7 +164,7 @@ module.exports = function(resources, models) {
         {
           _id: -1 //Sort descendingly based on created
         },
-        3
+        6
       )
       .then(function(recipes) {
         //Get the user whom created each recipe
