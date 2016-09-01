@@ -47,7 +47,7 @@ module.exports = function(resources, models) {
          * i.e. all routes except :url and use that as blacklist,
          * however, that would require that the models could read the express object, which is not possible atm.
          */
-        var blacklist = ['logga-in', 'mina-sidor', 'ny$', 'ny\/*.{4,10}', 'installningar', 'admin\/*'];
+        var blacklist = ['logga-in', 'logga-ut', 'recensera', 'mina-sidor', 'ny$', 'ny\/*.{4,10}', 'installningar', 'admin\/*'];
 
         var urls = result.reduce(function(urls, doc) {
           if(doc && 'statistics' in doc) {
