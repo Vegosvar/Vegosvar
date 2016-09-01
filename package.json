@@ -20,6 +20,7 @@
     "gulp-bower": "0.0.13",
     "main-bower-files": "^2.11.1",
     "md5": "^2.0.0",
+    "mkdirp": "^0.5.1",
     "moment": "^2.14.1",
     "mongodb": "^2.0.49",
     "monk": "^1.0.1",
