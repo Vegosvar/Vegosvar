@@ -26,7 +26,7 @@ module.exports = function(resources) {
     })
     .then((users) => {
       if(users && users.length > 0) {
-        let user = users[0];
+        var user = users[0];
 
         //Check if facebook photo has been updated
         if(user.active_photo === 'facebook') {
