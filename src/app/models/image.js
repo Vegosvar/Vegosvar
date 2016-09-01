@@ -9,6 +9,8 @@ var Promise = require('promise')
 var ObjectID = require('mongodb').ObjectID
 var busboy = require('connect-busboy')
 var md5 = require('md5')
+var request = require('request')
+var fs = require('fs')
 
 module.exports = function(resources, models) {
 
@@ -85,7 +87,7 @@ module.exports = function(resources, models) {
         })
       })
       .then(function(file) {
-        var filePath = resources.config.uploads + '/avatar/' + user_id + '_raw.jpg'
+        var filePath = resources.config.uploads + '/avatar/vegosvar/' + user_id + '_raw.jpg'
         return resources.utils.writeFile(file, filePath)
       })
       .then(function() {
@@ -102,11 +104,27 @@ module.exports = function(resources, models) {
           _id : user_id
         }, {
           $set: {
-            active_photo: 'vegosvar', // This can be fb or vegosvar, later gr. For easy switching later on
-            vegosvar_photo: '/avatar/' + req.user._id + '.jpg'
+            active_photo: 'vegosvar',
+            vegosvar_photo: '/avatar/vegosvar/' + req.user._id + '.jpg'
           }
         })
       })
+    },
+    //TODO: Maybe move this function into utils instead
+    downloadFile: function(url, filePath) {
+      return new Promise(function(resolve, reject) {
+        var fstream = fs.createWriteStream(resources.config.uploads + filePath)
+
+        fstream.on('open', function() {
+          request.get(url).pipe(fstream)
+        })
+        .on('close', function() {
+          resolve(filePath)
+        })
+        .on('error', function() {
+          reject();
+        })
+      });
     }
   }
 }
