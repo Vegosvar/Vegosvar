@@ -172,7 +172,7 @@ module.exports = {
       var fstream = fs.createWriteStream(filePath)
 
       fstream.on('open', function() {
-        request.get(url).pipe(fstream)
+        request.get(file).pipe(fstream)
       })
       .on('close', function() {
         resolve(filePath)
