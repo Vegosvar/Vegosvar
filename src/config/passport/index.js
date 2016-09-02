@@ -18,15 +18,29 @@ module.exports = function (app, resources) {
   //passport.use(InstagramStrategy)
 
   passport.serializeUser(function (req, user, done) {
-    done(null, user._id)
+    if(user && '_id' in user) {
+      done(null, user._id);
+    } else {
+      var error = new Error('Unable to serialize user because of missing ID')
+      done(error, null);
+    }
   })
 
   // TODO error handling etc
   passport.deserializeUser(function (req, id, done) {
-    var usersdb = resources.collections.users
-
-    usersdb.find({_id: new ObjectID(id)}, ['_id', 'name', 'fb_photo', 'vegosvar_photo', 'active_photo', 'info']).toArray(function (error, result) {
-      done(error, result[0])
+    return resources.models.user.get({
+      _id: new ObjectID(id)
     })
+    .then((users) => {
+      if(users.length > 0) {
+        var user = users[0];
+        done(null, user);
+      } else {
+        throw new Error('User not found in database!');
+      }
+    })
+    .catch(err => {
+      done(err, null);
+    });
   })
 }
