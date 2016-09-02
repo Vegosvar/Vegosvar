@@ -12,16 +12,19 @@ module.exports = function(resources, models) {
 
   return settingModel = {
     aggregate: function(query) {
-      return resources.queries.aggregate('settings', query)
+      return resources.queries.aggregate('settings', query);
     },
     get: function(query, fields, sort, limit) {
-      return resources.queries.find('settings', query, fields, sort, limit)
+      return resources.queries.find('settings', query, fields, sort, limit);
     },
     insert: function(query) {
-      return resources.queries.insert('settings', query)
+      return resources.queries.insert('settings', query);
     },
     update: function(query, update, options) {
-      return resources.queries.update('settings', query, update, options)
+      return resources.queries.update('settings', query, update, options);
+    },
+    remove: function(query) {
+      return resources.queries.remove('settings', query);
     }
   }
 }
