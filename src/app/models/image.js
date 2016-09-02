@@ -110,21 +110,9 @@ module.exports = function(resources, models) {
         })
       })
     },
-    //TODO: Maybe move this function into utils instead
-    downloadFile: function(url, filePath) {
-      return new Promise(function(resolve, reject) {
-        var fstream = fs.createWriteStream(resources.config.uploads + filePath)
-
-        fstream.on('open', function() {
-          request.get(url).pipe(fstream)
-        })
-        .on('close', function() {
-          resolve(filePath)
-        })
-        .on('error', function() {
-          reject();
-        })
-      });
+    downloadImageFromUrl: function(url, relativePath) {
+      localPath = resources.config.uploads + relativePath
+      return resources.utils.downloadFileFromUrl(url, localPath)
     }
   }
 }

@@ -164,6 +164,21 @@ module.exports = {
       }
     }).join(' ').trim()
   },
+  downloadFileFromUrl: function(file, filePath) {
+    return new Promise(function(resolve, reject) {
+      var fstream = fs.createWriteStream(filePath)
+
+      fstream.on('open', function() {
+        request.get(url).pipe(fstream)
+      })
+      .on('close', function() {
+        resolve(filePath)
+      })
+      .on('error', function(err) {
+        reject(err);
+      })
+    });
+  },
   writeFile: function(file, filePath) {
     var fs = require('fs')
     return new Promise(function(resolve, reject) {
