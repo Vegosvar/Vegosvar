@@ -28,12 +28,32 @@ module.exports = function(app, resources) {
   */
 
   app.get('/admin/auth/google', function(req, res, next) {
-    var oauth_url = 'https://accounts.google.com/o/oauth2/v2/auth?';
-    oauth_url += 'response_type=code';
-    oauth_url += '&access_type=offline';
-    oauth_url += '&redirect_uri=' + resources.config.google.callback;
-    oauth_url += '&client_id=' + resources.config.google.client_id;
-    oauth_url += '&scope=' + resources.config.google.scope.join(' ');
+    var oauth_config = {
+      url: 'https://accounts.google.com/o/oauth2/v2/auth',
+      response_type: 'code',
+      access_type: 'offline',
+      redirect_uri: resources.config.google.callback,
+      client_id: resources.config.google.client_id,
+      scope: resources.config.google.scope.join(' ')
+    };
+
+    var oauth_url = Object.keys(oauth_config).reduce((parts, property) => {
+      if (property === 'url') {
+        parts.push(oauth_config[property]);
+      }
+
+      var prefix;
+      if (parts.length > 1) {
+        prefix = '&'
+      } else {
+        prefix = '?'
+      }
+
+      var param = prefix + property + '=' + oauth_config[property];
+      parts.push(param);
+
+      return parts;
+    }, []).join('');
 
     res.redirect(oauth_url);
   });
@@ -45,7 +65,7 @@ module.exports = function(app, resources) {
 
     //Send new request
     var oauth_url = 'https://www.googleapis.com/oauth2/v4/token';
-    var config = {
+    var oauth_config = {
       code: code,
       grant_type: 'authorization_code',
       client_id: resources.config.google.client_id,
@@ -54,70 +74,94 @@ module.exports = function(app, resources) {
     };
 
     //TODO: Use googleapis and oauth2Client here instead of doing the request on our own
-    request({
-      method: 'POST',
-      form: config,
-      url: oauth_url,
-    }, function(error, response, body) {
-      if (!error && response.statusCode == 200) {
-        var params = JSON.parse(body)
-        var access_token = params.access_token;
-        var refresh_token = params.refresh_token;
-        var expires_in = params.expires_in;
 
-        return resources.models.setting.update({
-          'google': {
-            $exists: true
-          }
-        }, {
-          $set: {
-            'google.access_token': access_token,
-            'google.refresh_token': refresh_token,
-            'google.expires_in': expires_in,
-            timestamp: resources.utils.getISOdate()
-          }
-        }, {
-          upsert: true
-        })
-        .then(function(result) {
-          res.redirect('/admin/installningar?google_access_token_updated=true')
-        })
-        .catch(function(err) {
-          console.error(err);
-          res.redirect('/admin/installningar?google_access_token_updated=false')
-        })
-      } else {
-        res.redirect('/admin/installningar?google_access_token_updated=false')
-      }
-    });
+    return new Promise((resolve, reject) => {
+      request({
+        method: 'POST',
+        form: oauth_config,
+        url: oauth_url,
+        timeout: 5000
+      }, (error, response, body) => {
+        if (!error && response.statusCode == 200) {
+          var params = JSON.parse(body)
+          var access_token = params.access_token;
+          var refresh_token = params.refresh_token;
+          var expires_in = params.expires_in;
+
+          return resources.models.setting.update({
+              google: {
+                $exists: true
+              }
+            }, {
+              $set: {
+                'google.access_token': access_token,
+                'google.refresh_token': refresh_token,
+                'google.expires_in': expires_in,
+                timestamp: resources.utils.getISOdate()
+              }
+            }, {
+              upsert: true
+            })
+            .then((result) => {
+              resolve();
+            })
+        } else if(error) {
+          throw new Error(error)
+        } else {
+          throw new Error('Unknown error while refreshing token.')
+        }
+      });
+    })
+    .then(() => {
+      res.redirect('/admin/installningar?google_access_token_updated=true');
+    })
+    .catch((err) => {
+      res.redirect('/admin/installningar?google_access_token_updated=false')
+    })
   });
 
   app.get('/admin/auth/google/revoke', function(req, res, next) {
     var request = require('request')
 
     return resources.models.setting.get({
-      'google': {
-        $exists: true
-      }
-    })
-    .then(function(result) {
-      var access_token = result.google.access_token;
-      var revoke_uri = 'https://accounts.google.com/o/oauth2/revoke?token=' + access_token;
-
-      request({
-        method: 'GET',
-        url: revoke_uri
-      }, function(error, response, body) {
-        if(response.statusCode === 200) {
-          res.redirect('/admin/installningar?google_access_token_revoked=true')
-        } else {
-          res.redirect('/admin/installningar?google_access_token_revoked=false')
+        google: {
+          $exists: true
         }
       })
-    })
-    .catch(function(err) {
-      console.error(err);
-      res.redirect('/admin/installningar?google_access_token_revoked=false')
-    })
+      .then(function(result) {
+        if(result.length > 0) {
+          var access_token = result[0].google.access_token;
+          var revoke_uri = 'https://accounts.google.com/o/oauth2/revoke?token=' + access_token;
+
+          return new Promise((resolve, reject) => {
+            request({
+              method: 'GET',
+              url: revoke_uri
+            }, function(error, response, body) {
+              if (response.statusCode === 200) {
+                resolve();
+              } else {
+                reject(err)
+              }
+            })
+          })
+          .then(() => {
+            return resources.models.setting.remove({
+              google: {
+                $exists: true
+              }
+            })
+          })
+        } else {
+          throw new Error('No token was found in database');
+        }
+      })
+      .then(() => {
+        res.redirect('/admin/installningar?google_access_token_revoked=true');
+      })
+      .catch(function(err) {
+        console.error(err);
+        res.redirect('/admin/installningar?google_access_token_revoked=false')
+      })
   });
 }
