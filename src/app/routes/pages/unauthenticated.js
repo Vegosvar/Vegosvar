@@ -68,7 +68,8 @@ module.exports = function (app, resources) {
   })
 
   app.get('/logga-in', function (req, res, next) {
-    res.render('login')
+    var renderObj = extend({}, res.vegosvar)
+    res.render('login', renderObj);
   })
 
   app.get('/om', function (req, res, next) {
@@ -119,10 +120,12 @@ module.exports = function (app, resources) {
   })
 
   app.get('/recensera',function (req, res, next) {
-    res.render('vote-login', { user: req.user })
+    var renderObj = extend({}, res.vegosvar)
+    res.render('vote-login', renderObj)
   })
 
   app.get('/rapportera', function (req, res, next) {
+    var renderObj = extend({}, res.vegosvar)
     res.render('report', renderObj)
   })
 
