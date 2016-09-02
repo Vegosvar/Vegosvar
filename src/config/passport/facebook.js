@@ -17,8 +17,6 @@ module.exports = function(resources) {
     profileFields: ['id', 'name', 'displayName', 'picture.type(large)'],
     enableProof: true
   }, function (access_token, refresh_token, profile, done) {
-    var usersdb = resources.collections.users
-
     return resources.models.user.get({
       auth: {
         facebook: profile.id
@@ -40,7 +38,7 @@ module.exports = function(resources) {
             if(userPhotoName !== facebookPhotoName) {
               //Photos do not match snag the new one.
               var filePath = '/avatar/facebook/' + facebookPhotoName
-              return resources.models.image.downloadFile(facebookPhoto, filePath)
+              return resources.models.image.downloadImageFromUrl(facebookPhoto, filePath)
               .then(() => {
                 var newValues = {
                   name: {
@@ -89,13 +87,13 @@ module.exports = function(resources) {
           console.log(result);
           return result;
         })
-        .catch(err => {
-          done(err, null);
-        })
       }
     })
     .then(user => {
       done(null, user)
+    })
+    .catch(err => {
+      done(err, null);
     })
   })
 }
