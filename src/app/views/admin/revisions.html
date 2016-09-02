@@ -33,17 +33,35 @@
 
         <h2 style="margin-top:0px">Välj version</h2>
         <div class="list-group revisions">
-          <% if(typeof(revisions) !== 'undefined') { for(var i = revisions.length - 1;i >= 0; i--) { var revision_id = revisions[i].id var revision_date = revisions[i].created var status = revisions[i].accepted var itemClasses = { true: function() { return
-          'list-group-item-success' }, false: function() { return 'list-group-item-danger' }, null: function() { return '' } } var itemClass = (status in itemClasses && revision_id !== current) ? itemClasses[status]() : 'active' %>
-          <div style="cursor:pointer;" class="revision list-group-item <%= itemClass %>" data-item-class="<%= itemClass %>" data-revision="<%= revision_id %>">
-            <%= revision_date %>
-            <% if(revision_id == current) { %>
-              <span class="current label label-success pull-right">Aktiv</span>
-            <% } %>
-          </div>
-        <% }
-                    } %>
-      </div>
+          <% if (typeof(revisions) !== 'undefined') {
+            for (var i = revisions.length - 1;i >= 0; i--) {
+              var revision_id = revisions[i].id
+              var revision_date = revisions[i].created
+              var status = revisions[i].accepted
+              var itemClasses = {
+                true: function() {
+                  return 'list-group-item-success'
+                },
+                false: function() {
+                  return 'list-group-item-danger'
+                },
+                null: function() {
+                  return ''
+                }
+              };
+
+                var itemClass = (status in itemClasses && revision_id !== current) ? itemClasses[status]() : 'active';
+              %>
+                <div style="cursor:pointer;" class="revision list-group-item <%= itemClass %>" data-item-class="<%= itemClass %>" data-revision="<%= revision_id %>">
+
+              <%= revision_date %>
+              <% if(revision_id == current) { %>
+                <span class="current label label-success pull-right">Aktiv</span>
+                <% } %>
+                </div>
+              <% }
+            } %>
+        </div>
       <div class="options" style="display:none">
         <div class="row">
           <div class="col-sm-6">
