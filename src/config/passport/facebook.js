@@ -80,7 +80,7 @@ module.exports = function(resources) {
             blocked: false,
             permission: 'user'
           },
-          fb_photo: (profile.photos) ? profile.photos[0].value : '/unknown_user.png',
+          fb_photo: (profile.photos) ? profile.photos[0].value : '/assets/images/no-picture.svg',
           active_photo: 'facebook',
         })
         .then(result => {
