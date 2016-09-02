@@ -662,9 +662,9 @@ input[type=checkbox], input[type=radio] {
 					box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2);
 					border-radius: 5px;
 					transform: scale(0.97);
-					transition: opacity 0.15s, 
-								left 0.25s, 
-								box-shadow 0.28s, 
+					transition: opacity 0.15s,
+								left 0.25s,
+								box-shadow 0.28s,
 								transform 0.25s;
 				}
 				&:hover {
@@ -735,6 +735,27 @@ input[type=checkbox], input[type=radio] {
 	}
 }
 
+.environment-warning {
+	background-color: #E04A43;
+	color: #fff;
+	padding: 20px;
+	box-shadow: 5px 5px 5px 5px #888;
+	margin-bottom: 3px;
+  min-height: 70px;
+
+	.warning-title {
+		font-size: 24px;
+    line-height: 24px;
+	}
+
+  .btn {
+    line-height: 14px;
+
+    @media only screen and (min-device-width : 768px) {
+      margin-top: 20px;
+    }
+  }
+}
 nav {
 	&#top {
 		margin-bottom: 0;
@@ -893,7 +914,7 @@ nav {
 			background: #fff !important;
 		}
 	}
-	
+
 	&#bottom {
 		display: none;
 		@media (max-width: @xs) {
@@ -995,8 +1016,8 @@ nav {
 									left: 40px;
 									bottom: -14px;
 									content: '';
-									width: 0; 
-									height: 0; 
+									width: 0;
+									height: 0;
 									border-left: 15px solid transparent;
 									border-right: 15px solid transparent;
 									border-top: 15px solid #fff;
@@ -1431,7 +1452,7 @@ section {
 }
 
 .profileHeader {
-	background: #333; 
+	background: #333;
 	height: 250px;
 	background-size: cover;
 	background-position: center center;
@@ -1927,7 +1948,7 @@ section {
 				}
 				&:active, &:focus, &:active {
 					outline: none;
-				}	
+				}
 			}
 		}
 	}
@@ -2019,7 +2040,7 @@ section {
 		padding: 4px 7px;
 		box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
 	}
-	.more {	
+	.more {
 		position: absolute;
 		right: 0;
 		bottom: 0;
@@ -2233,7 +2254,7 @@ section {
 			color: #fff;
 		}
 		img {
-			width: 25px; 
+			width: 25px;
 			height: 25px;
 			position: relative;
 			top: -4px;
@@ -2386,8 +2407,8 @@ section {
 	}
 	.logo {
 		display: inline-block;
-		position: relative; 
-		width: 170px; 
+		position: relative;
+		width: 170px;
 		top: -4px;
 		@media (max-width: @xs) {
 			width: 240px;

@@ -60,6 +60,10 @@ module.exports = function (app, resources) {
       user: req.user
     }
 
+    if(process.env.NODE_ENV !== 'production') {
+      res.vegosvar.environment = String(process.env.NODE_ENV).toUpperCase();
+    };
+
     return next()
   })
 

@@ -1,0 +1,21 @@
+<% if (typeof environment !== 'undefined') { %>
+  <div class="environment-warning">
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="row">
+          <div class="col-xs-12 col-sm-6 col-lg-8">
+            <span class="warning-title"><span class="glyphicon glyphicon-warning-sign"></span> Hej!</span>
+            <p>Det här är <strong><span><%= environment %></span></strong> sidan av Vegosvar.</p>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-lg-4">
+            <a href="https://vegosvar.se" class="btn btn-block btn-primary">
+              <span>Gå till <strong>Vegosvar.se</strong>&nbsp;</span>
+              <span class="glyphicon glyphicon-chevron-right"></span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  <% } %>
