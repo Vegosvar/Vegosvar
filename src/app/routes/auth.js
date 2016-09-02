@@ -16,6 +16,7 @@ module.exports = function(app, resources) {
     res.redirect(req.session.returnTo);
   })
 
+  /*
   app.get('/admin/auth/instagram', passport.authenticate('instagram'));
 
   app.get('/admin/auth/instagram/callback', passport.authenticate('instagram', {
@@ -24,6 +25,7 @@ module.exports = function(app, resources) {
     // Successful authentication, notify that the access token has been updated
     res.redirect('/admin/installningar?instagram_access_token_updated=true');
   });
+  */
 
   app.get('/admin/auth/google', function(req, res, next) {
     var oauth_url = 'https://accounts.google.com/o/oauth2/v2/auth?';
