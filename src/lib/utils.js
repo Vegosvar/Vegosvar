@@ -165,6 +165,7 @@ module.exports = {
     }).join(' ').trim()
   },
   downloadFileFromUrl: function(file, filePath) {
+		var fs = require('fs')
     return new Promise(function(resolve, reject) {
       var fstream = fs.createWriteStream(filePath)
 
