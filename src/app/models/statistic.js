@@ -70,6 +70,10 @@ module.exports = function(resources, models) {
                 ]
               }]
             },
+            dateRanges: [{
+              startDate: moment().subtract(1, 'week').format('YYYY-MM-DD'),
+              endDate:  moment().format('YYYY-MM-DD')
+            }],
             orderBys: [{
               fieldName: 'ga:pageviews', 'sortOrder': 'DESCENDING'
             }]
