@@ -45,7 +45,7 @@ module.exports = function(resources, models) {
           }
         },
         'timestamp': {
-          '$gte': moment().subtract(1, 'week').toISOString() //Use no more than a week old data
+          '$gte': moment().subtract(1, 'hours').toISOString() //Use no more than an hour old data
         }
       })
       .then(function(result) {
