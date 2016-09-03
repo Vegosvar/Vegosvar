@@ -47,7 +47,7 @@ module.exports = function(resources, models) {
          * i.e. all routes except :url and use that as blacklist,
          * however, that would require that the models could read the express object, which is not possible atm.
          */
-        var blacklist = ['logga-in', 'logga-ut', 'recensera', 'mina-sidor', 'ny$', 'ny\/*.{4,10}', 'installningar', 'admin\/*'];
+        var blacklist = ['logga-in', 'vanliga-fragor', 'logga-ut', 'recensera', 'mina-sidor', 'ny$', 'ny\/*.{4,10}', 'installningar', 'admin\/*'];
 
         var urls = result.reduce(function(urls, doc) {
           if(doc && 'statistics' in doc) {
@@ -71,6 +71,7 @@ module.exports = function(resources, models) {
                     }
                   })
 
+                  //if not add it to the array of urls
                   if(!inBlacklist) {
                     urls.push(url);
                   }
@@ -82,6 +83,7 @@ module.exports = function(resources, models) {
           return urls;
         }, []);
 
+        //Now get the documents for the urls
         return resources.queries.find('pages', {
           url: {
             $in: urls
@@ -92,7 +94,44 @@ module.exports = function(resources, models) {
             return [];
           }
 
-          return pages.reduce(function(pages, page, index) {
+          var rankedPages = result.reduce(function(combined, doc) {
+            if(doc && 'statistics' in doc) {
+              if(doc.statistics.length > 0) {
+                var statistic = doc.statistics[0];
+
+                if('dimension' in statistic) {
+                  if('value' in statistic.dimension) {
+                    //Get the url of the page
+                    var url = statistic.dimension.value.substr(1);
+
+                    pages.forEach(function(page) {
+                      if(page.url === url) {
+                        page.rank = doc.rank;
+
+                        combined.push(page)
+                      }
+                    })
+                  }
+                }
+              }
+            }
+
+            return combined;
+          }, []);
+
+          //Sort them after rank
+          pagesSorted = pages.sort(function(a, b) {
+            if(a.rank < b.rank) {
+              return 1
+            } else if(a.rank > b.rank) {
+              return -1
+            } else {
+              return 0
+            }
+          })
+
+          //Take 9 of them
+          var hotPages = pages.reduce(function(pages, page, index) {
             if(index < 9) {
               pages.push(page);
             }
@@ -107,6 +146,8 @@ module.exports = function(resources, models) {
               return page
             }
           })
+
+          return hotPages;
         })
       });
     },

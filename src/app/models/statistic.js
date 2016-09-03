@@ -85,10 +85,12 @@ module.exports = function(resources, models) {
                 //Save data from Google API to the database
                 return new Promise.all(
                     parsed.map(function(statistic) {
+                      var rank = (statistic.metric.value.length > 0) ? parseInt(statistic.metric.value[0]) : 0;
                       return model.insert({
                           statistics: [statistic],
                           type: 'rank',
                           query: query,
+                          rank: rank,
                           timestamp: resources.utils.getISOdate()
                         })
                         .then(function(doc) {
