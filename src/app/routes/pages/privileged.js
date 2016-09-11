@@ -178,13 +178,14 @@ module.exports = function(app, resources) {
             var revisions = revisions[0]
             renderObj.current = revisions.revision
 
-            return new Promise.all(Object.keys(revisions.revisions).map(function(revision) {
+            Object.keys(revisions.revisions).forEach(function(revision) {
+              console.log(revision);
               renderObj.revisions.push({
                 id: revision,
                 accepted: revisions.revisions[revision].meta.accepted,
                 created: utils.getPrettyDateTime(new Date(revision * 1000))
               })
-            }))
+            })
           })
       })
       .then(function() {
