@@ -40,17 +40,17 @@ module.exports = function(app, resources) {
     var oauth_url = Object.keys(oauth_config).reduce((parts, property) => {
       if (property === 'url') {
         parts.push(oauth_config[property]);
-      }
-
-      var prefix;
-      if (parts.length > 1) {
-        prefix = '&'
       } else {
-        prefix = '?'
-      }
+        var prefix;
+        if (parts.length > 1) {
+          prefix = '&'
+        } else {
+          prefix = '?'
+        }
 
-      var param = prefix + property + '=' + oauth_config[property];
-      parts.push(param);
+        var param = prefix + property + '=' + oauth_config[property];
+        parts.push(param);
+      }
 
       return parts;
     }, []).join('');
