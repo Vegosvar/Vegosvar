@@ -141,7 +141,21 @@ module.exports = function(app, resources) {
               if (response.statusCode === 200) {
                 resolve();
               } else {
-                reject(err)
+                try {
+                  var errorMessage = JSON.parse(body);
+
+                  if(errorMessage.error !== undefined) {
+                    switch (errorMessage.error) {
+                      case 'invalid_token': //If we receive this then the token has already expired at Google so no need to keep a useless token around
+                          resolve();
+                        break;
+                      default:
+                        reject('Unknown error. Unknown error received from server: ' + errorMessage.error);
+                    }
+                  }
+                } catch(err) {
+                  reject(err)
+                }
               }
             })
           })
