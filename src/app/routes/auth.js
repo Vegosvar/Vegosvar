@@ -137,7 +137,7 @@ module.exports = function(app, resources) {
             request({
               method: 'GET',
               url: revoke_uri
-            }, function(error, response, body) {
+            }, function(err, response, body) {
               if (response.statusCode === 200) {
                 resolve();
               } else {
