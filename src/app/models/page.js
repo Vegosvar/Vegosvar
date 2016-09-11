@@ -9,6 +9,7 @@ var Promise = require('promise')
 var ObjectID = require('mongodb').ObjectID
 var extend = require('util')._extend
 var striptags = require('striptags')
+var _ = require('lodash');
 
 module.exports = function(resources, models) {
   return {
@@ -527,6 +528,7 @@ module.exports = function(resources, models) {
       .then(function(result) {
         if(result.length > 0) {
           var revision = result[0]
+          var revision_number = (new Date(isodate).getTime() / 1000) //This is a unix timestamp
 
           var update = {
             modified: isodate,
@@ -534,10 +536,7 @@ module.exports = function(resources, models) {
             revisions: {}
           }
 
-          var revision_number = revision.revision;
-
           update.revisions[revision_number] = data.post
-
           update.revisions[revision_number].meta = {
             accepted: null,
             user_info: {
@@ -550,9 +549,9 @@ module.exports = function(resources, models) {
             }
           }
 
-          update = extend(revision, update)
+          update.revisions = _.extend(revision.revisions, update.revisions);
 
-          return models.revision.update({ post_id: id }, update)
+          return models.revision.update({ post_id: id }, { $set: update })
         } else {
           throw new Error('No revision document matching ID was found')
         }
@@ -599,20 +598,19 @@ module.exports = function(resources, models) {
     },
     newPost: function(req) {
       var id = req.body.id
-      var hidden = (req.body.hidden) ? true : false;
 
       var data = resources.utils.parseBody(req)
       if(id) {
         //This is an update to an existing post
         return resources.models.page.updatePost(id, data)
         .then(function() {
-          return data
+          return data;
         })
       } else {
         //This is a new post
         return resources.models.page.insertPost(data)
         .then(function() {
-          return data
+          return data;
         })
       }
     }
