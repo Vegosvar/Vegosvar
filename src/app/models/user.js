@@ -14,6 +14,9 @@ module.exports = function(resources, models) {
     get: function(query) {
       return resources.queries.find('users', query)
     },
+    insert: function(query) {
+      return resources.queries.insert('users', query)
+    },
     remove: function(query) {
       return resources.queries.remove('users', query)
     },

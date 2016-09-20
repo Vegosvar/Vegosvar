@@ -84,8 +84,7 @@ module.exports = function(resources) {
           active_photo: 'facebook',
         })
         .then(result => {
-          console.log(result);
-          return result;
+          return result.ops[0];
         })
       }
     })
