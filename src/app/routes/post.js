@@ -30,7 +30,7 @@ module.exports = function (app, resources) {
       })
     })
     .catch(function(err) {
-      console.log(req.route.path, err)
+      console.error(req.route.path, err)
       return next()
     })
   })
@@ -44,7 +44,7 @@ module.exports = function (app, resources) {
       })
     })
     .catch(function(err) {
-      console.log(req.route.path, err)
+      console.error(req.route.path, err)
       res.json({
         success: false,
         message: err.message
@@ -60,7 +60,7 @@ module.exports = function (app, resources) {
       })
     })
     .catch(function(err) {
-      console.log(req.route.path, err)
+      console.error(req.route.path, err)
       res.json({
         success: false,
         message: err.message

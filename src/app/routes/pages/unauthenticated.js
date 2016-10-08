@@ -62,7 +62,7 @@ module.exports = function (app, resources) {
         res.render('index', renderObj)
       })
       .catch(function (err) {
-        console.log(req.route.path, err)
+        console.error(req.route.path, err)
         return next()
       })
   })
@@ -190,7 +190,7 @@ module.exports = function (app, resources) {
         })
       })
       .catch(function (err) {
-        console.log(req.route.path, err)
+        console.error(req.route.path, err)
         return next()
       })
   })
@@ -298,7 +298,7 @@ module.exports = function (app, resources) {
         res.render('page', renderObj)
       })
       .catch(function (err) {
-        console.log(req.route.path, err)
+        console.error(req.route.path, err)
         return next() // 404
       })
   })

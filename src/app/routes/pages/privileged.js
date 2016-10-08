@@ -57,7 +57,7 @@ module.exports = function(app, resources) {
         res.render('admin/index', renderObj)
       })
       .catch(function(err) {
-        console.log(req.route.path, err)
+        console.error(req.route.path, err)
         return next()
       })
   })
@@ -85,7 +85,7 @@ module.exports = function(app, resources) {
         res.render('admin/remove', renderObj)
       })
       .catch(function(err) {
-        console.log(req.route.path, err)
+        console.error(req.route.path, err)
         return next()
       })
   })
@@ -104,7 +104,7 @@ module.exports = function(app, resources) {
         res.render('admin/changes', renderObj)
       })
       .catch(function(err) {
-        console.log(req.route.path, err)
+        console.error(req.route.path, err)
         return next()
       })
   })
@@ -128,7 +128,7 @@ module.exports = function(app, resources) {
         res.render('admin/profile', renderObj)
       })
       .catch(function(err) {
-        console.log(req.route.path, err)
+        console.error(req.route.path, err)
         return next()
       })
   })
@@ -179,7 +179,6 @@ module.exports = function(app, resources) {
             renderObj.current = revisions.revision
 
             Object.keys(revisions.revisions).forEach(function(revision) {
-              console.log(revision);
               renderObj.revisions.push({
                 id: revision,
                 accepted: revisions.revisions[revision].meta.accepted,
@@ -192,7 +191,7 @@ module.exports = function(app, resources) {
         res.render('admin/revisions', renderObj)
       })
       .catch(function(err) {
-        console.log(req.route.path, err)
+        console.error(req.route.path, err)
         return next()
       })
   })
@@ -214,7 +213,7 @@ module.exports = function(app, resources) {
         res.render('admin/users', renderObj)
       })
       .catch(function(err) {
-        console.log(req.route.path, err)
+        console.error(req.route.path, err)
         return next()
       })
   })
@@ -253,7 +252,7 @@ module.exports = function(app, resources) {
         res.render('admin/settings', renderObj)
       })
       .catch(function(err) {
-        console.log(req.route.path, err)
+        console.error(req.route.path, err)
       })
   })
 
@@ -272,7 +271,7 @@ module.exports = function(app, resources) {
         res.render('admin/likes', renderObj)
       })
       .catch(function(err) {
-        console.log(req.route.path, err)
+        console.error(req.route.path, err)
       })
   })
 
@@ -291,7 +290,7 @@ module.exports = function(app, resources) {
         res.render('admin/votes', renderObj)
       })
       .catch(function(err) {
-        console.log(req.route.path, err)
+        console.error(req.route.path, err)
       })
   })
 
@@ -311,7 +310,7 @@ module.exports = function(app, resources) {
         res.render('admin/pages', renderObj)
       })
       .catch(function(err) {
-        console.log(req.route.path, err)
+        console.error(req.route.path, err)
       })
   })
 }

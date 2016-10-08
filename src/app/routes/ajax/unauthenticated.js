@@ -35,7 +35,7 @@ module.exports = function (app, resources) {
     })
     .catch(function(err) {
       //Handle errors
-      console.log(req.route.path, err)
+      console.error(req.route.path, err)
 
       //Notify user
       res.json({

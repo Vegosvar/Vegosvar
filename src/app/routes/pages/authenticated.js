@@ -53,7 +53,7 @@ module.exports = function (app, resources) {
     })
     .catch(function(err) {
       //Handle errors
-      console.log(req.route.path, err)
+      console.error(req.route.path, err)
 
       //Notify user
       res.json({
@@ -78,7 +78,7 @@ module.exports = function (app, resources) {
       res.render('pages', renderObj)
     })
     .catch(function(err) {
-      console.log(req.route.path, err)
+      console.error(req.route.path, err)
       return next()
     })
   })
@@ -160,7 +160,7 @@ module.exports = function (app, resources) {
           break
         default:
           //This should probably be a 500 error
-          console.log(req.route.path, err)
+          console.error(req.route.path, err)
           return next()
           break
       }
@@ -222,7 +222,7 @@ module.exports = function (app, resources) {
       res.render('post/' + renderObj.type, renderObj)
     })
     .catch(function(err) {
-      console.log(req.route.path, err)
+      console.error(req.route.path, err)
       return next()
     })
   })

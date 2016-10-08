@@ -90,7 +90,7 @@ module.exports = function (app, resources) {
           return next()
         })
         .catch(function(err) {
-          console.log(req.route.path, err)
+          console.error(req.route.path, err)
           return next()
         })
       } else {

@@ -26,7 +26,7 @@ module.exports = function (app, resources) {
     })
     .catch(function(err) {
       //Handle errors
-      console.log(req.route.path, err)
+      console.error(req.route.path, err)
 
       //Notify user
       res.json({
@@ -114,7 +114,7 @@ module.exports = function (app, resources) {
     })
     .catch(function(err) {
       //Handle error
-      console.log(req.route.path, err)
+      console.error(req.route.path, err)
       res.json({
         success: false,
         message:  err.message
@@ -195,7 +195,7 @@ module.exports = function (app, resources) {
     })
     .catch(function(err) {
       //Handle error
-      console.log(req.route.path, err)
+      console.error(req.route.path, err)
       res.json({
         success: false,
         message:  err.message
@@ -244,7 +244,7 @@ module.exports = function (app, resources) {
     })
     .catch(function(err) {
       //Handle error
-      console.log(req.route.path, err)
+      console.error(req.route.path, err)
       res.json({
         success: false,
         message:  err.message

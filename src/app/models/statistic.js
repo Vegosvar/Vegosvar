@@ -112,7 +112,11 @@ module.exports = function(resources, models) {
               }
             })
             .catch(function(err) {
-              console.error(err);
+              if('Error' in err) {
+                console.error(err.Error);
+              } else {
+                console.error(err);
+              }
             })
         }
       })
