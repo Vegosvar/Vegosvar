@@ -121,7 +121,7 @@ module.exports = function(resources, models) {
           }, []);
 
           //Sort them after rank
-          pagesSorted = pages.sort(function(a, b) {
+          var pagesSorted = pages.sort(function(a, b) {
             if(a.rank < b.rank) {
               return 1
             } else if(a.rank > b.rank) {
@@ -401,11 +401,8 @@ module.exports = function(resources, models) {
 
           query.push(projectQuery)
 
-          console.log('1', query)
-
           return resources.models.page.aggregate(query)
         } else {
-          console.log('2', searchObj.query)
           return resources.models.page.aggregate([searchObj.query])
         }
       })
@@ -421,6 +418,13 @@ module.exports = function(resources, models) {
 
             if(typeof(page.rating.votes) !== 'undefined' && typeof(page.rating.votes_sum) !== 'undefined') {
               page.score += ( parseInt(page.rating.votes_sum) * parseInt(page.rating.votes) / 10 )
+            }
+          }
+
+          for (var i = 0; i < searchObj.searchString.length; i++) {
+            var slug = resources.utils.replaceDiacritics(searchObj.searchString[i]);
+            if(page.slug.indexOf(slug) !== -1) {
+              page.score++; //Matches against slug is a very good indication of that this is a relevant result
             }
           }
 
@@ -449,6 +453,11 @@ module.exports = function(resources, models) {
         }
       })
 
+      /* HACK: query shouldn't restrict to a city when an establishment and city partially shares their name
+      * I don't have a solution for this at the moment, this static hack will do for a while // Tobias 2016-10-08
+       */
+      var whitelist = {'lund': ['gröna']};
+
       return new Promise.all([
         //Check if any words match a city
         models.city.get({
@@ -460,11 +469,22 @@ module.exports = function(resources, models) {
           if(result.length > 0) {
             var city = result[0].name
 
+            //Check if any instances of the search terms occur in the whitelist
+            if(city in whitelist ) {
+              for (var i = 0; i < stringArray.length; i++) {
+                if(whitelist[city].indexOf(stringArray[i])) {
+                  console.log('whitelisted');
+                  return;
+                }
+              }
+            }
+
             //Restrict results to the matched city
             searchObj.query.$match['post.city'] = {
               '$regex': city, //Search only this city
               '$options': '-i'
             }
+
             //Remove matched city from the search string
             searchObj.searchString = resources.utils.removePatterFromString(searchObj.searchString, city)
           }
