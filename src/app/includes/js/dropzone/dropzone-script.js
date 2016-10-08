@@ -55,6 +55,9 @@ $('#uploader').dropzone(
     success: function(object, result) {
       var imageUrl = '/uploads/' + result.data.filename + '.jpg'
 
+      $('[name="cover_image_id"]').val( result.data._id );
+      $('[name="cover_image_filename"]').val( result.data.filename );
+
       setTimeout(function() {
         //Set the uploaded image
         $('.upload-previews .preview-image').last()
@@ -87,7 +90,7 @@ if($('#avatar').length > 0) {
     $.extend({
       url: '/submit/file/avatar',
       previewsContainer: $('.avatar')[0],
-      previewTemplate: 
+      previewTemplate:
       $('<div>', {
         class: 'dz-preview dz-file-preview'
       })
