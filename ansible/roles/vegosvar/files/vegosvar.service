@@ -18,6 +18,8 @@
 
 [Unit]
 Description=Vegosvar
+After=network.target
+Requires=mongod.service
 
 [Service]
 ExecStart=/usr/local/bin/gulp
