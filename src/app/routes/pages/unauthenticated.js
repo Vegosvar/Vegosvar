@@ -15,6 +15,7 @@ module.exports = function (app, resources) {
   var utils = resources.utils
 
   app.get('/', function (req, res, next) {
+    console.log('in /')
     var renderObj = extend({
       loadGeoLocation: true,
       loadMapResources: {
@@ -28,25 +29,25 @@ module.exports = function (app, resources) {
       recipes: []
     }, res.vegosvar)
 
-    new Promise.all([
+    return new Promise.all([
         //Get page stats for the footer
         resources.models.page.stats()
         .then(function (pages) {
           renderObj.pageStats = pages
         }),
         //Get the pages for 'Hett just nu'
-        resources.models.page.hot_ranked()
-        .then(function (pages) {
-          if(pages.length > 0) {
-            renderObj.pages = pages
-          } else {
-            //Fall back to old mode
-            return resources.models.page.hot()
+        // resources.models.page.hot_ranked()
+        // .then(function (pages) {
+        //  if(pages.length > 0) {
+        //    renderObj.pages = pages
+        //  } else {
+        //    //Fall back to old mode
+            resources.models.page.hot()
             .then(function (pages) {
               renderObj.pages = pages;
-            })
-          }
-        }),
+            }),
+        //  }
+        // }),
         //Get the new restaurants, cafees and shops for the 'Goda nyheter' sidebar
         resources.models.page.newPlaces()
         .then(function (establishments) {
@@ -62,6 +63,7 @@ module.exports = function (app, resources) {
         res.render('index', renderObj)
       })
       .catch(function (err) {
+        console.log('is herreee')
         console.error(req.route.path, err)
         return next()
       })
